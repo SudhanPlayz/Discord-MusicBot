@@ -1,8 +1,4 @@
-module.exports = {
-  name: "stop",
-  description: "Stop command.",
-  cooldown: 5,
-  execute(message) {
+exports.run = (client, message, args) => {
     const { channel } = message.member.voice;
     if (!channel)
       return message.channel.send(
@@ -15,5 +11,4 @@ module.exports = {
       );
     serverQueue.songs = [];
     serverQueue.connection.dispatcher.end("Stop command has been used!");
-  },
 };

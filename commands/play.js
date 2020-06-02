@@ -2,13 +2,7 @@ const { Util } = require("discord.js");
 const ytdl = require("ytdl-core");
 const YouTube = require("simple-youtube-api");
 
-module.exports = {
-  name: "play",
-  description: "Play command.",
-  usage: "[Search Sting]",
-  args: true,
-  cooldown: 5,
-  async execute(message, args) {
+exports.run = async (client, message, args) => {
     const { channel } = message.member.voice;
     if (!channel)
       return message.channel.send(
@@ -34,7 +28,7 @@ module.exports = {
     const song = {
       id: songInfo.video_id,
       title: Util.escapeMarkdown(songInfo.title),
-      url: songInfo.video_url,
+      url: songInfo.url,
     };
 
     if (serverQueue) {
@@ -87,5 +81,4 @@ module.exports = {
         `I could not join the voice channel: ${error}`
       );
     }
-  },
 };

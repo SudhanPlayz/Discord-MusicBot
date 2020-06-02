@@ -11,6 +11,9 @@
 	"dependencies": {
 		"discord.js": "^12.2.0",
 		"dotenv": "^8.2.0",
+		"enmap": "^5.2.4",
+		"ffmpeg-static": "^4.2.2",
+		"simple-youtube-api": "^5.2.1",
 		"ytdl-core": "^2.1.4"
 	},
 	"optionalDependencies": {
