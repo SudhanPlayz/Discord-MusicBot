@@ -3,7 +3,7 @@
 
 ## Tutorial
 
-Video tutorial is coming soon in YouTube. [Support in Discord](https://discord.gg/6W7YgNr)
+Video tutorial click [here](https://youtu.be/wWVXN4mIgz8). [Support in Discord](https://discord.gg/6W7YgNr)
 
 ## Install
 
@@ -39,6 +39,6 @@ GOOGLE_API=
 ## Author
 
 [SudhanPlayz](https://github.com/SudhanPlayz).  
-Authored and maintained by iCrawl.
+Authored and maintained by SudhanPlayz.
 
 > GitHub [@SudhanPlayz](https://github.com/SudhanPlayz)
