@@ -3,7 +3,7 @@
 
 ## Tutorial
 
-Video tutorial is coming soon in YouTube. [Support a Discord](https://discord.gg/6W7YgNr)
+Video tutorial is coming soon in YouTube. [Support in Discord](https://discord.gg/6W7YgNr)
 
 ## Install
 
