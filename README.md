@@ -17,7 +17,6 @@ Copy/Rename the `.env_example` to `.env` and fill out the values:
 ```
 DISCORD_TOKEN=
 DISCORD_PREFIX=
-GOOGLE_API=
 ```
 
 ## Features
