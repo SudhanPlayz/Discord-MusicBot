@@ -14,3 +14,4 @@ exports.run = (client, message, args) => {
   serverQueue.connection.dispatcher.setVolumeLogarithmic(args[0] / 5);
   return message.channel.send(`I set the volume to: **${args[0]}**`);
 };
+

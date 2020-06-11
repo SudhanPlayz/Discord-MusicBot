@@ -5,3 +5,4 @@ exports.run = (client, message, args) => {
     `🎶 Now playing: **${serverQueue.songs[0].title}**`
   );
 };
+

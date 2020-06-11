@@ -1,2 +1,5 @@
 # Packages
 node_modules/
+
+# Envronmental Storage
+.env

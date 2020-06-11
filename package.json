@@ -1,24 +1,19 @@
 {
-	"name": "discord-music-bot",
-	"version": "1.0.0",
-	"description": "Very simple discord music bot with the discordjs.guide command handler for easy learning and adapting.",
-	"main": "index.js",
-	"author": "SudhanPlayz",
-	"license": "MIT",
-	"scripts": {
-		"start": "node index.js"
-	},
-	"dependencies": {
-		"discord.js": "^12.2.0",
-		"dotenv": "^8.2.0",
-		"enmap": "^5.2.4",
-		"ffmpeg-static": "^4.2.2",
-		"simple-youtube-api": "^5.2.1",
-		"ytdl-core": "^2.1.4"
-	},
-	"optionalDependencies": {
-		"@discordjs/opus": "^0.3.2",
-		"erlpack": "github:discord/erlpack",
-		"zlib-sync": "^0.1.6"
-	}
+  "name": "shit-with-no-api",
+  "version": "1.0.0",
+  "description": "Very simple discord music bot with the discordjs.guide command handler for easy learning and adapting.",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@discordjs/opus": "^0.3.2",
+    "axios": "^0.19.2",
+    "cheerio": "^1.0.0-rc.3",
+    "discord.js": "^12.2.0",
+    "dotenv": "^8.2.0",
+    "simple-youtube-api": "^5.2.1",
+    "ytdl-core": "^3.1.1"
+  }
 }
