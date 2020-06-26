@@ -33,11 +33,10 @@ DISCORD_PREFIX=
 3. Create your feature branch: `git checkout -b my-new-feature`
 4. Commit your changes: `git commit -am 'Add some feature'`
 5. Push to the branch: `git push origin my-new-feature`
-6. Submit a pull request :D
+6. Submit a pull request.
+7. I will see
 
 ## Author
 
-[SudhanPlayz](https://github.com/SudhanPlayz).  
-Authored and maintained by SudhanPlayz.
-
-> GitHub [@SudhanPlayz](https://github.com/SudhanPlayz)
+Recoded by [SudhanPlayz](https://github.com/SudhanPlayz).  
+Authored by [iCrawl](https://github.com/icrawl)
