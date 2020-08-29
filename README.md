@@ -1,3 +1,6 @@
+# Important Biggest Update Comming soon
+> And yes a updated tutorial :> without using the api
+
 # Discord Music bot
 > Very simple discord music bot with the discord.js with Song Name playing. It can able to play music with song name.
 
