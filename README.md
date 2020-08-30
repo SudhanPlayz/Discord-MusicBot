@@ -9,3 +9,4 @@
 Video tutorial click [here](https://youtu.be/wWVXN4mIgz8). [Support in Discord](https://sudhanplayz.live/discord)
  ## IMPORTANT
 Please use this [SudhanPlayz/Discord-MusicBot/tree/v1.0.0](https://github.com/SudhanPlayz/Discord-MusicBot/tree/v1.0.0)
+[![Run on Repl.it](https://repl.it/badge/github/SudhanPlayz/Discord-MusicBot)](https://repl.it/github/SudhanPlayz/Discord-MusicBot)
