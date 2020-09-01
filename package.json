@@ -9,11 +9,11 @@
   },
   "dependencies": {
     "@discordjs/opus": "^0.3.2",
-    "axios": "^0.19.2",
-    "cheerio": "^1.0.0-rc.3",
     "discord.js": "^12.2.0",
     "dotenv": "^8.2.0",
-    "simple-youtube-api": "^5.2.1",
-    "ytdl-core": "^3.1.1"
+    "ffmpeg": "0.0.4",
+    "ffmpeg-static": "^4.2.7",
+    "yt-search": "^2.2.4",
+    "ytdl-core": "^3.2.2"
   }
 }

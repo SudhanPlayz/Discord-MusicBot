@@ -1,101 +1,106 @@
-const { Util } = require("discord.js");
+const { Util, MessageEmbed } = require("discord.js");
 const ytdl = require("ytdl-core");
-const ytSearch = require("../utils/ytSearch");
+const yts = require("yt-search");
+const sendError = require("../util/error")
 
-exports.run = async (client, message, args) => {
-  const { channel } = message.member.voice;
-  if (!channel)
-    return message.channel.send(
-      "I'm sorry but you need to be in a voice channel to play music!"
-    );
-  const permissions = channel.permissionsFor(message.client.user);
-  if (!permissions.has("CONNECT"))
-    return message.channel.send(
-      "I cannot connect to your voice channel, make sure I have the proper permissions!"
-    );
-  if (!permissions.has("SPEAK"))
-    return message.channel.send(
-      "I cannot speak in this voice channel, make sure I have the proper permissions!"
-    );
-  const searchString = args.join(" ");
-  if (!searchString)
-    return message.channel.send("You didn't provide anything to play");
-  const serverQueue = message.client.queue.get(message.guild.id);
+module.exports = {
+  info: {
+    name: "play",
+    description: "To play songs :D",
+    usage: "<song_name>",
+    aliases: ["p"],
+  },
 
-  const videos = await ytSearch(searchString, 1);
-  if (!videos || !videos.length) {
-    return message.channel.send("No videos found with that keyword!");
-  }
+  run: async function (client, message, args) {
+    const channel = message.member.voice.channel;
+    if (!channel)return sendError("I'm sorry but you need to be in a voice channel to play music!", message.channel);
 
-  // old method, doesn't work most of the time
-  // const song = {
-  //   id: firstVideo.videoId,
-  //   url: firstVideo.url,
-  //   title: Util.escapeMarkdown(firstVideo.title),
-  //   author: firstVideo.author,
-  //   duration: firstVideo.duration,
-  //   durationSeconds: firstVideo.durationSeconds,
-  //   ago: firstVideo.ago,
-  //   views: firstVideo.views,
-  // };
+    const permissions = channel.permissionsFor(message.client.user);
+    if (!permissions.has("CONNECT"))return sendError("I cannot connect to your voice channel, make sure I have the proper permissions!", message.channel);
+    if (!permissions.has("SPEAK"))return sendError("I cannot speak in this voice channel, make sure I have the proper permissions!", message.channel);
 
-  const firstVideo = videos[0].full ? videos[0] : videos[0].fetch();
+    var searchString = args.join(" ");
+    if (!searchString)return sendError("You didn't poivide want i want to play", message.channel);
 
-  const song = {
-    id: firstVideo.id,
-    url: `https://youtube.com/watch?v=${firstVideo.id}`,
-    title: Util.escapeMarkdown(firstVideo.title),
-    author: firstVideo.channel.title,
-    duration: firstVideo.duration,
-    durationSeconds: firstVideo.durationSeconds,
-  };
+    var serverQueue = message.client.queue.get(message.guild.id);
 
-  if (serverQueue) {
-    serverQueue.songs.push(song);
-    console.log(serverQueue.songs);
-    return message.channel.send(
-      `✅ **${song.title}** has been added to the queue!`
-    );
-  }
+    var searched = await yts.search(searchString)
+    if(searched.videos.length === 0)return sendError("Looks like i was unable to find the song on YouTube", message.channel)
+    var songInfo = searched.videos[0]
 
-  const queueConstruct = {
-    textChannel: message.channel,
-    voiceChannel: channel,
-    connection: null,
-    songs: [],
-    volume: 2,
-    playing: true,
-  };
-  message.client.queue.set(message.guild.id, queueConstruct);
-  queueConstruct.songs.push(song);
+    const song = {
+      id: songInfo.videoId,
+      title: Util.escapeMarkdown(songInfo.title),
+      views: String(songInfo.views).padStart(10, ' '),
+      url: songInfo.url,
+      ago: songInfo.ago,
+      duration: songInfo.duration.toString(),
+      img: songInfo.image,
+      req: message.author
+    };
 
-  const play = async (song) => {
-    const queue = message.client.queue.get(message.guild.id);
-    if (!song) {
-      queue.voiceChannel.leave();
-      message.client.queue.delete(message.guild.id);
-      return;
+    if (serverQueue) {
+      serverQueue.songs.push(song);
+      let thing = new MessageEmbed()
+      .setAuthor("Song has been added to queue", song.req.displayAvatarURL({ dynamic: true }))
+      .setThumbnail(song.img)
+      .setColor("YELLOW")
+      .addField("Name", song.title, true)
+      .addField("Duration", song.duration, true)
+      .addField("Requested by", song.req.tag, true)
+      .setFooter(`Views: ${song.views} | ${song.ago}`)
+      return message.channel.send(thing);
     }
 
-    const dispatcher = queue.connection
-      .play(ytdl(song.url))
-      .on("finish", () => {
-        queue.songs.shift();
-        play(queue.songs[0]);
-      })
-      .on("error", (error) => console.error(error));
-    dispatcher.setVolumeLogarithmic(queue.volume / 5);
-    queue.textChannel.send(`🎶 Start playing: **${song.title}**`);
-  };
+    const queueConstruct = {
+      textChannel: message.channel,
+      voiceChannel: channel,
+      connection: null,
+      songs: [],
+      volume: 2,
+      playing: true,
+    };
+    message.client.queue.set(message.guild.id, queueConstruct);
+    queueConstruct.songs.push(song);
 
-  try {
-    const connection = await channel.join();
-    queueConstruct.connection = connection;
-    play(queueConstruct.songs[0]);
-  } catch (error) {
-    console.error(`I could not join the voice channel: ${error}`);
-    message.client.queue.delete(message.guild.id);
-    await channel.leave();
-    return message.channel.send(`I could not join the voice channel: ${error}`);
+    const play = async (song) => {
+      const queue = message.client.queue.get(message.guild.id);
+      if (!song) {
+        sendError("Leaving the voice channel because I think there are no songs in the queue. If you like the bot stay 24/7 in voice channel go to `commands/play.js` and remove the line number 61\n\nThank you for using my code! [GitHub](https://github.com/SudhanPlayz/Discord-MusicBot)", message.channel)
+        queue.voiceChannel.leave();//If you want your bot stay in vc 24/7 remove this line :D
+        message.client.queue.delete(message.guild.id);
+        return;
+      }
+
+      const dispatcher = queue.connection
+        .play(ytdl(song.url))
+        .on("finish", () => {
+          queue.songs.shift();
+          play(queue.songs[0]);
+        })
+        .on("error", (error) => console.error(error));
+      dispatcher.setVolumeLogarithmic(queue.volume / 5);
+      let thing = new MessageEmbed()
+      .setAuthor("Started Playing Music!", song.req.displayAvatarURL({ dynamic: true }))
+      .setThumbnail(song.img)
+      .setColor("BLUE")
+      .addField("Name", song.title, true)
+      .addField("Duration", song.duration, true)
+      .addField("Requested by", song.req.tag, true)
+      .setFooter(`Views: ${song.views} | Ago: ${song.ago}`)
+      queue.textChannel.send(thing);
+    };
+
+    try {
+      const connection = await channel.join();
+      queueConstruct.connection = connection;
+      channel.guild.voice.setSelfDeaf(true)
+      play(queueConstruct.songs[0]);
+    } catch (error) {
+      console.error(`I could not join the voice channel: ${error}`);
+      message.client.queue.delete(message.guild.id);
+      await channel.leave();
+      return sendError(`I could not join the voice channel: ${error}`, message.channel);
+    }
   }
 };

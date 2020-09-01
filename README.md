@@ -1,11 +1,20 @@
-# Important Biggest Update Comming soon
-> And yes a updated tutorial :> without using the api
+# Advanced Discord Music Bot
+Thanks for 4k Views! I made this for you all!
 
-# Discord Music bot
-> Very simple discord music bot with the discord.js with Song Name playing. It can able to play music with song name.
+<div align="center"><img src="./assets/banner.gif"></div>
 
 ## Tutorial
+Soon
 
-Video tutorial click [here](https://youtu.be/wWVXN4mIgz8). [Support in Discord](https://sudhanplayz.live/discord)
- ## IMPORTANT
-Please use this [SudhanPlayz/Discord-MusicBot/tree/v1.0.0](https://github.com/SudhanPlayz/Discord-MusicBot/tree/v1.0.0)
+## Screenshots
+
+<div align="left"><img src="https://pika-pika.is-inside.me/zJduq9Gn.png"></div><div align="center"><img src="https://pika-pika.is-inside.me/9ufBoGDH.png"></div><div align="right"><img src="https://pika-pika.is-inside.me/8QkGROJv.png"></div>
+
+## Run the projects
+Soon
+
+## Contributors
+
+<a href="https://github.com/SudhanPlayz/Discord-MusicBot/graphs/contributors">
+  <img src="https://contributors-img.web.app/image?repo=SudhanPlayz/Discord-MusicBot" />
+</a>
