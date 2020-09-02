@@ -1,7 +1,7 @@
 {
-  "name": "shit-with-no-api",
-  "version": "1.0.0",
-  "description": "Very simple discord music bot with the discordjs.guide command handler for easy learning and adapting.",
+  "name": "advanced-discord-music-bot",
+  "version": "3.0.0",
+  "description": "Advanced discord music bot made by Sudhan for Coding With Sudhan 4k Views",
   "main": "index.js",
   "license": "MIT",
   "scripts": {
