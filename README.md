@@ -21,3 +21,5 @@ Contributions are always welcomed :D
 </a>
 
 Made with :heart: and JavaScript
+
+//Music Bot
