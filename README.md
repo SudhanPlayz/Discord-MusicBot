@@ -1,6 +1,5 @@
-# 🎶 Advanced Discord Music Bot
-Thanks for 4k Views! I made this for you all!
-
+<h1 align="center">🎶 Advanced Discord Music Bot 🎶</h1>
+<p align="center">Thanks for 4k Views! I made this for you all!</p>
 <div align="center"><img src="./assets/banner.gif"></div>
 
 ## 📝 Tutorial
@@ -20,4 +19,4 @@ Contributions are always welcomed :D
   <img src="https://contributors-img.web.app/image?repo=SudhanPlayz/Discord-MusicBot" />
 </a>
 
-Made with :heart: and JavaScript
+Made with :heart: and JavaScript!
