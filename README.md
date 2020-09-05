@@ -1,4 +1,4 @@
-<h1 align="center">🎶 Advanced Discord Music Bot 🎶</h1>
+<h1 align="center"><img src="./assets/Music.gif" width="30px"> Advanced Discord Music Bot <img src="./assets/Music.gif" width="30px"></h1>
 <p align="center">Thanks for 4k Views! I made this for you all!</p>
 <div align="center"><img src="./assets/banner.gif"></div>
 
