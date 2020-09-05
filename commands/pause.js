@@ -17,7 +17,7 @@ module.exports = {
       let xd = new MessageEmbed()
       .setDescription("⏸ Paused the music for you!")
       .setColor("YELLOW")
-      .setTitle("Music has been paused!")
+      .setAuthor("Music has been paused!", "https://raw.githubusercontent.com/SudhanPlayz/Discord-MusicBot/master/assets/Music.gif")
       return message.channel.send(xd);
     }
     return sendError("There is nothing playing in this server.", message.channel);

@@ -42,7 +42,7 @@ module.exports = {
     if (serverQueue) {
       serverQueue.songs.push(song);
       let thing = new MessageEmbed()
-      .setAuthor("Song has been added to queue", song.req.displayAvatarURL({ dynamic: true }))
+      .setAuthor("Song has been added to queue", "https://raw.githubusercontent.com/SudhanPlayz/Discord-MusicBot/master/assets/Music.gif")
       .setThumbnail(song.img)
       .setColor("YELLOW")
       .addField("Name", song.title, true)
@@ -81,13 +81,13 @@ module.exports = {
         .on("error", (error) => console.error(error));
       dispatcher.setVolumeLogarithmic(queue.volume / 5);
       let thing = new MessageEmbed()
-      .setAuthor("Started Playing Music!", song.req.displayAvatarURL({ dynamic: true }))
+      .setAuthor("Started Playing Music!", "https://raw.githubusercontent.com/SudhanPlayz/Discord-MusicBot/master/assets/Music.gif")
       .setThumbnail(song.img)
       .setColor("BLUE")
       .addField("Name", song.title, true)
       .addField("Duration", song.duration, true)
       .addField("Requested by", song.req.tag, true)
-      .setFooter(`Views: ${song.views} | Ago: ${song.ago}`)
+      .setFooter(`Views: ${song.views} | ${song.ago}`)
       queue.textChannel.send(thing);
     };
 
