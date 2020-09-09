@@ -6,7 +6,7 @@ module.exports = {
     name: "volume",
     description: "To change the server song queue volume",
     usage: "[volume]",
-    aliases: ["v"],
+    aliases: ["v", "vol"],
   },
 
   run: async function (client, message, args) {
