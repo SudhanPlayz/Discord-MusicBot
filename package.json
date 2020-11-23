@@ -19,6 +19,7 @@
     "yt-search": "^2.2.4",
     "ytdl-core": "^3.2.2",
     "opusscript": "^0.0.7",
+    "youtube-sr": "^2.0.1",
     "node-opus": "^0.3.3"
   }
 }
