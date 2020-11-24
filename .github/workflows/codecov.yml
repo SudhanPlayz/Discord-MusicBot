@@ -1,0 +1,4 @@
+# codecov.yml
+
+fixes:
+  - "/home/runner/work/<project name>/<project name>/::" # Correct paths
