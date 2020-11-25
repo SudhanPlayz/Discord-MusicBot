@@ -27,7 +27,6 @@ module.exports = {
       .setAuthor(`${queue.songs[0].title} — Lyrics`, "https://raw.githubusercontent.com/SudhanPlayz/Discord-MusicBot/master/assets/Music.gif")
       .setThumbnail(queue.songs[0].img)
       .setColor("YELLOW")
-      .setTitle(`${queue.songs[0].title} — Lyrics`)
       .setDescription(lyrics)
       .setTimestamp();
 
