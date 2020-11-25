@@ -7,7 +7,7 @@ module.exports = {
   info: {
     name: "play",
     description: "To play songs :D",
-    usage: "<song_name>",
+    usage: "<YouTube_URL> | <song_name>",
     aliases: ["p"],
   },
 
@@ -21,14 +21,38 @@ module.exports = {
 
     var searchString = args.join(" ");
     if (!searchString)return sendError("You didn't poivide want i want to play", message.channel);
+   		const url = args[0] ? args[0].replace(/<(.+)>/g, "$1") : "";
+   var serverQueue = message.client.queue.get(message.guild.id);
 
-    var serverQueue = message.client.queue.get(message.guild.id);
+     let songInfo = null;
+    let song = null;
+    if (url.match(/^(https?:\/\/)?(www\.)?(m\.)?(youtube\.com|youtu\.?be)\/.+$/gi)) {
+       try {
+          songInfo = await ytdl.getInfo(url)
+          if(!songInfo)return sendError("Looks like i was unable to find the song on YouTube", message.channel);
+        song = {
+       id: songInfo.videoDetails.videoId,
+       title: songInfo.videoDetails.title,
+       url: songInfo.videoDetails.video_url,
+       img: songInfo.player_response.videoDetails.thumbnail.thumbnails[0].url,
+      duration: songInfo.videoDetails.lengthSeconds,
+      ago: songInfo.videoDetails.publishDate,
+      views: String(songInfo.videoDetails.viewCount).padStart(10, ' '),
+      req: message.author
 
-    var searched = await yts.search(searchString)
+        };
+
+      } catch (error) {
+        console.error(error);
+        return message.reply(error.message).catch(console.error);
+      }
+    }else {
+      try {
+        var searched = await yts.search(searchString);
     if(searched.videos.length === 0)return sendError("Looks like i was unable to find the song on YouTube", message.channel)
-    var songInfo = searched.videos[0]
-
-    const song = {
+    
+     songInfo = searched.videos[0]
+        song = {
       id: songInfo.videoId,
       title: Util.escapeMarkdown(songInfo.title),
       views: String(songInfo.views).padStart(10, ' '),
@@ -37,7 +61,12 @@ module.exports = {
       duration: songInfo.duration.toString(),
       img: songInfo.image,
       req: message.author
-    };
+        };
+      } catch (error) {
+        console.error(error);
+        return message.reply(error.message).catch(console.error);
+      }
+    }
 
     if (serverQueue) {
       serverQueue.songs.push(song);
@@ -59,7 +88,7 @@ module.exports = {
       songs: [],
       volume: 2,
       playing: true,
-      loop: false,
+      loop: false
     };
     message.client.queue.set(message.guild.id, queueConstruct);
     queueConstruct.songs.push(song);
@@ -76,7 +105,7 @@ module.exports = {
       const dispatcher = queue.connection
         .play(ytdl(song.url))
         .on("finish", () => {
-         const shiffed = queue.songs.shift();
+           const shiffed = queue.songs.shift();
             if (queue.loop === true) {
                 queue.songs.push(shiffed);
             };
@@ -106,5 +135,9 @@ module.exports = {
       await channel.leave();
       return sendError(`I could not join the voice channel: ${error}`, message.channel);
     }
-  }
+  
+ 
+
+}
+  
 };
