@@ -31,7 +31,7 @@ module.exports = {
                     let embedPlay = new MessageEmbed()
                         .setColor("BLUE")
                         .setAuthor(`Results for \"${args.join(" ")}\"`, message.author.displayAvatarURL())
-                        .setDescription(`${searched.map(video2 => `**\`${++index}\`  |** [\`${video2.title}\`](${video2.url})`).join("\n")} - \`${video2.durationFormatted}\``)
+                        .setDescription(`${searched.map(video2 => `**\`${++index}\`  |** [\`${video2.title}\`](${video2.url})``).join("\n")} - \`${video2.durationFormatted}\``)
                         .setFooter("Type the number of the song to add it to the playlist");
                     // eslint-disable-next-line max-depth
                     message.channel.send(embedPlay).then(m => m.delete({
