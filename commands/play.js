@@ -21,7 +21,7 @@ module.exports = {
 
     var searchString = args.join(" ");
     if (!searchString)return sendError("You didn't poivide want i want to play", message.channel);
-   		const url = args[0] ? args[0].replace(/<(.+)>/g, "$1") : "";
+   	const url = args[0] ? args[0].replace(/<(.+)>/g, "$1") : "";
    var serverQueue = message.client.queue.get(message.guild.id);
 
      let songInfo = null;
