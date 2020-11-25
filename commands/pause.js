@@ -13,11 +13,16 @@ module.exports = {
     const serverQueue = message.client.queue.get(message.guild.id);
     if (serverQueue && serverQueue.playing) {
       serverQueue.playing = false;
-      serverQueue.connection.dispatcher.pause();
+	    try{
+      serverQueue.connection.dispatcher.pause()
+	  } catch (error) {
+        message.client.queue.delete(message.guild.id);
+        return sendError(`:notes: The player has stopped and the queue has been cleared.: ${error}`, message.channel);
+      }	    
       let xd = new MessageEmbed()
       .setDescription("⏸ Paused the music for you!")
       .setColor("YELLOW")
-      .setAuthor("Music has been paused!", "https://raw.githubusercontent.com/SudhanPlayz/Discord-MusicBot/master/assets/Music.gif")
+      .setTitle("Music has been paused!")
       return message.channel.send(xd);
     }
     return sendError("There is nothing playing in this server.", message.channel);
