@@ -4,6 +4,7 @@ const {
 } = require("discord.js");
 const ytdl = require("ytdl-core");
 const yts = require("yt-search");
+const ytdlDiscord = require("ytdl-core-discord");
 const youtube = require("youtube-sr");
 const sendError = require("../util/error")
 
@@ -24,7 +25,7 @@ module.exports = {
 		if (!permissions.has("CONNECT")) return sendError("I cannot connect to your voice channel, make sure I have the proper permissions!", message.channel);
 		if (!permissions.has("SPEAK")) return sendError("I cannot speak in this voice channel, make sure I have the proper permissions!", message.channel);
 
-		if (!url) return sendError(`Usage: ${message.client.config.prefix}playlist <YouTube Playlist URL | Playlist Name>`, message.channel);
+		if (!searchString||!url) return sendError(`Usage: ${message.client.config.prefix}playlist <YouTube Playlist URL | Playlist Name>`, message.channel);
 		if (url.match(/^https?:\/\/(www.youtube.com|youtube.com)\/playlist(.*)$/)) {
 			try {
 				const playlist = await youtube.getPlaylist(url);
@@ -120,16 +121,30 @@ module.exports = {
 			return;
 		}
 
-		function play(guild, song) {
-			const serverQueue = message.client.queue.get(message.guild.id);
+	async	function play(guild, song) {
+			const serverQueue = guild.client.queue.get(message.guild.id);
+ let stream = null;
 
+  try {
+    if (song.url.includes("youtube.com")) {
+      stream = await ytdlDiscord(song.url, { quality: 'highestaudio', highWaterMark: 1 << 25 });
+    } 
+  } catch (error) {
+if (serverQueue) {
+        serverQueue.songs.shift();
+        play(guild,serverQueue.songs[0]);
+      }
+    return undefined;
+  }
 			if (!song) {
 				serverQueue.voiceChannel.leave();
 				return message.client.queue.delete(message.guild.id);
 
 			}
+    serverQueue.connection.on("disconnect", () => message.client.queue.delete(message.guild.id));
 
-			const dispatcher = serverQueue.connection.play(ytdl(song.url))
+			const dispatcher = serverQueue.connection.play(stream, { type: "opus"})
+
 				.on("finish", () => {
 					const shiffed = serverQueue.songs.shift();
 					if (serverQueue.loop === true) {
@@ -150,6 +165,8 @@ module.exports = {
 			serverQueue.textChannel.send(thing);
 		}
 
+
 	}
+
 
 };
