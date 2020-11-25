@@ -100,6 +100,7 @@ module.exports = {
       songs: [],
       volume: 2,
       playing: true,
+      loop: false
     };
     message.client.queue.set(message.guild.id, queueConstruct);
     queueConstruct.songs.push(song);
@@ -127,8 +128,11 @@ if (queue) {
     queue.connection.on("disconnect", () => message.client.queue.delete(message.guild.id));
       const dispatcher = queue.connection
          .play(stream, { type: "opus"})
-        .on("finish", () => {
-          queue.songs.shift();
+      .on("finish", () => {
+           const shiffed = queue.songs.shift();
+            if (queue.loop === true) {
+                queue.songs.push(shiffed);
+            };
           play(queue.songs[0]);
         })
         .on("error", (error) => console.error(error));
