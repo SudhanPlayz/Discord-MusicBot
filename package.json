@@ -20,6 +20,7 @@
     "ytdl-core": "^3.2.2",
     "opusscript": "^0.0.7",
     "youtube-sr": "^2.0.1",
+    "ytdl-core-discord": "^1.2.4",
     "node-opus": "^0.3.3"
   }
 }
