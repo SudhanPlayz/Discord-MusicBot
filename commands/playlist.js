@@ -122,7 +122,7 @@ module.exports = {
 		}
 
 	async	function play(guild, song) {
-			const serverQueue = guild.client.queue.get(message.guild.id);
+			const serverQueue = message.client.queue.get(message.guild.id);
  let stream = null;
 
   try {
@@ -166,7 +166,7 @@ if (serverQueue) {
 		}
 
 
-	}
+	},
 
 
 };

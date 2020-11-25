@@ -155,5 +155,5 @@ if (queue) {
       await channel.leave();
       return sendError(`I could not join the voice channel: ${error}`, message.channel);
     }
-  }
+  },
 };

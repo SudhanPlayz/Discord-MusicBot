@@ -89,7 +89,7 @@ module.exports = {
       songs: [],
       volume: 2,
       playing: true,
-      loop: false,
+      loop: false
     };
     message.client.queue.set(message.guild.id, queueConstruct);
     queueConstruct.songs.push(song);
@@ -98,6 +98,7 @@ module.exports = {
       const queue = message.client.queue.get(message.guild.id);
       if (!song) {
         sendError("Leaving the voice channel because I think there are no songs in the queue. If you like the bot stay 24/7 in voice channel go to `commands/play.js` and remove the line number 61\n\nThank you for using my code! [GitHub](https://github.com/SudhanPlayz/Discord-MusicBot)", message.channel)
+        if(!queue) return;
         queue.voiceChannel.leave();//If you want your bot stay in vc 24/7 remove this line :D
         message.client.queue.delete(message.guild.id);
         return;
@@ -153,6 +154,6 @@ if (queue) {
   
 
 
-}
+},
 
 };
