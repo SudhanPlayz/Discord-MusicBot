@@ -1,6 +1,7 @@
 const { Util, MessageEmbed } = require("discord.js");
 const ytdl = require("ytdl-core");
 const yts = require("yt-search");
+const ytdlDiscord = require("ytdl-core-discord");
 const YouTube = require("youtube-sr");
 const sendError = require("../util/error")
 
@@ -31,7 +32,7 @@ module.exports = {
                     let embedPlay = new MessageEmbed()
                         .setColor("BLUE")
                         .setAuthor(`Results for \"${args.join(" ")}\"`, message.author.displayAvatarURL())
-                        .setDescription(`${searched.map(video2 => `**\`${++index}\`  |** [\`${video2.title}\`](${video2.url})``).join("\n")} - \`${video2.durationFormatted}\``)
+                        .setDescription(`${searched.map(video2 => `**\`${++index}\`  |** [\`${video2.title}\`](${video2.url}) - \`${video2.durationFormatted}\``).join("\n")}`)
                         .setFooter("Type the number of the song to add it to the playlist");
                     // eslint-disable-next-line max-depth
                     message.channel.send(embedPlay).then(m => m.delete({
@@ -111,9 +112,22 @@ module.exports = {
         message.client.queue.delete(message.guild.id);
         return;
       }
+ let stream = null;
 
+  try {
+    if (song.url.includes("youtube.com")) {
+      stream = await ytdlDiscord(song.url, { quality: 'highestaudio', highWaterMark: 1 << 25 });
+    } 
+  } catch (error) {
+if (queue) {
+        queue.songs.shift();
+        play(queue.songs[0]);
+      }
+    return sendError(`An unexpected error has occurred.`,message.channel).catch(console.error);;
+  }
+    queue.connection.on("disconnect", () => message.client.queue.delete(message.guild.id));
       const dispatcher = queue.connection
-        .play(ytdl(song.url))
+         .play(stream, { type: "opus"})
         .on("finish", () => {
           queue.songs.shift();
           play(queue.songs[0]);
