@@ -115,19 +115,19 @@ module.exports = {
 
   try {
     if (song.url.includes("youtube.com")) {
-      stream = await ytdlDiscord(song.url, { quality: 'highestaudio', highWaterMark: 1 << 25 });
+      stream = await ytdl(song.id, { quality: 'highestaudio', highWaterMark: 1 << 25 });
     } 
   } catch (error) {
 if (queue) {
         queue.songs.shift();
         play(queue.songs[0]);
       }
-    return sendError(`An unexpected error has occurred.`,message.channel).catch(console.error);;
+    	return sendError(`An unexpected error has occurred.\nPossible type \`${error}\``, message.channel).catch(console.error);
   }
     queue.connection.on("disconnect", () => message.client.queue.delete(message.guild.id));
 
       const dispatcher = queue.connection
-         .play(stream, { type: streamType})
+        .play(ytdl(song.url))
         .on("finish", () => {
            const shiffed = queue.songs.shift();
             if (queue.loop === true) {
