@@ -108,13 +108,13 @@ module.exports = {
 
     const play = async (song) => {
       const queue = message.client.queue.get(message.guild.id);
-    let prefix = JSON.parse(fs.readFileSync("./afk.json", "utf8"));
-       if (!prefix[message.guild.id]) prefix[message.guild.id] = {
-        prefix: false,
+      let afk = JSON.parse(fs.readFileSync("./afk.json", "utf8"));
+       if (!afk[message.guild.id]) afk[message.guild.id] = {
+        afk: false,
     };
-    var online = prefix[message.guild.id]
+    var online = afk[message.guild.id]
     if (!song){
-      if (!online.prefix) {
+      if (!online.afk) {
         sendError("Leaving the voice channel because I think there are no songs in the queue. If you like the bot stay 24/7 in voice channel run `!afk`\n\nThank you for using my code! [GitHub](https://github.com/SudhanPlayz/Discord-MusicBot)", message.channel)
         message.guild.me.voice.channel.leave();//If you want your bot stay in vc 24/7 remove this line :D
         message.client.queue.delete(message.guild.id);

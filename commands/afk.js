@@ -12,20 +12,20 @@ module.exports = {
   },
 
   run: async function (client, message, args) {
-    let prefix = JSON.parse(fs.readFileSync("./afk.json", "utf8"));
-       if (!prefix[message.guild.id]) prefix[message.guild.id] = {
-        prefix: false,
+    let afk = JSON.parse(fs.readFileSync("./afk.json", "utf8"));
+       if (!afk[message.guild.id]) afk[message.guild.id] = {
+        afk: false,
     };
-    var serverQueue = prefix[message.guild.id]
+    var serverQueue = afk[message.guild.id]
        if (serverQueue) {
-            serverQueue.prefix = !serverQueue.prefix;
+            serverQueue.afk = !serverQueue.afk;
              message.channel.send({
                 embed: {
                     color: "GREEN",
-                    description: `🔁  **|**  AFK is **\`${serverQueue.prefix === true ? "enabled" : "disabled"}\`**`
+                    description: `💤  **|**  AFK is **\`${serverQueue.afk === true ? "enabled" : "disabled"}\`**`
                 }
             });
-            return  fs.writeFile("./afk.json", JSON.stringify(prefix), (err) => {
+            return  fs.writeFile("./afk.json", JSON.stringify(afk), (err) => {
         if (err) console.error(err);
     });
         };
