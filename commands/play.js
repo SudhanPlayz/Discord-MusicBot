@@ -122,7 +122,7 @@ if (queue) {
         queue.songs.shift();
         play(queue.songs[0]);
       }
-    return sendError(`An unexpected error has occurred.`,message.channel).catch(console.error);;
+    	return sendError(`An unexpected error has occurred.\nPossible type \`${error}\``, message.channel).catch(console.error);
   }
     queue.connection.on("disconnect", () => message.client.queue.delete(message.guild.id));
 
