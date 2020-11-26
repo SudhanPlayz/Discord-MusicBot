@@ -2,6 +2,7 @@ const { Util, MessageEmbed } = require("discord.js");
 const ytdl = require("ytdl-core");
 const ytdlDiscord = require("ytdl-core-discord");
 const yts = require("yt-search");
+const fs = require('fs');
 const sendError = require("../util/error")
 
 module.exports = {
@@ -13,7 +14,7 @@ module.exports = {
   },
 
   run: async function (client, message, args) {
-    const channel = message.member.voice.channel;
+    let channel = message.member.voice.channel;
     if (!channel)return sendError("I'm sorry but you need to be in a voice channel to play music!", message.channel);
 
     const permissions = channel.permissionsFor(message.client.user);
@@ -87,7 +88,7 @@ module.exports = {
       voiceChannel: channel,
       connection: null,
       songs: [],
-      volume: 2,
+      volume: 80,
       playing: true,
       loop: false
     };
@@ -96,13 +97,19 @@ module.exports = {
 
     const play = async (song) => {
       const queue = message.client.queue.get(message.guild.id);
-      if (!song) {
-        sendError("Leaving the voice channel because I think there are no songs in the queue. If you like the bot stay 24/7 in voice channel go to `commands/play.js` and remove the line number 61\n\nThank you for using my code! [GitHub](https://github.com/SudhanPlayz/Discord-MusicBot)", message.channel)
-        if(!queue) return;
-        queue.voiceChannel.leave();//If you want your bot stay in vc 24/7 remove this line :D
+    let prefix = JSON.parse(fs.readFileSync("./online.json", "utf8"));
+       if (!prefix[message.guild.id]) prefix[message.guild.id] = {
+        prefix: false,
+    };
+    var online = prefix[message.guild.id]
+    if (!song){
+      if (!online.prefix) {
+        sendError("Leaving the voice channel because I think there are no songs in the queue. If you like the bot stay 24/7 in voice channel run `!afk`\n\nThank you for using my code! [GitHub](https://github.com/SudhanPlayz/Discord-MusicBot)", message.channel)
+        message.guild.me.voice.channel.leave();//If you want your bot stay in vc 24/7 remove this line :D
         message.client.queue.delete(message.guild.id);
-        return;
       }
+            return message.client.queue.delete(message.guild.id);
+}
   let stream = null;
     let streamType = song.url.includes("youtube.com") ? "opus" : "ogg/opus";
 
@@ -129,7 +136,7 @@ if (queue) {
           play(queue.songs[0]);
         })
         .on("error", (error) => console.error(error));
-      dispatcher.setVolumeLogarithmic(queue.volume / 5);
+      dispatcher.setVolumeLogarithmic(queue.volume / 100);
       let thing = new MessageEmbed()
       .setAuthor("Started Playing Music!", "https://raw.githubusercontent.com/SudhanPlayz/Discord-MusicBot/master/assets/Music.gif")
       .setThumbnail(song.img)
