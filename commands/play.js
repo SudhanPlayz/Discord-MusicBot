@@ -115,7 +115,7 @@ module.exports = {
 
   try {
     if (song.url.includes("youtube.com")) {
-      stream = await ytdlDiscord(song.url, { quality: 'highestaudio', highWaterMark: 1 << 25 });
+      stream = await ytdl(song.url);
     } 
   } catch (error) {
 if (queue) {
@@ -127,8 +127,8 @@ if (queue) {
     queue.connection.on("disconnect", () => message.client.queue.delete(message.guild.id));
 
       const dispatcher = queue.connection
-         .play(stream, { type: streamType})
-        .on("finish", () => {
+         .play(ytdl(song.url, {quality: 'highestaudio', highWaterMark: 1 << 25 ,type: "opus"}))
+         .on("finish", () => {
            const shiffed = queue.songs.shift();
             if (queue.loop === true) {
                 queue.songs.push(shiffed);
