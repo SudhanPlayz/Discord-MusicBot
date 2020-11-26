@@ -1,5 +1,6 @@
 const { Util, MessageEmbed } = require("discord.js");
 const ytdl = require("ytdl-core");
+const ytdlDiscord = require("ytdl-core-discord");
 const yts = require("yt-search");
 const sendError = require("../util/error")
 
@@ -97,13 +98,29 @@ module.exports = {
       const queue = message.client.queue.get(message.guild.id);
       if (!song) {
         sendError("Leaving the voice channel because I think there are no songs in the queue. If you like the bot stay 24/7 in voice channel go to `commands/play.js` and remove the line number 61\n\nThank you for using my code! [GitHub](https://github.com/SudhanPlayz/Discord-MusicBot)", message.channel)
+        if(!queue) return;
         queue.voiceChannel.leave();//If you want your bot stay in vc 24/7 remove this line :D
         message.client.queue.delete(message.guild.id);
         return;
       }
+  let stream = null;
+    let streamType = song.url.includes("youtube.com") ? "opus" : "ogg/opus";
+
+  try {
+    if (song.url.includes("youtube.com")) {
+      stream = await ytdlDiscord(song.url, { quality: 'highestaudio', highWaterMark: 1 << 25 });
+    } 
+  } catch (error) {
+if (queue) {
+        queue.songs.shift();
+        play(queue.songs[0]);
+      }
+    return sendError(`An unexpected error has occurred.`,message.channel).catch(console.error);;
+  }
+    queue.connection.on("disconnect", () => message.client.queue.delete(message.guild.id));
 
       const dispatcher = queue.connection
-        .play(ytdl(song.url))
+         .play(stream, { type: streamType})
         .on("finish", () => {
            const shiffed = queue.songs.shift();
             if (queue.loop === true) {
@@ -127,7 +144,6 @@ module.exports = {
     try {
       const connection = await channel.join();
       queueConstruct.connection = connection;
-      channel.guild.voice.setSelfDeaf(true)
       play(queueConstruct.songs[0]);
     } catch (error) {
       console.error(`I could not join the voice channel: ${error}`);
@@ -136,8 +152,8 @@ module.exports = {
       return sendError(`I could not join the voice channel: ${error}`, message.channel);
     }
   
- 
 
-}
-  
+
+},
+
 };

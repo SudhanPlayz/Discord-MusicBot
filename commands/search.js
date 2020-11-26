@@ -1,6 +1,7 @@
 const { Util, MessageEmbed } = require("discord.js");
 const ytdl = require("ytdl-core");
 const yts = require("yt-search");
+const ytdlDiscord = require("ytdl-core-discord");
 const YouTube = require("youtube-sr");
 const sendError = require("../util/error")
 
@@ -25,13 +26,13 @@ module.exports = {
 
     var serverQueue = message.client.queue.get(message.guild.id);
     try {
-                    var searched = await YouTube.search(searchString, { limit: 10 });
+           var searched = await YouTube.search(searchString, { limit: 10 });
           if (searched[0] == undefined)return sendError("Looks like i was unable to find the song on YouTube", message.channel);
                     let index = 0;
                     let embedPlay = new MessageEmbed()
                         .setColor("BLUE")
                         .setAuthor(`Results for \"${args.join(" ")}\"`, message.author.displayAvatarURL())
-                        .setDescription(`${searched.map(video2 => `**\`${++index}\`  |** [\`${video2.title}\`](${video2.url})``).join("\n")} - \`${video2.durationFormatted}\``)
+                        .setDescription(`${searched.map(video2 => `**\`${++index}\`  |** [\`${video2.title}\`](${video2.url}) - \`${video2.durationFormatted}\``).join("\n")}`)
                         .setFooter("Type the number of the song to add it to the playlist");
                     // eslint-disable-next-line max-depth
                     message.channel.send(embedPlay).then(m => m.delete({
@@ -99,6 +100,7 @@ module.exports = {
       songs: [],
       volume: 2,
       playing: true,
+      loop: false
     };
     message.client.queue.set(message.guild.id, queueConstruct);
     queueConstruct.songs.push(song);
@@ -107,15 +109,30 @@ module.exports = {
       const queue = message.client.queue.get(message.guild.id);
       if (!song) {
         sendError("Leaving the voice channel because I think there are no songs in the queue. If you like the bot stay 24/7 in voice channel go to `commands/play.js` and remove the line number 61\n\nThank you for using my code! [GitHub](https://github.com/SudhanPlayz/Discord-MusicBot)", message.channel)
-        queue.voiceChannel.leave();//If you want your bot stay in vc 24/7 remove this line :D
         message.client.queue.delete(message.guild.id);
         return;
       }
+ let stream = null;
 
+  try {
+    if (song.url.includes("youtube.com")) {
+      stream = await ytdlDiscord(song.url, { quality: 'highestaudio', highWaterMark: 1 << 25 });
+    } 
+  } catch (error) {
+if (queue) {
+        queue.songs.shift();
+        play(queue.songs[0]);
+      }
+    return sendError(`An unexpected error has occurred.`,message.channel).catch(console.error);;
+  }
+    queue.connection.on("disconnect", () => message.client.queue.delete(message.guild.id));
       const dispatcher = queue.connection
-        .play(ytdl(song.url))
-        .on("finish", () => {
-          queue.songs.shift();
+         .play(stream, { type: "opus"})
+      .on("finish", () => {
+           const shiffed = queue.songs.shift();
+            if (queue.loop === true) {
+                queue.songs.push(shiffed);
+            };
           play(queue.songs[0]);
         })
         .on("error", (error) => console.error(error));
@@ -142,5 +159,5 @@ module.exports = {
       await channel.leave();
       return sendError(`I could not join the voice channel: ${error}`, message.channel);
     }
-  }
+  },
 };
