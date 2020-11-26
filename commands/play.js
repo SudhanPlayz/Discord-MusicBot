@@ -97,7 +97,7 @@ module.exports = {
 
     const play = async (song) => {
       const queue = message.client.queue.get(message.guild.id);
-    let prefix = JSON.parse(fs.readFileSync("./online.json", "utf8"));
+    let prefix = JSON.parse(fs.readFileSync("./afk.json", "utf8"));
        if (!prefix[message.guild.id]) prefix[message.guild.id] = {
         prefix: false,
     };
