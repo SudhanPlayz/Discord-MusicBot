@@ -5,7 +5,7 @@ const fs = require('fs');
 
 module.exports = {
   info: {
-    name: "pause",
+    name: "afk",
     description: "24/7",
     usage: "[afk]",
     aliases: [""],
