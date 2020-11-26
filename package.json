@@ -22,6 +22,7 @@
     "youtube-sr": "^2.0.1",
     "lyrics-finder": "^21.4.0",
     "ytdl-core-discord": "^1.2.4",
+    "fs": "0.0.1-security",
     "node-opus": "^0.3.3"
   }
 }

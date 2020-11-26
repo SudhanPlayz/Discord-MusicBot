@@ -7,6 +7,7 @@ const yts = require("yt-search");
 const ytdlDiscord = require("ytdl-core-discord");
 const youtube = require("youtube-sr");
 const sendError = require("../util/error")
+const fs = require('fs');
 
 module.exports = {
 	info: {
@@ -43,7 +44,7 @@ module.exports = {
 				})
 			} catch (error) {
 				console.error(error);
-				return message.reply("Playlist not found :(").catch(console.error);
+				return sendError("Playlist not found :(",message.channel).catch(console.error);
 			}
 		} else {
 			try {
@@ -66,7 +67,7 @@ module.exports = {
 				return message.channel.send(thing)
 			} catch (error) {
 				console.error(error);
-				return message.reply(error.message).catch(console.error);
+				return sendError("An unexpected error has occurred",message.channel).catch(console.error);
 			}
 		}
 
@@ -88,7 +89,7 @@ module.exports = {
 					voiceChannel: channel,
 					connection: null,
 					songs: [],
-					volume: 2,
+					volume: 80,
 					playing: true,
 					loop: false
 				};
@@ -121,9 +122,22 @@ module.exports = {
 			return;
 		}
 
-	async	function play(guild, song) {
+async	function play(guild, song) {
 			const serverQueue = message.client.queue.get(message.guild.id);
- let stream = null;
+ let prefix = JSON.parse(fs.readFileSync("./afk.json", "utf8"));
+       if (!prefix[message.guild.id]) prefix[message.guild.id] = {
+        prefix: false,
+    };
+    var online = prefix[message.guild.id]
+    if (!song){
+      if (!online.prefix) {
+        sendError("Leaving the voice channel because I think there are no songs in the queue. If you like the bot stay 24/7 in voice channel run `!afk`\n\nThank you for using my code! [GitHub](https://github.com/SudhanPlayz/Discord-MusicBot)", message.channel)
+        message.guild.me.voice.channel.leave();//If you want your bot stay in vc 24/7 remove this line :D
+        message.client.queue.delete(message.guild.id);
+      }
+            return message.client.queue.delete(message.guild.id);
+}
+let stream = null;
 
   try {
     if (song.url.includes("youtube.com")) {
@@ -132,29 +146,22 @@ module.exports = {
   } catch (error) {
 if (serverQueue) {
         serverQueue.songs.shift();
-        play(guild,serverQueue.songs[0]);
+        play(serverQueue.songs[0]);
       }
-    return undefined;
+    return;
   }
-			if (!song) {
-				serverQueue.voiceChannel.leave();
-				return message.client.queue.delete(message.guild.id);
-
-			}
-    serverQueue.connection.on("disconnect", () => message.client.queue.delete(message.guild.id));
-
+      serverQueue.connection.on("disconnect", () => message.client.queue.delete(message.guild.id));
 			const dispatcher = serverQueue.connection.play(stream, { type: "opus"})
-
-				.on("finish", () => {
-					const shiffed = serverQueue.songs.shift();
-					if (serverQueue.loop === true) {
-						serverQueue.songs.push(shiffed);
-					};
-					play(guild, serverQueue.songs[0]);
-				})
-				.on("error", error => console.error(error));
-			dispatcher.setVolume(serverQueue.volume / 5);
-			let thing = new MessageEmbed()
+        .on("finish", () => {
+            const shiffed = serverQueue.songs.shift();
+            if (serverQueue.loop === true) {
+                serverQueue.songs.push(shiffed);
+            };
+            play(guild, serverQueue.songs[0]);
+        })
+        .on("error", error => console.error(error));
+    dispatcher.setVolume(serverQueue.volume / 100);
+let thing = new MessageEmbed()
 				.setAuthor("Started Playing Music!", "https://raw.githubusercontent.com/SudhanPlayz/Discord-MusicBot/master/assets/Music.gif")
 				.setThumbnail(song.img)
 				.setColor("BLUE")
@@ -162,9 +169,8 @@ if (serverQueue) {
 				.addField("Duration", song.duration, true)
 				.addField("Requested by", song.req.tag, true)
 				.setFooter(`Views: ${song.views} | ${song.ago}`)
-			serverQueue.textChannel.send(thing);
-		}
-
+    serverQueue.textChannel.send(thing);
+}
 
 	},
 
