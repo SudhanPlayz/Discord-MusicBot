@@ -121,19 +121,19 @@ module.exports = {
       }
             return message.client.queue.delete(message.guild.id);
 }
- let stream = null;
-
-  try {
+let stream = null;  
     if (song.url.includes("youtube.com")) {
       stream = await ytdl(song.url);
-    } 
-  } catch (error) {
-if (queue) {
+      stream.on('error', err => {
+        if (queue) {
         queue.songs.shift();
         play(queue.songs[0]);
       }
-    return sendError(`An unexpected error has occurred.\nPossible type \`${error}\``,message.channel).catch(console.error);
-  }
+      
+  	 sendError(`An unexpected error has occurred.\nPossible type \`${err}\``, message.channel)
+     return;
+});
+    }
     queue.connection.on("disconnect", () => message.client.queue.delete(message.guild.id));
       const dispatcher = queue.connection
          .play(ytdl(song.url, {quality: 'highestaudio', highWaterMark: 1 << 25 ,type: "opus"}))
@@ -144,7 +144,7 @@ if (queue) {
             };
           play(queue.songs[0]);
         })
-        .on("error", (error) => console.error(error));
+
       dispatcher.setVolumeLogarithmic(queue.volume / 100);
       let thing = new MessageEmbed()
       .setAuthor("Started Playing Music!", "https://raw.githubusercontent.com/SudhanPlayz/Discord-MusicBot/master/assets/Music.gif")
@@ -168,5 +168,7 @@ if (queue) {
       await channel.leave();
       return sendError(`I could not join the voice channel: ${error}`, message.channel);
     }
+ 
   },
+
 };

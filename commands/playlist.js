@@ -137,19 +137,19 @@ async	function play(guild, song) {
       }
             return message.client.queue.delete(message.guild.id);
 }
-let stream = null;
-
-  try {
+let stream = null;  
     if (song.url.includes("youtube.com")) {
       stream = await ytdl(song.url);
-    } 
-  } catch (error) {
-if (serverQueue) {
+      stream.on('error', err => {
+        if (serverQueue) {
         serverQueue.songs.shift();
         play(serverQueue.songs[0]);
       }
-    return;
-  }
+      
+  	 sendError(`An unexpected error has occurred.\nPossible type \`${err}\``, message.channel)
+     return;
+});
+    }
       serverQueue.connection.on("disconnect", () => message.client.queue.delete(message.guild.id));
 			const dispatcher = serverQueue.connection
          .play(ytdl(song.url, {quality: 'highestaudio', highWaterMark: 1 << 25 ,type: "opus"}))
@@ -160,7 +160,7 @@ if (serverQueue) {
             };
             play(guild, serverQueue.songs[0]);
         })
-        .on("error", error => console.error(error));
+
     dispatcher.setVolume(serverQueue.volume / 100);
 let thing = new MessageEmbed()
 				.setAuthor("Started Playing Music!", "https://raw.githubusercontent.com/SudhanPlayz/Discord-MusicBot/master/assets/Music.gif")
@@ -173,7 +173,9 @@ let thing = new MessageEmbed()
     serverQueue.textChannel.send(thing);
 }
 
+
 	},
+
 
 
 };
