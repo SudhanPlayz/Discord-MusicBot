@@ -23,6 +23,7 @@
     "lyrics-finder": "^21.4.0",
     "ytdl-core-discord": "^1.2.4",
     "fs": "0.0.1-security",
+    "scrape-yt": "^1.4.6",
     "node-opus": "^0.3.3"
   }
 }
