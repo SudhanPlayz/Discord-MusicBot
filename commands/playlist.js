@@ -5,7 +5,7 @@ const {
 const ytdl = require("ytdl-core");
 const yts = require("yt-search");
 const ytdlDiscord = require("ytdl-core-discord");
-const youtube = require("youtube-sr");
+const scrapeYt = require("scrape-yt");
 const sendError = require("../util/error")
 const fs = require('fs');
 
@@ -29,8 +29,8 @@ module.exports = {
 		if (!searchString||!url) return sendError(`Usage: ${message.client.config.prefix}playlist <YouTube Playlist URL | Playlist Name>`, message.channel);
 		if (url.match(/^https?:\/\/(www.youtube.com|youtube.com)\/playlist(.*)$/)) {
 			try {
-				const playlist = await youtube.getPlaylist(url);
-				if (playlist === null) return sendError("Playlist not found", message.channel)
+				const playlist = await scrapeYt.getPlaylist(url.split("list=")[1]);
+				if (!playlist) return sendError("Playlist not found", message.channel)
 				const videos = await playlist.videos;
 				for (const video of videos) {
 					// eslint-disable-line no-await-in-loop
@@ -39,7 +39,7 @@ module.exports = {
 				return message.channel.send({
 					embed: {
 						color: "GREEN",
-						description: `✅  **|**  Playlist: **\`${playlist.title}\`** has been added to the queue`
+						description: `✅  **|**  Playlist: **\`${videos[0].title}\`** has been added to the queue`
 					}
 				})
 			} catch (error) {
@@ -51,9 +51,9 @@ module.exports = {
 				var searched = await yts.search(searchString)
 
 				if (searched.playlists.length === 0) return sendError("Looks like i was unable to find the playlist on YouTube", message.channel)
-				var songInfo = searched.playlists[0]
-				let listurl = songInfo.url;
-				const playlist = await youtube.getPlaylist(listurl);
+				var songInfo = searched.playlists[0];
+				let listurl = songInfo.listId;
+				const playlist = await scrapeYt.getPlaylist(listurl)
 				const videos = await playlist.videos;
 				for (const video of videos) {
 					// eslint-disable-line no-await-in-loop
@@ -61,12 +61,11 @@ module.exports = {
 				}
 				let thing = new MessageEmbed()
 					.setAuthor("Playlist has been added to queue", "https://raw.githubusercontent.com/SudhanPlayz/Discord-MusicBot/master/assets/Music.gif")
-					.setThumbnail(playlist.thumbnail.url)
+					.setThumbnail(songInfo.thumbnail)
 					.setColor("GREEN")
-					.setDescription(`✅  **|**  Playlist: **\`${playlist.title}\`** has been added to the queue`)
+					.setDescription(`✅  **|**  Playlist: **\`${songInfo.title}\`** has been added \`${songInfo.videoCount}\` video to the queue`)
 				return message.channel.send(thing)
 			} catch (error) {
-				console.error(error);
 				return sendError("An unexpected error has occurred",message.channel).catch(console.error);
 			}
 		}
@@ -76,9 +75,9 @@ module.exports = {
 			const song = {
 				id: video.id,
 				title: Util.escapeMarkdown(video.title),
-				views: String(video.views).padStart(10, ' '),
-				ago: video.ago ? video.ago : "Playlist",
-				duration: video.durationFormatted,
+				views: video.views ? video.views : "-",
+				ago: video.ago ? video.ago : "-",
+                                duration: video.duration,
 				url: `https://www.youtube.com/watch?v=${video.id}`,
 				img: video.thumbnail.url,
 				req: message.author
