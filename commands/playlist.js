@@ -5,7 +5,7 @@ const {
 const ytdl = require("ytdl-core");
 const yts = require("yt-search");
 const ytdlDiscord = require("ytdl-core-discord");
-const scrapeYt = require("scrape-yt");
+var ytpl = require('ytpl');
 const sendError = require("../util/error")
 const fs = require('fs');
 
@@ -29,9 +29,9 @@ module.exports = {
 		if (!searchString||!url) return sendError(`Usage: ${message.client.config.prefix}playlist <YouTube Playlist URL | Playlist Name>`, message.channel);
 		if (url.match(/^https?:\/\/(www.youtube.com|youtube.com)\/playlist(.*)$/)) {
 			try {
-				const playlist = await scrapeYt.getPlaylist(url.split("list=")[1]);
+				const playlist = await ytpl(url.split("list=")[1]);
 				if (!playlist) return sendError("Playlist not found", message.channel)
-				const videos = await playlist.videos;
+				const videos = await playlist.items;
 				for (const video of videos) {
 					// eslint-disable-line no-await-in-loop
 					await handleVideo(video, message, channel, true); // eslint-disable-line no-await-in-loop
@@ -39,7 +39,7 @@ module.exports = {
 				return message.channel.send({
 					embed: {
 						color: "GREEN",
-						description: `✅  **|**  Playlist: **\`${videos[0].title}\`** has been added to the queue`
+						description: `✅  **|**  Playlist: **\`${items[0].title}\`** has been added to the queue`
 					}
 				})
 			} catch (error) {
@@ -53,7 +53,7 @@ module.exports = {
 				if (searched.playlists.length === 0) return sendError("Looks like i was unable to find the playlist on YouTube", message.channel)
 				var songInfo = searched.playlists[0];
 				let listurl = songInfo.listId;
-				const playlist = await scrapeYt.getPlaylist(listurl)
+				const playlist = await ytpl(listurl)
 				const videos = await playlist.videos;
 				for (const video of videos) {
 					// eslint-disable-line no-await-in-loop
@@ -151,7 +151,16 @@ let stream = null;
     }
       serverQueue.connection.on("disconnect", () => message.client.queue.delete(message.guild.id));
 			const dispatcher = serverQueue.connection
-         .play(ytdl(song.url, {quality: 'highestaudio', highWaterMark: 1 << 25 ,type: "opus"}))
+         .play(ytdl(song.url, {
+          filter: "audioonly",
+          opusEncoded: true,
+          bitrate: 320,
+          quality: "highestaudio",
+          liveBuffer: 40000,
+          dlChunkSize: 0,
+          highWaterMark: 1 << 25, 
+  
+      }))
         .on("finish", () => {
             const shiffed = serverQueue.songs.shift();
             if (serverQueue.loop === true) {
