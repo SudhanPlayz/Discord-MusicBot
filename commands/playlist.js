@@ -54,7 +54,7 @@ module.exports = {
 				var songInfo = searched.playlists[0];
 				let listurl = songInfo.listId;
 				const playlist = await ytpl(listurl)
-				const videos = await playlist.videos;
+				const videos = await playlist.items;
 				for (const video of videos) {
 					// eslint-disable-line no-await-in-loop
 					await handleVideo(video, message, channel, true); // eslint-disable-line no-await-in-loop
