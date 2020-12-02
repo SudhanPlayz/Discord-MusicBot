@@ -17,13 +17,13 @@
     "ffmpeg": "0.0.4",
     "ffmpeg-static": "^4.2.7",
     "yt-search": "^2.2.4",
-    "ytdl-core": "^4.1.0",
+    "ytdl-core": "^4.1.1",
     "opusscript": "^0.0.7",
     "youtube-sr": "^2.0.1",
     "lyrics-finder": "^21.4.0",
     "ytdl-core-discord": "^1.2.4",
     "fs": "0.0.1-security",
-    "scrape-yt": "^1.4.6",
+    "ytpl": "^2.0.0-alpha.3",
     "node-opus": "^0.3.3"
   }
 }
