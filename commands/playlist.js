@@ -79,7 +79,7 @@ module.exports = {
 				ago: video.ago ? video.ago : "-",
                                 duration: video.duration,
 				url: `https://www.youtube.com/watch?v=${video.id}`,
-				img: video.thumbnail.url,
+				img: video.thumbnail,
 				req: message.author
 			};
 			if (!serverQueue) {
@@ -136,31 +136,25 @@ async	function play(guild, song) {
       }
             return message.client.queue.delete(message.guild.id);
 }
-let stream = null;  
+ let stream = null; 
     if (song.url.includes("youtube.com")) {
+      
       stream = await ytdl(song.url);
-      stream.on('error', err => {
+stream.on('error', function(er)  {
+      if (er) {
         if (serverQueue) {
         serverQueue.songs.shift();
-        play(serverQueue.songs[0]);
-      }
-      
-  	 sendError(`An unexpected error has occurred.\nPossible type \`${err}\``, message.channel)
-     return;
-});
-    }
+        play(guild, serverQueue.songs[0]);
+  	  return sendError(`An unexpected error has occurred.\nPossible type \`${er}\``, message.channel)
+
+         }
+       }
+     });
+}
+ 
       serverQueue.connection.on("disconnect", () => message.client.queue.delete(message.guild.id));
 			const dispatcher = serverQueue.connection
-         .play(ytdl(song.url, {
-          filter: "audioonly",
-          opusEncoded: true,
-          bitrate: 320,
-          quality: "highestaudio",
-          liveBuffer: 40000,
-          dlChunkSize: 0,
-          highWaterMark: 1 << 25, 
-  
-      }))
+         .play(ytdl(song.url,{quality: 'highestaudio', highWaterMark: 1 << 25 ,type: "opus"}))
         .on("finish", () => {
             const shiffed = serverQueue.songs.shift();
             if (serverQueue.loop === true) {
