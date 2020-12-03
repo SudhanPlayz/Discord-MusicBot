@@ -79,7 +79,7 @@ module.exports = {
 				ago: video.ago ? video.ago : "-",
                                 duration: video.duration,
 				url: `https://www.youtube.com/watch?v=${video.id}`,
-				img: video.url,
+				img: video.thumbnail,
 				req: message.author
 			};
 			if (!serverQueue) {
