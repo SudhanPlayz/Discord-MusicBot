@@ -110,19 +110,20 @@ module.exports = {
       }
             return message.client.queue.delete(message.guild.id);
 }
-  let stream = null;
-
-  try {
+ let stream = null; 
     if (song.url.includes("youtube.com")) {
+      
       stream = await ytdl(song.url);
-    } 
-  } catch (error) {
-if (queue) {
+stream.on('error', function(er)  {
+      if (er) {
+        if (queue) {
         queue.songs.shift();
         play(queue.songs[0]);
-      }
-    return sendError(`An unexpected error has occurred.\nPossible type \`${err}\``, message.channel);
-  }
+  	  return sendError(`An unexpected error has occurred.\nPossible type \`${er}\``, message.channel)
+          }
+        }
+    });
+}
     queue.connection.on("disconnect", () => message.client.queue.delete(message.guild.id));
 
       const dispatcher = queue.connection
