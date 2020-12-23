@@ -14,6 +14,7 @@
     "@discordjs/opus": "^0.3.2",
     "discord.js": "^12.3.1",
     "dotenv": "^8.2.0",
+    "express": "^4.17.1",
     "ffmpeg": "0.0.4",
     "ffmpeg-static": "^4.2.7",
     "yt-search": "^2.2.4",
