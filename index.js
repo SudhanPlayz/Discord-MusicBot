@@ -1,4 +1,5 @@
 require("dotenv").config();//Loading .env
+const keepAlive = require('./server');
 const fs = require("fs");
 const { Collection, Client } = require("discord.js");
 
@@ -34,4 +35,5 @@ fs.readdir("./commands/", (err, files) => {
 });
 
 //Logging in to discord
+keepAlive();
 client.login(process.env.TOKEN)
