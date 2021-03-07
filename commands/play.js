@@ -4,7 +4,7 @@ const ytdlDiscord = require("ytdl-core-discord");
 const yts = require("yt-search");
 const fs = require("fs");
 const sendError = require("../util/error");
-
+const scdl = require("soundcloud-downloader").default;
 module.exports = {
     info: {
         name: "play",
@@ -40,6 +40,24 @@ module.exports = {
                     duration: songInfo.videoDetails.lengthSeconds,
                     ago: songInfo.videoDetails.publishDate,
                     views: String(songInfo.videoDetails.viewCount).padStart(10, " "),
+                    req: message.author,
+                };
+            } catch (error) {
+                console.error(error);
+                return message.reply(error.message).catch(console.error);
+            }
+        } else if (url.match(/^https?:\/\/(soundcloud\.com)\/(.*)$/gi)) {
+            try {
+                songInfo = await scdl.getInfo(url);
+                if (!songInfo) return sendError("Looks like i was unable to find the song on soundcloud", message.channel);
+                song = {
+                    id: songInfo.permalink,
+                    title: songInfo.title,
+                    url: songInfo.permalink_url,
+                    img: songInfo.artwork_url,
+                    ago: songInfo.last_modified,
+                    views: String(songInfo.playback_count).padStart(10, " "),
+                    duration: Math.ceil(songInfo.duration / 1000),
                     req: message.author,
                 };
             } catch (error) {
@@ -104,22 +122,38 @@ module.exports = {
                 message.client.queue.delete(message.guild.id);
                 return;
             }
-            let stream = null;
-            if (song.url.includes("youtube.com")) {
-                stream = await ytdl(song.url);
-                stream.on("error", function (er) {
-                    if (er) {
-                        if (queue) {
-                            queue.songs.shift();
-                            play(queue.songs[0]);
-                            return sendError(`An unexpected error has occurred.\nPossible type \`${er}\``, message.channel);
-                        }
+            let stream;
+            let streamType;
+
+            try {
+                if (song.url.includes("soundcloud.com")) {
+                    try {
+                        stream = await scdl.downloadFormat(song.url, scdl.FORMATS.OPUS, client.config.SOUNDCLOUD);
+                    } catch (error) {
+                        stream = await scdl.downloadFormat(song.url, scdl.FORMATS.MP3, client.config.SOUNDCLOUD);
+                        streamType = "unknown";
                     }
-                });
+                } else if (song.url.includes("youtube.com")) {
+                    stream = await ytdl(song.url, { quality: "highestaudio", highWaterMark: 1 << 25, type: "opus" });
+                    stream.on("error", function (er) {
+                        if (er) {
+                            if (queue) {
+                                queue.songs.shift();
+                                play(queue.songs[0]);
+                                return sendError(`An unexpected error has occurred.\nPossible type \`${er}\``, message.channel);
+                            }
+                        }
+                    });
+                }
+            } catch (error) {
+                console.log();
+                if (queue) {
+                    queue.songs.shift();
+                    play(queue.songs[0]);
+                }
             }
             queue.connection.on("disconnect", () => message.client.queue.delete(message.guild.id));
-
-            const dispatcher = queue.connection.play(ytdl(song.url, { quality: "highestaudio", highWaterMark: 1 << 25, type: "opus" })).on("finish", () => {
+            const dispatcher = queue.connection.play(stream).on("finish", () => {
                 const shiffed = queue.songs.shift();
                 if (queue.loop === true) {
                     queue.songs.push(shiffed);
