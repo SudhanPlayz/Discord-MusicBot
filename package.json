@@ -20,6 +20,7 @@
     "ytdl-core": "^4.1.1",
     "opusscript": "^0.0.7",
     "soundcloud-downloader": "^0.2.4",
+    "youtube-sr": "^2.0.1",
     "lyrics-finder": "^21.4.0",
     "ytdl-core-discord": "^1.2.4",
     "fs": "0.0.1-security",
