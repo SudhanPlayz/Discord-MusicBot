@@ -5,7 +5,7 @@ const ytdlDiscord = require("ytdl-core-discord");
 const YouTube = require("youtube-sr");
 const sendError = require("../util/error");
 const fs = require("fs");
-
+const scdl = require("soundcloud-downloader").default;
 module.exports = {
     info: {
         name: "search",
@@ -119,21 +119,40 @@ module.exports = {
                 return;
             }
             let stream = null;
-            if (song.url.includes("youtube.com")) {
-                stream = await ytdl(song.url);
-                stream.on("error", function (er) {
-                    if (er) {
-                        if (queue) {
-                            queue.songs.shift();
-                            play(queue.songs[0]);
-                            return sendError(`An unexpected error has occurred.\nPossible type \`${er}\``, message.channel);
-                        }
+            let streamType;
+
+            try {
+                if (song.url.includes("soundcloud.com")) {
+                    try {
+                        stream = await scdl.downloadFormat(song.url, scdl.FORMATS.OPUS, client.config.SOUNDCLOUD);
+                    } catch (error) {
+                        stream = await scdl.downloadFormat(song.url, scdl.FORMATS.MP3, client.config.SOUNDCLOUD);
+                        streamType = "unknown";
                     }
-                });
+                } else if (song.url.includes("youtube.com")) {
+                    stream = await ytdl(song.url, { quality: "highestaudio", highWaterMark: 1 << 25, type: "opus" });
+                    stream.on("error", function (er) {
+                        if (er) {
+                            if (queue) {
+                                queue.songs.shift();
+                                play(queue.songs[0]);
+                                return sendError(`An unexpected error has occurred.\nPossible type \`${er}\``, message.channel);
+                            }
+                        }
+                    });
+                }
+            } catch (error) {
+                if (queue) {
+                    queue.songs.shift();
+                    play(queue.songs[0]);
+                }
+
+                console.error(error);
+                return message.channel.send("err");
             }
 
             queue.connection.on("disconnect", () => message.client.queue.delete(message.guild.id));
-            const dispatcher = queue.connection.play(ytdl(song.url, { quality: "highestaudio", highWaterMark: 1 << 25, type: "opus" })).on("finish", () => {
+            const dispatcher = queue.connection.play(stream).on("finish", () => {
                 const shiffed = queue.songs.shift();
                 if (queue.loop === true) {
                     queue.songs.push(shiffed);
