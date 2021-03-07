@@ -2,6 +2,7 @@ const { Util, MessageEmbed } = require("discord.js");
 const ytdl = require("ytdl-core");
 const yts = require("yt-search");
 const ytdlDiscord = require("ytdl-core-discord");
+const YouTube = require("youtube-sr");
 const sendError = require("../util/error");
 const fs = require("fs");
 const scdl = require("soundcloud-downloader").default;
