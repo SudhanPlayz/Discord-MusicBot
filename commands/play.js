@@ -62,7 +62,7 @@ module.exports = {
                 };
             } catch (error) {
                 console.error(error);
-                return message.reply(error.message).catch(console.error);
+                return sendError(error.message, message.channel).catch(console.error);
             }
         } else {
             try {
