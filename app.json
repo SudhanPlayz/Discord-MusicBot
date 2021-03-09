@@ -24,7 +24,7 @@
     },
     "SOUNDCLOUD_CLIENT_ID": {
       "description": "The client id of soundcloud.",
-      "value": "",
+      "value": "dmDh7QSlmGpzH9qQoH1YExYCGcyYeYYC",
       "required": "false"
     }
   }  
