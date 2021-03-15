@@ -4,14 +4,14 @@ const sendError = require("../util/error");
 module.exports = {
   info: {
     name: "shuffle",
-    description: "Shuffle queue",
-    usage: "[shuffle]",
+    description: "Shuffle the queue",
+    usage: "",
     aliases: ["shuffle"],
   },
 
   run: async function (client, message, args) {
     const serverQueue = message.client.queue.get(message.guild.id);
-    if (!serverQueue) return sendError("There is no queue.",message.channel).catch(console.error);
+    if (!serverQueue) return sendError("There is no queue.",message.channel);
 try{
     let songs = serverQueue.songs;
     for (let i = songs.length - 1; i > 1; i--) {

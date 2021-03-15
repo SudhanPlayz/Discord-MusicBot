@@ -4,9 +4,9 @@ const sendError = require("../util/error");
 module.exports = {
   info: {
     name: "loop",
-    description: "Toggle music loop",
-    usage: "loop",
-    aliases: ["l"],
+    description: "Repeats the current song",
+    usage: "",
+    aliases: ["repeat"],
   },
 
   run: async function (client, message, args) {

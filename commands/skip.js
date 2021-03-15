@@ -4,7 +4,7 @@ const sendError = require("../util/error");
 module.exports = {
   info: {
     name: "skip",
-    description: "To skip the current music",
+    description: "Skip the song playing",
     usage: "",
     aliases: ["s"],
   },
@@ -20,9 +20,10 @@ if(!serverQueue.connection.dispatcher)return
       serverQueue.playing = true;
       serverQueue.connection.dispatcher.resume();
       let xd = new MessageEmbed()
-      .setDescription("▶ Resumed the music for you!")
-      .setColor("YELLOW")
-      .setTitle("Music has been Resumed!")
+      //.setDescription("▶ Resumed the music for you!")
+      .setColor("GREEN")
+      //.setTitle("Music has been Resumed!")
+      .setAuthor("Resuming!", "https://raw.githubusercontent.com/SudhanPlayz/Discord-MusicBot/master/assets/Music.gif")
        
    return message.channel.send(xd).catch(err => console.log(err));
       
@@ -34,7 +35,7 @@ if(!serverQueue.connection.dispatcher)return
       } catch (error) {
         serverQueue.voiceChannel.leave()
         message.client.queue.delete(message.guild.id);
-        return sendError(`:notes: The player has stopped and the queue has been cleared.: ${error}`, message.channel);
+        return sendError(`:notes: The player has stopped and the queue has been cleared.`, message.channel);
       }
     message.react("✅")
   },

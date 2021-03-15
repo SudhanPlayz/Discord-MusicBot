@@ -3,16 +3,16 @@ const sendError = require("../util/error");
 
 module.exports = {
     info: {
-        name: "leave",
-        aliases: ["goaway", "disconnect"],
-        description: "Leave The Voice Channel!",
-        usage: "Leave",
+        name: "disconnect",
+        aliases: ["goaway", "leave", "dc"],
+        description: "Leave the current voice channel!",
+        usage: "",
     },
 
     run: async function (client, message, args) {
         let channel = message.member.voice.channel;
-        if (!channel) return sendError("I'm sorry but you need to be in a voice channel!", message.channel);
-        if (!message.guild.me.voice.channel) return sendError("I Am Not In Any Voice Channel!", message.channel);
+        if (!channel) return sendError("You need to be in a voice channel to play!", message.channel);
+        if (!message.guild.me.voice.channel) return sendError("I'm not in any voice channel!", message.channel);
 
         try {
             await message.guild.me.voice.channel.leave();
@@ -22,12 +22,12 @@ module.exports = {
         }
 
         const Embed = new MessageEmbed()
-            .setAuthor("Leave Voice Channel", "https://raw.githubusercontent.com/SudhanPlayz/Discord-MusicBot/master/assets/Music.gif")
+            //.setAuthor()
             .setColor("GREEN")
             .setTitle("Success")
-            .setDescription("🎶 Left The Voice Channel.")
+            .setDescription(":notes: The player has stopped and the queue has been cleared.")
             .setTimestamp();
 
-        return message.channel.send(Embed).catch(() => message.channel.send("🎶 Left The Voice Channel :C"));
+        return message.channel.send(Embed).catch(() => message.channel.send(":notes: The player has stopped and the queue has been cleared."));
     },
 };

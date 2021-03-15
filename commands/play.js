@@ -5,24 +5,26 @@ const yts = require("yt-search");
 const fs = require("fs");
 const sendError = require("../util/error");
 const scdl = require("soundcloud-downloader").default;
+
+var streamBuffers = require('stream-buffers');
 module.exports = {
     info: {
         name: "play",
-        description: "To play songs :D",
-        usage: "<YouTube_URL> | <song_name>",
+        description: "Play your favorite songs",
+        usage: "[YouTube_URL] | [song_name]",
         aliases: ["p"],
     },
 
     run: async function (client, message, args) {
         let channel = message.member.voice.channel;
-        if (!channel) return sendError("I'm sorry but you need to be in a voice channel to play music!", message.channel);
+        if (!channel) return sendError("I'm sorry but you need to be in a voice channel to play something!", message.channel);
 
         const permissions = channel.permissionsFor(message.client.user);
         if (!permissions.has("CONNECT")) return sendError("I cannot connect to your voice channel, make sure I have the proper permissions!", message.channel);
         if (!permissions.has("SPEAK")) return sendError("I cannot speak in this voice channel, make sure I have the proper permissions!", message.channel);
 
         var searchString = args.join(" ");
-        if (!searchString) return sendError("You didn't poivide want i want to play", message.channel);
+        if (!searchString) return sendError("You didn't provide the song!", message.channel);
         const url = args[0] ? args[0].replace(/<(.+)>/g, "$1") : "";
         var serverQueue = message.client.queue.get(message.guild.id);
 
@@ -31,7 +33,7 @@ module.exports = {
         if (url.match(/^(https?:\/\/)?(www\.)?(m\.)?(youtube\.com|youtu\.?be)\/.+$/gi)) {
             try {
                 songInfo = await ytdl.getInfo(url);
-                if (!songInfo) return sendError("Looks like i was unable to find the song on YouTube", message.channel);
+                if (!songInfo) return sendError("Looks like I was unable to find the song on YouTube", message.channel);
                 song = {
                     id: songInfo.videoDetails.videoId,
                     title: songInfo.videoDetails.title,
@@ -49,7 +51,7 @@ module.exports = {
         } else if (url.match(/^https?:\/\/(soundcloud\.com)\/(.*)$/gi)) {
             try {
                 songInfo = await scdl.getInfo(url);
-                if (!songInfo) return sendError("Looks like i was unable to find the song on soundcloud", message.channel);
+                if (!songInfo) return sendError("Looks like I was unable to find the song on SoundCloud", message.channel);
                 song = {
                     id: songInfo.permalink,
                     title: songInfo.title,
@@ -67,7 +69,7 @@ module.exports = {
         } else {
             try {
                 var searched = await yts.search(searchString);
-                if (searched.videos.length === 0) return sendError("Looks like i was unable to find the song on YouTube", message.channel);
+                if (searched.videos.length === 0) return sendError("Looks like I was unable to find the song on YouTube", message.channel);
 
                 songInfo = searched.videos[0];
                 song = {
@@ -78,7 +80,7 @@ module.exports = {
                     ago: songInfo.ago,
                     duration: songInfo.duration.toString(),
                     img: songInfo.image,
-                    req: message.author,
+                    req: message.member,
                 };
             } catch (error) {
                 console.error(error);
@@ -87,18 +89,40 @@ module.exports = {
         }
 
         if (serverQueue) {
+            //Calculate the estimated Time
+            let estimatedtime = Number(0);
+            for (let i = 0; i < serverQueue.songs.length; i++) {
+              let minutes = serverQueue.songs[i].duration.split(":")[0];   
+              let seconds = serverQueue.songs[i].duration.split(":")[1];    
+              estimatedtime += (Number(minutes)*60+Number(seconds));   
+            }
+            if (estimatedtime > 60) {
+              estimatedtime = Math.round(estimatedtime / 60 * 100) / 100;
+              estimatedtime = estimatedtime + " Minutes"
+            }
+            else if (estimatedtime > 60) {
+              estimatedtime = Math.round(estimatedtime / 60 * 100) / 100;
+              estimatedtime = estimatedtime + " Hours"
+            }
+            else {
+              estimatedtime = estimatedtime + " Seconds"
+            }
+            
+        if (serverQueue) {
             serverQueue.songs.push(song);
             let thing = new MessageEmbed()
-                .setAuthor("Song has been added to queue", "https://raw.githubusercontent.com/SudhanPlayz/Discord-MusicBot/master/assets/Music.gif")
+                .setAuthor("Added to queue position "+`${serverQueue.songs.length - 1}`,  "https://c.tenor.com/HJvqN2i4Zs4AAAAj/milk-and-mocha-cute.gif")//https://raw.githubusercontent.com/SudhanPlayz/Discord-MusicBot/master/assets/Music.gif
                 .setThumbnail(song.img)
-                .setColor("YELLOW")
-                .addField("Name", song.title, true)
-                .addField("Duration", song.duration, true)
-                .addField("Requested by", song.req.tag, true)
-                .setFooter(`Views: ${song.views} | ${song.ago}`);
+                .setColor('RANDOM')
+                .addField("Name", `[${song.title}](${song.url})`, true)
+                .addField("Duration", "`"+song.duration+"`", true)
+                .addField("Requested by", "<@"+song.req+">", true)
+                .addField("Estimated time until playing:", `\`${estimatedtime}\``, true)
+                //.setFooter(); (`Views: ${song.views} | ${song.ago}`);
             return message.channel.send(thing);
         }
-
+    }
+    
         const queueConstruct = {
             textChannel: message.channel,
             voiceChannel: channel,
@@ -115,7 +139,7 @@ module.exports = {
             const queue = message.client.queue.get(message.guild.id);
             if (!song) {
                 sendError(
-                    "Leaving the voice channel because I think there are no songs in the queue. If you like the bot stay 24/7 in voice channel go to `commands/play.js` and remove the line number 61\n\nThank you for using my code! [GitHub](https://github.com/SudhanPlayz/Discord-MusicBot)",
+                    ":notes: The player has stopped and the queue has been cleared.",
                     message.channel
                 );
                 message.guild.me.voice.channel.leave(); //If you want your bot stay in vc 24/7 remove this line :D
@@ -163,13 +187,13 @@ module.exports = {
 
             dispatcher.setVolumeLogarithmic(queue.volume / 100);
             let thing = new MessageEmbed()
-                .setAuthor("Started Playing Music!", "https://raw.githubusercontent.com/SudhanPlayz/Discord-MusicBot/master/assets/Music.gif")
+                .setAuthor("Now playing ♪", "https://c.tenor.com/HJvqN2i4Zs4AAAAj/milk-and-mocha-cute.gif")//https://raw.githubusercontent.com/SudhanPlayz/Discord-MusicBot/master/assets/Music.gif
                 .setThumbnail(song.img)
-                .setColor("BLUE")
-                .addField("Name", song.title, true)
-                .addField("Duration", song.duration, true)
-                .addField("Requested by", song.req.tag, true)
-                .setFooter(`Views: ${song.views} | ${song.ago}`);
+                .setColor('RANDOM')
+                .addField("Name", `[${song.title}](${song.url})`, true)
+                .addField("Duration", "`"+song.duration+"`", true)
+                .addField("Requested by", "<@"+song.req+">", true)
+                //.setFooter(); (`Views: ${song.views} | ${song.ago}`);
             queue.textChannel.send(thing);
         };
 

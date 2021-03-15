@@ -5,8 +5,8 @@ const sendError = require("../util/error");
 module.exports = {
   info: {
     name: "lyrics",
-    description: "Get lyrics for the currently playing song",
-    usage: "[lyrics]",
+    description: "Get the lyrics of the current song",
+    usage: "",
     aliases: ["ly"],
   },
 
@@ -18,18 +18,19 @@ module.exports = {
 
     try {
       lyrics = await lyricsFinder(queue.songs[0].title, "");
-      if (!lyrics) lyrics = `No lyrics found for ${queue.songs[0].title}.`;
+      if (!lyrics) lyrics = "Sorry, I didn't find any lyrics for "+`[${queue.songs[0].title}](${queue.songs[0].url})`+".";
     } catch (error) {
-      lyrics = `No lyrics found for ${queue.songs[0].title}.`;
+      lyrics = "No lyrics found for "+`[${queue.songs[0].title}](${queue.songs[0].url})`+".";
     }
 
     let lyricsEmbed = new MessageEmbed()
-      .setAuthor(`${queue.songs[0].title} — Lyrics`, "https://raw.githubusercontent.com/SudhanPlayz/Discord-MusicBot/master/assets/Music.gif")
+      .setAuthor("Lyrics for - ", "https://raw.githubusercontent.com/SudhanPlayz/Discord-MusicBot/master/assets/Music.gif")
+      .setTitle(queue.songs[0].title)
+      .setURL(queue.songs[0].url)
       .setThumbnail(queue.songs[0].img)
-      .setColor("YELLOW")
+      .setColor('RANDOM')
       .setDescription(lyrics)
       .setTimestamp();
-
     if (lyricsEmbed.description.length >= 2048)
       lyricsEmbed.description = `${lyricsEmbed.description.substr(0, 2045)}...`;
     return message.channel.send(lyricsEmbed).catch(console.error);

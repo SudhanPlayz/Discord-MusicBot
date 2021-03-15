@@ -1,28 +1,31 @@
-const { MessageEmbed } = require("discord.js");
+const { Util, MessageEmbed } = require("discord.js");
 const sendError = require("../util/error");
+const fs = require('fs');
 
 module.exports = {
   info: {
     name: "pause",
-    description: "To pause the current music in the server",
-    usage: "[pause]",
+    description: "Pause the music",
+    usage: "",
     aliases: ["pause"],
   },
 
   run: async function (client, message, args) {
     const serverQueue = message.client.queue.get(message.guild.id);
     if (serverQueue && serverQueue.playing) {
-      serverQueue.playing = false;
+      serverQueue.playing = false
 	    try{
-      serverQueue.connection.dispatcher.pause()
+      serverQueue.connection.dispatcher.pause(true);
+
 	  } catch (error) {
         message.client.queue.delete(message.guild.id);
         return sendError(`:notes: The player has stopped and the queue has been cleared.: ${error}`, message.channel);
       }	    
       let xd = new MessageEmbed()
-      .setDescription("⏸ Paused the music for you!")
+      .setAuthor("Paused!", "https://raw.githubusercontent.com/SudhanPlayz/Discord-MusicBot/master/assets/Music.gif")
+      //.setDescription("⏸ Music has been paused!")
       .setColor("YELLOW")
-      .setTitle("Music has been paused!")
+      //.setTitle("⏸ Paused!")
       return message.channel.send(xd);
     }
     return sendError("There is nothing playing in this server.", message.channel);

@@ -4,8 +4,8 @@ const sendError = require("../util/error");
 module.exports = {
   info: {
     name: "skipto",
-    description: "Skip to the selected queue number",
-    usage: "skipto <number>",
+    description: "Skip to a specific song in the queue",
+    usage: "[number]",
     aliases: ["st"],
   },
 
@@ -39,7 +39,7 @@ module.exports = {
       }catch (error) {
         queue.voiceChannel.leave()
         message.client.queue.delete(message.guild.id);
-       return sendError(`:notes: The player has stopped and the queue has been cleared.: ${error}`, message.channel);
+       return sendError(`:notes: The player has stopped and the queue has been cleared.`, message.channel);
       }
     
     queue.textChannel.send({

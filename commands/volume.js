@@ -4,8 +4,8 @@ const sendError = require("../util/error");
 module.exports = {
   info: {
     name: "volume",
-    description: "To change the server song queue volume",
-    usage: "[volume]",
+    description: "Change the volume of the song playing",
+    usage: "[0-150]",
     aliases: ["v", "vol"],
   },
 
@@ -19,10 +19,10 @@ module.exports = {
      if(isNaN(args[0])) return message.channel.send(':notes: Numbers only!').catch(err => console.log(err));
     if(parseInt(args[0]) > 150 ||(args[0]) < 0) return sendError('You can\'t set the volume more than 150. or lower than 0',message.channel).catch(err => console.log(err));
     serverQueue.volume = args[0]; 
-    serverQueue.connection.dispatcher.setVolumeLogarithmic(args[0] / 100);
+    serverQueue.connection.dispatcher.setVolumeLogarithmic(args[0] / 150);
     let xd = new MessageEmbed()
-    .setDescription(`I set the volume to: **${args[0]/1}/100**`)
-    .setAuthor("Server Volume Manager", "https://raw.githubusercontent.com/SudhanPlayz/Discord-MusicBot/master/assets/Music.gif")
+    .setDescription(`Volume is now: **${args[0]/1}/150**`)
+    .setAuthor("Server volume", "https://c.tenor.com/HJvqN2i4Zs4AAAAj/milk-and-mocha-cute.gif")//https://raw.githubusercontent.com/SudhanPlayz/Discord-MusicBot/master/assets/Music.gif
     .setColor("BLUE")
     return message.channel.send(xd);
   },
