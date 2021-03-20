@@ -1,6 +1,6 @@
 const { Util, MessageEmbed } = require("discord.js");
 const ytdl = require("ytdl-core");
-const ytdlDiscord = require("ytdl-core-discord");
+const ytdlDiscord = require("discord-ytdl-core");
 const yts = require("yt-search");
 const fs = require("fs");
 const sendError = require("../util/error");
@@ -26,8 +26,8 @@ module.exports = {
         const url = args[0] ? args[0].replace(/<(.+)>/g, "$1") : "";
         var serverQueue = message.client.queue.get(message.guild.id);
 
-        let songInfo = null;
-        let song = null;
+        let songInfo;
+        let song;
         if (url.match(/^(https?:\/\/)?(www\.)?(m\.)?(youtube\.com|youtu\.?be)\/.+$/gi)) {
             try {
                 songInfo = await ytdl.getInfo(url);
@@ -134,7 +134,8 @@ module.exports = {
                         streamType = "unknown";
                     }
                 } else if (song.url.includes("youtube.com")) {
-                    stream = await ytdl(song.url, { quality: "highestaudio", highWaterMark: 1 << 25, type: "opus" });
+                    stream = await ytdlDiscord(song.url, { filter: "audioonly", quality: "highestaudio", highWaterMark: 1 << 25, opusEncoded: true });
+                    streamType = "opus";
                     stream.on("error", function (er) {
                         if (er) {
                             if (queue) {
@@ -146,14 +147,13 @@ module.exports = {
                     });
                 }
             } catch (error) {
-                console.log();
                 if (queue) {
                     queue.songs.shift();
                     play(queue.songs[0]);
                 }
             }
             queue.connection.on("disconnect", () => message.client.queue.delete(message.guild.id));
-            const dispatcher = queue.connection.play(stream).on("finish", () => {
+            const dispatcher = queue.connection.play(stream, { type: streamType }).on("finish", () => {
                 const shiffed = queue.songs.shift();
                 if (queue.loop === true) {
                     queue.songs.push(shiffed);
