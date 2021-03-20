@@ -18,6 +18,7 @@
     "ffmpeg-static": "^4.2.7",
     "yt-search": "^2.2.4",
     "ytdl-core": "^4.1.1",
+    "discord-ytdl-core": "^5.0.1",
     "opusscript": "^0.0.7",
     "soundcloud-downloader": "^0.2.4",
     "youtube-sr": "^2.0.1",
