@@ -1,7 +1,7 @@
 const { Util, MessageEmbed } = require("discord.js");
 const ytdl = require("ytdl-core");
 const yts = require("yt-search");
-const ytdlDiscord = require("ytdl-core-discord");
+const ytdlDiscord = require("discord-ytdl-core");
 var ytpl = require("ytpl");
 const sendError = require("../util/error");
 const fs = require("fs");
@@ -128,7 +128,7 @@ module.exports = {
                 message.client.queue.delete(message.guild.id);
                 return;
             }
-            let stream = null;
+            let stream;
             let streamType;
 
             try {
@@ -140,7 +140,8 @@ module.exports = {
                         streamType = "unknown";
                     }
                 } else if (song.url.includes("youtube.com")) {
-                    stream = await ytdl(song.url, { quality: "highestaudio", highWaterMark: 1 << 25, type: "opus" });
+                    stream = await ytdlDiscord(song.url, { filter: "audioonly", quality: "highestaudio", highWaterMark: 1 << 25, opusEncoded: true });
+                    streamType = "opus";
                     stream.on("error", function (er) {
                         if (er) {
                             if (serverQueue) {
@@ -159,7 +160,7 @@ module.exports = {
                 }
             }
             serverQueue.connection.on("disconnect", () => message.client.queue.delete(message.guild.id));
-            const dispatcher = serverQueue.connection.play(stream).on("finish", () => {
+            const dispatcher = serverQueue.connection.play(stream, { type: streamType }).on("finish", () => {
                 const shiffed = serverQueue.songs.shift();
                 if (serverQueue.loop === true) {
                     serverQueue.songs.push(shiffed);
