@@ -31,7 +31,7 @@ module.exports = {
             .setThumbnail(queue.songs[0].img)
             .setColor('RANDOM')
             .setDescription(splittedLyrics[0])
-            .setFooter(`Page 1 of ${splittedLyrics.length}`)
+            .setFooter(`Page 1/ ${splittedLyrics.length}`)
             .setTimestamp();
 
         const lyricsMsg = await message.channel.send(lyricsEmbed);
