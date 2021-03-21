@@ -4,10 +4,10 @@ const util = require("../util/pagination");
 
 module.exports = {
     info: {
-        name: "queue",
-        description: "To show the server songs queue",
-        usage: "",
-        aliases: ["q", "list", "songlist", "song-list"],
+      name: "queue",
+      description: "See what songs are in the queue",
+      usage: "",
+      aliases: ["q", "list", "songlist", "song-list"],
     },
     run: async function (client, message, args) {
         const permissions = message.channel.permissionsFor(message.client.user);

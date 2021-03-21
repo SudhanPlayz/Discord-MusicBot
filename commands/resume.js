@@ -4,7 +4,7 @@ const sendError = require("../util/error");
 module.exports = {
   info: {
     name: "resume",
-    description: "To resume the paused music",
+    description: "Resume the music",
     usage: "",
     aliases: [],
   },

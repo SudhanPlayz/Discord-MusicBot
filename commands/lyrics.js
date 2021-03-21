@@ -5,10 +5,10 @@ const splitlyrics = require("../util/pagination");
 
 module.exports = {
     info: {
-        name: "lyrics",
-        description: "Get lyrics for the currently playing song",
-        usage: "[lyrics]",
-        aliases: ["ly"],
+      name: "lyrics",
+      description: "Get the lyrics of the current song",
+      usage: "",
+      aliases: ["ly"],
     },
 
     run: async function (client, message, args) {

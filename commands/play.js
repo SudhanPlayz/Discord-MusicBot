@@ -8,8 +8,8 @@ const scdl = require("soundcloud-downloader").default;
 module.exports = {
     info: {
         name: "play",
-        description: "To play songs :D",
-        usage: "<YouTube_URL> | <song_name>",
+        description: "Play your favorite songs",
+        usage: "[YouTube_URL] | [song_name]",
         aliases: ["p"],
     },
 

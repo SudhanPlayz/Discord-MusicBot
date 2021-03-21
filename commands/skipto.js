@@ -4,8 +4,8 @@ const sendError = require("../util/error");
 module.exports = {
   info: {
     name: "skipto",
-    description: "Skip to the selected queue number",
-    usage: "skipto <number>",
+    description: "Skip to a specific song in the queue",
+    usage: "[number]",
     aliases: ["st"],
   },
 

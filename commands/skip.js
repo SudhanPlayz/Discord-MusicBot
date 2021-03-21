@@ -4,7 +4,7 @@ const sendError = require("../util/error");
 module.exports = {
   info: {
     name: "skip",
-    description: "To skip the current music",
+    description: "Skip the song playing",
     usage: "",
     aliases: ["s"],
   },
