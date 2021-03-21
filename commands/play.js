@@ -177,11 +177,7 @@ module.exports = {
             const connection = await channel.join();
             queueConstruct.connection = connection;
             play(queueConstruct.songs[0]);
-        } catch (error) {
-            console.error(`I could not join the voice channel: ${error}`);
-            message.client.queue.delete(message.guild.id);
-            await channel.leave();
-            return sendError(`I could not join the voice channel: ${error}`, message.channel);
+       
         }
     },
 };
