@@ -20,9 +20,9 @@ module.exports = {
         return sendError(`:notes: The player has stopped and the queue has been cleared.: ${error}`, message.channel);
       }	    
       let xd = new MessageEmbed()
-      .setDescription("⏸ Paused the music for you!")
+      .setAuthor("Music has been paused!", "https://raw.githubusercontent.com/SudhanPlayz/Discord-MusicBot/master/assets/Music.gif")
       .setColor("YELLOW")
-      .setTitle("Music has been paused!")
+      //.setTitle("")
       return message.channel.send(xd);
     }
     return sendError("There is nothing playing in this server.", message.channel);

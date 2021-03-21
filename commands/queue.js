@@ -21,15 +21,15 @@ module.exports = {
         const chunked = util.chunk(que, 10).map((x) => x.join("\n"));
 
         const embed = new MessageEmbed()
-            .setAuthor("Server Songs Queue", "https://raw.githubusercontent.com/SudhanPlayz/Discord-MusicBot/master/assets/Music.gif")
+            .setAuthor("Queue ", "https://c.tenor.com/HJvqN2i4Zs4AAAAj/milk-and-mocha-cute.gif")//https://raw.githubusercontent.com/SudhanPlayz/Discord-MusicBot/master/assets/Music.gif
             .setThumbnail(message.guild.iconURL())
-            .setColor("BLUE")
+            .setColor('RANDOM')
             .setDescription(chunked[0])
             .addField("Now Playing", `[${queue.songs[0].title}](${queue.songs[0].url})`, true)
             .addField("Text Channel", queue.textChannel, true)
             .addField("Voice Channel", queue.voiceChannel, true)
-            .setFooter(`Currently Server Volume is ${queue.volume} Page 1 of ${chunked.length}.`);
-        if (queue.songs.length === 1) embed.setDescription(`No songs to play next add songs by \`\`${message.client.config.prefix}play <song_name>\`\``);
+            .setFooter(`Page 1 of ${chunked.length}`);
+        if(queue.songs.length === 1)embed.setDescription(`Add songs to the queue with \`\`${message.client.config.prefix}play [YouTube_URL] | [song_name]\`\``)
 
         try {
             const queueMsg = await message.channel.send(embed);

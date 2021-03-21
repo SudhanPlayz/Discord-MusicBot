@@ -26,12 +26,12 @@ module.exports = {
         const splittedLyrics = splitlyrics.chunk(lyrics, 1024);
 
         let lyricsEmbed = new MessageEmbed()
-            .setAuthor(`${queue.songs[0].title} — Lyrics`, "https://raw.githubusercontent.com/SudhanPlayz/Discord-MusicBot/master/assets/Music.gif")
+            .setAuthor("Lyrics for - ", queue.songs[0].url, "https://raw.githubusercontent.com/SudhanPlayz/Discord-MusicBot/master/assets/Music.gif")
+            .setTitle(queue.songs[0].title)
+            .setURL(queue.songs[0].url)
             .setThumbnail(queue.songs[0].img)
-            .setColor("YELLOW")
-            .setDescription(splittedLyrics[0])
-            .setFooter(`Page 1 of ${splittedLyrics.length}.`)
-            .setTimestamp();
+            .setColor('RANDOM')
+            .setDescription(lyrics)
 
         const lyricsMsg = await message.channel.send(lyricsEmbed);
         if (splittedLyrics.length > 1) await splitlyrics.pagination(lyricsMsg, message.author, splittedLyrics);

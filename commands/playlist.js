@@ -59,7 +59,7 @@ module.exports = {
                 let thing = new MessageEmbed()
                     .setAuthor("Playlist has been added to queue", "https://raw.githubusercontent.com/SudhanPlayz/Discord-MusicBot/master/assets/Music.gif")
                     .setThumbnail(songInfo.thumbnail)
-                    .setColor("GREEN")
+                    .setColor('RANDOM')
                     .setDescription(`✅  **|**  Playlist: **\`${songInfo.title}\`** has been added \`${songInfo.videoCount}\` video to the queue`);
                 return message.channel.send(thing);
             } catch (error) {
@@ -105,13 +105,13 @@ module.exports = {
                 serverQueue.songs.push(song);
                 if (playlist) return;
                 let thing = new MessageEmbed()
-                    .setAuthor("Song has been added to queue", "https://raw.githubusercontent.com/SudhanPlayz/Discord-MusicBot/master/assets/Music.gif")
+                    .setAuthor("Added to queue", "https://c.tenor.com/HJvqN2i4Zs4AAAAj/milk-and-mocha-cute.gif")//https://raw.githubusercontent.com/SudhanPlayz/Discord-MusicBot/master/assets/Music.gif
                     .setThumbnail(song.img)
-                    .setColor("YELLOW")
+                    .setColor('RANDOM')
                     .addField("Name", song.title, true)
                     .addField("Duration", song.duration, true)
-                    .addField("Requested by", song.req.tag, true)
-                    .setFooter(`Views: ${song.views} | ${song.ago}`);
+                    .addField("Requested by", song.req, true)
+                    //.setFooter(`Views: ${song.views} | ${song.ago}`);
                 return message.channel.send(thing);
             }
             return;
@@ -170,13 +170,13 @@ module.exports = {
 
             dispatcher.setVolume(serverQueue.volume / 100);
             let thing = new MessageEmbed()
-                .setAuthor("Started Playing Music!", "https://raw.githubusercontent.com/SudhanPlayz/Discord-MusicBot/master/assets/Music.gif")
+                .setAuthor("Now playing ♪", "https://c.tenor.com/HJvqN2i4Zs4AAAAj/milk-and-mocha-cute.gif")//https://raw.githubusercontent.com/SudhanPlayz/Discord-MusicBot/master/assets/Music.gif
                 .setThumbnail(song.img)
                 .setColor("BLUE")
                 .addField("Name", song.title, true)
                 .addField("Duration", song.duration, true)
-                .addField("Requested by", song.req.tag, true)
-                .setFooter(`Views: ${song.views} | ${song.ago}`);
+                .addField("Requested by", `<@${song.req}>`, true)
+                //.setFooter(`Views: ${song.views} | ${song.ago}`);
             serverQueue.textChannel.send(thing);
         }
     },
