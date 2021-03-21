@@ -19,19 +19,20 @@ module.exports = {
 
         try {
             lyrics = await lyricsFinder(queue.songs[0].title, "");
-            if (!lyrics) lyrics = `No lyrics found for ${queue.songs[0].title}.`;
+            if (!lyrics) lyrics = `No lyrics found for [${queue.songs[0].title}](${queue.songs[0].url}).`;
         } catch (error) {
-            lyrics = `No lyrics found for ${queue.songs[0].title}.`;
+            lyrics = `No lyrics found for [${queue.songs[0].title}](${queue.songs[0].url}).`;
         }
         const splittedLyrics = splitlyrics.chunk(lyrics, 1024);
 
         let lyricsEmbed = new MessageEmbed()
-            .setAuthor("Lyrics for - ", queue.songs[0].url, "https://raw.githubusercontent.com/SudhanPlayz/Discord-MusicBot/master/assets/Music.gif")
-            .setTitle(queue.songs[0].title)
-            .setURL(queue.songs[0].url)
+            .setAuthor(`${queue.songs[0].title} — Lyrics`, "https://raw.githubusercontent.com/SudhanPlayz/Discord-MusicBot/master/assets/Music.gif")
+            .setURL(`${queue.songs[0].url}`)
             .setThumbnail(queue.songs[0].img)
             .setColor('RANDOM')
-            .setDescription(lyrics)
+            .setDescription(splittedLyrics[0])
+            .setFooter(`Page 1 of ${splittedLyrics.length}`)
+            .setTimestamp();
 
         const lyricsMsg = await message.channel.send(lyricsEmbed);
         if (splittedLyrics.length > 1) await splitlyrics.pagination(lyricsMsg, message.author, splittedLyrics);
