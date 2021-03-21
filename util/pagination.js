@@ -36,7 +36,7 @@ module.exports = class Util {
                 if (emoji === this.paginationEmojis[2]) currPage++;
                 currPage = ((currPage % contents.length) + contents.length) % contents.length;
 
-                const embed = msg.embeds[0].setDescription(contents[currPage]).setFooter(`Page ${currPage + 1} of ${contents.length}.`);
+                const embed = msg.embeds[0].setDescription(contents[currPage]).setFooter(`Page ${currPage + 1}/${contents.length}`);
 
                 msg.edit(embed);
 
