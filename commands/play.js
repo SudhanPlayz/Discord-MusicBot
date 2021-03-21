@@ -115,7 +115,7 @@ module.exports = {
             const queue = message.client.queue.get(message.guild.id);
             if (!song) {
                 sendError(
-                    "Leaving the voice channel because I think there are no songs in the queue. If you like the bot stay 24/7 in voice channel go to `commands/play.js` and remove the line number 61\n\nThank you for using my code! [GitHub](https://github.com/SudhanPlayz/Discord-MusicBot)",
+                    "Leaving the voice channel because I think there are no songs in the queue. If you like the bot stay 24/7 in voice channel go to `commands/play.js` 
                     message.channel
                 );
                 message.guild.me.voice.channel.leave(); //If you want your bot stay in vc 24/7 remove this line :D
