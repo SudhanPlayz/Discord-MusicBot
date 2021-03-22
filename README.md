@@ -2,6 +2,9 @@
 <p align="center">Thanks for 4k Views! I made this for you all!</p>
 <div align="center"><img src="./assets/banner.gif"></div>
 
+## 📝 Latest Announcement
+Discord-MusicBot v4 will be launched shortly :tada: You can able to check out the [project](https://github.com/SudhanPlayz/Discord-MusicBot/projects/1) and its [discussion](https://github.com/SudhanPlayz/Discord-MusicBot/discussions/72)
+
 ## 📝 Tutorial
 Tutorial has been uploaded on YouTube <img src="https://www.youtube.com/about/static/svgs/icons/brand-resources/YouTube_icon_full-color.svg?cache=f2ec7a5" width="30px"> Watch it by clicking [here](https://youtu.be/DQXuTaYa31I)
 
