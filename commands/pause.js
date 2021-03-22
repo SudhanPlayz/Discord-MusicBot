@@ -1,5 +1,6 @@
 const { MessageEmbed } = require("discord.js");
 const sendError = require("../util/error");
+const sendTime = require("../util/timestamp");
 
 module.exports = {
   info: {
@@ -20,7 +21,7 @@ module.exports = {
         return sendError(`:notes: The player has stopped and the queue has been cleared.: ${error}`, message.channel);
       }	    
       let xd = new MessageEmbed()
-      .setAuthor("Paused!", "https://raw.githubusercontent.com/SudhanPlayz/Discord-MusicBot/master/assets/Music.gif")
+      .setAuthor("Paused!", "http://www.simpleimageresizer.com/_uploads/photos/92c36e50/0a8671a21422eecab8189a2941bfb132_1_1_128x128.gif")//https://raw.githubusercontent.com/SudhanPlayz/Discord-MusicBot/master/assets/Music.gif
       .setColor("YELLOW")
       //.setTitle("")
       return message.channel.send(xd);

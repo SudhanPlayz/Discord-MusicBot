@@ -1,5 +1,6 @@
 const { MessageEmbed } = require("discord.js");
 const sendError = require("../util/error");
+const sendTime = require("../util/timestamp");
 const util = require("../util/pagination");
 
 module.exports = {
@@ -14,7 +15,7 @@ module.exports = {
         if (!permissions.has(["MANAGE_MESSAGES", "ADD_REACTIONS"])) return sendError("Missing permission to manage messages or add reactions", message.channel);
 
         const queue = message.client.queue.get(message.guild.id);
-        if (!queue) return sendError("There is nothing playing in this server.", message.channel);
+        if (!queue) return sendTime("There is nothing playing in this server.", message.channel);
 
         const que = queue.songs.map((t, i) => `\`${++i}.\` | [\`${t.title}\`](${t.url}) - [<@${t.req.id}>]`);
 

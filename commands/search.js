@@ -4,6 +4,7 @@ const yts = require("yt-search");
 const ytdlDiscord = require("discord-ytdl-core");
 const YouTube = require("youtube-sr");
 const sendError = require("../util/error");
+const sendTime = require("../util/timestamp");
 const fs = require("fs");
 const scdl = require("soundcloud-downloader").default;
 module.exports = {
@@ -16,14 +17,14 @@ module.exports = {
 
     run: async function (client, message, args) {
         let channel = message.member.voice.channel;
-        if (!channel) return sendError("I'm sorry but you need to be in a voice channel to play music!", message.channel);
+        if (!channel) return sendTime("I'm sorry but you need to be in a voice channel to play music!", message.channel);
 
         const permissions = channel.permissionsFor(message.client.user);
         if (!permissions.has("CONNECT")) return sendError("I cannot connect to your voice channel, make sure I have the proper permissions!", message.channel);
         if (!permissions.has("SPEAK")) return sendError("I cannot speak in this voice channel, make sure I have the proper permissions!", message.channel);
 
         var searchString = args.join(" ");
-        if (!searchString) return sendError("You didn't poivide want i want to search", message.channel);
+        if (!searchString) return sendTime(`Please use \`\`${client.config.prefix}play\`\` to play something!`, message.channel);
 
         var serverQueue = message.client.queue.get(message.guild.id);
         try {

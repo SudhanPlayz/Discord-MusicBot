@@ -1,7 +1,7 @@
 {
   "name": "advanced-discord-music-bot",
   "version": "3.0.0",
-  "description": "Advanced discord music bot made by Sudhan for Coding With Sudhan 4k Views",
+  "description": "An advanced discord music bot with lots of features tnat are easy to use!",
   "main": "index.js",
   "license": "MIT",
   "scripts": {

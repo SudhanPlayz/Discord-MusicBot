@@ -1,5 +1,6 @@
 const { MessageEmbed } = require("discord.js");
 const sendError = require("../util/error");
+const sendTime = require("../util/timestamp");
 
 module.exports = {
   info: {
@@ -11,7 +12,7 @@ module.exports = {
 
   run: async function (client, message, args) {
     const serverQueue = message.client.queue.get(message.guild.id);
-    if (!serverQueue) return sendError("There is no queue.",message.channel).catch(console.error);
+    if (!serverQueue) return sendTime("There is no queue.",message.channel).catch(console.error);
 try{
     let songs = serverQueue.songs;
     for (let i = songs.length - 1; i > 1; i--) {
@@ -24,7 +25,7 @@ try{
       } catch (error) {
         message.guild.me.voice.channel.leave();
         message.client.queue.delete(message.guild.id);
-        return sendError(`:notes: The player has stopped and the queue has been cleared.: \`${error}\``, message.channel);
+        return sendTime(`:notes: The player has stopped and the queue has been cleared.: \`${error}\``, message.channel);
      }
   },
 };

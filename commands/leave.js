@@ -1,5 +1,6 @@
 const { MessageEmbed } = require("discord.js");
 const sendError = require("../util/error");
+const sendTime = require("../util/timestamp");
 
 
 module.exports = {
@@ -12,8 +13,8 @@ module.exports = {
 
     run: async function (client, message, args) {
         let channel = message.member.voice.channel;
-        if (!channel) return sendError("You need to be in a voice channel to play!", message.channel);
-        if (!message.guild.me.voice.channel) return sendError("I'm not in any voice channel!", message.channel);
+        if (!channel) return sendTime("You need to be in a voice channel to play!", message.channel);
+        if (!message.guild.me.voice.channel) return sendTime("I'm not in any voice channel!", message.channel);
 
         try {
             await message.guild.me.voice.channel.leave();

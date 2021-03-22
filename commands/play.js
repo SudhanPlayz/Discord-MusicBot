@@ -4,6 +4,7 @@ const ytdlDiscord = require("discord-ytdl-core");
 const yts = require("yt-search");
 const fs = require("fs");
 const sendError = require("../util/error");
+const sendTime = require("../util/timestamp");
 const scdl = require("soundcloud-downloader").default;
 module.exports = {
     info: {
@@ -15,14 +16,14 @@ module.exports = {
 
     run: async function (client, message, args) {
         let channel = message.member.voice.channel;
-        if (!channel) return sendError("I'm sorry but you need to be in a voice channel to play music!", message.channel);
+        if (!channel) return sendTime("I'm sorry but you need to be in a voice channel to play music!", message.channel);
 
         const permissions = channel.permissionsFor(message.client.user);
         if (!permissions.has("CONNECT")) return sendError("I cannot connect to your voice channel, make sure I have the proper permissions!", message.channel);
         if (!permissions.has("SPEAK")) return sendError("I cannot speak in this voice channel, make sure I have the proper permissions!", message.channel);
 
         var searchString = args.join(" ");
-        if (!searchString) return sendError("You didn't poivide want i want to play", message.channel);
+        if (!searchString) return sendTime(`Please use \`\`${client.config.prefix}play\`\` to play something!`, message.channel);
         const url = args[0] ? args[0].replace(/<(.+)>/g, "$1") : "";
         var serverQueue = message.client.queue.get(message.guild.id);
 
@@ -31,7 +32,7 @@ module.exports = {
         if (url.match(/^(https?:\/\/)?(www\.)?(m\.)?(youtube\.com|youtu\.?be)\/.+$/gi)) {
             try {
                 songInfo = await ytdl.getInfo(url);
-                if (!songInfo) return sendError("Looks like i was unable to find the song on YouTube", message.channel);
+                if (!songInfo) return sendTime("Looks like I was unable to find the song on YouTube", message.channel);
                 song = {
                     id: songInfo.videoDetails.videoId,
                     title: songInfo.videoDetails.title,
@@ -49,7 +50,7 @@ module.exports = {
         } else if (url.match(/^https?:\/\/(soundcloud\.com)\/(.*)$/gi)) {
             try {
                 songInfo = await scdl.getInfo(url);
-                if (!songInfo) return sendError("Looks like i was unable to find the song on soundcloud", message.channel);
+                if (!songInfo) return sendTime("Looks like I was unable to find the song on SoundCloud", message.channel);
                 song = {
                     id: songInfo.permalink,
                     title: songInfo.title,
@@ -67,7 +68,7 @@ module.exports = {
         } else {
             try {
                 var searched = await yts.search(searchString);
-                if (searched.videos.length === 0) return sendError("Looks like i was unable to find the song on YouTube", message.channel);
+                if (searched.videos.length === 0) return sendTime("Looks like I was unable to find the song on YouTube", message.channel);
 
                 songInfo = searched.videos[0];
                 song = {
@@ -115,7 +116,7 @@ module.exports = {
         const play = async (song) => {
             const queue = message.client.queue.get(message.guild.id);
             if (!song) {
-                sendError(
+                sendTime(
                     ":notes: The player has stopped and the queue has been cleared.",
                     message.channel
                 );

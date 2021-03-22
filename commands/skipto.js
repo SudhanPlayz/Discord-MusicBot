@@ -1,5 +1,6 @@
 const { MessageEmbed } = require("discord.js");
 const sendError = require("../util/error");
+const sendTime = require("../util/timestamp");
 
 module.exports = {
   info: {
@@ -21,9 +22,9 @@ module.exports = {
         
 
     const queue = message.client.queue.get(message.guild.id);
-    if (!queue) return sendError("There is no queue.",message.channel).catch(console.error);
+    if (!queue) return sendTime("There is no queue.",message.channel).catch(console.error);
     if (args[0] > queue.songs.length)
-      return sendError(`The queue is only ${queue.songs.length} songs long!`,message.channel).catch(console.error);
+      return sendTime(`The queue is only ${queue.songs.length} songs long!`,message.channel).catch(console.error);
 
     queue.playing = true;
 
@@ -39,7 +40,7 @@ module.exports = {
       }catch (error) {
         queue.voiceChannel.leave()
         message.client.queue.delete(message.guild.id);
-       return sendError(`:notes: The player has stopped and the queue has been cleared.: ${error}`, message.channel);
+       return sendTime(`:notes: The player has stopped and the queue has been cleared.: ${error}`, message.channel);
       }
     
     queue.textChannel.send({

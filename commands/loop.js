@@ -1,5 +1,6 @@
 const { MessageEmbed } = require("discord.js");
 const sendError = require("../util/error");
+const sendTime = require("../util/timestamp");
 
 module.exports = {
   info: {
@@ -20,6 +21,6 @@ module.exports = {
                 }
             });
         };
-    return sendError("There is nothing playing in this server.", message.channel);
+    return sendTime("There is nothing playing in this server.", message.channel);
   },
 };

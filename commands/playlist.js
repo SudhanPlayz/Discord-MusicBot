@@ -4,6 +4,7 @@ const yts = require("yt-search");
 const ytdlDiscord = require("discord-ytdl-core");
 var ytpl = require("ytpl");
 const sendError = require("../util/error");
+const sendTime = require("../util/timestamp");
 const fs = require("fs");
 const scdl = require("soundcloud-downloader").default;
 module.exports = {
@@ -108,8 +109,8 @@ module.exports = {
                     .setAuthor("Added to queue", "https://c.tenor.com/HJvqN2i4Zs4AAAAj/milk-and-mocha-cute.gif")//https://raw.githubusercontent.com/SudhanPlayz/Discord-MusicBot/master/assets/Music.gif
                     .setThumbnail(song.img)
                     .setColor('RANDOM')
-                    .addField("Name", song.title, true)
-                    .addField("Duration", song.duration, true)
+                    .addField("Name", `[${song.title}](${song.url})`, true)
+                    .addField("Duration", "`"+`${song.duration}`+"`", true)
                     .addField("Requested by", song.req, true)
                     //.setFooter(`Views: ${song.views} | ${song.ago}`);
                 return message.channel.send(thing);
@@ -120,8 +121,8 @@ module.exports = {
         async function play(guild, song) {
             const serverQueue = message.client.queue.get(message.guild.id);
             if (!song) {
-                sendError(
-                    "Leaving the voice channel because I think there are no songs in the queue. If you like the bot stay 24/7 in voice channel go to `commands/play.js` and remove the line number 61\n\nThank you for using my code! [GitHub](https://github.com/SudhanPlayz/Discord-MusicBot)",
+                sendTime(
+                    ":notes: The player has stopped and the queue has been cleared.",
                     message.channel
                 );
                 message.guild.me.voice.channel.leave(); //If you want your bot stay in vc 24/7 remove this line :D
@@ -172,10 +173,10 @@ module.exports = {
             let thing = new MessageEmbed()
                 .setAuthor("Now playing ♪", "https://c.tenor.com/HJvqN2i4Zs4AAAAj/milk-and-mocha-cute.gif")//https://raw.githubusercontent.com/SudhanPlayz/Discord-MusicBot/master/assets/Music.gif
                 .setThumbnail(song.img)
-                .setColor("BLUE")
-                .addField("Name", song.title, true)
-                .addField("Duration", song.duration, true)
-                .addField("Requested by", `<@${song.req}>`, true)
+                .setColor('RANDOM')
+                .addField("Name", `[${song.title}](${song.url})`, true)
+                .addField("Duration", "`"+`${song.duration}`+"`", true)
+                .addField("Requested by", song.req, true)
                 //.setFooter(`Views: ${song.views} | ${song.ago}`);
             serverQueue.textChannel.send(thing);
         }
