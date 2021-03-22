@@ -5,7 +5,7 @@ const sendTime = require("../util/timestamp");
 module.exports = {
   info: {
     name: "nowplaying",
-    description: "Shows the song playing",
+    description: "See what song is currently playing",
     usage: "",
     aliases: ["np"],
   },

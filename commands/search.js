@@ -112,8 +112,8 @@ module.exports = {
         const play = async (song) => {
             const queue = message.client.queue.get(message.guild.id);
             if (!song) {
-                sendError(
-                    ":notes: The player has stopped and the queue has been cleared.",
+                sendTime(
+                    ":notes: The queue has finished playing!",
                     message.channel
                 );
                 message.guild.me.voice.channel.leave(); //If you want your bot stay in vc 24/7 remove this line :D

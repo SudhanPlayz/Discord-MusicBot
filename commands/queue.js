@@ -17,7 +17,7 @@ module.exports = {
         const queue = message.client.queue.get(message.guild.id);
         if (!queue) return sendTime("There is nothing playing in this server.", message.channel);
 
-        const que = queue.songs.map((t, i) => `\`${++i}.\` | [\`${t.title}\`](${t.url}) - [<@${t.req.id}>]`);
+        const que = queue.songs.map((t, i) => `\`${++i}.\` | [\`${t.title}\`](${t.url}) - <@${t.req.id}>`);
 
         const chunked = util.chunk(que, 10).map((x) => x.join("\n"));
 
