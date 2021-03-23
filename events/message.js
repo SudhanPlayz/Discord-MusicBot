@@ -14,7 +14,7 @@ module.exports = async (client, message) => {
   //Searching a command
   const cmd = client.commands.get(command);
   //Searching a command aliases
-  const aliases = client.commands.find(x => x.info.aliases.includes(command))
+  const aliases = client.commands.find(x => x && x.info && x.info.aliases && x.info.aliases.includes(command));
 
   //if(message.channel.type === "dm")return message.channel.send("None of the commands work in DMs. So please use commands in server!")
 process.on("unhandledRejection", (reason, promise) => {
