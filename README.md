@@ -10,7 +10,7 @@ Tutorial has been uploaded on YouTube <img src="https://www.youtube.com/about/st
 
 
 ## 📄 Commands
-`![Screenshot (92)](https://user-images.githubusercontent.com/71621973/112220263-6f48e600-8bfc-11eb-843f-171bb728f89d.png)
+![Screenshot (92)](https://user-images.githubusercontent.com/71621973/112220263-6f48e600-8bfc-11eb-843f-171bb728f89d.png)
 
 
 
