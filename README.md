@@ -8,8 +8,7 @@ Tutorial has been uploaded on YouTube <img src="https://www.youtube.com/about/st
 
 
 ## 📄 Commands
-![Screenshot (92)](https://user-images.githubusercontent.com/71621973/112220395-98697680-8bfc-11eb-8fe2-cb76ad20140b.png)
-
+![Screenshot (92)](https://user-images.githubusercontent.com/71621973/112220721-f5652c80-8bfc-11eb-8225-42ada02d3656.png)
 
 
 ## 💨 Run the projects
