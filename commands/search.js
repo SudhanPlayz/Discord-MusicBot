@@ -178,7 +178,7 @@ module.exports = {
         try {
             const connection = await channel.join();
             queueConstruct.connection = connection;
-            channel.guild.voice.setSelfDeaf(true);
+            channel.guild.voice.setSelfDeaf(false);
             play(queueConstruct.songs[0]);
         } catch (error) {
             console.error(`I could not join the voice channel: ${error}`);

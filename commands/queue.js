@@ -27,9 +27,9 @@ module.exports = {
             .setColor('RANDOM')
             .setDescription(chunked[0])
             .addField("Now Playing", `[${queue.songs[0].title}](${queue.songs[0].url})`, true)
-            .addField("Text Channel", queue.textChannel, true)
+            //.addField("Text Channel", queue.textChannel, true)
             .addField("Voice Channel", queue.voiceChannel, true)
-            .setFooter(`Page 1/${chunked.length}`, message.author.displayAvatarURL());
+            .setFooter(`Page 1/${chunked.length} • Loop: ${queue.loop ? "✅" : "❌"}`, message.author.displayAvatarURL());
         if(queue.songs.length === 1)embed.setDescription(`Add songs to the queue with \`\`${message.client.config.prefix}play\`\` or \`\`${message.client.config.prefix}search\`\`!`)
 
         try {
