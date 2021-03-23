@@ -27,7 +27,7 @@ module.exports = {
         const splittedLyrics = splitlyrics.chunk(lyrics, 1024);
 
         let lyricsEmbed = new MessageEmbed()
-            .setAuthor(`${queue.songs[0].title} — Lyrics`, "https://raw.githubusercontent.com/SudhanPlayz/Discord-MusicBot/master/assets/Music.gif", `${queue.songs[0].url}`)
+            .setAuthor(`${queue.songs[0].title} — Lyrics`, message.author.displayAvatarURL(), `${queue.songs[0].url}`)//https://raw.githubusercontent.com/SudhanPlayz/Discord-MusicBot/master/assets/Music.gif
             .setThumbnail(queue.songs[0].img)
             .setColor('RANDOM')
             .setDescription(splittedLyrics[0])

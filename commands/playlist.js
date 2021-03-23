@@ -58,7 +58,7 @@ module.exports = {
                     await handleVideo(video, message, channel, true); // eslint-disable-line no-await-in-loop
                 }
                 let thing = new MessageEmbed()
-                    .setAuthor("Playlist has been added to queue", "https://raw.githubusercontent.com/SudhanPlayz/Discord-MusicBot/master/assets/Music.gif")
+                    .setAuthor("Playlist has been added to queue", message.author.displayAvatarURL())//https://raw.githubusercontent.com/SudhanPlayz/Discord-MusicBot/master/assets/Music.gif
                     .setThumbnail(songInfo.thumbnail)
                     .setColor('RANDOM')
                     .setDescription(`✅  **|**  Playlist: **\`${songInfo.title}\`** has been added \`${songInfo.videoCount}\` video to the queue`);
@@ -106,7 +106,7 @@ module.exports = {
                 serverQueue.songs.push(song);
                 if (playlist) return;
                 let thing = new MessageEmbed()
-                    .setAuthor("Added to queue", "https://c.tenor.com/HJvqN2i4Zs4AAAAj/milk-and-mocha-cute.gif")//https://raw.githubusercontent.com/SudhanPlayz/Discord-MusicBot/master/assets/Music.gif
+                    .setAuthor("Added to queue", message.author.displayAvatarURL())//https://c.tenor.com/HJvqN2i4Zs4AAAAj/milk-and-mocha-cute.gif //https://raw.githubusercontent.com/SudhanPlayz/Discord-MusicBot/master/assets/Music.gif
                     .setThumbnail(song.img)
                     .setColor('RANDOM')
                     .addField("Name", `[${song.title}](${song.url})`, true)
@@ -171,7 +171,7 @@ module.exports = {
 
             dispatcher.setVolume(serverQueue.volume / 100);
             let thing = new MessageEmbed()
-                .setAuthor("Now playing ♪", "https://c.tenor.com/HJvqN2i4Zs4AAAAj/milk-and-mocha-cute.gif")//https://raw.githubusercontent.com/SudhanPlayz/Discord-MusicBot/master/assets/Music.gif
+                .setAuthor("Now playing ♪", message.author.displayAvatarURL())//https://c.tenor.com/HJvqN2i4Zs4AAAAj/milk-and-mocha-cute.gif //https://raw.githubusercontent.com/SudhanPlayz/Discord-MusicBot/master/assets/Music.gif
                 .setThumbnail(song.img)
                 .setColor('RANDOM')
                 .addField("Name", `[${song.title}](${song.url})`, true)

@@ -15,7 +15,7 @@ module.exports = {
     if (!serverQueue) return sendTime("There is nothing playing in this server.", message.channel);
     let song = serverQueue.songs[0]
     let thing = new MessageEmbed()
-      .setAuthor("Now playing ♪", "https://c.tenor.com/HJvqN2i4Zs4AAAAj/milk-and-mocha-cute.gif")//https://raw.githubusercontent.com/SudhanPlayz/Discord-MusicBot/master/assets/Music.gif
+      .setAuthor("Now playing ♪", message.author.displayAvatarURL())//https://c.tenor.com/HJvqN2i4Zs4AAAAj/milk-and-mocha-cute.gif //https://raw.githubusercontent.com/SudhanPlayz/Discord-MusicBot/master/assets/Music.gif
       .setThumbnail(song.img)
       .setColor('RANDOM')
       .addField("Name", `[${song.title}](${song.url})`, true)

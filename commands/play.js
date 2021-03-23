@@ -90,7 +90,7 @@ module.exports = {
         if (serverQueue) {
             serverQueue.songs.push(song);
             let thing = new MessageEmbed()
-                .setAuthor("Added to queue", "https://c.tenor.com/HJvqN2i4Zs4AAAAj/milk-and-mocha-cute.gif")//https://raw.githubusercontent.com/SudhanPlayz/Discord-MusicBot/master/assets/Music.gif
+                .setAuthor("Added to queue", message.author.displayAvatarURL())//https://c.tenor.com/HJvqN2i4Zs4AAAAj/milk-and-mocha-cute.gif //https://raw.githubusercontent.com/SudhanPlayz/Discord-MusicBot/master/assets/Music.gif
                 .setThumbnail(song.img)
                 .setColor('RANDOM')
                 .addField("Name", `[${song.title}](${song.url})`, true)
@@ -165,7 +165,7 @@ module.exports = {
 
             dispatcher.setVolumeLogarithmic(queue.volume / 100);
             let thing = new MessageEmbed()
-                .setAuthor("Now playing ♪", "https://c.tenor.com/HJvqN2i4Zs4AAAAj/milk-and-mocha-cute.gif")//https://raw.githubusercontent.com/SudhanPlayz/Discord-MusicBot/master/assets/Music.gif
+                .setAuthor("Now playing ♪", message.author.displayAvatarURL())//https://c.tenor.com/HJvqN2i4Zs4AAAAj/milk-and-mocha-cute.gif //https://raw.githubusercontent.com/SudhanPlayz/Discord-MusicBot/master/assets/Music.gif
                 .setThumbnail(song.img)
                 .setColor('RANDOM')
                 .addField("Name", `[${song.title}](${song.url})`, true)
