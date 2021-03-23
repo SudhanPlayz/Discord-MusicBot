@@ -8,12 +8,11 @@ Discord-MusicBot v4 will be launched shortly :tada: You can able to check out th
 ## 📝 Tutorial
 Tutorial has been uploaded on YouTube <img src="https://www.youtube.com/about/static/svgs/icons/brand-resources/YouTube_icon_full-color.svg?cache=f2ec7a5" width="30px"> Watch it by clicking [here](https://youtu.be/DQXuTaYa31I)
 
-## 📝 [Support Server](https://discord.gg/a9SHDpD)
-Got any error or any problem with the code? Join this server and ask your question instead of creating issues unless its a code bug. https://discord.gg/a9SHDpD
 
-## 📸 Screenshots
+## 📄 Commands
+`![Screenshot (92)](https://user-images.githubusercontent.com/71621973/112220263-6f48e600-8bfc-11eb-843f-171bb728f89d.png)
 
-<div align="left"><img src="https://pika-pika.is-inside.me/zJduq9Gn.png"></div><div align="center"><img src="https://pika-pika.is-inside.me/9ufBoGDH.png"></div><div align="right"><img src="https://pika-pika.is-inside.me/8QkGROJv.png"></div>
+
 
 ## 💨 Run the projects
 Glitch: [![Remix on Glitch](https://cdn.glitch.com/2703baf2-b643-4da7-ab91-7ee2a2d00b5b%2Fremix-button.svg)](https://glitch.com/edit/#!/import/github/joeyk710/Discord-MusicBot)
