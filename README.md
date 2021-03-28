@@ -26,6 +26,7 @@ If you would like to host the bot on a local pc, follow these steps -
 
 
 ## 📄 Commands
+More commands coming in Version 4 from https://github.com/SudhanPlayz/Discord-MusicBot/projects
 ![Screenshot (92)](https://user-images.githubusercontent.com/71621973/112220721-f5652c80-8bfc-11eb-8225-42ada02d3656.png)
 
 
