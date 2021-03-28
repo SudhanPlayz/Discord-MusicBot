@@ -1,6 +1,6 @@
 <h1 align="center"><img src="./assets/Music.gif" width="30px"> Advanced Discord Music Bot <img src="./assets/Music.gif" width="30px"></h1>
 
-**Disclaimer - This is a fork of the repository https://github.com/SudhanPlayz/Discord-MusicBot. Any new changes from there will be applied on top of any changes I make to my version. **
+Disclaimer - This is a fork of the repository https://github.com/SudhanPlayz/Discord-MusicBot. Any new changes from there will be applied on top of any changes I make to my version.
 
 ## 📝 Tutorial
 If you would like to host the bot on a local pc, follow these steps - 
