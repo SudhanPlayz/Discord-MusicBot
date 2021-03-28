@@ -19,8 +19,8 @@ module.exports = {
         if (!channel) return sendTime("I'm sorry but you need to be in a voice channel to play music!", message.channel);
 
         const permissions = channel.permissionsFor(message.client.user);
-        if (!permissions.has("CONNECT")) return sendError("I cannot connect to your voice channel, make sure I have the proper permissions!", message.channel);
-        if (!permissions.has("SPEAK")) return sendError("I cannot speak in this voice channel, make sure I have the proper permissions!", message.channel);
+        if (!permissions.has("CONNECT")) return sendTime("I cannot connect to your voice channel, make sure I have the proper permissions!", message.channel);
+        if (!permissions.has("SPEAK")) return sendTime("I cannot speak in this voice channel, make sure I have the proper permissions!", message.channel);
 
         var searchString = args.join(" ");
         if (!searchString) return sendTime(`Please use \`\`${client.config.prefix}play\`\` to play something!`, message.channel);
@@ -165,7 +165,7 @@ module.exports = {
 
             dispatcher.setVolumeLogarithmic(queue.volume / 100);
             let thing = new MessageEmbed()
-                .setAuthor("Now playing ♪", message.author.displayAvatarURL())//https://c.tenor.com/HJvqN2i4Zs4AAAAj/milk-and-mocha-cute.gif //https://raw.githubusercontent.com/SudhanPlayz/Discord-MusicBot/master/assets/Music.gif
+                .setAuthor("Now playing ♪")//https://c.tenor.com/HJvqN2i4Zs4AAAAj/milk-and-mocha-cute.gif //https://raw.githubusercontent.com/SudhanPlayz/Discord-MusicBot/master/assets/Music.gif
                 .setThumbnail(song.img)
                 .setColor('RANDOM')
                 .addField("Name", `[${song.title}](${song.url})`, true)

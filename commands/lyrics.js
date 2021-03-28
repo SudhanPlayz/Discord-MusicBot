@@ -31,8 +31,8 @@ module.exports = {
             .setThumbnail(queue.songs[0].img)
             .setColor('RANDOM')
             .setDescription(splittedLyrics[0])
-            .setFooter(`Page 1/${splittedLyrics.length}`)
-            .setTimestamp();
+            .setFooter(`Page 1/${splittedLyrics.length} • Loop: ${queue.loop ? "✅" : "❌"}`)
+            //.setTimestamp();
 
         const lyricsMsg = await message.channel.send(lyricsEmbed);
         if (splittedLyrics.length > 1) await splitlyrics.pagination(lyricsMsg, message.author, splittedLyrics);

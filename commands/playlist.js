@@ -24,7 +24,7 @@ module.exports = {
         if (!permissions.has("CONNECT")) return sendError("I cannot connect to your voice channel, make sure I have the proper permissions!", message.channel);
         if (!permissions.has("SPEAK")) return sendError("I cannot speak in this voice channel, make sure I have the proper permissions!", message.channel);
 
-        if (!searchString || !url) return sendError(`Usage: ${message.client.config.prefix}playlist <YouTube Playlist URL | Playlist Name>`, message.channel);
+        if (!searchString || !url) return sendTime(`Usage: ${message.client.config.prefix}playlist <YouTube Playlist URL | Playlist Name>`, message.channel);
         if (url.match(/^https?:\/\/(www.youtube.com|youtube.com)\/playlist(.*)$/)) {
             try {
                 const playlist = await ytpl(url.split("list=")[1]);
@@ -42,13 +42,13 @@ module.exports = {
                 });
             } catch (error) {
                 console.error(error);
-                return sendError("Playlist not found :(", message.channel).catch(console.error);
+                return sendTime("Playlist not found :(", message.channel).catch(console.error);
             }
         } else {
             try {
                 var searched = await yts.search(searchString);
 
-                if (searched.playlists.length === 0) return sendError("Looks like i was unable to find the playlist on YouTube", message.channel);
+                if (searched.playlists.length === 0) return sendTime("Looks like i was unable to find the playlist on YouTube", message.channel);
                 var songInfo = searched.playlists[0];
                 let listurl = songInfo.listId;
                 const playlist = await ytpl(listurl);
@@ -61,7 +61,8 @@ module.exports = {
                     .setAuthor("Playlist has been added to queue", message.author.displayAvatarURL())//https://raw.githubusercontent.com/SudhanPlayz/Discord-MusicBot/master/assets/Music.gif
                     .setThumbnail(songInfo.thumbnail)
                     .setColor('RANDOM')
-                    .setDescription(`✅  **|**  Playlist: **\`${songInfo.title}\`** has been added \`${songInfo.videoCount}\` video to the queue`);
+                    .setDescription(`✅  **|**  Playlist: **\`${songInfo.title}\`** has been added \`${songInfo.videoCount}\` video to the queue`)
+                    .addField("Total songs in playlist",`\`\`${queue.songs.length}\`\``)
                 return message.channel.send(thing);
             } catch (error) {
                 return sendError("An unexpected error has occurred", message.channel).catch(console.error);

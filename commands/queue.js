@@ -22,14 +22,16 @@ module.exports = {
         const chunked = util.chunk(que, 10).map((x) => x.join("\n"));
 
         const embed = new MessageEmbed()
-            .setAuthor("Queue")//https://c.tenor.com/HJvqN2i4Zs4AAAAj/milk-and-mocha-cute.gif //https://raw.githubusercontent.com/SudhanPlayz/Discord-MusicBot/master/assets/Music.gif
+            //.setAuthor("Queue") //https://c.tenor.com/HJvqN2i4Zs4AAAAj/milk-and-mocha-cute.gif //https://raw.githubusercontent.com/SudhanPlayz/Discord-MusicBot/master/assets/Music.gif
+            .setTitle("Queue")
             .setThumbnail(message.guild.iconURL())
             .setColor('RANDOM')
             .setDescription(chunked[0])
-            .addField("Now Playing", `[${queue.songs[0].title}](${queue.songs[0].url})`, true)
+            .addField("Now Playing", `[${queue.songs[0].title}](${queue.songs[0].url}) - \`${queue.songs[0].duration}\``, true)
             //.addField("Text Channel", queue.textChannel, true)
             .addField("Voice Channel", queue.voiceChannel, true)
-            .setFooter(`Page 1/${chunked.length} • Loop: ${queue.loop ? "✅" : "❌"}`, message.author.displayAvatarURL());
+            .setFooter(`Page 1/${chunked.length} • Loop: ${queue.loop ? "✅" : "❌"}`)
+        if(queue.songs.length > 10)embed.addField("Total songs",`\`\`${queue.songs.length}\`\``)
         if(queue.songs.length === 1)embed.setDescription(`Add songs to the queue with \`\`${message.client.config.prefix}play\`\` or \`\`${message.client.config.prefix}search\`\`!`)
 
         try {

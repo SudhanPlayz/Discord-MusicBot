@@ -30,13 +30,13 @@ module.exports = {
             if(!command)command = client.commands.find(x => x.info.aliases.includes(cmd))
             if(!command)return message.channel.send("Unknown Command")
             let commandinfo = new MessageEmbed()
-            .setTitle("Command: "+command.info.name+" info")
+            .setTitle("Command: "+command.info.name)
             .setColor('RANDOM')
-            .setDescription(`
-Name: ${command.info.name}
+            .setDescription(//Name: ${command.info.name}
+            `
 Description: ${command.info.description}
-Usage: \`\`${client.config.prefix}${command.info.name} ${command.info.usage}\`\`
-Aliases: ${command.info.aliases.join(", ")}
+Usage: \`${client.config.prefix}${command.info.name} ${command.info.usage}\`
+Aliases: \`${command.info.aliases.join(", ")}\`
 `)
             message.channel.send(commandinfo)
         }
