@@ -5,7 +5,7 @@ If you would like to host the bot on a local pc, follow these steps -
   1) Clone the repo from the `code` button above and copy the link under the HTTP section.
      
       Open a Terminal Window whereever you want the bot to be placed in and then type 
-      ```git clone https://github.com/joeyk710/Discord-MusicBot.git```
+          ```git clone https://github.com/joeyk710/Discord-MusicBot.git```
 
   2) Insert your bot token into the `.env` file. 
   
