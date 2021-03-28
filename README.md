@@ -18,7 +18,11 @@ If you would like to host the bot on a local pc, follow these steps -
   4) After the `node-modules` have been all downloaded and you have placed your bot token in the `.env` file, type `node index.js`.
 
       If the bot says `[API] Logged in as (bot name)` without errors, the bot is fully functional! 
-      If there is an error that says `Cannot find module (name)`, type `npm i (module name from error)` and then type `node index.js` to see if the error is fixed!
+      If you get an error similar to this: 
+      ```
+      Cannot find module (name)
+      ```
+      Type `npm i (module name from error)` and then type `node index.js` to see if the error is fixed!
 
 
 ## 📄 Commands
