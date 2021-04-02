@@ -148,7 +148,7 @@ module.exports = {
                         if (er) {
                             if (serverQueue) {
                                 serverQueue.songs.shift();
-                                play(serverQueue.songs[0]);
+                                play(guild, serverQueue.songs[0]);
                                 return sendError(`An unexpected error has occurred.\nPossible type \`${er}\``, message.channel);
                             }
                         }

@@ -24,7 +24,7 @@ process.on("unhandledRejection", (reason, promise) => {
         console.error(reason);
     }
 });
-require('events').EventEmitter.defaultMaxListeners = 28
+require('events').EventEmitter.defaultMaxListeners = 25
 
 
   //Executing the codes when we get the command or aliases

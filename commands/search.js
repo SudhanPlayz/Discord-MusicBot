@@ -92,7 +92,7 @@ module.exports = {
                 .addField("Name", `[${song.title}](${song.url})`, true)
                 .addField("Duration", "`"+`${song.duration}`+"`", true)
                 .addField("Requested by", song.req, true)
-                .addField("Position in queue", `${serverQueue.songs.length - 1}`, true)
+                .addField("Position in queue", `${serverQueue.songs.length - 0}`, true)
                 //.setFooter(`Views: ${song.views} | ${song.ago}`);
             return message.channel.send(thing);
         }
