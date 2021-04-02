@@ -2,6 +2,9 @@
 
 Disclaimer - This is a fork of the repository https://github.com/SudhanPlayz/Discord-MusicBot. Any new changes from there will be applied on top of any changes I make to my version.
 
+## 📝 Latest Announcement
+Discord-MusicBot v4 will be launched shortly :tada: You can able to check out the [project](https://github.com/SudhanPlayz/Discord-MusicBot/projects/1) and its [discussion](https://github.com/SudhanPlayz/Discord-MusicBot/discussions/72)
+
 ## 📝 Tutorial
 If you would like to host the bot on a local pc, follow these steps - 
   1) Clone the repo from the `code` button above and copy the link under the HTTP section.

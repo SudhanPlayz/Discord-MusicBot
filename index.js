@@ -2,9 +2,13 @@ require("dotenv").config();//Loading .env
 const fs = require("fs");
 const { Collection, Client } = require("discord.js");
 
+//const constant = require('./node_modules/discord.js/src/util/Constants.js')
+//constant.DefaultOptions.ws.properties.$browser = `Discord iOS`
+
 const client = new Client();//Making a discord bot client
 client.commands = new Collection();//Making client.commands as a Discord.js Collection
 client.queue = new Map()
+
 
 client.config = {
   prefix: process.env.PREFIX,

@@ -17,7 +17,7 @@ module.exports = {
         })
 
         let embed = new MessageEmbed()
-        .setAuthor(client.user.username, "https://c.tenor.com/HJvqN2i4Zs4AAAAj/milk-and-mocha-cute.gif") ////https://raw.githubusercontent.com/SudhanPlayz/Discord-MusicBot/master/assets/Music.gif
+        .setAuthor(client.user.username, "https://c.tenor.com/HJvqN2i4Zs4AAAAj/milk-and-mocha-cute.gif") //https://raw.githubusercontent.com/SudhanPlayz/Discord-MusicBot/master/assets/Music.gif
         .setColor('RANDOM')
         .setDescription("To get info of each command, type "+"`"+client.config.prefix+"help [command]`")
         .addField("Commands", allcmds, false)

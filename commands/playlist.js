@@ -158,7 +158,7 @@ module.exports = {
                 if (serverQueue) {
                     console.log(error);
                     serverQueue.songs.shift();
-                    play(serverQueue.songs[0]);
+                    play(guild, serverQueue.songs[0]);
                 }
             }
             serverQueue.connection.on("disconnect", () => message.client.queue.delete(message.guild.id));
