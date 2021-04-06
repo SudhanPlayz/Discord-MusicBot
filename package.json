@@ -1,19 +1,30 @@
 {
-  "name": "discordjs-bot-template",
-  "version": "1.0.0",
-  "description": "",
+  "name": "advanced-discord-music-bot",
+  "version": "3.0.0",
+  "description": "Advanced discord music bot made by Sudhan for Coding With Sudhan 4k Views",
   "main": "index.js",
-  "dependencies": {
-    "ascii-table": "^0.0.9",
-    "common-tags": "^1.8.0",
-    "discord.js": "^12.5.1",
-    "got": "^11.8.1"
-  },
-  "devDependencies": {},
+  "license": "MIT",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js"
   },
-  "author": "Tomato#6966",
-  "license": "ISC"
+  "engines": {
+    "node": "14.x"
+  },
+  "dependencies": {
+    "@discordjs/opus": "^0.3.2",
+    "discord.js": "^12.3.1",
+    "dotenv": "^8.2.0",
+    "ffmpeg": "0.0.4",
+    "ffmpeg-static": "^4.2.7",
+    "yt-search": "^2.2.4",
+    "ytdl-core": "^4.1.1",
+    "discord-ytdl-core": "^5.0.1",
+    "opusscript": "^0.0.7",
+    "soundcloud-downloader": "^0.2.4",
+    "youtube-sr": "^2.0.1",
+    "lyrics-finder": "^21.4.0",
+    "fs": "0.0.1-security",
+    "ytpl": "^2.0.0-alpha.3",
+    "node-opus": "^0.3.3"
+  }
 }
