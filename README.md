@@ -16,7 +16,7 @@ If you would like to host the bot on a local pc, follow these steps -
 
   2) Insert your bot token into the `.env` file. 
   
-     If you have issues getting a bot token, follow this guide - https://github.com/jagrosh/MusicBot/wiki/Getting-a-Bot-Token
+     If you have issues getting a bot token, follow this guide - https://github.com/joeyk710/Discord-MusicBot/wiki/How-to-get-a-Discord-Bot-token
 
   3) Open an integrated terminal (if using Visual Studio) and type ```npm i```
 
