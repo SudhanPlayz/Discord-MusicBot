@@ -1,31 +1,19 @@
 {
-  "name": "advanced-discord-music-bot",
-  "version": "3.0.0",
-  "description": "An advanced discord music bot with lots of features tnat are easy to use!",
+  "name": "discordjs-bot-template",
+  "version": "1.0.0",
+  "description": "",
   "main": "index.js",
-  "license": "MIT",
+  "dependencies": {
+    "ascii-table": "^0.0.9",
+    "common-tags": "^1.8.0",
+    "discord.js": "^12.5.1",
+    "got": "^11.8.1"
+  },
+  "devDependencies": {},
   "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js"
   },
-  "engines": {
-    "node": "14.x"
-  },
-  "dependencies": {
-    "@discordjs/opus": "^0.3.2",
-    "discord-ytdl-core": "^5.0.1",
-    "discord.js": "^12.3.1",
-    "dotenv": "^8.2.0",
-    "ffmpeg": "0.0.4",
-    "ffmpeg-static": "^4.2.7",
-    "fs": "0.0.1-security",
-    "lyrics-finder": "^21.4.0",
-    "node-opus": "^0.3.3",
-    "opusscript": "^0.0.7",
-    "soundcloud-downloader": "^0.2.4",
-    "youtube-sr": "^2.0.1",
-    "yt-search": "^2.2.4",
-    "ytdl-core": "^4.1.1",
-    "ytdl-core-discord": "^1.2.4",
-    "ytpl": "^2.0.0-alpha.3"
-  }
+  "author": "Tomato#6966",
+  "license": "ISC"
 }

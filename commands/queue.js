@@ -23,7 +23,7 @@ module.exports = {
 
         const embed = new MessageEmbed()
             //.setAuthor("Queue") //https://c.tenor.com/HJvqN2i4Zs4AAAAj/milk-and-mocha-cute.gif //https://raw.githubusercontent.com/SudhanPlayz/Discord-MusicBot/master/assets/Music.gif
-            .setTitle("Queue")
+            .setTitle("Queue", message.author.iconURL())
             .setThumbnail(message.guild.iconURL())
             .setColor('RANDOM')
             .setDescription(chunked[0])
