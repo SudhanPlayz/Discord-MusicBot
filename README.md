@@ -29,6 +29,21 @@ Heroku: [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.
 [DanBot Hosting](https://danbot.host/) Pretty Good Host, Uses Pterodactyl Software, Is 24/7 Has some Downtime every once in awhile Unlimited resources Pretty good
 
 
+## 📝 Setup
+
+_Requires [Node.js](nodejs.org) v12 or higher_
+
+**1.** Download or clone this repository
+
+**2.** Install required dependencies using `npm install` within the repository folder
+
+**3.** Edit .env_example To your Items
+
+**4.** Run `npm start` to start the bot
+
+**5.** Ensure the Bot has the right Permissions
+
+
 
 ## ✨ Contributors
 Contributions are always welcomed :D
