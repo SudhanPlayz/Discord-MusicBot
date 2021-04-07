@@ -6,7 +6,8 @@
 Discord-MusicBot v4 will be launched shortly :tada: You can able to check out the [project](https://github.com/SudhanPlayz/Discord-MusicBot/projects/1) and its [discussion](https://github.com/SudhanPlayz/Discord-MusicBot/discussions/72)
 
 ## 📝 Tutorial
-Change .env_example to .env 
+Change .env_example to .env
+
 A Tutorial has also Been uploaded on YouTube <img src="https://www.youtube.com/about/static/svgs/icons/brand-resources/YouTube_icon_full-color.svg?cache=f2ec7a5" width="30px"> Watch it by clicking [here](https://youtu.be/DQXuTaYa31I)
 
 ## 📝 [Support Server](https://discord.gg/a9SHDpD)
