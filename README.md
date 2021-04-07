@@ -17,10 +17,19 @@ Got any error or any problem with the code? Join this server and ask your questi
 
 <div align="left"><img src="https://pika-pika.is-inside.me/zJduq9Gn.png"></div><div align="center"><img src="https://pika-pika.is-inside.me/9ufBoGDH.png"></div><div align="right"><img src="https://pika-pika.is-inside.me/8QkGROJv.png"></div>
 
-## 💨 Run the projects
+
+
+## 📝 Recommended Hosts
 Glitch: [![Remix on Glitch](https://cdn.glitch.com/2703baf2-b643-4da7-ab91-7ee2a2d00b5b%2Fremix-button.svg)](https://glitch.com/edit/#!/import/github/SudhanPlayz/Discord-MusicBot)
 Repl: [![Run on Repl.it](https://repl.it/badge/github/SudhanPlayz/Discord-MusicBot)](https://repl.it/github/SudhanPlayz/Discord-MusicBot)
 Heroku: [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/SudhanPlayz/Discord-MusicBot)
+
+[YumeNodes](https://yumenodes.net/) Decent Host, Uses Pterodactyl Software, They are 24/7 and Have great Support
+
+[DanBot Hosting](https://danbot.host/) Pretty Good Host, Uses Pterodactyl Software, Is 24/7 Has some Downtime every once in awhile Unlimited resources Pretty good
+
+
+
 ## ✨ Contributors
 Contributions are always welcomed :D
 <a href="https://github.com/SudhanPlayz/Discord-MusicBot/graphs/contributors">
