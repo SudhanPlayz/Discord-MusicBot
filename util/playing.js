@@ -34,7 +34,6 @@ module.exports = {
                     if (er) {
                         if (queue) {
                             module.exports.play(queue.songs[0], message);
-                            play(queue.songs[0]);
                             return sendError(`An unexpected error has occurred.\nPossible type \`${er}\``, message.channel);
                         }
                     }
