@@ -1,33 +1,41 @@
 const { MessageEmbed } = require("discord.js");
-const sendError = require("../util/error");
 
 module.exports = {
-    info: {
-        name: "leave",
-        aliases: ["goaway", "disconnect"],
-        description: "Leave The Voice Channel!",
-        usage: "Leave",
+    name: "leave",
+    description: "To leave the voice channel",
+    usage: "",
+    permissions: {
+        channel: ["VIEW_CHANNEL", "SEND_MESSAGES", "EMBED_LINKS"],
+        member: [],
+    },
+    aliases: ["stop", "exit", "quit", "dc", "disconnect"],
+    /**
+     *
+     * @param {import("../structures/DiscordMusicBot")} client
+     * @param {import("discord.js").Message} message
+     * @param {string[]} args
+     * @param {*} param3
+     */
+    run: async (client, message, args, { GuildDB }) => {
+        let player = await client.Manager.get(message.guild.id);
+        if (!player) return client.sendTime(message.channel, "❌ | **Nothing is playing right now...**");
+        await message.channel.send(":notes: | **The player has stopped and the queue has been cleared.**");
+        await message.react("✅");
+        player.destroy();
     },
 
-    run: async function (client, message, args) {
-        let channel = message.member.voice.channel;
-        if (!channel) return sendError("I'm sorry but you need to be in a voice channel!", message.channel);
-        if (!message.guild.me.voice.channel) return sendError("I Am Not In Any Voice Channel!", message.channel);
+    SlashCommand: {
+        run: async (client, interaction, args, { GuildDB }) => {
+            const guild = client.guilds.cache.get(interaction.guild_id);
+            const member = guild.members.cache.get(interaction.member.user.id);
 
-        try {
-            await message.guild.me.voice.channel.leave();
-        } catch (error) {
-            await message.guild.me.voice.kick(message.guild.me.id);
-            return sendError("Trying To Leave The Voice Channel...", message.channel);
-        }
+            if (!member.voice.channel) return interaction.send("❌ | You must be on a voice channel.");
+            if (guild.me.voice.channel && !guild.me.voice.channel.equals(member.voice.channel)) return interaction.send(`❌ | You must be on ${guild.me.voice.channel} to use this command.`);
 
-        const Embed = new MessageEmbed()
-            .setAuthor("Leave Voice Channel", "https://raw.githubusercontent.com/SudhanPlayz/Discord-MusicBot/master/assets/Music.gif")
-            .setColor("GREEN")
-            .setTitle("Success")
-            .setDescription("🎶 Left The Voice Channel.")
-            .setTimestamp();
-
-        return message.channel.send(Embed).catch(() => message.channel.send("🎶 Left The Voice Channel :C"));
+            let player = await client.Manager.get(interaction.guild_id);
+            if (!player) return interaction.send("❌ | **Nothing is playing right now...**");
+            player.destroy();
+            interaction.send(":notes: | **The player has stopped and the queue has been cleared.**");
+        },
     },
 };

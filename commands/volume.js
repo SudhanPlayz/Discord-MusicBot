@@ -1,29 +1,54 @@
 const { MessageEmbed } = require("discord.js");
-const sendError = require("../util/error");
+const { TrackUtils } = require("erela.js");
 
 module.exports = {
-  info: {
     name: "volume",
-    description: "To change the server song queue volume",
-    usage: "[volume]",
-    aliases: ["v", "vol"],
-  },
+    description: "Changes the Volume",
+    usage: "<volume>",
+    permissions: {
+        channel: ["VIEW_CHANNEL", "SEND_MESSAGES", "EMBED_LINKS"],
+        member: [],
+    },
+    aliases: ["vol", "v"],
+    /**
+     *
+     * @param {import("../structures/DiscordMusicBot")} client
+     * @param {import("discord.js").Message} message
+     * @param {string[]} args
+     * @param {*} param3
+     */
+    run: async (client, message, args, { GuildDB }) => {
+        let player = await client.Manager.get(message.guild.id);
+        if (!player) return client.sendTime(message.channel, "❌ | **Nothing is playing right now...**");
+        if (!parseInt(args[0])) return message.channel.send("Please choose between 1 - 100");
+        let vol = parseInt(args[0]);
+        player.setVolume(vol);
+        message.channel.send(`🔉 | Volume set to \`${player.volume}\``);
+    },
+    SlashCommand: {
+        options: [
+            {
+                name: "number",
+                value: "number 1 - 100",
+                type: 4,
+                required: false,
+                description: "Change the volume",
+            },
+        ],
 
-  run: async function (client, message, args) {
-    const channel = message.member.voice.channel;
-    if (!channel)return sendError("I'm sorry but you need to be in a voice channel to play music!", message.channel);
-    const serverQueue = message.client.queue.get(message.guild.id);
-    if (!serverQueue) return sendError("There is nothing playing in this server.", message.channel);
-    if (!serverQueue.connection) return sendError("There is nothing playing in this server.", message.channel);
-    if (!args[0])return message.channel.send(`The current volume is: **${serverQueue.volume}**`);
-     if(isNaN(args[0])) return message.channel.send(':notes: Numbers only!').catch(err => console.log(err));
-    if(parseInt(args[0]) > 150 ||(args[0]) < 0) return sendError('You can\'t set the volume more than 150. or lower than 0',message.channel).catch(err => console.log(err));
-    serverQueue.volume = args[0]; 
-    serverQueue.connection.dispatcher.setVolumeLogarithmic(args[0] / 100);
-    let xd = new MessageEmbed()
-    .setDescription(`I set the volume to: **${args[0]/1}/100**`)
-    .setAuthor("Server Volume Manager", "https://raw.githubusercontent.com/SudhanPlayz/Discord-MusicBot/master/assets/Music.gif")
-    .setColor("BLUE")
-    return message.channel.send(xd);
-  },
+        run: async (client, interaction, args, { GuildDB }) => {
+            const guild = client.guilds.cache.get(interaction.guild_id);
+            const member = guild.members.cache.get(interaction.member.user.id);
+
+            if (!member.voice.channel) return interaction.send("❌ | You must be on a voice channel.");
+            if (guild.me.voice.channel && !guild.me.voice.channel.equals(member.voice.channel)) return interaction.send(`❌ | You must be on ${guild.me.voice.channel} to use this command.`);
+            let player = await client.Manager.get(interaction.guild_id);
+            if (!player) return interaction.send("❌ | **Nothing is playing right now...**");
+            if (!args.length) return interaction.send(`🔉 | Current volume \`${player.volume}\`.`);
+            let vol = parseInt(args[0].value);
+            if (!vol || vol < 1 || vol > 100) return interaction.send("Please choose between 1 - 100");
+            player.setVolume(vol);
+            interaction.send(`🔉 | Volume set to \`${player.volume}\``);
+        },
+    },
 };

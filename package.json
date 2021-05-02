@@ -1,30 +1,52 @@
 {
-  "name": "advanced-discord-music-bot",
-  "version": "3.0.0",
-  "description": "Advanced discord music bot made by Sudhan for Coding With Sudhan 4k Views",
+  "name": "discord-musicbot",
+  "version": "4.0.0",
+  "description": "Very simple discord music bot with the discord.js with Song Name playing. It can able to play music with the song name",
   "main": "index.js",
-  "license": "MIT",
   "scripts": {
-    "start": "node index.js"
+    "install-node-v14": "wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.2/install.sh | bash && export NVM_DIR=\"$([ -z \"${XDG_CONFIG_HOME-}\" ] && printf %s \"${HOME}/.nvm\" || printf %s \"${XDG_CONFIG_HOME}/nvm\")\" && [ -s \"$NVM_DIR/nvm.sh\" ] && \\. \"$NVM_DIR/nvm.sh\" && nvm install 14 && nvm use 14",
+    "start": "node index",
+    "rm-logs": "rm Logs.log"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SudhanPlayz/Discord-MusicBot.git"
   },
   "engines": {
     "node": "14.x"
   },
+  "keywords": [
+    "discord",
+    "discord-bot",
+    "discord-musicbot",
+    "music",
+    "discord-music"
+  ],
+  "author": "SudhanPlayz",
+  "license": "SEE LICENSE IN LICENSE",
+  "bugs": {
+    "url": "https://github.com/SudhanPlayz/Discord-MusicBot/issues"
+  },
+  "homepage": "https://github.com/SudhanPlayz/Discord-MusicBot#readme",
   "dependencies": {
-    "@discordjs/opus": "^0.3.2",
-    "discord.js": "^12.3.1",
-    "dotenv": "^8.2.0",
-    "ffmpeg": "0.0.4",
-    "ffmpeg-static": "^4.2.7",
-    "yt-search": "^2.2.4",
-    "ytdl-core": "^4.1.1",
-    "discord-ytdl-core": "^5.0.1",
-    "opusscript": "^0.0.7",
-    "soundcloud-downloader": "^0.2.4",
-    "youtube-sr": "^2.0.1",
-    "lyrics-finder": "^21.4.0",
-    "fs": "0.0.1-security",
-    "ytpl": "^2.0.0-alpha.3",
-    "node-opus": "^0.3.3"
+    "colors": "^1.4.0",
+    "discord.js": "^12.5.3",
+    "erela.js": "^2.3.2",
+    "express": "^4.17.1",
+    "express-session": "^1.17.1",
+    "jsoning": "^0.8.15",
+    "lavasfy": "^2.1.2",
+    "lodash": "^4.17.21",
+    "lyrics-finder": "^21.7.0",
+    "mongoose": "^5.12.3",
+    "node-fetch": "^2.6.1",
+    "passport": "^0.4.1",
+    "passport-discord": "^0.1.4",
+    "pretty-ms": "^7.0.1",
+    "socket.io": "^4.0.1",
+    "winston": "^3.3.3"
+  },
+  "devDependencies": {
+    "prettier": "2.2.1"
   }
 }

@@ -1,28 +1,65 @@
 const { MessageEmbed } = require("discord.js");
-const sendError = require("../util/error");
+const { TrackUtils } = require("erela.js");
 
-module.exports = {
-  info: {
+  module.exports = {
     name: "remove",
-    description: "Remove song from the queue",
-    usage: "rm <number>",
+    description: `Remove a song from the queue`,
+    usage: "[number]",
+    permissions: {
+      channel: ["VIEW_CHANNEL", "SEND_MESSAGES", "EMBED_LINKS"],
+      member: [],
+    },
     aliases: ["rm"],
+
+    /**
+   *
+   * @param {import("../structures/DiscordMusicBot")} client
+   * @param {import("discord.js").Message} message
+   * @param {string[]} args
+   * @param {*} param3
+   */
+  run: async (client, message, args, { GuildDB }) => {
+    let player = await client.Manager.players.get(message.guild.id);
+    const song = player.queue.slice(args[0] - 1, 1); 
+    if (!player) return client.sendTime(message.channel, "❌ | **Nothing is playing right now...**");
+
+    if (!player.queue || !player.queue.length || player.queue.length === 0)
+      return message.channel.send("There is nothing in the queue to remove");
+    let rm = new MessageEmbed()
+      .setDescription(`✅ **|** Removed track **\`${Number(args[0])}\`** from the queue!`)
+      .setColor("GREEN")
+      if (isNaN(args[0]))rm.setDescription(`**Usage - **${client.config.prefix}\`remove [number]\``);
+      if (args[0] > player.queue.length)
+      rm.setDescription(`The queue has only ${player.queue.length} songs!`);
+    await message.channel.send(rm);
+    player.queue.remove(Number(args[0]) - 1);
   },
 
-  run: async function (client, message, args) {
-   const queue = message.client.queue.get(message.guild.id);
-    if (!queue) return sendError("There is no queue.",message.channel).catch(console.error);
-    if (!args.length) return sendError(`Usage: ${client.config.prefix}\`remove <Queue Number>\``);
-    if (isNaN(args[0])) return sendError(`Usage: ${client.config.prefix}\`remove <Queue Number>\``);
-    if (queue.songs.length == 1) return sendError("There is no queue.",message.channel).catch(console.error);
-    if (args[0] > queue.songs.length)
-      return sendError(`The queue is only ${queue.songs.length} songs long!`,message.channel).catch(console.error);
-try{
-    const song = queue.songs.splice(args[0] - 1, 1); 
-    sendError(`❌ **|** Removed: **\`${song[0].title}\`** from the queue.`,queue.textChannel).catch(console.error);
-                   message.react("✅")
-} catch (error) {
-        return sendError(`:notes: An unexpected error occurred.\nPossible type: ${error}`, message.channel);
-      }
-  },
+  SlashCommand: {
+    options: [
+      {
+          name: "remove",
+          value: "[number]",
+          type: 4,
+          required: true,
+          description: "Remove a song from the queue",
+      },
+  ],
+    run: async (client, interaction, args, { GuildDB }) => {
+      let player = await client.Manager.get(interaction.guild_id);
+      const song = player.queue.slice(args[0] - 1, 1);
+      if (!player) return interaction.send("❌ | **Nothing is playing right now...**");
+  
+      if (!player.queue || !player.queue.length || player.queue.length === 0)
+      return interaction.send("There is nothing in the queue to remove");
+    let rm = new MessageEmbed()
+      .setDescription(`✅ **|** Removed track **\`${Number(args[0])}\`** from the queue!`)
+      .setColor("GREEN")
+      if (isNaN(args[0]))rm.setDescription(`Usage: ${client.config.prefix}\`remove [number]\``);
+      if (args[0] > player.queue.length)
+      rm.setDescription(`The queue has only ${player.queue.length}!`);
+    await interaction.send(rm);
+      player.queue.remove(Number(args[0]) - 1);
+    },
+  }
 };

@@ -1,120 +1,224 @@
-const { Util, MessageEmbed } = require("discord.js");
-const ytdl = require("ytdl-core");
-const { play } = require("../util/playing");
-const yts = require("yt-search");
-const YouTube = require("youtube-sr");
-const sendError = require("../util/error");
-const scdl = require("soundcloud-downloader").default;
+const { MessageEmbed, Message } = require("discord.js");
+const { TrackUtils } = require("erela.js");
+const _ = require("lodash");
+const prettyMilliseconds = require("pretty-ms");
+
 module.exports = {
-    info: {
-        name: "search",
-        description: "To search songs :D",
-        usage: "<song_name>",
-        aliases: ["sc"],
+    name: "search",
+    description: "Search a song/playlist",
+    usage: "[Song Name|SongURL]",
+    permissions: {
+        channel: ["VIEW_CHANNEL", "SEND_MESSAGES", "EMBED_LINKS"],
+        member: [],
+    },
+    aliases: [],
+    /**
+     *
+     * @param {import("../structures/DiscordMusicBot")} client
+     * @param {import("discord.js").Message} message
+     * @param {string[]} args
+     * @param {*} param3
+     */
+    run: async (client, message, args, { GuildDB }) => {
+        if (!message.member.voice.channel) return client.sendTime(message.channel, "❌  | **You must be in a voice channel to play something!**");
+
+        let SearchString = args.join(" ");
+        if (!SearchString) return client.sendTime(message.channel, `**Usage - **\`${GuildDB.prefix}search [Song Name|SongURL]\``);
+
+        let Searching = await message.channel.send(":mag_right: Searching...");
+
+        const player = client.Manager.create({
+            guild: message.guild.id,
+            voiceChannel: message.member.voice.channel.id,
+            textChannel: message.channel.id,
+            selfDeafen: false,
+        });
+
+        if (player.state != "CONNECTED") await player.connect();
+
+        let Searched = await player.search(SearchString, message.author);
+        if (Searched.loadType == "NO_MATCHES") return client.sendTime(message.channel, "No matches found for " + SearchString);
+        else {
+            Searched.tracks = Searched.tracks.map((s, i) => {
+                s.index = i;
+                return s;
+            });
+            let songs = _.chunk(Searched.tracks, 10);
+            let Pages = songs.map((songz) => {
+                let MappedSongs = songz.map((s) => `\`${s.index + 1}.\` [${s.title}](${s.uri}) \nDuration: \`${prettyMilliseconds(s.duration, { colonNotation: true })}\``);
+
+                let em = new MessageEmbed()
+                    .setAuthor("Search Results of " + SearchString, client.config.IconURL)
+                    .setColor("RANDOM")
+                    .setDescription(MappedSongs.join("\n\n"));
+                return em;
+            });
+
+            if (!Pages.length || Pages.length === 1) return message.channel.send(Pages[0]);
+            else client.Pagination(message, Pages);
+
+            let w = (a) => new Promise((r) => setInterval(r, a));
+            await w(500); //waits 500ms cuz needed to wait for the above song search embed to send ._.
+            let msg = await message.channel.send("**Type the number of the song you want to play! Expires in `30 seconds`.**");
+
+            let er = false;
+            let SongID = await message.channel
+                .awaitMessages((msg) => message.author.id === msg.author.id, { max: 1, errors: ["time"], time: 30000 })
+                .catch(() => {
+                    er = true;
+                    msg.edit("**You took too long to respond. Run the command again if you want to play something!**");
+                });
+            if (er) return;
+            /**@type {Message} */
+            let SongIDmsg = SongID.first();
+
+            if (!parseInt(SongIDmsg.content)) return client.sendTime("Please send correct song ID number");
+            let Song = Searched.tracks[parseInt(SongIDmsg.content) - 1];
+            if (!Song) return message.channel.send("No song found for the given ID");
+            player.queue.add(Song);
+            if (!player.playing && !player.paused && !player.queue.size) player.play();
+            let SongAddedEmbed = new MessageEmbed();
+            SongAddedEmbed.setAuthor(`Added to queue`, client.config.IconURL);
+            SongAddedEmbed.setThumbnail(Song.displayThumbnail());
+            SongAddedEmbed.setColor("RANDOM");
+            SongAddedEmbed.setDescription(`[${Song.title}](${Song.uri})`);
+            SongAddedEmbed.addField("Author", `${Song.author}`, true);
+            SongAddedEmbed.addField("Duration", `\`${prettyMilliseconds(player.queue.current.duration, { colonNotation: true })}\``, true);
+            if (player.queue.totalSize > 1) SongAddedEmbed.addField("Position in queue", `${player.queue.size - 0}`, true);
+            message.channel.send(SongAddedEmbed);
+        }
     },
 
-    run: async function (client, message, args) {
-        let channel = message.member.voice.channel;
-        if (!channel) return sendError("I'm sorry but you need to be in a voice channel to play music!", message.channel);
+    SlashCommand: {
+        options: [
+            {
+                name: "Song Name|Song URL",
+                value: "[Song Name|Song URL]",
+                type: 3,
+                required: true,
+                description: "Search a song/playlist",
+            },
+        ],
+        /**
+         *
+         * @param {import("../structures/DiscordMusicBot")} client
+         * @param {import("discord.js").Message} message
+         * @param {string[]} args
+         * @param {*} param3
+         */
+        run: async (client, interaction, args, { GuildDB }) => {
+            const guild = client.guilds.cache.get(interaction.guild_id);
+            const member = guild.members.cache.get(interaction.member.user.id);
+            const voiceChannel = member.voice.channel;
+            let awaitchannel = client.channels.cache.get(interaction.channel_id); /// thanks Reyansh for this idea ;-;
+            if (!member.voice.channel) return interaction.send("❌ | You must be on a voice channel.");
+            if (guild.me.voice.channel && !guild.me.voice.channel.equals(member.voice.channel)) return interaction.send(`❌ | You must be on ${guild.me.voice.channel} to use this command.`);
 
-        const permissions = channel.permissionsFor(message.client.user);
-        if (!permissions.has("CONNECT")) return sendError("I cannot connect to your voice channel, make sure I have the proper permissions!", message.channel);
-        if (!permissions.has("SPEAK")) return sendError("I cannot speak in this voice channel, make sure I have the proper permissions!", message.channel);
-
-        var searchString = args.join(" ");
-        if (!searchString) return sendError("You didn't poivide want i want to search", message.channel);
-
-        var serverQueue = message.client.queue.get(message.guild.id);
-        try {
-            var searched = await YouTube.search(searchString, { limit: 10 });
-            if (searched[0] == undefined) return sendError("Looks like i was unable to find the song on YouTube", message.channel);
-            let index = 0;
-            let embedPlay = new MessageEmbed()
-                .setColor("BLUE")
-                .setAuthor(`Results for \"${args.join(" ")}\"`, message.author.displayAvatarURL())
-                .setDescription(`${searched.map((video2) => `**\`${++index}\`  |** [\`${video2.title}\`](${video2.url}) - \`${video2.durationFormatted}\``).join("\n")}`)
-                .setFooter("Type the number of the song to add it to the playlist");
-            // eslint-disable-next-line max-depth
-            message.channel.send(embedPlay).then((m) =>
-                m.delete({
-                    timeout: 15000,
-                })
-            );
-            try {
-                var response = await message.channel.awaitMessages((message2) => message2.content > 0 && message2.content < 11, {
-                    max: 1,
-                    time: 20000,
-                    errors: ["time"],
-                });
-            } catch (err) {
-                console.error(err);
-                return message.channel.send({
-                    embed: {
-                        color: "RED",
-                        description: "Nothing has been selected within 20 seconds, the request has been canceled.",
-                    },
-                });
-            }
-            const videoIndex = parseInt(response.first().content);
-            var video = await searched[videoIndex - 1];
-        } catch (err) {
-            console.error(err);
-            return message.channel.send({
-                embed: {
-                    color: "RED",
-                    description: "🆘  **|**  I could not obtain any search results",
-                },
+            let player = client.Manager.create({
+                guild: interaction.guild_id,
+                voiceChannel: voiceChannel.id,
+                textChannel: interaction.channel_id,
+                selfDeafen: false,
             });
-        }
+            if (player.state != "CONNECTED") await player.connect();
+            let search = interaction.data.options[0].value;
+            let res;
 
-        response.delete();
-        var songInfo = video;
+            if (search.match(client.Lavasfy.spotifyPattern)) {
+                await client.Lavasfy.requestToken();
+                let node = client.Lavasfy.nodes.get(client.config.Lavalink.id);
+                let Searched = await node.load(search);
 
-        const song = {
-            id: songInfo.id,
-            title: Util.escapeMarkdown(songInfo.title),
-            views: String(songInfo.views).padStart(10, " "),
-            ago: songInfo.uploadedAt,
-            duration: songInfo.durationFormatted,
-            url: `https://www.youtube.com/watch?v=${songInfo.id}`,
-            img: songInfo.thumbnail.url,
-            req: message.author,
-        };
+                switch (Searched.loadType) {
+                    case "LOAD_FAILED":
+                        if (!player.queue.current) player.destroy();
+                        return interaction.send(`There was an error while searching`);
 
-        if (serverQueue) {
-            serverQueue.songs.push(song);
-            let thing = new MessageEmbed()
-                .setAuthor("Song has been added to queue", "https://raw.githubusercontent.com/SudhanPlayz/Discord-MusicBot/master/assets/Music.gif")
-                .setThumbnail(song.img)
-                .setColor("YELLOW")
-                .addField("Name", song.title, true)
-                .addField("Duration", song.duration, true)
-                .addField("Requested by", song.req.tag, true)
-                .setFooter(`Views: ${song.views} | ${song.ago}`);
-            return message.channel.send(thing);
-        }
+                    case "NO_MATCHES":
+                        if (!player.queue.current) player.destroy();
+                        return interaction.send("No results were found.");
+                    case "TRACK_LOADED":
+                        player.queue.add(TrackUtils.build(Searched.tracks[0], member.user));
+                        if (!player.playing && !player.paused && !player.queue.length) player.play();
+                        return interaction.send(`**Added to queue:** \`[${Searched.tracks[0].info.title}](${Searched.tracks[0].info.uri}}\`.`);
 
-        const queueConstruct = {
-            textChannel: message.channel,
-            voiceChannel: channel,
-            connection: null,
-            songs: [],
-            volume: 80,
-            playing: true,
-            loop: false,
-        };
-        message.client.queue.set(message.guild.id, queueConstruct);
-        queueConstruct.songs.push(song);
+                    case "PLAYLIST_LOADED":
+                        let songs = [];
+                        for (let i = 0; i < Searched.tracks.length; i++) songs.push(TrackUtils.build(Searched.tracks[i], member.user));
+                        player.queue.add(songs);
 
-        try {
-            const connection = await channel.join();
-            queueConstruct.connection = connection;
-            play(queueConstruct.songs[0], message);
-        } catch (error) {
-            console.error(`I could not join the voice channel: ${error}`);
-            message.client.queue.delete(message.guild.id);
-            await channel.leave();
-            return sendError(`I could not join the voice channel: ${error}`, message.channel);
-        }
+                        if (!player.playing && !player.paused && player.queue.totalSize === Searched.tracks.length) player.play();
+                        return interaction.send(`**Playlist added to queue**: \n**${Searched.playlist.name}** \nEnqueued: **${Searched.playlistInfo.length} songs**`);
+                }
+            } else {
+                try {
+                    res = await player.search(search, member.user);
+                    if (res.loadType === "LOAD_FAILED") {
+                        if (!player.queue.current) player.destroy();
+                        throw new Error(res.exception.message);
+                    }
+                } catch (err) {
+                    return interaction.send(`There was an error while searching: ${err.message}`);
+                }
+                switch (res.loadType) {
+                    case "NO_MATCHES":
+                        if (!player.queue.current) player.destroy();
+                        return interaction.send("No results were found.");
+                    case "TRACK_LOADED":
+                        player.queue.add(res.tracks[0]);
+                        if (!player.playing && !player.paused && !player.queue.length) player.play();
+                        return interaction.send(`**Added to queue:** \`[${res.tracks[0].title}](${res.tracks[0].uri})\`.`);
+                    case "PLAYLIST_LOADED":
+                        player.queue.add(res.tracks);
+
+                        if (!player.playing && !player.paused && player.queue.size === res.tracks.length) player.play();
+                        return interaction.send(`**Playlist added to queue**: \n**${res.playlist.name}** \nEnqueued: **${res.playlistInfo.length} songs**`);
+                    case "SEARCH_RESULT":
+                        let max = 10,
+                            collected,
+                            filter = (m) => m.author.id === interaction.member.user.id && /^(\d+|end)$/i.test(m.content);
+                        if (res.tracks.length < max) max = res.tracks.length;
+
+                        const results = res.tracks
+                            .slice(0, max)
+                            .map((track, index) => `\`${++index}\` - [${track.title}](${track.uri}) \n\t\`${prettyMilliseconds(track.duration, { colonNotation: true })}\`\n`)
+                            .join("\n");
+
+                        const resultss = new MessageEmbed().setDescription(`${results}\n\n\t**Type the number of the song you want to play!**\n`).setColor("RANDOM").setAuthor(`Search results for ${search}`, client.config.IconURL);
+                        interaction.send(resultss);
+                        try {
+                            collected = await awaitchannel.awaitMessages(filter, { max: 1, time: 30e3, errors: ["time"] });
+                        } catch (e) {
+                            if (!player.queue.current) player.destroy();
+                            return awaitchannel.send("❌ | **You didn't provide a selection**");
+                        }
+
+                        const first = collected.first().content;
+
+                        if (first.toLowerCase() === "cancel") {
+                            if (!player.queue.current) player.destroy();
+                            return awaitchannel.send("Cancelled search.");
+                        }
+
+                        const index = Number(first) - 1;
+                        if (index < 0 || index > max - 1) return awaitchannel.send(`The number you provided was greater or less than the search total. Usage - \`(1-${max})\``);
+                        const track = res.tracks[index];
+                        player.queue.add(track);
+
+                        if (!player.playing && !player.paused && !player.queue.length) {
+                            player.play();
+                        } else {
+                            let SongAddedEmbed = new MessageEmbed();
+                            SongAddedEmbed.setAuthor(`Added to queue`, client.config.IconURL);
+                            SongAddedEmbed.setThumbnail(track.displayThumbnail());
+                            SongAddedEmbed.setColor("RANDOM");
+                            SongAddedEmbed.addField("Song", `[${track.title}](${track.uri})`, true);
+                            SongAddedEmbed.addField("Author", track.author, true);
+                            SongAddedEmbed.addField("Duration", `\`${prettyMilliseconds(track.duration, { colonNotation: true })}\``, true);
+                            awaitchannel.send(SongAddedEmbed);
+                        }
+                }
+            }
+        },
     },
 };

@@ -1,55 +1,116 @@
 const { MessageEmbed } = require("discord.js");
-const sendError = require("../util/error");
+const { TrackUtils, Player } = require("erela.js");
 
 module.exports = {
-  info: {
-    name: "skipto",
-    description: "Skip to the selected queue number",
-    usage: "skipto <number>",
-    aliases: ["st"],
+  name: "skipto",
+  description: `Skip to a song in the queue`,
+  usage: "<number>",
+  permissions: {
+    channel: ["VIEW_CHANNEL", "SEND_MESSAGES", "EMBED_LINKS"],
+    member: [],
   },
+  aliases: ["st"],
+  /**
+   *
+   * @param {import("../structures/DiscordMusicBot")} client
+   * @param {import("discord.js").Message} message
+   * @param {string[]} args
+   * @param {*} param3
+   */
+   run: async (client, message, args, { GuildDB }) => {
 
-  run: async function (client, message, args) {
-    if (!args.length || isNaN(args[0]))
-      return message.channel.send({
-                        embed: {
-                            color: "GREEN",
-                            description: `**Usage**: \`${client.config.prefix}skipto <number>\``
-                        }
-   
-                   }).catch(console.error);
-        
-
-    const queue = message.client.queue.get(message.guild.id);
-    if (!queue) return sendError("There is no queue.",message.channel).catch(console.error);
-    if (args[0] > queue.songs.length)
-      return sendError(`The queue is only ${queue.songs.length} songs long!`,message.channel).catch(console.error);
-
-    queue.playing = true;
-
-    if (queue.loop) {
-      for (let i = 0; i < args[0] - 2; i++) {
-        queue.songs.push(queue.songs.shift());
-      }
-    } else {
-      queue.songs = queue.songs.slice(args[0] - 2);
-    }
-     try{
-    queue.connection.dispatcher.end();
-      }catch (error) {
-        queue.voiceChannel.leave()
-        message.client.queue.delete(message.guild.id);
-       return sendError(`:notes: The player has stopped and the queue has been cleared.: ${error}`, message.channel);
-      }
+    const player = client.Manager.create({
+      guild: message.guild.id,
+      voiceChannel: message.member.voice.channel.id,
+      textChannel: message.channel.id,
+      selfDeafen: false,
+    });
     
-    queue.textChannel.send({
-                        embed: {
-                            color: "GREEN",
-                            description: `${message.author} ⏭ skipped \`${args[0] - 1}\` songs`
-                        }
-   
-                   }).catch(console.error);
-                   message.react("✅")
+    if (!player) return client.sendTime(message.channel, "❌ | **Nothing is playing right now...**");
 
+    try {
+      if (!args[0])
+        return message.channel.send(new MessageEmbed()
+          .setColor("GREEN")
+          .setDescription(`**Usage**: \`${GuildDB.prefix}skipto [number]\``)
+        );
+      //if the wished track is bigger then the Queue Size
+      if (Number(args[0]) > player.queue.size)
+        return message.channel.send(new MessageEmbed()
+          .setColor("GREEN")
+          .setDescription(`❌ | That song is not in the queue! Please try again!`)
+        );
+      //remove all tracks to the jumped song
+      player.queue.remove(0, Number(args[0]) - 1);
+      //stop the player
+      player.stop()
+      //Send Success Message
+      return message.channel.send(new MessageEmbed()
+        .setDescription(`⏭ Skipped \`${Number(args[0] - 1)}\` songs`)
+        .setColor("GREEN")
+      );
+    } catch (e) {
+      console.log(String(e.stack).bgRed)
+      client.sendError(
+        message.channel,
+        "Something went wrong."
+      );
+    }
   },
+  SlashCommand: {
+    options: [
+      {
+          name: "number",
+          value: "[number]",
+          type: 4,
+          required: true,
+          description: "Remove a song from the queue",
+      },
+  ],
+  /**
+   *
+   * @param {import("../structures/DiscordMusicBot")} client
+   * @param {import("discord.js").Message} message
+   * @param {string[]} args
+   * @param {*} param3
+   */
+   run: async (client, interaction, args, { GuildDB }) => {
+
+    const player = client.Manager.create({
+      guild: interaction.guild_id,
+      voiceChannel: interaction.member.voice.channel.id,
+      textChannel: interaction.channel.id,
+      selfDeafen: false,
+    });
+
+    try {
+      if (!args[0])
+        return interaction.send(new MessageEmbed()
+          .setColor("GREEN")
+          .setDescription(`**Usage**: \`${GuildDB.prefix}skipto <number>\``)
+        );
+      //if the wished track is bigger then the Queue Size
+      if (Number(args[0]) > player.queue.size)
+        return interaction.send(new MessageEmbed()
+          .setColor("GREEN")
+          .setTitle(`❌ | That song is not in the queue! Please try again!`)
+        );
+      //remove all tracks to the jumped song
+      player.queue.remove(0, Number(args[0]) - 1);
+      //stop the player
+      player.stop()
+      //Send Success Message
+      return interaction.send(new MessageEmbed()
+        .setDescription(`⏭ Skipped \`${Number(args[0])}\` songs`)
+        .setColor("GREEN")
+      );
+    } catch (e) {
+      console.log(String(e.stack).bgRed)
+      client.sendError(
+        interaction,
+        "Something went wrong."
+      );
+    }
+  },
+  }
 };

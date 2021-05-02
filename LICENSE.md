@@ -1,7 +1,7 @@
-# License for Discord-MusicBot
+<h1 align="center">License for Discord-MusicBot</h1>
 
 * The credits should not be changed.
-* The bot-code should be used for **private hosting** and **personal usage** only.
-* Using the code for public usage is **not allowed**.
-
-> **Note:** if you are found to be violating any of the above stated rule you might be asked to takedown your bot, happy listening!! Incase of any doubts in the license contact owner.
+* You can make your bot public ![EpicYay](https://cdn.discordapp.com/emojis/825211636171800596.gif?v=1&size=32)
+* Don't republish like uploading a yt vid like im doing...
+* Don't create your own repo, If you wanted to add my codes then just fork
+* (Optional) Make sure to [subscribe](https://youtube.com/CodingWithSudhan) :)

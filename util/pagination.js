@@ -1,49 +1,49 @@
-const { MessageEmbed, Permissions } = require("discord.js");
+module.exports = async (
+  msg,
+  pages,
+  client,
+  emojiList = ["⏮️", "◀️", "⏹️", "▶️", "⏭️"],
+  timeout = 120000,
+) => {
+  if (!msg && !msg.channel) throw new Error("Channel is inaccessible.");
+  if (!pages) throw new Error("Pages are not given.");
 
-module.exports = class Util {
-    static chunk(arr, size) {
-        const temp = [];
-        for (let i = 0; i < arr.length; i += size) {
-            temp.push(arr.slice(i, i + size));
-        }
-        return temp;
+  let page = 0;
+  const curPage = await msg.channel.send(
+    pages[page].setFooter(`Page ${page + 1}/${pages.length} `, msg.author.displayAvatarURL({ dynamic: true }))
+  );
+  for (const emoji of emojiList) await curPage.react(emoji);
+  const reactionCollector = curPage.createReactionCollector(
+    (reaction, user) => emojiList.includes(reaction.emoji.name) && !user.bot,
+    { time: timeout }
+  );
+  reactionCollector.on("collect", (reaction) => {
+    reaction.users.remove(msg.author);
+    switch (reaction.emoji.name) {
+      case emojiList[0]:
+        page = 0;
+        break;
+      case emojiList[1]:
+        page = page > 0 ? --page : pages.length - 1;
+        break;
+      case emojiList[2]:
+        curPage.reactions.removeAll();
+        break;
+      case emojiList[3]:
+        page = page + 1 < pages.length ? ++page : 0;
+        break;
+      case emojiList[4]:
+        page = pages.length - 1;
+        break;
+      default:
+        break;
     }
-
-    static get paginationEmojis() {
-        return ["◀", "⛔", "▶"];
+    curPage.edit(pages[page].setFooter(`Page ${page + 1}/${pages.length} `, msg.author.displayAvatarURL({ dynamic: true })));
+  });
+  reactionCollector.on("end", () => {
+    if (!curPage.deleted) {
+      curPage.reactions.removeAll();
     }
-
-    static async pagination(msg, author, contents, init = true, currPage = 0) {
-        if (init) for (const emoji of this.paginationEmojis) await msg.react(emoji);
-
-        const collector = msg.createReactionCollector(
-            (reaction, user) => {
-                return this.paginationEmojis.includes(reaction.emoji.name) && user.id === author.id;
-            },
-            {
-                max: 1,
-                time: 30000,
-            }
-        );
-
-        collector
-            .on("collect", (reaction) => {
-                reaction.users.remove(author);
-
-                const emoji = reaction.emoji.name;
-                if (emoji === this.paginationEmojis[0]) currPage--;
-                if (emoji === this.paginationEmojis[1]) return collector.stop();
-                if (emoji === this.paginationEmojis[2]) currPage++;
-                currPage = ((currPage % contents.length) + contents.length) % contents.length;
-
-                const embed = msg.embeds[0].setDescription(contents[currPage]).setFooter(`Page ${currPage + 1} of ${contents.length}.`);
-
-                msg.edit(embed);
-
-                this.pagination(msg, author, contents, false, currPage);
-            })
-            .on("end", (_, reason) => {
-                if (["time", "user"].includes(reason)) msg.reactions.removeAll();
-            });
-    }
+  });
+  return curPage;
 };

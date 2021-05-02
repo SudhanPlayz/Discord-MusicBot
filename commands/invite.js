@@ -1,23 +1,30 @@
 const { MessageEmbed } = require("discord.js");
 
 module.exports = {
-  info: {
-    name: "invite",
-    description: "To add/invite the bot to your server",
-    usage: "[invite]",
-    aliases: ["inv"],
+  name: "invite",
+  description: "To invite me to your server",
+  usage: "",
+  permissions: {
+    channel: ["VIEW_CHANNEL", "SEND_MESSAGES", "EMBED_LINKS"],
+    member: [],
   },
-
-  run: async function (client, message, args) {
-    
-    //set the permissions id here (https://discordapi.com/permissions.html)
-    var permissions = 37080128;
-    
-    let invite = new MessageEmbed()
-    .setTitle(`Invite ${client.user.username}`)
-    .setDescription(`Want me in your server? Invite me today! \n\n [Invite Link](https://discord.com/oauth2/authorize?client_id=${client.user.id}&permissions=${permissions}&scope=bot)`)
-    .setURL(`https://discord.com/oauth2/authorize?client_id=${client.user.id}&permissions=${permissions}&scope=bot`)
-    .setColor("BLUE")
-    return message.channel.send(invite);
+  aliases: [],
+  /**
+   *
+   * @param {import("../structures/DiscordMusicBot")} client
+   * @param {import("discord.js").Message} message
+   * @param {string[]} args
+   * @param {*} param3
+   */
+  run: async (client, message, args, { GuildDB }) => {
+    let embed = new MessageEmbed()
+      .setAuthor(
+        "Invite " + client.user.tag + " to your server!",
+        client.user.displayAvatarURL()
+      )
+      .setColor("BLUE")
+      .setDescription(
+        `You can invite me by clicking [here](https://discord.com/oauth2/authorize?client_id=${client.config.ClientID}&permissions=${client.config.Permissions}&scope=bot%20${client.config.Scopes.join("%20")}&redirect_uri=${client.config.Website}${client.config.CallbackURL}&response_type=code)`);
+    message.channel.send(embed);
   },
 };

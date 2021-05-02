@@ -1,41 +1,164 @@
 const { MessageEmbed } = require("discord.js");
-const sendError = require("../util/error");
-const util = require("../util/pagination");
+const _ = require("lodash");
+const prettyMilliseconds = require("pretty-ms");
 
 module.exports = {
-    info: {
-        name: "queue",
-        description: "To show the server songs queue",
-        usage: "",
-        aliases: ["q", "list", "songlist", "song-list"],
-    },
-    run: async function (client, message, args) {
-        const permissions = message.channel.permissionsFor(message.client.user);
-        if (!permissions.has(["MANAGE_MESSAGES", "ADD_REACTIONS"])) return sendError("Missing permission to manage messages or add reactions", message.channel);
+  name: "queue",
+  description: "The server queue",
+  usage: "",
+  permissions: {
+    channel: ["VIEW_CHANNEL", "SEND_MESSAGES", "EMBED_LINKS"],
+    member: [],
+  },
+  aliases: ["q"],
+  /**
+   *
+   * @param {import("../structures/DiscordMusicBot")} client
+   * @param {import("discord.js").Message} message
+   * @param {string[]} args
+   * @param {*} param3
+   */
+  run: async (client, message, args, { GuildDB }) => {
+    let player = await client.Manager.get(message.guild.id);
+    if (!player) return client.sendTime(message.channel, "❌ | **Nothing is playing right now...**");
 
-        const queue = message.client.queue.get(message.guild.id);
-        if (!queue) return sendError("There is nothing playing in this server.", message.channel);
+    if (!player.queue || !player.queue.length || player.queue === 0) {
+      let QueueEmbed = new MessageEmbed()
+        .setAuthor("Currently playing", client.config.IconURL)
+        .setColor("RANDOM")
+        .setDescription(`[${player.queue.current.title}](${player.queue.current.uri})`)
+        .addField("Requested by", `${player.queue.current.requester}`, true)
+        .addField(
+          "Duration",
+          `${
+            client.ProgressBar(
+              player.position,
+              player.queue.current.duration,
+              15
+            ).Bar
+          } \`[${prettyMilliseconds(player.position, {colonNotation: true})} / ${prettyMilliseconds(player.queue.current.duration, {colonNotation: true})}]\``
+        )
+        .setThumbnail(player.queue.current.displayThumbnail());
+      return message.channel.send(QueueEmbed);
+    }
 
-        const que = queue.songs.map((t, i) => `\`${++i}.\` | [\`${t.title}\`](${t.url}) - [<@${t.req.id}>]`);
+    let Songs = player.queue.map((t, index) => {
+      t.index = index;
+      return t;
+    });
 
-        const chunked = util.chunk(que, 10).map((x) => x.join("\n"));
+    let ChunkedSongs = _.chunk(Songs, 10); //How many songs to show per-page
 
-        const embed = new MessageEmbed()
-            .setAuthor("Server Songs Queue", "https://raw.githubusercontent.com/SudhanPlayz/Discord-MusicBot/master/assets/Music.gif")
-            .setThumbnail(message.guild.iconURL())
-            .setColor("BLUE")
-            .setDescription(chunked[0])
-            .addField("Now Playing", `[${queue.songs[0].title}](${queue.songs[0].url})`, true)
-            .addField("Text Channel", queue.textChannel, true)
-            .addField("Voice Channel", queue.voiceChannel, true)
-            .setFooter(`Currently Server Volume is ${queue.volume} Page 1 of ${chunked.length}.`);
-        if (queue.songs.length === 1) embed.setDescription(`No songs to play next add songs by \`\`${message.client.config.prefix}play <song_name>\`\``);
+    let Pages = ChunkedSongs.map((Tracks) => {
+      let SongsDescription = Tracks.map(
+        (t) => `\`${t.index + 1}.\` [${t.title}](${t.uri}) \n\`${prettyMilliseconds(t.duration, {colonNotation: true})}\` **|** Requested by: ${t.requester}\n`
+      ).join("\n");
 
-        try {
-            const queueMsg = await message.channel.send(embed);
-            if (chunked.length > 1) await util.pagination(queueMsg, message.author, chunked);
-        } catch (e) {
-            msg.channel.send(`An error occured: ${e.message}.`);
-        }
-    },
+      let Embed = new MessageEmbed()
+        .setAuthor("Queue", client.config.IconURL)
+        .setColor("RANDOM")
+        .setDescription(`**Currently Playing:** \n[${player.queue.current.title}](${player.queue.current.uri}) \n\n**Up Next:** \n${SongsDescription}\n\n`)
+        .addField("Total songs: \n", `\`${player.queue.totalSize - 1}\``, true)
+        .addField("Total length: \n", `\`${prettyMilliseconds(player.queue.duration, {colonNotation: true})}\``, true)
+        .addField(
+          "Requested by:",
+          `${player.queue.current.requester}`,
+          true
+        )
+        .addField(
+          "Current song duration:",
+          `${
+            client.ProgressBar(
+              player.position,
+              player.queue.current.duration,
+              15
+            ).Bar
+          } \`${prettyMilliseconds(player.position, {colonNotation: true})} / ${prettyMilliseconds(player.queue.current.duration, {colonNotation: true})}\``
+        )
+        .setThumbnail(player.queue.current.displayThumbnail())
+        
+
+      return Embed;
+    });
+
+    if (!Pages.length || Pages.length === 1)
+      return message.channel.send(Pages[0]);
+    else client.Pagination(message, Pages);
+  },
+  SlashCommand: {
+  /**
+   *
+   * @param {import("../structures/DiscordMusicBot")} client
+   * @param {import("discord.js").Message} message
+   * @param {string[]} args
+   * @param {*} param3
+   */
+   run: async (client, interaction, args, { GuildDB }) => {
+    let player = await client.Manager.get(interaction.guild_id);
+    if (!player) return interaction.send("❌ | **Nothing is playing right now...**");
+
+    if (!player.queue || !player.queue.length || player.queue === 0) {
+      let QueueEmbed = new MessageEmbed()
+        .setAuthor("Currently playing", client.config.IconURL)
+        .setColor("RANDOM")
+        .setDescription(`[${player.queue.current.title}](${player.queue.current.uri})`)
+        .addField("Requested by", `${player.queue.current.requester}`, true)
+        .addField(
+          "Duration",
+          `${
+            client.ProgressBar(
+              player.position,
+              player.queue.current.duration,
+              15
+            ).Bar
+          } \`[${prettyMilliseconds(player.position, {colonNotation: true})} / ${prettyMilliseconds(player.queue.current.duration, {colonNotation: true})}]\``
+        )
+        .setThumbnail(player.queue.current.displayThumbnail());
+      return interaction.send(QueueEmbed);
+    }
+
+    let Songs = player.queue.map((t, index) => {
+      t.index = index;
+      return t;
+    });
+
+    let ChunkedSongs = _.chunk(Songs, 10); //How many songs to show per-page
+
+    let Pages = ChunkedSongs.map((Tracks) => {
+      let SongsDescription = Tracks.map(
+        (t) => `\`${t.index + 1}.\` [${t.title}](${t.uri}) \n\`${prettyMilliseconds(t.duration, {colonNotation: true})}\` **|** Requested by: ${t.requester}\n`
+      ).join("\n");
+
+      let Embed = new MessageEmbed()
+        .setAuthor("Queue", client.config.IconURL)
+        .setColor("RANDOM")
+        .setDescription(`**Currently Playing:** \n[${player.queue.current.title}](${player.queue.current.uri}) \n\n**Up Next:** \n${SongsDescription}\n\n`)
+        .addField("Total songs: \n", `\`${player.queue.totalSize - 1}\``, true)
+        .addField("Total length: \n", `\`${prettyMilliseconds(player.queue.duration, {colonNotation: true})}\``, true)
+        .addField(
+          "Requested by:",
+          `${player.queue.current.requester}`,
+          true
+        )
+        .addField(
+          "Current song duration:",
+          `${
+            client.ProgressBar(
+              player.position,
+              player.queue.current.duration,
+              15
+            ).Bar
+          } \`[${prettyMilliseconds(player.position, {colonNotation: true})} / ${prettyMilliseconds(player.queue.current.duration, {colonNotation: true})}]\``
+        )
+        .setThumbnail(player.queue.current.displayThumbnail())
+        
+
+      return Embed;
+    });
+
+    if (!Pages.length || Pages.length === 1)
+      return interaction.send(Pages[0]);
+    else client.Pagination(interaction, Pages);
+  },
+  }
 };

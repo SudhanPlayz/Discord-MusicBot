@@ -1,26 +1,76 @@
 const { MessageEmbed } = require("discord.js");
-const sendError = require("../util/error")
+const prettyMilliseconds = require("pretty-ms");
 
 module.exports = {
-  info: {
-    name: "nowplaying",
-    description: "To show the music which is currently playing in this server",
-    usage: "",
-    aliases: ["np"],
+  name: "nowplaying",
+  description: "See what song is currently playing",
+  usage: "",
+  permissions: {
+    channel: ["VIEW_CHANNEL", "SEND_MESSAGES", "EMBED_LINKS"],
+    member: [],
   },
+  aliases: ["np", "nowplaying", "now playing"],
+  /**
+   *
+   * @param {import("../structures/DiscordMusicBot")} client
+   * @param {import("discord.js").Message} message
+   * @param {string[]} args
+   * @param {*} param3
+   */
+  run: async (client, message, args, { GuildDB }) => {
+    let player = await client.Manager.get(message.guild.id);
+    if (!player) return client.sendTime(message.channel, "❌ | **Nothing is playing right now...**");
 
-  run: async function (client, message, args) {
-    const serverQueue = message.client.queue.get(message.guild.id);
-    if (!serverQueue) return sendError("There is nothing playing in this server.", message.channel);
-    let song = serverQueue.songs[0]
-    let thing = new MessageEmbed()
-      .setAuthor("Now Playing", "https://raw.githubusercontent.com/SudhanPlayz/Discord-MusicBot/master/assets/Music.gif")
-      .setThumbnail(song.img)
-      .setColor("BLUE")
-      .addField("Name", song.title, true)
-      .addField("Duration", song.duration, true)
-      .addField("Requested by", song.req.tag, true)
-      .setFooter(`Views: ${song.views} | ${song.ago}`)
-    return message.channel.send(thing)
-  },
+    let song = player.queue.current
+      let QueueEmbed = new MessageEmbed()
+        .setAuthor("Currently playing", client.config.IconURL)
+        .setColor("RANDOM")
+        .setDescription(`[${song.title}](${song.uri})`)
+        .addField("Requested by", `${song.requester}`, true)
+        .addField(
+          "Duration",
+          `${
+            client.ProgressBar(
+              player.position,
+              player.queue.current.duration,
+              15
+            ).Bar
+          } \`${prettyMilliseconds(player.position, {colonNotation: true})} / ${prettyMilliseconds(player.queue.current.duration, {colonNotation: true})}\``
+        )
+        .setThumbnail(player.queue.current.displayThumbnail());
+      return message.channel.send(QueueEmbed);
+    },
+
+SlashCommand: {
+    /**
+   *
+   * @param {import("../structures/DiscordMusicBot")} client
+   * @param {import("discord.js").Message} message
+   * @param {string[]} args
+   * @param {*} param3
+   */
+    run: async (client, interaction, args, { GuildDB }) => {
+      let player = await client.Manager.get(interaction.guild_id);
+      if (!player) return interaction.send("❌ | **Nothing is playing right now...**");
+  
+      let song = player.queue.current
+        let QueueEmbed = new MessageEmbed()
+          .setAuthor("Currently playing", client.config.IconURL)
+          .setColor("RANDOM")
+          .setDescription(`[${song.title}](${song.uri})`)
+          .addField("Requested by", `${song.requester}`, true)
+          .addField(
+            "Duration",
+            `${
+              client.ProgressBar(
+                player.position,
+                player.queue.current.duration,
+                15
+              ).Bar
+            } \`${prettyMilliseconds(player.position, {colonNotation: true})} / ${prettyMilliseconds(player.queue.current.duration, {colonNotation: true})}\``
+          )
+          .setThumbnail(player.queue.current.displayThumbnail());
+        return interaction.send(QueueEmbed);
+      }
+  }
 };

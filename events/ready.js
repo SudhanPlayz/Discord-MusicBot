@@ -1,6 +1,7 @@
 module.exports = async (client) => {
-  console.log(`[API] Logged in as ${client.user.username}`);
-  await client.user.setActivity("Music", {
-    type: "LISTENING",//can be LISTENING, WATCHING, PLAYING, STREAMING
+  client.Ready = true;
+  client.user.setActivity("Music", { type: "LISTENING" }).then(() => {
+    client.Manager.init(client.user.id);
+    client.log("Successfully Logged in as " + client.user.tag);
   });
 };

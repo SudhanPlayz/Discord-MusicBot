@@ -1,9 +1,31 @@
+/**
+ * 
+ * @param {require("../structures/DiscordMusicBot")} client 
+ * @param {require("discord.js").Message} message 
+ * @returns {void} aka: nothing ;-;
+ */
+
 module.exports = async (client, message) => {
-  if (message.author.bot) return;
+  if (message.author.bot || message.channel.type === "dm") return;
+  let prefix = client.config.DefaultPrefix;
+
+  let GuildDB = await client.GetGuild(message.guild.id);
+  if (GuildDB && GuildDB.prefix) prefix = GuildDB.prefix;
+
+  //Initialize GuildDB
+  if (!GuildDB) {
+    await client.database.guild.set(message.guild.id, {
+      prefix: prefix,
+      DJ: null,
+    });
+    GuildDB = await client.GetGuild(message.guild.id);
+  }
 
   //Prefixes also have mention match
   const prefixMention = new RegExp(`^<@!?${client.user.id}> `);
-  const prefix = message.content.match(prefixMention) ? message.content.match(prefixMention)[0] : client.config.prefix;
+  prefix = message.content.match(prefixMention)
+    ? message.content.match(prefixMention)[0]
+    : prefix;
 
   if (message.content.indexOf(prefix) !== 0) return;
 
@@ -12,21 +34,18 @@ module.exports = async (client, message) => {
   const command = args.shift().toLowerCase();
 
   //Searching a command
-  const cmd = client.commands.get(command) || client.commands.find(x => x && x.info && x.info.aliases && x.info.aliases.includes(command));
-
-  //if(message.channel.type === "dm")return message.channel.send("None of the commands work in DMs. So please use commands in server!")
-  process.on("unhandledRejection", (reason, promise) => {
-      try {
-          console.error("Unhandled Rejection at: ", promise, "reason: ", reason.stack || reason);
-      } catch {
-          console.error(reason);
-      } 
-  });
-  require('events').EventEmitter.defaultMaxListeners = 25
-
+  const cmd =
+    client.commands.get(command) ||
+    client.commands.find((x) => x.aliases && x.aliases.includes(command));
 
   //Executing the codes when we get the command or aliases
-  if(cmd && cmd.run){
-    cmd.run(client, message, args);
-  }else return
+  if (cmd) {
+    if (
+      (cmd.permissions && cmd.permissions.channel && !message.channel.permissionsFor(client.user).has(cmd.permissions.channel)) ||
+      (cmd.permissions && cmd.permissions.member && !message.channel.permissionsFor(message.member).has(cmd.permissions.member)) ||
+      (cmd.permissions && GuildDB.DJ && !message.channel.permissionsFor(message.member).has(["ADMINISTRATOR"]) && !message.member.roles.cache.has(GuildDB.DJ))
+    )return client.sendError(message.channel, "Missing Permissions!"+GuildDB.DJ?" You needed DJ role to access this command":"");
+    cmd.run(client, message, args, { GuildDB });
+    client.CommandsRan++
+  } else return;
 };
