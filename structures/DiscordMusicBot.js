@@ -50,7 +50,7 @@ class DiscordMusicBot extends Client {
 
     //Utils
     this.ProgressBar = require("../util/ProgressBar");
-    this.Pagination = require("../util/Pagination");
+    this.Pagination = require("../util/pagination");
     this.ParseHumanTime = (str) => {
       let Parsed;
       try {
