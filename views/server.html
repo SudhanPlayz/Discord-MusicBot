@@ -327,7 +327,7 @@
           $("#songLoop").text(data.songsLoop)
           $("#queueLoop").text(data.queueLoop)
           $("#prefix").text(data.prefix)
-          $("#now-playing").text(data.nowPlaying?data.nowPlaying:"Nothing playing")
+          $("#now-playing").text(data.nowPlaying?data.nowPlaying.title:"Nothing playing")
           if(data.position)$("#duration").html(`${data.position}<span> ${data.bar} </span>${data.maxDuration}`)
           else $("#duration").html(`<span> Nothing is playing right now, Add some songs in discord? </span>`)
         })
