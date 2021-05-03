@@ -9,5 +9,11 @@
         {
             "url": "heroku/nodejs"
         }
-    ]
+    ],
+    "env": {
+        "Token": {
+            "description": "Discord Bot Token.",
+            "required": "true"
+        }
+    }
 }
