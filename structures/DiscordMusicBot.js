@@ -227,6 +227,12 @@ class DiscordMusicBot extends Client {
     this.login(this.config.Token);
     this.http.listen(this.config.Port, () => this.log("Web Server has been started"));
   }
+
+  RegisterSlashCommands(){
+    this.guilds.cache.forEach(guild => {
+      require("../util/RegisterSlashCommands")(this, guild.id)
+    })
+  }
 }
 
 module.exports = DiscordMusicBot;

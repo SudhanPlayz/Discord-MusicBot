@@ -1,6 +1,5 @@
 const fs = require("fs")
 const path = require("path")
-const fetch = require("node-fetch")
 
 /**
  * Register slash commands for a guild
