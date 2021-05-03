@@ -225,7 +225,7 @@ class DiscordMusicBot extends Client {
 
   build() {
     this.login(this.config.Token);
-    this.http.listen(process.env.Port, () => this.log("Web Server has been started"));
+    this.http.listen(process.env.PORT || 3000, () => this.log("Web Server has been started"));
   }
 
   RegisterSlashCommands(){
