@@ -13,7 +13,7 @@ module.exports = {
   IconURL:
     "https://raw.githubusercontent.com/SudhanPlayz/Discord-MusicBot/master/assets/Music.gif", //URL of all embed author icons | Dont edit unless you dont need that Music CD Spining
   Permissions: 2205280576, //Bot Inviting Permissions
-  Website: "http://localhost", //Website where it was hosted at includes http or https
+  Website: "https://obotlava.herokuapp.com", //Website where it was hosted at includes http or https
 
   //Lavalink - Already there is a serer to connect :)
   Lavalink: {
