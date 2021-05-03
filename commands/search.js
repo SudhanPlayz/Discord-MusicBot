@@ -92,7 +92,7 @@ module.exports = {
     SlashCommand: {
         options: [
             {
-                name: "Song Name|Song URL",
+                name: "search",
                 value: "[Song Name|Song URL]",
                 type: 3,
                 required: true,
