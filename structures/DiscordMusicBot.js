@@ -154,7 +154,7 @@ class DiscordMusicBot extends Client {
           .setColor("RANDOM")
           .setTimestamp()
         client.channels.cache.get(player.textChannel).send(QueueEmbed);
-        player.destroy();
+        if(!this.config["24/7"])player.destroy();
       });
   }
 
