@@ -1,9 +1,9 @@
 module.exports = {
-  Admins: ["UserID", "UserID"], //Admins of the bot
-  DefaultPrefix: ">", //Default prefix, Server Admins can change the prefix
-  Port: 3000, //Which port website gonna be hosted
+  Admins: ["422027940591828993","657612005406146565","731721433515950080"], //Admins of the bot
+  DefaultPrefix: "$", //Default prefix, Server Admins can change the prefix
+  Port: 3221, //Which port website gonna be hosted
   SupportServer: "https://discord.gg/a9SHDpD", //Support Server Link
-  Token: "", //Discord Bot Token
+  Token: "NzA3MTMwNTc1MjQ0NDkyODMx.XrEUqg.nxxBZBnFUkkO_AmFnnl5h5L4-pI", //Discord Bot Token
   ClientID: "", //Discord Client ID
   ClientSecret: "", //Discord Client Secret
   Scopes: ["identify", "guilds"], //Discord OAuth2 Scopes
