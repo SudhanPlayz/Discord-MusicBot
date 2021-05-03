@@ -21,8 +21,6 @@ module.exports = {
     run: async (client, message, args, { GuildDB }) => {
         if (!message.member.voice.channel) return client.sendTime(message.channel, "❌ | **You must be in a voice channel to play something!**");
         //else if(message.guild.me.voice && message.guild.me.voice.channel.id !== message.member.voice.channel.id)return client.sendTime(message.channel, "❌ | **You must be in same voice channel as the bot is in to play something!**");
-
-
         let SearchString = args.join(" ");
         if (!SearchString) return client.sendTime(message.channel, `**Usage - **\`${GuildDB.prefix}play [Song Name|Song URL]\``);
 
