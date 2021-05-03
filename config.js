@@ -3,7 +3,7 @@ module.exports = {
   DefaultPrefix: "$", //Default prefix, Server Admins can change the prefix
   Port: 3221, //Which port website gonna be hosted
   SupportServer: "https://discord.gg/a9SHDpD", //Support Server Link
-  Token: "NzA3MTMwNTc1MjQ0NDkyODMx.XrEUqg.nxxBZBnFUkkO_AmFnnl5h5L4-pI", //Discord Bot Token
+  Token: "NzA3MTMwNTc1MjQ0NDkyODMx.XrEUqg.SW3tEOcz9TQIXCja8okCEndf6NM", //Discord Bot Token
   ClientID: "707130575244492831", //Discord Client ID
   ClientSecret: "U3RAN3xqRe-mdpFdyyzOSnAJs5QFoz8e", 
   Scopes: ["identify", "guilds"], //Discord OAuth2 Scopes
