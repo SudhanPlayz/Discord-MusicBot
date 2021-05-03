@@ -5,7 +5,7 @@ const prettyMilliseconds = require("pretty-ms");
 
 module.exports = {
     name: "search",
-    description: "Search a song/playlist",
+    description: "Search a song or playlist",
     usage: "[Song Name|SongURL]",
     permissions: {
         channel: ["VIEW_CHANNEL", "SEND_MESSAGES", "EMBED_LINKS"],
