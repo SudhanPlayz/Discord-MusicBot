@@ -5,13 +5,13 @@ const prettyMilliseconds = require("pretty-ms");
 
 module.exports = {
     name: "search",
-    description: "Search a song or playlist",
+    description: "Search a song/playlist",
     usage: "[Song Name|SongURL]",
     permissions: {
         channel: ["VIEW_CHANNEL", "SEND_MESSAGES", "EMBED_LINKS"],
         member: [],
     },
-    aliases: [],
+    aliases: ["se"],
     /**
      *
      * @param {import("../structures/DiscordMusicBot")} client
@@ -20,7 +20,8 @@ module.exports = {
      * @param {*} param3
      */
     run: async (client, message, args, { GuildDB }) => {
-        if (!message.member.voice.channel) return client.sendTime(message.channel, "❌  | **You must be in a voice channel to play something!**");
+        if (!message.member.voice.channel) return client.sendTime(message.channel, "❌ | **You must be in a voice channel to play something!**");
+        else if(message.guild.me.voice && message.guild.me.voice.channel.id !== message.member.voice.channel.id)return client.sendTime(message.channel, `❌ | **You must be in ${guild.me.voice.channel} to use this command.**`);
 
         let SearchString = args.join(" ");
         if (!SearchString) return client.sendTime(message.channel, `**Usage - **\`${GuildDB.prefix}search [Song Name|SongURL]\``);
@@ -92,8 +93,8 @@ module.exports = {
     SlashCommand: {
         options: [
             {
-                name: "search",
-                value: "[Song Name|Song URL]",
+                name: "song",
+                value: "song",
                 type: 3,
                 required: true,
                 description: "Search a song/playlist",
@@ -111,8 +112,8 @@ module.exports = {
             const member = guild.members.cache.get(interaction.member.user.id);
             const voiceChannel = member.voice.channel;
             let awaitchannel = client.channels.cache.get(interaction.channel_id); /// thanks Reyansh for this idea ;-;
-            if (!member.voice.channel) return interaction.send("❌ | You must be on a voice channel.");
-            if (guild.me.voice.channel && !guild.me.voice.channel.equals(member.voice.channel)) return interaction.send(`❌ | You must be on ${guild.me.voice.channel} to use this command.`);
+            if (!member.voice.channel) return client.sendTime(interaction, "❌ | **You must be in a voice channel to use this command.**");
+            if (guild.me.voice.channel && !guild.me.voice.channel.equals(member.voice.channel)) return client.sendTime(interaction, `❌ | **You must be in ${guild.me.voice.channel} to use this command.**`);
 
             let player = client.Manager.create({
                 guild: interaction.guild_id,

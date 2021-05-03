@@ -24,21 +24,12 @@ module.exports = {
         await message.react("✅");
     },
     SlashCommand: {
-        options: [
-            {
-                name: "skip",
-                value: "Number to skip",
-                type: 4,
-                required: false,
-                description: "Song name you wanted to...",
-            },
-        ],
         run: async (client, interaction, args, { GuildDB }) => {
             const guild = client.guilds.cache.get(interaction.guild_id);
             const member = guild.members.cache.get(interaction.member.user.id);
 
-            if (!member.voice.channel) return interaction.send("❌ | You must be on a voice channel.");
-            if (guild.me.voice.channel && !guild.me.voice.channel.equals(member.voice.channel)) return interaction.send(`❌ | You must be on ${guild.me.voice.channel} to use this command.`);
+            if (!member.voice.channel) return client.sendTime(interaction, "❌ | **You must be in a voice channel to use this command.**");
+            if (guild.me.voice.channel && !guild.me.voice.channel.equals(member.voice.channel)) return client.sendTime(interaction, `❌ | **You must be in ${guild.me.voice.channel} to use this command.**`);
 
             const skipTo = interaction.data.options ? interaction.data.options[0].value : null;
 
