@@ -4,8 +4,8 @@ module.exports = {
   Port: 3221, //Which port website gonna be hosted
   SupportServer: "https://discord.gg/a9SHDpD", //Support Server Link
   Token: "NzA3MTMwNTc1MjQ0NDkyODMx.XrEUqg.nxxBZBnFUkkO_AmFnnl5h5L4-pI", //Discord Bot Token
-  ClientID: "", //Discord Client ID
-  ClientSecret: "", //Discord Client Secret
+  ClientID: "707130575244492831", //Discord Client ID
+  ClientSecret: "U3RAN3xqRe-mdpFdyyzOSnAJs5QFoz8e", 
   Scopes: ["identify", "guilds"], //Discord OAuth2 Scopes
   CallbackURL: "/api/callback", //Discord OAuth2 Callback URL
   "24/7": false,//If you want the bot to be stay in the vc 24/7
