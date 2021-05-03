@@ -1,6 +1,6 @@
 module.exports = {
-  Admins: ["422027940591828993","657612005406146565","731721433515950080"], //Admins of the bot
-  DefaultPrefix: "$", //Default prefix, Server Admins can change the prefix
+  Admins: ["UserID", "UserID"], //Admins of the bot
+  DefaultPrefix: ">", //Default prefix, Server Admins can change the prefix
   Port: 3000, //Which port website gonna be hosted
   SupportServer: "https://discord.gg/a9SHDpD", //Support Server Link
   Token: "" || process.env.Token, //Discord Bot Token
@@ -13,7 +13,7 @@ module.exports = {
   IconURL:
     "https://raw.githubusercontent.com/SudhanPlayz/Discord-MusicBot/master/assets/Music.gif", //URL of all embed author icons | Dont edit unless you dont need that Music CD Spining
   Permissions: 2205280576, //Bot Inviting Permissions
-  Website: "0.0.0.0", //Website where it was hosted at includes http or https
+  Website: "http://localhost", //Website where it was hosted at includes http or https || Use "0.0.0.0" if you using Heroku
 
   //Lavalink - Already there is a serer to connect :)
   Lavalink: {
