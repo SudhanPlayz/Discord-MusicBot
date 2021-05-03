@@ -51,7 +51,7 @@ SlashCommand: {
    */
     run: async (client, interaction, args, { GuildDB }) => {
       let player = await client.Manager.get(interaction.guild_id);
-      if (!player) return interaction.send("❌ | **Nothing is playing right now...**");
+      if (!player) return client.sendTime(interaction, "❌ | **Nothing is playing right now...**");
   
       let song = player.queue.current
         let QueueEmbed = new MessageEmbed()
