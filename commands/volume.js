@@ -31,24 +31,30 @@ module.exports = {
                 name: "number",
                 value: "number 1 - 100",
                 type: 4,
-                required: false,
-                description: "Change the volume",
+                required: true,
+                description: "What do you want to change the volume to?",
             },
         ],
-
+    /**
+     *
+     * @param {import("../structures/DiscordMusicBot")} client
+     * @param {import("discord.js").Message} message
+     * @param {string[]} args
+     * @param {*} param3
+     */
         run: async (client, interaction, args, { GuildDB }) => {
             const guild = client.guilds.cache.get(interaction.guild_id);
             const member = guild.members.cache.get(interaction.member.user.id);
 
-            if (!member.voice.channel) return interaction.send("❌ | You must be on a voice channel.");
-            if (guild.me.voice.channel && !guild.me.voice.channel.equals(member.voice.channel)) return interaction.send(`❌ | You must be on ${guild.me.voice.channel} to use this command.`);
+            if (!member.voice.channel) return client.sendTime(interaction, "❌ | You must be in a voice channel to use this command.");
+            if (guild.me.voice.channel && !guild.me.voice.channel.equals(member.voice.channel)) return client.sendTime(interaction, `❌ | You must be in ${guild.me.voice.channel} to use this command.`);
             let player = await client.Manager.get(interaction.guild_id);
-            if (!player) return interaction.send("❌ | **Nothing is playing right now...**");
-            if (!args.length) return interaction.send(`🔉 | Current volume \`${player.volume}\`.`);
+            if (!player) return client.sendTime(interaction, "❌ | **Nothing is playing right now...**");
+            if (!args.length) return client.sendTime(interaction, `🔉 | Current volume \`${player.volume}\`.`);
             let vol = parseInt(args[0].value);
-            if (!vol || vol < 1 || vol > 100) return interaction.send("Please choose between 1 - 100");
+            if (!vol || vol < 1 || vol > 100) return client.sendTime(interaction, `Please choose between \`1 - 100\``);
             player.setVolume(vol);
-            interaction.send(`🔉 | Volume set to \`${player.volume}\``);
+            client.sendTime(interaction, `🔉 | Volume set to \`${player.volume}\``);
         },
     },
 };
