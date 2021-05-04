@@ -28,7 +28,7 @@
         <!-- Sidebar -->
         <nav
           id="sidebarMenu"
-          class="collapse d-lg-block sidebar collapse"
+          class="collapse d-lg-block sidebar"
         >
           <div class="position-sticky">
             <div class="list-group list-group-flush mx-3 mt-4">
@@ -73,6 +73,7 @@
               aria-controls="sidebarMenu"
               aria-expanded="false"
               aria-label="Toggle navigation"
+              onclick="function re(){ let r = $('#sidebarMenu'); if(r.hasClass('collapse'))r.removeClass('collapse');else r.addClass('collapse')}re()"
             >
               <i class="fas fa-bars"></i>
             </button>
