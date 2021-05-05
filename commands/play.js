@@ -4,7 +4,7 @@ const prettyMilliseconds = require("pretty-ms");
 
 module.exports = {
     name: "play",
-    description: "To play music in the voice channel",
+    description: "Play your favorite songs",
     usage: "[Song Name|Song URL]",
     permissions: {
         channel: ["VIEW_CHANNEL", "SEND_MESSAGES", "EMBED_LINKS"],
@@ -193,18 +193,18 @@ module.exports = {
                     case "TRACK_LOADED":
                         player.queue.add(res.tracks[0]);
                         if (!player.playing && !player.paused && !player.queue.length) player.play();
-                        return interaction.send(`**Added to queue**: \`${res.tracks[0].title}\``);
+                        return client.sendTime(interaction, `**Added to queue** \n[${res.tracks[0].title}](${res.tracks[0].uri})`);
                     case "PLAYLIST_LOADED":
                         player.queue.add(res.tracks);
 
                         if (!player.playing && !player.paused && player.queue.size === res.tracks.length) player.play();
-                        return interaction.send(`**Searched playlist**: \n **${res.playlist.name}** : **${res.tracks.length} tracks**`);
+                        return client.sendTime(interaction, `**Searched playlist**: \n **${res.playlist.name}** : **${res.tracks.length} tracks**`);
                     case "SEARCH_RESULT":
                         const track = res.tracks[0];
                         player.queue.add(track);
 
                         if (!player.playing && !player.paused && !player.queue.length) {
-                            interaction.send(`**Now playing ♪:** \`[${res.tracks[0].title}](${res.tracks[0].uri})\``);
+                            client.sendTime(interaction, `**Added to queue** [${res.tracks[0].title}](${res.tracks[0].uri})`);
                             player.play();
                         } else {
                             let SongAddedEmbed = new MessageEmbed();
