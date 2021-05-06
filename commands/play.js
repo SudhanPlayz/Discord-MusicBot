@@ -31,7 +31,7 @@ module.exports = {
  
         let SongAddedEmbed = new MessageEmbed().setColor("RANDOM");
         
-                const player = client.Manager.create({
+     const player = client.Manager.create({
             guild: message.guild.id,
             voiceChannel: message.member.voice.channel.id,
             textChannel: message.channel.id,
