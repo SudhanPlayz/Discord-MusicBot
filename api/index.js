@@ -33,7 +33,7 @@ try {
 passport.use(new DiscordStrategy({
   clientID: config.ClientID,
   clientSecret: config.ClientSecret,
-  callbackURL: config.CallbackURL,
+  callbackURL: config.Website + config.CallbackURL,
   scope: config.Scopes.join(" ")
 }, function(accessToken, refreshToken, profile, done){
   //User logged in yay!

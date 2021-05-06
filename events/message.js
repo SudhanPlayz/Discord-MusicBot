@@ -44,7 +44,7 @@ module.exports = async (client, message) => {
       (cmd.permissions && cmd.permissions.channel && !message.channel.permissionsFor(client.user).has(cmd.permissions.channel)) ||
       (cmd.permissions && cmd.permissions.member && !message.channel.permissionsFor(message.member).has(cmd.permissions.member)) ||
       (cmd.permissions && GuildDB.DJ && !message.channel.permissionsFor(message.member).has(["ADMINISTRATOR"]) && !message.member.roles.cache.has(GuildDB.DJ))
-    )return client.sendError(message.channel, "Missing Permissions!"+GuildDB.DJ?" You needed DJ role to access this command":"");
+    )return client.sendError(message.channel, "Missing Permissions!"+GuildDB.DJ?" You need the `DJ` role to access this command.":"");
     cmd.run(client, message, args, { GuildDB });
     client.CommandsRan++
   } else return;
