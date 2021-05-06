@@ -28,14 +28,15 @@ module.exports = {
         if (!CheckNode || !CheckNode.connected) {
        return client.sendTime(message.channel,"❌ | Lavalink node not connected.");
         }
-        const player = client.Manager.create({
+ 
+        let SongAddedEmbed = new MessageEmbed().setColor("RANDOM");
+        
+                const player = client.Manager.create({
             guild: message.guild.id,
             voiceChannel: message.member.voice.channel.id,
             textChannel: message.channel.id,
             selfDeafen: false,
         });
-
-        let SongAddedEmbed = new MessageEmbed().setColor("RANDOM");
 
         if (!player) return client.sendTime(message.channel, "❌ | **Nothing is playing right now...**");
 
