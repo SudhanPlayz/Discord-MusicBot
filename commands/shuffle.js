@@ -2,7 +2,7 @@ const { MessageEmbed } = require("discord.js");
 
 module.exports = {
     name: "shuffle",
-    description: "To shuffle the queue",
+    description: "Shuffles the queue",
     usage: "",
     permissions: {
         channel: ["VIEW_CHANNEL", "SEND_MESSAGES", "EMBED_LINKS"],
@@ -19,6 +19,7 @@ module.exports = {
     run: async (client, message, args, { GuildDB }) => {
         let player = await client.Manager.get(message.guild.id);
         if (!player) return client.sendTime(message.channel, "❌ | **Nothing is playing right now...**");
+        if (!message.member.voice.channel) return client.sendTime(message.channel, "❌ | **You must be in a voice channel to use this command!**");
 
         if (!player.queue || !player.queue.length || player.queue.length === 0) return message.channel.send("Not enough songs in the queue to shuffle!");
         player.queue.shuffle();
