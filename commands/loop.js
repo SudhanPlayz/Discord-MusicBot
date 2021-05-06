@@ -45,13 +45,8 @@ module.exports = {
           const voiceChannel = member.voice.channel;
           let player = await client.Manager.get(interaction.guild_id);
           if (!player) return client.sendTime(interaction, "❌ | **Nothing is playing right now...**"); 
-<<<<<<< HEAD
           if (!member.voice.channel) return interaction.send("❌ | **You must be in a voice channel to use this command!**");
           if (guild.me.voice.channel && !guild.me.voice.channel.equals(voiceChannel)) return interaction.send(`❌ | You must be in ${guild.me.voice.channel} to use this command.`);
-=======
-          if (!member.voice.channel) return interaction.send("❌ | You must be on a voice channel.");
-          if (guild.me.voice.channel && !guild.me.voice.channel.equals(member.voice.channel)) return interaction.send(`❌ | You must be on ${guild.me.voice.channel} to use this command.`);
->>>>>>> 41afe06569dfadcfd2b98029b2efaf110320e6e0
 
             if(player.trackRepeat){
                   player.setTrackRepeat(false)
