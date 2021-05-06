@@ -20,6 +20,7 @@ module.exports = {
     run: async (client, message, args, { GuildDB }) => {
         let player = await client.Manager.get(message.guild.id);
         if (!player) return client.sendTime(message.channel, "❌ | **Nothing is playing right now...**");
+        if (!message.member.voice.channel) return client.sendTime(message.channel, "❌ | **You must be in a voice channel to use this command!**");
         if (!player.queue.current.isSeekable) return message.channel.send("This song is not able to seek from.");
         let SeekTo = client.ParseHumanTime(args.join(" "));
         if (!SeekTo) return message.channel.send("Please enter a time to seek!");
