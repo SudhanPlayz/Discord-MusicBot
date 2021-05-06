@@ -1,4 +1,5 @@
 # Development
+
 This may help you if you are editing this script
 
 ## Structures(Folders)
@@ -12,6 +13,7 @@ This may help you if you are editing this script
 /views - Page Rendering/Website
 
 ## Permissions
+
 Permissions to add in commands to check them that it is available or not
 
 `ADMINISTRATOR` (implicitly has _all_ permissions, and bypasses all channel overwrites)

@@ -26,10 +26,7 @@
       <!--Main Navigation-->
       <header>
         <!-- Sidebar -->
-        <nav
-          id="sidebarMenu"
-          class="collapse d-lg-block sidebar collapse"
-        >
+        <nav id="sidebarMenu" class="collapse d-lg-block sidebar collapse">
           <div class="position-sticky">
             <div class="list-group list-group-flush mx-3 mt-4">
               <a
@@ -44,13 +41,15 @@
                 href="/servers"
                 class="list-group-item list-group-item-action py-2 ripple active"
               >
-              <i class="fas fa-server fa-fw me-3"></i><span>Manage Servers</span>
+                <i class="fas fa-server fa-fw me-3"></i
+                ><span>Manage Servers</span>
               </a>
               <a
                 href="/logout"
                 class="list-group-item list-group-item-action py-2 ripple"
               >
-              <i class="fas fa-sign-out-alt fa-fw me-3"></i><span>Logout</span>
+                <i class="fas fa-sign-out-alt fa-fw me-3"></i
+                ><span>Logout</span>
               </a>
             </div>
           </div>
@@ -79,18 +78,14 @@
             </button>
 
             <!-- Brand -->
-            <a class="navbar-brand text-white" href="/" >
-              <img
-                src="/logo.gif"
-                height="40"
-                alt=""
-                loading="lazy"
-              />
+            <a class="navbar-brand text-white" href="/">
+              <img src="/logo.gif" height="40" alt="" loading="lazy" />
               Dashboard - Servers
             </a>
             <div>
-                <h1 class="server-name"></h1>
+              <h1 class="server-name"></h1>
             </div>
+          </div>
         </nav>
         <!-- Navbar -->
       </header>
@@ -101,9 +96,8 @@
         <div class="container pt-4">
           <!--Section: Main-->
           <section>
-              <h1>Select a server to manage</h1>
-              <div id="servers" class="flex">
-              </div>
+            <h1>Select a server to manage</h1>
+            <div id="servers" class="flex"></div>
           </section>
           <!-- Footer -->
           <div class="footer">
@@ -184,16 +178,15 @@
       overflow-y: auto;
     }
 
-    #servers img{
-        border-radius: 50%;
-        margin: 10px;
-        cursor: pointer;
+    #servers img {
+      border-radius: 50%;
+      margin: 10px;
+      cursor: pointer;
     }
 
     .hide {
-        display: none;
+      display: none;
     }
-
 
     .footer {
       position: absolute;
@@ -239,17 +232,23 @@
   </style>
   <script>
     $(document).ready(() => {
-        $.get("/api/user", (data) => {
-            data.user.guilds.forEach(Guild => {
-                if(!Guild.hasPerms)return
-                $("#servers").append(`
-<img class="server-${Guild.id}" onclick="window.location = '/servers/${Guild.id}'" width="60" height="60" src="${Guild.icon?`https://cdn.discordapp.com/icons/${Guild.id}/${Guild.icon}.png`:"https://www.webcolorsonline.com/images/error.png"}" alt="${Guild.name}">
-`)//yes ofcource im an IDIOT
-                $(`.server-${Guild.id}`).hover(() => {
-                    $(".server-name").text(Guild.name)
-                })
-            })
-        })
+      $.get("/api/user", (data) => {
+        data.user.guilds.forEach((Guild) => {
+          if (!Guild.hasPerms) return;
+          $("#servers").append(`
+<img class="server-${Guild.id}" onclick="window.location = '/servers/${
+            Guild.id
+          }'" width="60" height="60" src="${
+            Guild.icon
+              ? `https://cdn.discordapp.com/icons/${Guild.id}/${Guild.icon}.png`
+              : "https://www.webcolorsonline.com/images/error.png"
+          }" alt="${Guild.name}">
+`); //yes ofcource im an IDIOT
+          $(`.server-${Guild.id}`).hover(() => {
+            $(".server-name").text(Guild.name);
+          });
+        });
+      });
     });
   </script>
 </html>

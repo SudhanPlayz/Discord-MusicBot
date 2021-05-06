@@ -3,14 +3,17 @@ module.exports = async (
   pages,
   client,
   emojiList = ["◀️", "⏹️", "▶️"],
-  timeout = 120000,
+  timeout = 120000
 ) => {
   if (!msg && !msg.channel) throw new Error("Channel is inaccessible.");
   if (!pages) throw new Error("Pages are not given.");
 
   let page = 0;
   const curPage = await msg.channel.send(
-    pages[page].setFooter(`Page ${page + 1}/${pages.length} `, msg.author.displayAvatarURL({ dynamic: true }))
+    pages[page].setFooter(
+      `Page ${page + 1}/${pages.length} `,
+      msg.author.displayAvatarURL({ dynamic: true })
+    )
   );
   for (const emoji of emojiList) await curPage.react(emoji);
   const reactionCollector = curPage.createReactionCollector(
@@ -30,7 +33,12 @@ module.exports = async (
         page = page + 1 < pages.length ? ++page : 0;
         break;
     }
-    curPage.edit(pages[page].setFooter(`Page ${page + 1}/${pages.length} `, msg.author.displayAvatarURL({ dynamic: true })));
+    curPage.edit(
+      pages[page].setFooter(
+        `Page ${page + 1}/${pages.length} `,
+        msg.author.displayAvatarURL({ dynamic: true })
+      )
+    );
   });
   reactionCollector.on("end", () => {
     if (!curPage.deleted) {

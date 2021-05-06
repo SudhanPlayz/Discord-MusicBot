@@ -52,7 +52,6 @@ module.exports = {
 
   SlashCommand: {
     options: [
-
       {
         name: "song",
         value: "song",
@@ -60,7 +59,6 @@ module.exports = {
         description: "Get the lyrics of a song",
         required: false,
       },
-
     ],
     /**
      *
@@ -72,14 +70,13 @@ module.exports = {
 
     run: async (client, interaction, args, { GuildDB }) => {
       let player = await client.Manager.get(interaction.guild_id);
-      let SongTitle = interaction.data.options[0].value
+      let SongTitle = interaction.data.options[0].value;
       if (!SongTitle && !player)
         return interaction.send("Nothing is playing right now...");
       if (!SongTitle) SongTitle = player.queue.current.title;
 
       let lyrics = await lyricsFinder(SongTitle);
-      if (!lyrics)
-        return interaction.send("No lyrics found for " + SongTitle);
+      if (!lyrics) return interaction.send("No lyrics found for " + SongTitle);
       lyrics = lyrics.split("\n"); //spliting into lines
       let SplitedLyrics = _.chunk(lyrics, 45); //45 lines each page
 
@@ -95,7 +92,7 @@ module.exports = {
         return em;
       });
 
-        return interaction.send(Pages[0]);
-    }
-  }
-}
+      return interaction.send(Pages[0]);
+    },
+  },
+};

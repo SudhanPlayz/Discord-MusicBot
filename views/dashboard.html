@@ -26,10 +26,7 @@
       <!--Main Navigation-->
       <header>
         <!-- Sidebar -->
-        <nav
-          id="sidebarMenu"
-          class="collapse d-lg-block sidebar"
-        >
+        <nav id="sidebarMenu" class="collapse d-lg-block sidebar">
           <div class="position-sticky">
             <div class="list-group list-group-flush mx-3 mt-4">
               <a
@@ -44,13 +41,15 @@
                 href="/servers"
                 class="list-group-item list-group-item-action py-2 ripple"
               >
-              <i class="fas fa-server fa-fw me-3"></i><span>Manage Servers</span>
+                <i class="fas fa-server fa-fw me-3"></i
+                ><span>Manage Servers</span>
               </a>
               <a
                 href="/logout"
                 class="list-group-item list-group-item-action py-2 ripple"
               >
-              <i class="fas fa-sign-out-alt fa-fw me-3"></i><span>Logout</span>
+                <i class="fas fa-sign-out-alt fa-fw me-3"></i
+                ><span>Logout</span>
               </a>
             </div>
           </div>
@@ -79,15 +78,11 @@
             </button>
 
             <!-- Brand -->
-            <a class="navbar-brand text-white" href="/" >
-              <img
-                src="/logo.gif"
-                height="40"
-                alt=""
-                loading="lazy"
-              />
+            <a class="navbar-brand text-white" href="/">
+              <img src="/logo.gif" height="40" alt="" loading="lazy" />
               Dashboard
             </a>
+          </div>
         </nav>
         <!-- Navbar -->
       </header>
@@ -98,7 +93,7 @@
         <div class="container pt-4">
           <!--Section: Main-->
           <section>
-              <h1>Bot Details</h1>
+            <h1>Bot Details</h1>
             <div class="row">
               <div class="col-xl-3 col-sm-6 col-12 mb-4">
                 <div class="card">
@@ -241,12 +236,12 @@
       overflow-y: auto;
     }
 
-    .card{
-        color: black;
+    .card {
+      color: black;
     }
 
     .footer {
-        position: absolute;
+      position: absolute;
       bottom: 0;
       background: #192027;
       text-align: center;
@@ -290,13 +285,13 @@
   <script>
     $(document).ready(() => {
       var socket = io();
-      socket.emit("dashboard")
+      socket.emit("dashboard");
       socket.on("dashboard", (data) => {
-        $("#commands").text(data.commands)
-        $("#users").text(data.users)
-        $("#songs").text(data.songs)
-        $("#guilds").text(data.guilds)
-      })
+        $("#commands").text(data.commands);
+        $("#users").text(data.users);
+        $("#songs").text(data.songs);
+        $("#guilds").text(data.guilds);
+      });
     });
   </script>
 </html>

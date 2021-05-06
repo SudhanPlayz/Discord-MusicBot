@@ -8,8 +8,8 @@ try {
 }
 
 const Auth = (req, res, next) => {
-    if(!req.user)return res.redirect(config.CallbackURL)
-    else next()
-}
+  if (!req.user) return res.redirect(config.CallbackURL);
+  else next();
+};
 
-module.exports = Auth
+module.exports = Auth;

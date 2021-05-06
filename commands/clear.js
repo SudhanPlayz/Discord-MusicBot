@@ -18,7 +18,11 @@ module.exports = {
    */
   run: async (client, message, args, { GuildDB }) => {
     let player = await client.Manager.get(message.guild.id);
-    if (!player) return client.sendTime(message.channel, "❌ | **Nothing is playing right now...**");
+    if (!player)
+      return client.sendTime(
+        message.channel,
+        "❌ | **Nothing is playing right now...**"
+      );
 
     if (!player.queue || !player.queue.length || player.queue.length === 0)
       return message.channel.send("There are no songs in the queue to clear!");
@@ -32,14 +36,16 @@ module.exports = {
   SlashCommand: {
     run: async (client, interaction, args, { GuildDB }) => {
       let player = await client.Manager.get(interaction.guild_id);
-      if (!player) return interaction.send("❌ | **Nothing is playing right now...**");
-  
-      if (!player.queue || !player.queue.length || player.queue.length === 0)return interaction.send("There are no songs in the queue to clear!");
+      if (!player)
+        return interaction.send("❌ | **Nothing is playing right now...**");
+
+      if (!player.queue || !player.queue.length || player.queue.length === 0)
+        return interaction.send("There are no songs in the queue to clear!");
       player.queue.clear();
       let embed = new MessageEmbed()
-      .setColor("RANDOM")
-      .setDescription("✅ | **Cleared the queue!**");
+        .setColor("RANDOM")
+        .setDescription("✅ | **Cleared the queue!**");
       await interaction.send(embed);
     },
-  }
+  },
 };

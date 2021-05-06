@@ -2,7 +2,7 @@ const { Collection, Client, MessageEmbed } = require("discord.js");
 const { LavasfyClient } = require("lavasfy");
 const { Manager } = require("erela.js");
 const { Server } = require("socket.io");
-const http = require('http');
+const http = require("http");
 const Jsoning = require("jsoning");
 const fs = require("fs");
 const path = require("path");
@@ -11,7 +11,7 @@ const Logger = require("./Logger");
 const prettyMilliseconds = require("pretty-ms");
 
 //Class extending Stuff
-require("./EpicPlayer")//idk why im doing but i wanna learn something new so...
+require("./EpicPlayer"); //idk why im doing but i wanna learn something new so...
 
 class DiscordMusicBot extends Client {
   constructor(props) {
@@ -36,7 +36,9 @@ class DiscordMusicBot extends Client {
       this.config = require("../config");
     }
     if (this.config.Token === "")
-      return new TypeError("Please fill in the information in the config.js file.");
+      return new TypeError(
+        "Please fill in the information in the config.js file."
+      );
 
     this.LoadCommands();
     this.LoadEvents();
@@ -46,7 +48,7 @@ class DiscordMusicBot extends Client {
     this.http = http.createServer(this.server);
     this.server.use("/", require("../api"));
     this.io = new Server(this.http);
-    require("../api/socket")(this.io)
+    require("../api/socket")(this.io);
 
     //Utils
     this.ProgressBar = require("../util/ProgressBar");
@@ -62,10 +64,10 @@ class DiscordMusicBot extends Client {
       }
     };
 
-    this.Ready = false
+    this.Ready = false;
 
     //idk where do i do it so i did it here ;-;
-    this.ws.on('INTERACTION_CREATE', async interaction => {
+    this.ws.on("INTERACTION_CREATE", async (interaction) => {
       let GuildDB = await this.GetGuild(interaction.guild_id);
 
       //Initialize GuildDB
@@ -81,21 +83,29 @@ class DiscordMusicBot extends Client {
       const args = interaction.data.options;
 
       //Easy to send respnose so ;)
-      interaction.guild = await this.guilds.fetch(interaction.guild_id)
+      interaction.guild = await this.guilds.fetch(interaction.guild_id);
       interaction.send = async (message) => {
-        return await this.api.interactions(interaction.id, interaction.token).callback.post({
-          data: {
+        return await this.api
+          .interactions(interaction.id, interaction.token)
+          .callback.post({
+            data: {
               type: 4,
-              data: typeof message == 'string'?{ content: message }:message.type && message.type === 'rich'?{ embeds: [message] }:message
-          }
-       })
-      }
+              data:
+                typeof message == "string"
+                  ? { content: message }
+                  : message.type && message.type === "rich"
+                  ? { embeds: [message] }
+                  : message,
+            },
+          });
+      };
 
-      let cmd = client.commands.get(command)
-      if(cmd.SlashCommand && cmd.SlashCommand.run)cmd.SlashCommand.run(this, interaction, args, { GuildDB })
-    })
+      let cmd = client.commands.get(command);
+      if (cmd.SlashCommand && cmd.SlashCommand.run)
+        cmd.SlashCommand.run(this, interaction, args, { GuildDB });
+    });
 
-    //because not worked lol ;-; 
+    //because not worked lol ;-;
     const client = this;
 
     this.Lavasfy = new LavasfyClient(
@@ -142,19 +152,27 @@ class DiscordMusicBot extends Client {
           .setThumbnail(player.queue.current.displayThumbnail())
           .setDescription(`[${track.title}](${track.uri})`)
           .addField("Requested by", `${track.requester}`, true)
-          .addField("Duration", `\`${prettyMilliseconds(track.duration, {colonNotation: true})}\``, true)
-          .setColor("RANDOM")
-          //.setFooter("Started playing at");
-        let NowPlaying = await client.channels.cache.get(player.textChannel).send(TrackStartedEmbed);
-        player.setNowplayingMessage(NowPlaying)
+          .addField(
+            "Duration",
+            `\`${prettyMilliseconds(track.duration, {
+              colonNotation: true,
+            })}\``,
+            true
+          )
+          .setColor("RANDOM");
+        //.setFooter("Started playing at");
+        let NowPlaying = await client.channels.cache
+          .get(player.textChannel)
+          .send(TrackStartedEmbed);
+        player.setNowplayingMessage(NowPlaying);
       })
       .on("queueEnd", (player) => {
         let QueueEmbed = new MessageEmbed()
           .setAuthor("The queue has ended", this.config.IconURL)
           .setColor("RANDOM")
-          .setTimestamp()
+          .setTimestamp();
         client.channels.cache.get(player.textChannel).send(QueueEmbed);
-        if(!this.config["24/7"])player.destroy();
+        if (!this.config["24/7"]) player.destroy();
       });
   }
 
@@ -216,22 +234,22 @@ class DiscordMusicBot extends Client {
   }
 
   sendTime(Channel, Error) {
-    let embed = new MessageEmbed()
-      .setColor("RANDOM")
-      .setDescription(Error);
+    let embed = new MessageEmbed().setColor("RANDOM").setDescription(Error);
 
     Channel.send(embed);
   }
 
   build() {
     this.login(this.config.Token);
-    this.http.listen(process.env.PORT || this.config.Port, () => this.log("Web Server has been started"));
+    this.http.listen(process.env.PORT || this.config.Port, () =>
+      this.log("Web Server has been started")
+    );
   }
 
-  RegisterSlashCommands(){
-    this.guilds.cache.forEach(guild => {
-      require("../util/RegisterSlashCommands")(this, guild.id)
-    })
+  RegisterSlashCommands() {
+    this.guilds.cache.forEach((guild) => {
+      require("../util/RegisterSlashCommands")(this, guild.id);
+    });
   }
 }
 
