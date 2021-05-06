@@ -39,8 +39,7 @@ module.exports = {
 
         if (!player) return client.sendTime(message.channel, "❌ | **Nothing is playing right now...**");
 
-        await player.connect();
-        await player.pause(false);
+        if (player.state != "CONNECTED") await player.connect();
 
         try {
             if (SearchString.match(client.Lavasfy.spotifyPattern)) {
