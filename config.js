@@ -6,7 +6,7 @@ module.exports = {
   Token: "" || process.env.Token, //Discord Bot Token
   ClientID: "", //Discord Client ID
   ClientSecret: "", //Discord Client Secret
-  Scopes: ["identify", "guilds"], //Discord OAuth2 Scopes
+  Scopes: ["identify", "guilds", "applications.commands"], //Discord OAuth2 Scopes
   CallbackURL: "/api/callback", //Discord OAuth2 Callback URL
   "24/7": false,//If you want the bot to be stay in the vc 24/7
   CookieSecret: "Pikachu is cute", //A Secret like a password
