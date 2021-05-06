@@ -20,6 +20,7 @@ module.exports = {
 run: async (client, message, args, { GuildDB }) => {
   let player = await client.Manager.get(message.guild.id);
   if (!player) return client.sendTime(message.channel, "❌ | **Nothing is playing right now...**");
+  if (!message.member.voice.channel) return client.sendTime(message.channel, "❌ | **You must be in a voice channel to use this command!**");
    message.author.send(new MessageEmbed()
    .setAuthor(`Saved Song:`, client.user.displayAvatarURL({
     dynamic: true
@@ -40,7 +41,7 @@ run: async (client, message, args, { GuildDB }) => {
       return message.channel.send("**:x: Your Dm's are disabled**")
     })    
 
-    message.react("✅").catch(e=>console.log("Could not react"))
+    client.sendTime(message.channel, "✅ | **Check your DMs!**")
   },
   SlashCommand: {
 /**
@@ -51,11 +52,12 @@ run: async (client, message, args, { GuildDB }) => {
 * @param {*} param3
 */
   run: async (client, interaction, args, { GuildDB }) => {
+    const user = client.users.cache.get(interaction.member.user.id);
     let player = await client.Manager.get(interaction.guild_id);
     if (!player) return client.sendTime(interaction, "❌ | **Nothing is playing right now...**");
     try{
     let embed = new MessageEmbed()
-      .setAuthor(`Saved from `, interaction.guild.name, client.user.displayAvatarURL())
+      .setAuthor(`Saved Song: `, client.user.displayAvatarURL())
       .setThumbnail(`https://img.youtube.com/vi/${player.queue.current.identifier}/mqdefault.jpg`)
       .setURL(player.queue.current.uri)
       .setColor("RANDOM")
@@ -66,15 +68,15 @@ run: async (client, message, args, { GuildDB }) => {
       .addField(`▶ Play it:`, `\`${GuildDB ? GuildDB.prefix : client.config.DefaultPrefix
         }play ${player.queue.current.uri}\``)
       .addField(`🔎 Saved in:`, `<#${interaction.channel_id}>`)
-      .setFooter(`Requested by: ${player.queue.current.requester.tag} | Guild: ${interaction.guild.name}`, player.queue.current.requester.displayAvatarURL({
+      .setFooter(`Requested by: ${player.queue.current.requester.tag}`, player.queue.current.requester.displayAvatarURL({
         dynamic: true
       }))
-      interaction.send(embed);
+      user.send(embed);
     }catch(e) {
-      return client.sendTime(interaction, "**:x: Your DM's are disabled**")
+      return client.sendTime(interaction, "**:x: Your DMs are disabled**")
     }
 
-    interaction.react("✅").catch(e => console.log("Could not react"))
+    client.sendTime(interaction, "✅ | **Check your DMs!**")
   },
   },
 };
