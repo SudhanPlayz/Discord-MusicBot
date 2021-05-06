@@ -4,7 +4,7 @@ const prettyMilliseconds = require("pretty-ms");
 
 module.exports = {
     name: "play",
-    description: "To play music in the voice channel",
+    description: "Play your favorite songs",
     usage: "[Song Name|Song URL]",
     permissions: {
         channel: ["VIEW_CHANNEL", "SEND_MESSAGES", "EMBED_LINKS"],
@@ -53,21 +53,16 @@ module.exports = {
                     player.queue.add(songs);
                     if (!player.playing && !player.paused && player.queue.totalSize === Searched.tracks.length) player.play();
                     SongAddedEmbed.setAuthor(`Playlist added to queue`, message.author.displayAvatarURL());
-                    /*
-          SongAddedEmbed.setDescription(
-            `[${SearchString.name}](${SearchString})`
-          );
-          */
                     SongAddedEmbed.addField("Enqueued", `\`${Searched.tracks.length}\` songs`, false);
-                    //SongAddedEmbed.addField("Playlist duration", `\`${prettyMilliseconds(Searched.tracks.duration, { colonNotation: true })}\``, false)
+                    //SongAddedEmbed.addField("Playlist duration", `\`${prettyMilliseconds(Searched.tracks, { colonNotation: true })}\``, false)
                     Searching.edit(SongAddedEmbed);
                 } else if (Searched.loadType.startsWith("TRACK")) {
                     player.queue.add(TrackUtils.build(Searched.tracks[0], message.author));
                     if (!player.playing && !player.paused && !player.queue.size) player.play();
                     SongAddedEmbed.setAuthor(`Added to queue`, client.config.IconURL);
-                    SongAddedEmbed.setDescription(`[${Searched.tracks[0].title}](${Searched.tracks[0].uri})`);
-                    SongAddedEmbed.addField("Author", Searched.tracks[0].author, true);
-                    SongAddedEmbed.addField("Duration", `\`${prettyMilliseconds(Searched.tracks[0].duration, { colonNotation: true })}\``, true);
+                    SongAddedEmbed.setDescription(`[${Searched.tracks[0].info.title}](${Searched.tracks[0].info.uri})`);
+                    SongAddedEmbed.addField("Author", Searched.tracks[0].info.author, true);
+                    //SongAddedEmbed.addField("Duration", `\`${prettyMilliseconds(Searched.tracks[0].length, { colonNotation: true })}\``, true);
                     if (player.queue.totalSize > 1) SongAddedEmbed.addField("Position in queue", `${player.queue.size - 0}`, true);
                     Searching.edit(SongAddedEmbed);
                 } else {
@@ -193,18 +188,18 @@ module.exports = {
                     case "TRACK_LOADED":
                         player.queue.add(res.tracks[0]);
                         if (!player.playing && !player.paused && !player.queue.length) player.play();
-                        return interaction.send(`**Added to queue**: \`${res.tracks[0].title}\``);
+                        return client.sendTime(interaction, `**Added to queue** \n[${res.tracks[0].title}](${res.tracks[0].uri})`);
                     case "PLAYLIST_LOADED":
                         player.queue.add(res.tracks);
 
                         if (!player.playing && !player.paused && player.queue.size === res.tracks.length) player.play();
-                        return interaction.send(`**Searched playlist**: \n **${res.playlist.name}** : **${res.tracks.length} tracks**`);
+                        return client.sendTime(interaction, `**Searched playlist**: \n **${res.playlist.name}** : **${res.tracks.length} tracks**`);
                     case "SEARCH_RESULT":
                         const track = res.tracks[0];
                         player.queue.add(track);
 
                         if (!player.playing && !player.paused && !player.queue.length) {
-                            interaction.send(`**Now playing ♪:** \`[${res.tracks[0].title}](${res.tracks[0].uri})\``);
+                            client.sendTime(interaction, `**Added to queue** [${res.tracks[0].title}](${res.tracks[0].uri})`);
                             player.play();
                         } else {
                             let SongAddedEmbed = new MessageEmbed();
