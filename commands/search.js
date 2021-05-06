@@ -28,7 +28,6 @@ module.exports = {
 
         let Searching = await message.channel.send(":mag_right: Searching...");
         let CheckNode = client.Manager.nodes.get(client.config.Lavalink.id);
-        let Searching = await message.channel.send(":mag_right: Searching...");
         if (!CheckNode || !CheckNode.connected) {
        return client.sendTime(message.channel,"❌ | Lavalink node not connected.");
         }
