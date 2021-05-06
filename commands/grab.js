@@ -20,10 +20,7 @@ module.exports = {
 run: async (client, message, args, { GuildDB }) => {
   let player = await client.Manager.get(message.guild.id);
   if (!player) return client.sendTime(message.channel, "❌ | **Nothing is playing right now...**");
-<<<<<<< HEAD
   if (!message.member.voice.channel) return client.sendTime(message.channel, "❌ | **You must be in a voice channel to use this command!**");
-=======
->>>>>>> 41afe06569dfadcfd2b98029b2efaf110320e6e0
    message.author.send(new MessageEmbed()
    .setAuthor(`Saved Song:`, client.user.displayAvatarURL({
     dynamic: true
