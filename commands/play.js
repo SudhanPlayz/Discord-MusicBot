@@ -39,9 +39,8 @@ module.exports = {
 
         if (!player) return client.sendTime(message.channel, "❌ | **Nothing is playing right now...**");
 
-        if (!player.playing) await player.connect();
         if (player.state != "CONNECTED") await player.connect();
-        
+
         try {
             if (SearchString.match(client.Lavasfy.spotifyPattern)) {
                 await client.Lavasfy.requestToken();
@@ -85,7 +84,6 @@ module.exports = {
                     Searching.edit(SongAddedEmbed);
                 } else {
                     player.queue.add(Searched.tracks[0]);
-                    if (player.paused) await player.pause(false);
                     if (!player.playing && !player.paused && !player.queue.size) player.play();
                     SongAddedEmbed.setAuthor(`Added to queue`, client.config.IconURL);
 

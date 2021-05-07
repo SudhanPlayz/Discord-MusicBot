@@ -16,7 +16,7 @@ module.exports = {
    * @param {string[]} args
    * @param {*} param3
    */
-   run: async (client, message, args, { GuildDB }) => {
+  run: async (client, message, args, { GuildDB }) => {
     let Commands = client.commands.map(
       (cmd) =>
         `\`${GuildDB ? GuildDB.prefix : client.config.DefaultPrefix}${
@@ -67,16 +67,14 @@ Discord Music Bot Version: v${require("../package.json").version}
           true
         )
         .setFooter(
-          `Prefix - ${
-            GuildDB ? GuildDB.prefix : client.config.DefaultPrefix
-          }`
+          `Prefix - ${GuildDB ? GuildDB.prefix : client.config.DefaultPrefix}`
         );
 
       message.channel.send(embed);
     }
   },
 
-SlashCommand: {
+  SlashCommand: {
     options: [
       {
         name: "command",
@@ -86,64 +84,74 @@ SlashCommand: {
         required: false,
         options: [],
 
-    run: async (client, interaction, args, { GuildDB }) => {
-      let Commands = client.commands.map(
-        (cmd) =>
-          `\`${GuildDB ? GuildDB.prefix : client.config.DefaultPrefix}${
-            cmd.name
-          }${cmd.usage ? " " + cmd.usage : ""}\` - ${cmd.description}`
-      );
-  
-      let Embed = new MessageEmbed()
-        .setAuthor(`Commands of ${client.user.username}`, client.config.IconURL)
-        .setColor("RANDOM")
-        .setFooter(
-          `To get info of each command type ${
-            GuildDB ? GuildDB.prefix : client.config.DefaultPrefix
-          }help [Command] | Have a nice day!`
-        ).setDescription(`${Commands.join("\n")}
+        run: async (client, interaction, args, { GuildDB }) => {
+          let Commands = client.commands.map(
+            (cmd) =>
+              `\`${GuildDB ? GuildDB.prefix : client.config.DefaultPrefix}${
+                cmd.name
+              }${cmd.usage ? " " + cmd.usage : ""}\` - ${cmd.description}`
+          );
+
+          let Embed = new MessageEmbed()
+            .setAuthor(
+              `Commands of ${client.user.username}`,
+              client.config.IconURL
+            )
+            .setColor("RANDOM")
+            .setFooter(
+              `To get info of each command type ${
+                GuildDB ? GuildDB.prefix : client.config.DefaultPrefix
+              }help [Command] | Have a nice day!`
+            ).setDescription(`${Commands.join("\n")}
   
   Discord Music Bot Version: v${require("../package.json").version}
   [✨ Support Server](${
-        client.config.SupportServer
-      }) | [GitHub](https://github.com/SudhanPlayz/Discord-MusicBot) | By [SudhanPlayz](https://github.com/SudhanPlayz)`);
-      if (!args[0]) interaction.send(Embed);
-      else {
-        let cmd =
-          client.commands.get(args[0]) ||
-          client.commands.find((x) => x.aliases && x.aliases.includes(args[0]));
-        if (!cmd)
-          return client.sendError(interaction, "Unable to find that command");
-  
-        let embed = new MessageEmbed()
-          .setAuthor(`Command: ${cmd.name}`, client.config.IconURL)
-          .setDescription(cmd.description)
-          .setColor("GREEN")
-          //.addField("Name", cmd.name, true)
-          .addField("Aliases", cmd.aliases.join(", "), true)
-          .addField(
-            "Usage",
-            `\`${GuildDB ? GuildDB.prefix : client.config.DefaultPrefix}${
-              cmd.name
-            }\`${cmd.usage ? " " + cmd.usage : ""}`,
-            true
-          )
-          .addField(
-            "Permissions",
-            "Member: " +
-              cmd.permissions.member.join(", ") +
-              "\nBot: " +
-              cmd.permissions.channel.join(", "),
-            true
-          )
-          .setFooter(
-            `Prefix - ${
-              GuildDB ? GuildDB.prefix : client.config.DefaultPrefix
-            }`
-          );
-  
-        interaction.send(embed);
-      }
-  }},
-],
-}};
+    client.config.SupportServer
+  }) | [GitHub](https://github.com/SudhanPlayz/Discord-MusicBot) | By [SudhanPlayz](https://github.com/SudhanPlayz)`);
+          if (!args[0]) interaction.send(Embed);
+          else {
+            let cmd =
+              client.commands.get(args[0]) ||
+              client.commands.find(
+                (x) => x.aliases && x.aliases.includes(args[0])
+              );
+            if (!cmd)
+              return client.sendError(
+                interaction,
+                "Unable to find that command"
+              );
+
+            let embed = new MessageEmbed()
+              .setAuthor(`Command: ${cmd.name}`, client.config.IconURL)
+              .setDescription(cmd.description)
+              .setColor("GREEN")
+              //.addField("Name", cmd.name, true)
+              .addField("Aliases", cmd.aliases.join(", "), true)
+              .addField(
+                "Usage",
+                `\`${GuildDB ? GuildDB.prefix : client.config.DefaultPrefix}${
+                  cmd.name
+                }\`${cmd.usage ? " " + cmd.usage : ""}`,
+                true
+              )
+              .addField(
+                "Permissions",
+                "Member: " +
+                  cmd.permissions.member.join(", ") +
+                  "\nBot: " +
+                  cmd.permissions.channel.join(", "),
+                true
+              )
+              .setFooter(
+                `Prefix - ${
+                  GuildDB ? GuildDB.prefix : client.config.DefaultPrefix
+                }`
+              );
+
+            interaction.send(embed);
+          }
+        },
+      },
+    ],
+  },
+};
