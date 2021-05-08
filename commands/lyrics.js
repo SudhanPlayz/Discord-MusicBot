@@ -22,31 +22,30 @@ module.exports = {
   run: async (client, message, args, { GuildDB }) => {
     let player = await client.Manager.get(message.guild.id);
     let SongTitle = args.join(" ");
-    if (!args[0] && !player)
-      return message.channel.send("❌ | **Nothing is playing right now...**");
+    let SearchString = args.join(" ");
+    if (!args[0] && !player) return client.sendTime(message.channel, "❌ | **Nothing is playing right now...**");
     if (!args[0]) SongTitle = player.queue.current.title;
     if (!args[0]) SongURL = player.queue.current.uri;
 
     let lyrics = await lyricsFinder(SongTitle);
-    if (!lyrics)
-      return message.channel.send(`**No lyrics found for -** \`${SongTitle}\``);
+    if (!lyrics) return client.sendTime(message.channel, `**No lyrics found for -** \`${SongTitle}\``);
     lyrics = lyrics.split("\n"); //spliting into lines
     let SplitedLyrics = _.chunk(lyrics, 45); //45 lines each page
 
     let Pages = SplitedLyrics.map((ly) => {
       let em = new MessageEmbed()
-        .setAuthor(SongTitle + "  — Lyrics", client.config.IconURL)
+        .setAuthor("Lyrics for:", client.config.IconURL)
+        .setTitle(SongTitle)
+        .setURL(SearchString)
         .setColor("RANDOM")
         .setDescription(ly.join("\n"));
 
-      if (args.join(" ") !== SongTitle)
-        em.setThumbnail(player.queue.current.displayThumbnail());
+      if (args.join(" ") !== SongTitle) em.setThumbnail(player.queue.current.displayThumbnail());
 
       return em;
     });
 
-    if (!Pages.length || Pages.length === 1)
-      return message.channel.send(Pages[0]);
+    if (!Pages.length || Pages.length === 1) return message.channel.send(Pages[0]);
     else return client.Pagination(message, Pages);
   },
 
@@ -70,14 +69,15 @@ module.exports = {
 
     run: async (client, interaction, args, { GuildDB }) => {
       let player = await client.Manager.get(interaction.guild_id);
-      let SongTitle = interaction.data.options[0].value;
-      if (!SongTitle && !player)
-        return client.sendTime(interaction, "❌ | **Nothing is playing right now...**");
-      if (!SongTitle) SongTitle = player.queue.current.title;
 
+      if (!interaction.data.options && !player) return client.sendTime(interaction, "❌ | **Nothing is playing right now...**");
+
+      SongTitle = interaction.data.options ? interaction.data.options[0].value : player.queue.current.title;
+      SongURL = interaction.data.options ? interaction.data.options[0].value : player.queue.current.uri;
       let lyrics = await lyricsFinder(SongTitle);
-      if (!lyrics)
-        return client.sendTime(interaction, "No lyrics found for " + SongTitle);
+      console.log(lyrics.length == 0)
+      if (lyrics.length == 0)
+        return client.sendTime(interaction, `**No lyrics found for -** \`${SongTitle}\``);
       lyrics = lyrics.split("\n"); //spliting into lines
       let SplitedLyrics = _.chunk(lyrics, 45); //45 lines each page
 
@@ -87,13 +87,13 @@ module.exports = {
           .setColor("RANDOM")
           .setDescription(ly.join("\n"));
 
-        if (SongTitle !== SongTitle)
-          em.setThumbnail(player.queue.current.displayThumbnail());
+        if (SongTitle !== SongTitle) em.setThumbnail(player.queue.current.displayThumbnail());
 
         return em;
       });
+      if (!Pages.length || Pages.length === 1)
+        return interaction.send(Pages[0]);
 
-      return interaction.send(Pages[0]);
     },
-  },
+  }
 };
