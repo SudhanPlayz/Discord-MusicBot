@@ -28,7 +28,7 @@ module.exports = {
           client.config.ClientID
         }&permissions=${
           client.config.Permissions
-        }&scope=bot%20${client.config.Scopes.join("%20")}&redirect_uri=${
+        }&scope=bot%20${client.config.Scopes.join("%20")}&redirect_url=${
           client.config.Website
         }${client.config.CallbackURL}&response_type=code)`
       );
