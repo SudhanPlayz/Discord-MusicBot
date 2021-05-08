@@ -72,11 +72,11 @@ class DiscordMusicBot extends Client {
 
       //Initialize GuildDB
       if (!GuildDB) {
-        await this.database.guild.set(message.guild.id, {
-          prefix: prefix,
+        await this.database.guild.set(interaction.guild_id, {
+          prefix: this.config.DefaultPrefix,
           DJ: null,
         });
-        GuildDB = await this.GetGuild(message.guild.id);
+        GuildDB = await this.GetGuild(interaction.guild_id);
       }
 
       const command = interaction.data.name.toLowerCase();
