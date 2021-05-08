@@ -104,7 +104,7 @@ What would you like to edit?
   SlashCommand: {
     options: [
       {
-        name: "Prefix",
+        name: "prefix",
         description: "Check the bot's prefix",
         type: 1,
         required: false,
@@ -113,12 +113,12 @@ What would you like to edit?
             name: "symbol",
             description: "Set the bot's prefix",
             type: 3,
-            required: true,
+            required: false,
           },
         ],
       },
       {
-        name: "DJRole",
+        name: "dj",
         description: "Check the DJ role",
         type: 1,
         required: false,
@@ -127,7 +127,7 @@ What would you like to edit?
             name: "role",
             description: "Set the DJ role",
             type: 8,
-            required: true,
+            required: false,
           },
         ],
       },
