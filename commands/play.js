@@ -1,4 +1,4 @@
-const { MessageEmbed } = require("discord.js");
+const { Util, MessageEmbed } = require("discord.js");
 const { TrackUtils, Player } = require("erela.js");
 const prettyMilliseconds = require("pretty-ms");
 
@@ -104,8 +104,8 @@ module.exports = {
     SlashCommand: {
         options: [
             {
-                name: "song",
-                value: "song",
+                name: "query",
+                value: "query",
                 type: 3,
                 required: true,
                 description: "Play music in the voice channel",
@@ -148,59 +148,99 @@ module.exports = {
                 switch (Searched.loadType) {
                     case "LOAD_FAILED":
                         if (!player.queue.current) player.destroy();
-                        return interaction.send(`There was an error while searching`);
+                        return client.sendError(interaction, `❌ | **There was an error while searching**`);
 
                     case "NO_MATCHES":
                         if (!player.queue.current) player.destroy();
-                        return interaction.send("No results were found.");
+                        return client.sendTime(interaction, "❌ | **No results were found.**");
                     case "TRACK_LOADED":
                         player.queue.add(TrackUtils.build(Searched.tracks[0], member.user));
                         if (!player.playing && !player.paused && !player.queue.length) player.play();
-                        return interaction.send(`**Searched Track** \`${Searched.tracks[0].info.title}\`.`);
+                        let SongAddedEmbed = new MessageEmbed();
+                            SongAddedEmbed.setAuthor(`Added to queue`, client.config.IconURL);
+                            SongAddedEmbed.setColor("RANDOM");
+                            SongAddedEmbed.setDescription(`[${Searched.tracks[0].info.title}](${Searched.tracks[0].info.uri})`);
+                            SongAddedEmbed.addField("Author", Searched.tracks[0].info.author, true);
+                            if (player.queue.totalSize > 1) SongAddedEmbed.addField("Position in queue", `${player.queue.size - 0}`, true);
+                            return interaction.send(SongAddedEmbed);
 
                     case "SEARCH_RESULT":
                         player.queue.add(TrackUtils.build(Searched.tracks[0], member.user));
                         if (!player.playing && !player.paused && !player.queue.length) player.play();
-                        return interaction.send(`**Searched Track** \`${Searched.tracks[0].info.title}\`.`);
+                        let SongAdded = new MessageEmbed();
+                            SongAdded.setAuthor(`Added to queue`, client.config.IconURL);
+                            SongAdded.setColor("RANDOM");
+                            SongAdded.setDescription(`[${Searched.tracks[0].info.title}](${Searched.tracks[0].info.uri})`);
+                            SongAdded.addField("Author", Searched.tracks[0].info.author, true);
+                            if (player.queue.totalSize > 1) SongAdded.addField("Position in queue", `${player.queue.size - 0}`, true);
+                            return interaction.send(SongAdded);
+
 
                     case "PLAYLIST_LOADED":
                         let songs = [];
                         for (let i = 0; i < Searched.tracks.length; i++) songs.push(TrackUtils.build(Searched.tracks[i], member.user));
                         player.queue.add(songs);
-
                         if (!player.playing && !player.paused && player.queue.totalSize === Searched.tracks.length) player.play();
-                        return interaction.send(`**Searched playlist**: \n **${Searched.tracks[0].info.title}** : **${Searched.tracks.length} tracks**`);
+                        let Playlist = new MessageEmbed();
+                        Playlist.setAuthor(`Playlist added to queue`, client.config.IconURL);
+                        Playlist.setDescription(`[${Searched.playlistInfo.name}](${interaction.data.options[0].value})`);
+                        Playlist.addField("Enqueued", `\`${Searched.tracks.length}\` songs`, false);
+                        return interaction.send(Playlist);
                 }
             } else {
                 try {
                     res = await player.search(search, member.user);
                     if (res.loadType === "LOAD_FAILED") {
                         if (!player.queue.current) player.destroy();
-                        throw new Error(res.exception.message);
+                        return interaction.send(`There was an error while searching`);
                     }
                 } catch (err) {
-                    return interaction.send(`There was an error while searching: ${err.message}`);
+                    return client.sendTime(interaction, `There was an error while searching: ${err.message}`);
                 }
                 switch (res.loadType) {
                     case "NO_MATCHES":
                         if (!player.queue.current) player.destroy();
-                        return interaction.send("No results were found.");
+                        return client.sendTime(interaction, "❌ | **No results were found.**");
                     case "TRACK_LOADED":
                         player.queue.add(res.tracks[0]);
                         if (!player.playing && !player.paused && !player.queue.length) player.play();
-                        return client.sendTime(interaction, `**Added to queue** \n[${res.tracks[0].title}](${res.tracks[0].uri})`);
+                        let SongAddedEmbed = new MessageEmbed();
+                            SongAddedEmbed.setAuthor(`Added to queue`, client.config.IconURL);
+                            SongAddedEmbed.setThumbnail(res.tracks[0].displayThumbnail());
+                            SongAddedEmbed.setColor("RANDOM");
+                            SongAddedEmbed.setDescription(`[${res.tracks[0].title}](${res.tracks[0].uri})`);
+                            SongAddedEmbed.addField("Author", res.tracks[0].author, true);
+                            SongAddedEmbed.addField("Duration", `\`${prettyMilliseconds(res.tracks[0].duration, { colonNotation: true })}\``, true);
+                            if (player.queue.totalSize > 1) SongAddedEmbed.addField("Position in queue", `${player.queue.size - 0}`, true);
+                            return interaction.send(SongAddedEmbed);
+                            
                     case "PLAYLIST_LOADED":
                         player.queue.add(res.tracks);
-
-                        if (!player.playing && !player.paused && player.queue.size === res.tracks.length) player.play();
-                        return client.sendTime(interaction, `**Searched playlist**: \n **${res.playlist.name}** : **${res.tracks.length} tracks**`);
+                        await player.play();
+                        let SongAdded = new MessageEmbed();
+                        SongAdded.setAuthor(`Playlist added to queue`, client.config.IconURL);
+                        SongAdded.setThumbnail(res.tracks[0].displayThumbnail());
+                        SongAdded.setDescription(`[${res.playlist.name}](${interaction.data.options[0].value})`);
+                        SongAdded.addField("Enqueued", `\`${res.tracks.length}\` songs`, false);
+                        SongAdded.addField("Playlist duration", `\`${prettyMilliseconds(res.playlist.duration, { colonNotation: true })}\``, false);
+                        return interaction.send(SongAdded);
                     case "SEARCH_RESULT":
                         const track = res.tracks[0];
                         player.queue.add(track);
+                    
 
                         if (!player.playing && !player.paused && !player.queue.length) {
-                            client.sendTime(interaction, `**Added to queue** [${res.tracks[0].title}](${res.tracks[0].uri})`);
+                            let SongAddedEmbed = new MessageEmbed();
+                            SongAddedEmbed.setAuthor(`Added to queue`, client.config.IconURL);
+                            SongAddedEmbed.setThumbnail(track.displayThumbnail());
+                            SongAddedEmbed.setColor("RANDOM");
+                            SongAddedEmbed.setDescription(`[${track.title}](${track.uri})`);
+                            SongAddedEmbed.addField("Author", track.author, true);
+                            SongAddedEmbed.addField("Duration", `\`${prettyMilliseconds(track.duration, { colonNotation: true })}\``, true);
+                            if (player.queue.totalSize > 1) SongAddedEmbed.addField("Position in queue", `${player.queue.size - 0}`, true);
                             player.play();
+                            return interaction.send(SongAddedEmbed);
+                            
                         } else {
                             let SongAddedEmbed = new MessageEmbed();
                             SongAddedEmbed.setAuthor(`Added to queue`, client.config.IconURL);

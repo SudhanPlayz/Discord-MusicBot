@@ -25,7 +25,7 @@ module.exports = {
       );
 
     if (!player.queue || !player.queue.length || player.queue.length === 0)
-      return message.channel.send("There are no songs in the queue to clear!");
+      return client.sendTime(message.channel, "❌ | **Nothing is playing right now...**");
     player.queue.clear();
     let embed = new MessageEmbed()
       .setColor("RANDOM")
@@ -34,13 +34,20 @@ module.exports = {
   },
 
   SlashCommand: {
+    /**
+   *
+   * @param {import("../structures/DiscordMusicBot")} client
+   * @param {import("discord.js").Message} message
+   * @param {string[]} args
+   * @param {*} param3
+   */
     run: async (client, interaction, args, { GuildDB }) => {
       let player = await client.Manager.get(interaction.guild_id);
       if (!player)
-        return interaction.send("❌ | **Nothing is playing right now...**");
+        return client.sendTime(interaction, "❌ | **Nothing is playing right now...**");
 
       if (!player.queue || !player.queue.length || player.queue.length === 0)
-        return interaction.send("There are no songs in the queue to clear!");
+        return client.sendTime(interaction, "❌ | **Nothing is playing right now...**");
       player.queue.clear();
       let embed = new MessageEmbed()
         .setColor("RANDOM")

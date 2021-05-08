@@ -3,7 +3,7 @@ const prettyMilliseconds = require("pretty-ms");
 
 module.exports = {
   name: "grab",
-  description: "Saves the current playing song to your Direct Messages",
+  description: "Saves the current song to your Direct Messages",
   usage: "",
   permissions: {
     channel: ["VIEW_CHANNEL", "SEND_MESSAGES", "EMBED_LINKS"],
@@ -38,7 +38,7 @@ run: async (client, message, args, { GuildDB }) => {
     dynamic: true
   }))
     ).catch(e=>{
-      return message.channel.send("**:x: Your Dm's are disabled**")
+      return message.channel.send("**:x: Your DMs are disabled**")
     })    
 
     client.sendTime(message.channel, "✅ | **Check your DMs!**")
@@ -52,9 +52,13 @@ run: async (client, message, args, { GuildDB }) => {
 * @param {*} param3
 */
   run: async (client, interaction, args, { GuildDB }) => {
+    const guild = client.guilds.cache.get(interaction.guild_id);
     const user = client.users.cache.get(interaction.member.user.id);
+    const member = guild.members.cache.get(interaction.member.user.id);
     let player = await client.Manager.get(interaction.guild_id);
     if (!player) return client.sendTime(interaction, "❌ | **Nothing is playing right now...**");
+    if (!member.voice.channel) return client.sendTime(interaction, "❌ | **You must be in a voice channel to use this command.**");
+    if (guild.me.voice.channel && !guild.me.voice.channel.equals(member.voice.channel)) return client.sendTime(interaction, `❌ | **You must be in ${guild.me.voice.channel} to use this command.**`);
     try{
     let embed = new MessageEmbed()
       .setAuthor(`Saved Song: `, client.user.displayAvatarURL())
