@@ -23,7 +23,7 @@ module.exports = {
         if (!message.member.voice.channel) return client.sendTime(message.channel, "❌ | **You must be in a voice channel to use this command!**");
         //else if(message.guild.me.voice && message.guild.me.voice.channel.id !== message.member.voice.channel.id)return client.sendTime(message.channel, `❌ | **You must be in ${guild.me.voice.channel} to use this command.**`);
 
-        if (player.playing) return message.channel.send("Music is already resumed!");
+        if (player.playing) return client.sendTime(interaction, "❌ | **Music is already resumed!**");
         player.pause(false);
         await message.react("✅");
     },
@@ -44,8 +44,8 @@ module.exports = {
             if (guild.me.voice.channel && !guild.me.voice.channel.equals(member.voice.channel)) return client.sendTime(interaction, `❌ | **You must be in ${guild.me.voice.channel} to use this command.**`);
 
             let player = await client.Manager.get(interaction.guild_id);
-            if (!player) return client.sendTime(inter, "❌ | **Nothing is playing right now...**");
-            if (player.playing) return client.sendTime(interaction, "Music is already resumed!");
+            if (!player) return client.sendTime(interaction, "❌ | **Nothing is playing right now...**");
+            if (player.playing) return client.sendTime(interaction, "❌ | **Music is already resumed!**");
             player.pause(false);
             client.sendTime(interaction, "**⏯ Resumed!**");
         },

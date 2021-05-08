@@ -65,7 +65,12 @@ module.exports = {
         };
 
             let player = await client.Manager.get(interaction.guild_id);
+            const guild = client.guilds.cache.get(interaction.guild_id);
+            const member = guild.members.cache.get(interaction.member.user.id);
+            const voiceChannel = member.voice.channel;
             if (!player) return client.sendTime(interaction, "❌ | **Nothing is playing right now...**");
+            if (!member.voice.channel) return client.sendTime(interaction, "❌ | **You must be in a voice channel to use this command.**");
+            if (guild.me.voice.channel && !guild.me.voice.channel.equals(voiceChannel)) return client.sendTime(interaction, `❌ | **You must be in ${guild.me.voice.channel} to use this command.**`);
             if (!args) return client.sendTime(interaction, "**Please provide a bassboost level. \nAvailable Levels:** `none`, `low`, `medium`, `high`"); //if the user do not provide args [arguments]
 
             let level = "none";

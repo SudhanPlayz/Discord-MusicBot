@@ -5,7 +5,7 @@ const _ = require("lodash");
 
 module.exports = {
   name: "lyrics",
-  description: "Search lyrics for any song",
+  description: "To get and search lyrics of a song",
   usage: "[Song Name]",
   permissions: {
     channel: ["VIEW_CHANNEL", "SEND_MESSAGES", "EMBED_LINKS"],
@@ -72,11 +72,12 @@ module.exports = {
       let player = await client.Manager.get(interaction.guild_id);
       let SongTitle = interaction.data.options[0].value;
       if (!SongTitle && !player)
-        return interaction.send("Nothing is playing right now...");
+        return client.sendTime(interaction, "❌ | **Nothing is playing right now...**");
       if (!SongTitle) SongTitle = player.queue.current.title;
 
       let lyrics = await lyricsFinder(SongTitle);
-      if (!lyrics) return interaction.send("No lyrics found for " + SongTitle);
+      if (!lyrics)
+        return client.sendTime(interaction, "No lyrics found for " + SongTitle);
       lyrics = lyrics.split("\n"); //spliting into lines
       let SplitedLyrics = _.chunk(lyrics, 45); //45 lines each page
 

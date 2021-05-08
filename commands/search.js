@@ -138,8 +138,8 @@ module.exports = {
   SlashCommand: {
     options: [
       {
-        name: "song",
-        value: "song",
+        name: "query",
+        value: "query",
         type: 3,
         required: true,
         description: "Search a song/playlist",
@@ -321,19 +321,10 @@ module.exports = {
               SongAddedEmbed.setAuthor(`Added to queue`, client.config.IconURL);
               SongAddedEmbed.setThumbnail(track.displayThumbnail());
               SongAddedEmbed.setColor("RANDOM");
-              SongAddedEmbed.addField(
-                "Song",
-                `[${track.title}](${track.uri})`,
-                true
-              );
+              SongAddedEmbed.setDescription(`[${track.title}](${track.uri})`);
               SongAddedEmbed.addField("Author", track.author, true);
-              SongAddedEmbed.addField(
-                "Duration",
-                `\`${prettyMilliseconds(track.duration, {
-                  colonNotation: true,
-                })}\``,
-                true
-              );
+              SongAddedEmbed.addField("Duration", `\`${prettyMilliseconds(track.duration, { colonNotation: true })}\``, true);
+              if (player.queue.totalSize > 1) SongAddedEmbed.addField("Position in queue", `${player.queue.size - 0}`, true);
               awaitchannel.send(SongAddedEmbed);
             }
         }

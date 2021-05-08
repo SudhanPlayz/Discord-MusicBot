@@ -21,13 +21,18 @@ module.exports = {
         if (!player) return client.sendTime(message.channel, "❌ | **Nothing is playing right now...**");
         if (!message.member.voice.channel) return client.sendTime(message.channel, "❌ | **You must be in a voice channel to use this command!**");
 
-        if (!player.queue || !player.queue.length || player.queue.length === 0) return message.channel.send("Not enough songs in the queue to shuffle!");
+        if (!player.queue || !player.queue.length || player.queue.length === 0) return client.sendTime(interaction, "❌ | **Not enough songs in the queue to shuffle!**");
         player.queue.shuffle();
-        let embed = new MessageEmbed().setColor("RANDOM").setDescription(`Shuffled the queue!`);
-        await message.channel.send(embed);
-        await message.react("✅");
+        await client.sendTime(message.channel, "✅ | Shuffled the queue!");
     },
     SlashCommand: {
+        /**
+     *
+     * @param {import("../structures/DiscordMusicBot")} client
+     * @param {import("discord.js").Message} message
+     * @param {string[]} args
+     * @param {*} param3
+     */
         run: async (client, interaction, args, { GuildDB }) => {
             const guild = client.guilds.cache.get(interaction.guild_id);
             const member = guild.members.cache.get(interaction.member.user.id);
@@ -37,9 +42,9 @@ module.exports = {
 
             let player = await client.Manager.get(interaction.guild_id);
             if (!player) return client.sendTime(interaction.channel, "❌ | **Nothing is playing right now...**");
-            if (!player.queue || !player.queue.length || player.queue.length === 0) return interaction.send("Not enough songs in the queue to shuffle!");
+            if (!player.queue || !player.queue.length || player.queue.length === 0) return client.sendTime(interaction, "❌ | **Not enough songs in the queue to shuffle!**");
             player.queue.shuffle();
-            interaction.send("Shuffled the queue!");
+            client.sendTime(interaction, "✅ | Shuffled the queue!");
         },
     },
 };

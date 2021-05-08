@@ -62,8 +62,8 @@ module.exports = {
   SlashCommand: {
     options: [
       {
-          name: "number",
-          value: "[number]",
+          name: "track",
+          value: "[track]",
           type: 4,
           required: true,
           description: "Remove a song from the queue",

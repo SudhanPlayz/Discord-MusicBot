@@ -30,7 +30,7 @@ const { TrackUtils } = require("erela.js");
     let rm = new MessageEmbed()
       .setDescription(`✅ **|** Removed track **\`${Number(args[0])}\`** from the queue!`)
       .setColor("GREEN")
-      if (isNaN(args[0]))rm.setDescription(`**Usage - **${client.config.prefix}\`remove [number]\``);
+      if (isNaN(args[0]))rm.setDescription(`**Usage - **${client.config.prefix}\`remove [track]\``);
       if (args[0] > player.queue.length)
       rm.setDescription(`The queue has only ${player.queue.length} songs!`);
     await message.channel.send(rm);
@@ -40,8 +40,8 @@ const { TrackUtils } = require("erela.js");
   SlashCommand: {
     options: [
       {
-          name: "remove",
-          value: "[number]",
+          name: "track",
+          value: "[track]",
           type: 4,
           required: true,
           description: "Remove a song from the queue",
@@ -56,8 +56,10 @@ const { TrackUtils } = require("erela.js");
    */
     run: async (client, interaction, args, { GuildDB }) => {
       let player = await client.Manager.get(interaction.guild_id);
+      const guild = client.guilds.cache.get(interaction.guild_id);
+      const member = guild.members.cache.get(interaction.member.user.id);
       const song = player.queue.slice(args[0] - 1, 1);
-      if (!player) return client.sendTime("❌ | **Nothing is playing right now...**");
+      if (!player) return client.sendTime(interaction, "❌ | **Nothing is playing right now...**");
       if (!member.voice.channel) return client.sendTime(interaction, "❌ | **You must be in a voice channel to use this command.**");
       if (guild.me.voice.channel && !guild.me.voice.channel.equals(member.voice.channel)) return client.sendTime(interaction, `❌ | **You must be in ${guild.me.voice.channel} to use this command.**`);
   
@@ -66,7 +68,7 @@ const { TrackUtils } = require("erela.js");
     let rm = new MessageEmbed()
       .setDescription(`✅ **|** Removed track **\`${Number(args[0])}\`** from the queue!`)
       .setColor("GREEN")
-      if (isNaN(args[0]))rm.setDescription(`Usage: ${client.config.prefix}\`remove [number]\``);
+      if (isNaN(args[0]))rm.setDescription(`Usage: ${client.config.prefix}\`remove [track]\``);
       if (args[0] > player.queue.length)
       rm.setDescription(`The queue has only ${player.queue.length}!`);
     await interaction.send(rm);
