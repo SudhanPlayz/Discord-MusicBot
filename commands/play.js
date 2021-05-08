@@ -192,7 +192,7 @@ module.exports = {
                     res = await player.search(search, member.user);
                     if (res.loadType === "LOAD_FAILED") {
                         if (!player.queue.current) player.destroy();
-                        throw new Error(res.exception.message);
+                        return interaction.send(`There was an error while searching`);
                     }
                 } catch (err) {
                     return client.sendTime(interaction, `There was an error while searching: ${err.message}`);
