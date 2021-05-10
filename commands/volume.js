@@ -24,7 +24,7 @@ module.exports = {
         if (!parseInt(args[0])) return client.sendTime(message.channel, `**Please choose a number between** \`1 - 100\``);
         let vol = parseInt(args[0]);
         player.setVolume(vol);
-        client.sendTime(interaction, `🔉 | Volume set to \`${player.volume}\``);
+        client.sendTime(message.channel, `🔉 | **Volume set to** \`${player.volume}\``);
     },
     SlashCommand: {
         options: [
