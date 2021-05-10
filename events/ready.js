@@ -1,8 +1,13 @@
 module.exports = async (client) => {
-  client.Ready = true;
-  client.user.setActivity("Music", { type: "LISTENING" }).then(() => {
+  client.Ready = true, 
+    client.user.setPresence({
+        activity: { 
+            name: 'Music', // The message shown
+            type: 'LISTENING', // PLAYING, WATCHING, LISTENING, STREAMING
+        },
+        status: 'online' // You can show online, idle, dnd(Do Not Disturb)
+    })
     client.Manager.init(client.user.id);
-    client.log("Successfully Logged in as " + client.user.tag);
-  });
-  client.RegisterSlashCommands();
+    client.log("Successfully Logged in as " + client.user.tag); // You can change the text if you want, but DO NOT REMOVE "client.user.tag"
+client.RegisterSlashCommands();
 };
