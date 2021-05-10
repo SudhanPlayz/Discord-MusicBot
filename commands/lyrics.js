@@ -25,7 +25,6 @@ module.exports = {
     let SearchString = args.join(" ");
     if (!args[0] && !player) return client.sendTime(message.channel, "❌ | **Nothing is playing right now...**");
     if (!args[0]) SongTitle = player.queue.current.title;
-    if (!args[0]) SongURL = player.queue.current.uri;
 
     let lyrics = await lyricsFinder(SongTitle);
     if (!lyrics) return client.sendTime(message.channel, `**No lyrics found for -** \`${SongTitle}\``);
@@ -34,9 +33,7 @@ module.exports = {
 
     let Pages = SplitedLyrics.map((ly) => {
       let em = new MessageEmbed()
-        .setAuthor("Lyrics for:", client.config.IconURL)
-        .setTitle(SongTitle)
-        .setURL(SearchString)
+        .setAuthor(`Lyrics for: ${SongTitle}`, client.config.IconURL)
         .setColor("RANDOM")
         .setDescription(ly.join("\n"));
 
