@@ -29,7 +29,7 @@
     },
     "Website": {
       "description": "URL of your webserver (Example: https://domain.xyz)",
-      "required": "true"
+      "value": ""
     },
     "Spotify_ClientID": {
       "description": "Spotify ClientID",
