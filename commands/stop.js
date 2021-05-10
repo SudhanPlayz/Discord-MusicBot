@@ -1,14 +1,14 @@
 const { MessageEmbed } = require("discord.js");
 
 module.exports = {
-  name: "stop",
+  name: "leave",
   description: "Stop the music and leave the voice channel",
   usage: "",
   permissions: {
     channel: ["VIEW_CHANNEL", "SEND_MESSAGES", "EMBED_LINKS"],
     member: [],
   },
-  aliases: ["leave", "exit", "quit", "dc", "disconnect"],
+  aliases: ["stop", "exit", "quit", "dc", "disconnect"],
   /**
    *
    * @param {import("../structures/DiscordMusicBot")} client
