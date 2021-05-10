@@ -70,17 +70,16 @@ module.exports = {
       if (!interaction.data.options && !player) return client.sendTime(interaction, "❌ | **Nothing is playing right now...**");
 
       SongTitle = interaction.data.options ? interaction.data.options[0].value : player.queue.current.title;
-      SongURL = interaction.data.options ? interaction.data.options[0].value : player.queue.current.uri;
       let lyrics = await lyricsFinder(SongTitle);
-      console.log(lyrics.length == 0)
-      if (lyrics.length == 0)
+      console.log(lyrics.length === 0)
+      if (lyrics.length === 0)
         return client.sendTime(interaction, `**No lyrics found for -** \`${SongTitle}\``);
       lyrics = lyrics.split("\n"); //spliting into lines
       let SplitedLyrics = _.chunk(lyrics, 45); //45 lines each page
 
       let Pages = SplitedLyrics.map((ly) => {
         let em = new MessageEmbed()
-          .setAuthor(SongTitle + "  — Lyrics", client.config.IconURL)
+          .setAuthor(`Lyrics for: ${SongTitle}`, client.config.IconURL)
           .setColor("RANDOM")
           .setDescription(ly.join("\n"));
 

@@ -20,7 +20,7 @@ module.exports = {
         let player = await client.Manager.get(message.guild.id);
         if (!player) return client.sendTime(message.channel, "❌ | **Nothing is playing right now...**");
         if (!message.member.voice.channel) return client.sendTime(message.channel, "❌ | **You must be in a voice channel to use this command!**");
-
+        if (message.guild.me.voice.channel && message.member.voice.channel.id !== message.guild.me.voice.channel.id) return client.sendTime(message.channel, ":x: | **You must be in the same voice channel as me to use this command!**");
         if (!player.queue || !player.queue.length || player.queue.length === 0) return client.sendTime(interaction, "❌ | **Not enough songs in the queue to shuffle!**");
         player.queue.shuffle();
         await client.sendTime(message.channel, "✅ | Shuffled the queue!");
@@ -38,7 +38,7 @@ module.exports = {
             const member = guild.members.cache.get(interaction.member.user.id);
 
             if (!member.voice.channel) return client.sendTime(interaction, "❌ | **You must be in a voice channel to use this command.**");
-            if (guild.me.voice.channel && !guild.me.voice.channel.equals(member.voice.channel)) return client.sendTime(interaction, `❌ | **You must be in ${guild.me.voice.channel} to use this command.**`);
+            if (guild.me.voice.channel && !guild.me.voice.channel.equals(member.voice.channel)) return client.sendTime(interaction, ":x: | **You must be in the same voice channel as me to use this command!**");
 
             let player = await client.Manager.get(interaction.guild_id);
             if (!player) return client.sendTime(interaction.channel, "❌ | **Nothing is playing right now...**");

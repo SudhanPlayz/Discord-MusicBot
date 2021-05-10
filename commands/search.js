@@ -6,7 +6,7 @@ const prettyMilliseconds = require("pretty-ms");
 module.exports = {
   name: "search",
   description: "Search a song/playlist",
-  usage: "[Song Name|SongURL]",
+  usage: "[query]",
   permissions: {
     channel: ["VIEW_CHANNEL", "SEND_MESSAGES", "EMBED_LINKS"],
     member: [],
@@ -25,19 +25,19 @@ module.exports = {
         message.channel,
         "❌ | **You must be in a voice channel to play something!**"
       );
-    //else if(message.guild.me.voice && message.guild.me.voice.channel.id !== message.member.voice.channel.id)return client.sendTime(message.channel, "❌ | **You must be in same voice channel as the bot is in to play something!**");
+      if (message.guild.me.voice.channel && message.member.voice.channel.id !== message.guild.me.voice.channel.id) return client.sendTime(message.channel, ":x: | **You must be in the same voice channel as me to use this command!**");
 
     let SearchString = args.join(" ");
     if (!SearchString)
       return client.sendTime(
         message.channel,
-        `**Usage - **\`${GuildDB.prefix}search [Song Name|SongURL]\``
+        `**Usage - **\`${GuildDB.prefix}search [query]\``
       );
     let CheckNode = client.Manager.nodes.get(client.config.Lavalink.id);
     if (!CheckNode || !CheckNode.connected) {
       return client.sendTime(
         message.channel,
-        "❌ | Lavalink node not connected."
+        "❌ | **Lavalink node not connected**"
       );
     }
     const player = client.Manager.create({
@@ -168,13 +168,13 @@ module.exports = {
       )
         return client.sendTime(
           interaction,
-          `❌ | **You must be in ${guild.me.voice.channel} to use this command.**`
+          ":x: | **You must be in the same voice channel as me to use this command!**"
         );
       let CheckNode = client.Manager.nodes.get(client.config.Lavalink.id);
       if (!CheckNode || !CheckNode.connected) {
         return client.sendTime(
           interaction,
-          "❌ | Lavalink node not connected."
+          "❌ | **Lavalink node not connected**"
         );
       }
       let player = client.Manager.create({
@@ -195,17 +195,17 @@ module.exports = {
         switch (Searched.loadType) {
           case "LOAD_FAILED":
             if (!player.queue.current) player.destroy();
-            return interaction.send(`There was an error while searching`);
+            return client.sendError(interaction, `:x: | **There was an error while searching**`);
 
           case "NO_MATCHES":
             if (!player.queue.current) player.destroy();
-            return interaction.send("No results were found.");
+            return client.sendTime(interaction, ":x: | **No results were found**");
           case "TRACK_LOADED":
             player.queue.add(TrackUtils.build(Searched.tracks[0], member.user));
             if (!player.playing && !player.paused && !player.queue.length)
               player.play();
-            return interaction.send(
-              `**Added to queue:** \`[${Searched.tracks[0].info.title}](${Searched.tracks[0].info.uri}}\`.`
+            return client.sendTime(
+              interaction, `**Added to queue:** \`[${Searched.tracks[0].info.title}](${Searched.tracks[0].info.uri}}\`.`
             );
 
           case "PLAYLIST_LOADED":
@@ -220,8 +220,8 @@ module.exports = {
               player.queue.totalSize === Searched.tracks.length
             )
               player.play();
-            return interaction.send(
-              `**Playlist added to queue**: \n**${Searched.playlist.name}** \nEnqueued: **${Searched.playlistInfo.length} songs**`
+            return client.sendTime(
+              interaction, `**Playlist added to queue**: \n**${Searched.playlist.name}** \nEnqueued: **${Searched.playlistInfo.length} songs**`
             );
         }
       } else {
@@ -232,20 +232,20 @@ module.exports = {
             throw new Error(res.exception.message);
           }
         } catch (err) {
-          return interaction.send(
-            `There was an error while searching: ${err.message}`
+          return client.sendTime(
+            interaction, `:x: | **There was an error while searching:** ${err.message}`
           );
         }
         switch (res.loadType) {
           case "NO_MATCHES":
             if (!player.queue.current) player.destroy();
-            return interaction.send("No results were found.");
+            return client.sendTime(interaction, ":x: | **No results were found**");
           case "TRACK_LOADED":
             player.queue.add(res.tracks[0]);
             if (!player.playing && !player.paused && !player.queue.length)
               player.play();
-            return interaction.send(
-              `**Added to queue:** \`[${res.tracks[0].title}](${res.tracks[0].uri})\`.`
+            return client.sendTime(
+              interaction, `**Added to queue:** \`[${res.tracks[0].title}](${res.tracks[0].uri})\`.`
             );
           case "PLAYLIST_LOADED":
             player.queue.add(res.tracks);
@@ -256,8 +256,8 @@ module.exports = {
               player.queue.size === res.tracks.length
             )
               player.play();
-            return interaction.send(
-              `**Playlist added to queue**: \n**${res.playlist.name}** \nEnqueued: **${res.playlistInfo.length} songs**`
+            return client.sendTime(
+              interaction, `**Playlist added to queue**: \n**${res.playlist.name}** \nEnqueued: **${res.playlistInfo.length} songs**`
             );
           case "SEARCH_RESULT":
             let max = 10,
@@ -323,7 +323,13 @@ module.exports = {
               SongAddedEmbed.setColor("RANDOM");
               SongAddedEmbed.setDescription(`[${track.title}](${track.uri})`);
               SongAddedEmbed.addField("Author", track.author, true);
-              SongAddedEmbed.addField("Duration", `\`${prettyMilliseconds(track.duration, { colonNotation: true })}\``, true);
+              SongAddedEmbed.addField(
+                "Duration",
+                `\`${prettyMilliseconds(track.duration, {
+                  colonNotation: true,
+                })}\``,
+                true
+              );
               if (player.queue.totalSize > 1) SongAddedEmbed.addField("Position in queue", `${player.queue.size - 0}`, true);
               awaitchannel.send(SongAddedEmbed);
             }
