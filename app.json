@@ -10,11 +10,34 @@
             "url": "heroku/nodejs"
         }
     ],
-    "env": {
-        "Token": {
-            "description": "Discord Bot Token.",
-            "required": "true"
-        }
+  "env": {
+    "Prefix": {
+      "description": "The discord bot prefix",
+      "required": "true"
+    },      
+    "Token": {
+      "description": "The discord bot token",
+      "required": "true"
+    },
+    "Discord_ClientID": {
+      "description": "The discord bot ClientID",
+      "required": "true"
+    },
+    "Discord_ClientSecret": {
+      "description": "The discord bot ClientSecret",
+      "required": "true"
+    },
+    "Website": {
+      "description": "URL of your webserver (Example: https://domain.xyz)",
+      "required": "true"
+    },
+    "Spotify_ClientID": {
+      "description": "Spotify ClientID",
+      "required": "true"
+    },
+    "Spotify_ClientSecret": {
+      "description": "Spotify ClientSecret",
+      "required": "true"
     }
+  }
 }
-
