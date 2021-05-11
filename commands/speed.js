@@ -1,4 +1,3 @@
-
 module.exports = {
     name: "speed",
     description: "changes Speed of The Current Playing song",
@@ -25,8 +24,8 @@ module.exports = {
         if (!args[0]) return client.sendTime(message.channel, "**Please Specifty a number between 1-10"); //if the user do not provide args [arguments]
 
         if (isNaN(args[0])) return client.sendTime(message.channel,"❌ | **Amount Must Be A Number** ");
-        if (args[0] < 0) return message.channel.send('Speed must be greater than 0.');
-		if (args[0] > 10) return message.channel.send('Speed must be less than 10.');
+        if (args[0] < 0) return client.sendTime(message.channel,"❌ |Speed must be greater than 0.");
+		if (args[0] > 10) return client.sendTime(message.channel,"❌ |Speed must be less than 10.");
         player.node.send({
             op: 'filters',
             guildId:  message.guild.id || message.guild,
@@ -63,11 +62,11 @@ module.exports = {
             if (!player) return client.sendTime(interaction, "❌ | **Nothing is playing right now...**");
             if (!member.voice.channel) return client.sendTime(interaction, "❌ | **You must be in a voice channel to use this command.**");
             if (guild.me.voice.channel && !guild.me.voice.channel.equals(voiceChannel)) return client.sendTime(interaction, ":x: | **You must be in the same voice channel as me to use this command!**");
-            if (!args[0]) return client.sendTime(message.channel, "**Please Specifty a number between 1-10"); //if the user do not provide args [arguments]
+            if (!args[0]) return client.sendTime(interaction, "**Please Specifty a number between 1-10"); //if the user do not provide args [arguments]
 
-            if (isNaN(args[0])) return client.sendTime(message.channel,"❌ | **Amount Must Be A Number** ");
-            if (args[0] < 0) return client.sendTime(message.channel,'❌ | **Speed must be greater than 0.**');
-            if (args[0] > 10) return client.sendTime(message.channel,'❌ | **Speed must be less than 10.**');
+            if (isNaN(args[0])) return client.sendTime(interaction,"❌ | **value Must Be A Number** ");
+            if (args[0] < 0) return client.sendTime(interaction,'❌ | **Speed must be greater than 0.**');
+            if (args[0] > 10) return client.sendTime(interaction,'❌ | **Speed must be less than 10.**');
             player.node.send({
                 op: 'filters',
                 guildId:  interaction.guild.id || interaction.guild,
