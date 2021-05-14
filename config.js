@@ -13,15 +13,10 @@ module.exports = {
   IconURL:
     "https://raw.githubusercontent.com/SudhanPlayz/Discord-MusicBot/master/assets/Music.gif", //URL of all embed author icons | Dont edit unless you dont need that Music CD Spining
   Permissions: 2205280576, //Bot Inviting Permissions
-  Website: process.env.Website || "http://localhost", //Website where it was hosted at includes http or https || Use "0.0.0.0" if you using Heroku
+  Website: process.env.Website || "0.0.0.0", //Website where it was hosted at includes http or https || Use "0.0.0.0" if you using Heroku
 
   //Lavalink - Already there is a serer to connect :)
-  Lavalink: {
-    id: "Main",
-    host: "lavalink.sudhanplayz.live",
-    port: 1234,
-    pass: "CodingWithSudhan",
-  },
+  
 
   //Please go to https://developer.spotify.com/dashboard/
   Spotify: {
