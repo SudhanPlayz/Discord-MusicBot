@@ -23,7 +23,7 @@ module.exports = {
         if (!message.member.voice.channel) return client.sendTime(message.channel, "❌ | **You must be in a voice channel to use this command!**");
         if (message.guild.me.voice.channel && message.member.voice.channel.id !== message.guild.me.voice.channel.id) return client.sendTime(message.channel, ":x: | **You must be in the same voice channel as me to use this command!**");
 
-        if (player.playing) return client.sendTime(interaction, "❌ | **Music is already resumed!**");
+        if (player.playing) return client.sendTime(message.channel, "❌ | **Music is already resumed!**");
         player.pause(false);
         await message.react("✅");
     },
