@@ -36,7 +36,7 @@
       "required": "true"
     },
     "Spotify_ClientSecret": {
-      "description": "Spotify ClientSecret. This is used if you want to use Spotify features for your bot. (https://developer.spotify.com/dashboard/)(https://developer.spotify.com/dashboard/)",
+      "description": "Spotify ClientSecret. This is used if you want to use Spotify features for your bot. (https://developer.spotify.com/dashboard/)",
       "required": "true"
     }
   }
