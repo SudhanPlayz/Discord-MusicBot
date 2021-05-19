@@ -28,7 +28,7 @@
     "required": "true"
   },
   "Website": {
-    "description": "URL of your webserver (Example: https://domain.xyz). Change this if you want to use the web-dashboard. (`0.0.0.0` if using Heroku)",
+    "description": "URL of your webserver (Example: https://domain.xyz). Change this if you want to use the web-dashboard.",
     "value": "http://localhost"
   },
   "Spotify_ClientID": {
@@ -38,26 +38,6 @@
   "Spotify_ClientSecret": {
     "description": "Spotify ClientSecret. This is used if you want to use Spotify features for your bot. (https://developer.spotify.com/dashboard/)",
     "required": "true"
-  },
-  "Lavalink_ID": {
-    "description": "Lavalink Server Info. Change this if you have a Server to use.",
-    "value": "Main",
-    "required": "false"
-  },
-  "Lavalink_Host": {
-    "description": "Lavalink Server Info. Change this if you have a Server to use.",
-    "value": "lava.link",
-    "required": "false"
-  },
-   "Lavalink_Port": {
-    "description": "Lavalink Server Info. Change this if you have a Server to use.",
-    "value": "80",
-    "required": "false"
-  },
-   "Lavalink_Password": {
-    "description": "Lavalink Server Info. Change this if you have a Server to use.",
-    "value": "youshallnotpass",
-    "required": "false"
   }
 }
 }
