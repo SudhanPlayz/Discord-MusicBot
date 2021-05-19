@@ -29,7 +29,7 @@ module.exports = {
     let lyrics = await lyricsFinder(SongTitle);
     if (!lyrics) return client.sendTime(message.channel, `**No lyrics found for -** \`${SongTitle}\``);
     lyrics = lyrics.split("\n"); //spliting into lines
-    let SplitedLyrics = _.chunk(lyrics, 45); //45 lines each page
+    let SplitedLyrics = _.chunk(lyrics, 40); //45 lines each page
 
     let Pages = SplitedLyrics.map((ly) => {
       let em = new MessageEmbed()
@@ -75,7 +75,7 @@ module.exports = {
       if (lyrics.length === 0)
         return client.sendTime(interaction, `**No lyrics found for -** \`${SongTitle}\``);
       lyrics = lyrics.split("\n"); //spliting into lines
-      let SplitedLyrics = _.chunk(lyrics, 45); //45 lines each page
+      let SplitedLyrics = _.chunk(lyrics, 40); //45 lines each page
 
       let Pages = SplitedLyrics.map((ly) => {
         let em = new MessageEmbed()
