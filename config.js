@@ -15,7 +15,7 @@ module.exports = {
   Permissions: 2205280576, //Bot Inviting Permissions
   Website: process.env.Website || "http://localhost", //Website where it was hosted at includes http or https || Use "0.0.0.0" if you using Heroku
 
-  //Lavalink - Already there is a serer to connect :)
+  //Lavalink - Already there is a server to connect :)
   Lavalink: {
     id: "Main",
     host: "lavalink.sudhanplayz.live",
