@@ -7,7 +7,7 @@ A Tutorial has been uploaded on YouTube <img src="https://www.youtube.com/about/
 
 ## 📝 [Support Server](https://discord.gg/a9SHDpD)
 
-Do you have any issues with the bot? Head to our [Discord Server](https://discord.gg/a9SHDpD) where we can help you faster than creating a GitHub issue. If you have a major bug to report, it would be best to create an issue here.
+Do you have any issues with the bot? Head to our [Discord Server](https://discord.gg/a9SHDpD) where we can help you faster than creating a GitHub issue. If you have a major bug to report, it would be best to create an [issue here](https://github.com/SudhanPlayz/Discord-MusicBot/issues).
 
 ## 📸 Screenshots
 
