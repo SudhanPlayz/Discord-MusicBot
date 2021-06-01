@@ -1,6 +1,13 @@
 <h1 align="center"><img src="./assets/logo.gif" width="30px"> Discord Music Bot <img src="./assets/logo.gif" width="30px"></h1>
 <p align="center">Thanks for 25k Views with 500 subs!</p>
 
+## ✨Latest Updates✨
+
+> We are graciously waiting for Discord.js to update to v13 (as a stable version) so we can start updating the bot again. We know the bot has some bugs at the moment. 
+>
+> We can't fix all of them right now. Please check out the latest list of updates, improvements, and fixes to be made in version 4.2 in the Discussions section or by clicking [here](https://github.com/SudhanPlayz/Discord-MusicBot/discussions/236)
+
+
 ## 📝 Tutorial
 
 A Tutorial has been uploaded on YouTube <img src="https://www.youtube.com/about/static/svgs/icons/brand-resources/YouTube_icon_full-color.svg?cache=f2ec7a5" width="30px"> Watch it by clicking [here](https://www.youtube.com/watch?v=p4lP96Tiv9s)
