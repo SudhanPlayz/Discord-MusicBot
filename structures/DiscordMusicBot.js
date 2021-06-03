@@ -189,7 +189,7 @@ class DiscordMusicBot extends Client {
                 file.split(".")[0] +
                 ", Reason: File doesn't had run/name/desciption"
             );
-          this.commands.set(file.split(".")[0], cmd);
+          this.commands.set(file.split(".")[0].toLowerCase(), cmd);
           this.log("Command Loaded: " + file.split(".")[0]);
         });
     });
