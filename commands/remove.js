@@ -65,13 +65,13 @@ const { TrackUtils } = require("erela.js");
   
       if (!player.queue || !player.queue.length || player.queue.length === 0)
       return client.sendTime("❌ | **Nothing is playing right now...**");
-    let rm = new MessageEmbed()
-      .setDescription(`✅ **|** Removed track **\`${Number(args[0])}\`** from the queue!`)
-      .setColor("GREEN")
-      if (isNaN(args[0]))rm.setDescription(`Usage: ${client.config.prefix}\`remove [track]\``);
+      let rm = new MessageEmbed()
+        .setDescription(`✅ | **Removed track** \`${Number(args[0])}\` from the queue!`)
+        .setColor("GREEN")
+      if (isNaN(args[0])) rm.setDescription(`**Usage:** \`${GuildDB.prefix}remove [track]\``);
       if (args[0] > player.queue.length)
-      rm.setDescription(`The queue has only ${player.queue.length}!`);
-    await interaction.send(rm);
+        rm.setDescription(`The queue has only ${player.queue.length} songs!`);
+      await interaction.send(rm);
       player.queue.remove(Number(args[0]) - 1);
     },
   }

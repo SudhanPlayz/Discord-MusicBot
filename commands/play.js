@@ -5,7 +5,7 @@ const prettyMilliseconds = require("pretty-ms");
 module.exports = {
     name: "play",
     description: "Play your favorite songs",
-    usage: "[query]",
+    usage: "[song]",
     permissions: {
         channel: ["VIEW_CHANNEL", "SEND_MESSAGES", "EMBED_LINKS"],
         member: [],
@@ -22,7 +22,7 @@ module.exports = {
         if (!message.member.voice.channel) return client.sendTime(message.channel, "❌ | **You must be in a voice channel to play something!**");
         if (message.guild.me.voice.channel && message.member.voice.channel.id !== message.guild.me.voice.channel.id) return client.sendTime(message.channel, ":x: | **You must be in the same voice channel as me to use this command!**");
         let SearchString = args.join(" ");
-        if (!SearchString) return client.sendTime(message.channel, `**Usage - **\`${GuildDB.prefix}play [query]\``);
+        if (!SearchString) return client.sendTime(message.channel, `**Usage - **\`${GuildDB.prefix}play [song]\``);
         let CheckNode = client.Manager.nodes.get(client.config.Lavalink.id);
         let Searching = await message.channel.send(":mag_right: Searching...");
         if (!CheckNode || !CheckNode.connected) {
@@ -104,8 +104,8 @@ module.exports = {
     SlashCommand: {
         options: [
             {
-                name: "query",
-                value: "query",
+                name: "song",
+                value: "song",
                 type: 3,
                 required: true,
                 description: "Play music in the voice channel",

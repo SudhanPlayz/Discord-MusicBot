@@ -25,10 +25,10 @@ module.exports = {
 
         if (player.queueRepeat) {
           player.setQueueRepeat(false)
-          client.sendTime(message.channel, `Queue loop \`disabled\``);
+          client.sendTime(message.channel, `:repeat: Queue Loop \`disabled\``);
         } else {
           player.setQueueRepeat(true)
-          client.sendTime(message.channel, `Queue loop \`enabled\``);
+          client.sendTime(message.channel, `:repeat: Queue Loop \`enabled\``);
         }
     },
     SlashCommand: {
@@ -51,10 +51,10 @@ module.exports = {
 
             if(player.queueRepeat){
                   player.setQueueRepeat(false)
-                  client.sendTime(interaction, `Queue loop \`disabled\``);
+                  client.sendTime(interaction, `:repeat: **Queue Loop** \`disabled\``);
               }else{
                   player.setQueueRepeat(true)
-                  client.sendTime(interaction, `Queue loop \`enabled\``);
+                  client.sendTime(interaction, `:repeat: **Queue Loop** \`enabled\``);
               }
           console.log(interaction.data)
         }

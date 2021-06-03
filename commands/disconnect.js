@@ -1,14 +1,14 @@
 const { MessageEmbed } = require("discord.js");
 
 module.exports = {
-  name: "leave",
+  name: "disconnect",
   description: "Stop the music and leave the voice channel",
   usage: "",
   permissions: {
     channel: ["VIEW_CHANNEL", "SEND_MESSAGES", "EMBED_LINKS"],
     member: [],
   },
-  aliases: ["stop", "exit", "quit", "dc", "disconnect"],
+  aliases: ["leave", "exit", "quit", "dc", "stop"],
   /**
    *
    * @param {import("../structures/DiscordMusicBot")} client
@@ -18,9 +18,9 @@ module.exports = {
    */
   run: async (client, message, args, { GuildDB }) => {
     let player = await client.Manager.get(message.guild.id);
-    if (!message.member.voice.channel) return client.sendTime(message.channel, "❌ | **You must be in a voice channel to play something!**");
+    if (!message.member.voice.channel) return client.sendTime(message.channel, "❌ | **You must be in a voice channel use this command**");
     if (!player) return client.sendTime(message.channel,"❌ | **Nothing is playing right now...**");
-    await client.sendTime(message.channel,":notes: | **The player has stopped and the queue has been cleared.**");
+    await client.sendTime(message.channel,":notes: | **Disconnected!**");
     await message.react("✅");
     player.destroy();
   },
@@ -60,7 +60,7 @@ module.exports = {
       player.destroy();
       client.sendTime(
         interaction,
-        ":notes: | **The player has stopped and the queue has been cleared.**"
+        ":notes: | **Disconnected!**"
       );
     },
   },

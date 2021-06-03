@@ -47,11 +47,11 @@ module.exports = {
   SlashCommand: {
     options: [
       {
-        name: "track",
-        value: "[track]",
+        name: "position",
+        value: "[position]",
         type: 4,
         required: true,
-        description: "Remove a song from the queue",
+        description: "Skips to a specific song in the queue",
       },
     ],
     /**
@@ -84,7 +84,7 @@ module.exports = {
         if (!interaction.data.options) return client.sendTime(interaction, `**Usage**: \`${GuildDB.prefix}skipto <number>\``);
         let skipTo = interaction.data.options[0].value;
         //if the wished track is bigger then the Queue Size
-        if (skipTo !== null && (isNaN(skipTo) || skipTo < 1 || skipTo > player.queue.length)) return client.sendTime(interaction, "❌ | **Invalid number to skip!**");
+        if (skipTo !== null && (isNaN(skipTo) || skipTo < 1 || skipTo > player.queue.length)) return client.sendTime(interaction, `❌ | That song is not in the queue! Please try again!`);
 
         player.stop(skipTo);
         //Send Success Message

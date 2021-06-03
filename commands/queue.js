@@ -4,7 +4,7 @@ const prettyMilliseconds = require("pretty-ms");
 
 module.exports = {
   name: "queue",
-  description: "The server queue",
+  description: "Shows all currently enqueued songs",
   usage: "",
   permissions: {
     channel: ["VIEW_CHANNEL", "SEND_MESSAGES", "EMBED_LINKS"],
@@ -109,6 +109,17 @@ module.exports = {
     else client.Pagination(message, Pages);
   },
   SlashCommand: {
+    /*
+    options: [
+      {
+          name: "page",
+          value: "[page]",
+          type: 4,
+          required: false,
+          description: "Enter the page of the queue you would like to view",
+      },
+  ],
+  */
     /**
      *
      * @param {import("../structures/DiscordMusicBot")} client
@@ -119,7 +130,7 @@ module.exports = {
     run: async (client, interaction, args, { GuildDB }) => {
       let player = await client.Manager.get(interaction.guild_id);
       if (!player)
-        return interaction.send("❌ | **Nothing is playing right now...**");
+        return client.sendTime(interaction, "❌ | **Nothing is playing right now...**");
 
       if (!player.queue || !player.queue.length || player.queue === 0) {
         let QueueEmbed = new MessageEmbed()

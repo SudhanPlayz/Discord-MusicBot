@@ -5,7 +5,7 @@ const _ = require("lodash");
 
 module.exports = {
   name: "lyrics",
-  description: "To get and search lyrics of a song",
+  description: "Shows the lyrics of the song searched",
   usage: "[Song Name]",
   permissions: {
     channel: ["VIEW_CHANNEL", "SEND_MESSAGES", "EMBED_LINKS"],
@@ -52,7 +52,7 @@ module.exports = {
         name: "song",
         value: "song",
         type: 3,
-        description: "Get the lyrics of a song",
+        description: "Enter a song name to search",
         required: false,
       },
     ],

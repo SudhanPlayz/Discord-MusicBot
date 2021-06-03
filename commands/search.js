@@ -5,8 +5,8 @@ const prettyMilliseconds = require("pretty-ms");
 
 module.exports = {
   name: "search",
-  description: "Search a song/playlist",
-  usage: "[query]",
+  description: "Shows a result of songs based on the search query",
+  usage: "[song]",
   permissions: {
     channel: ["VIEW_CHANNEL", "SEND_MESSAGES", "EMBED_LINKS"],
     member: [],
@@ -106,9 +106,9 @@ module.exports = {
       let SongIDmsg = SongID.first();
 
       if (!parseInt(SongIDmsg.content))
-        return client.sendTime("Please send correct song ID number");
+        return client.sendTime(message.channel, "Please send correct song ID number");
       let Song = Searched.tracks[parseInt(SongIDmsg.content) - 1];
-      if (!Song) return message.channel.send("No song found for the given ID");
+      if (!Song) return client.sendTime(message.channel, "No song found for the given ID");
       player.queue.add(Song);
       if (!player.playing && !player.paused && !player.queue.size)
         player.play();
@@ -138,11 +138,11 @@ module.exports = {
   SlashCommand: {
     options: [
       {
-        name: "query",
-        value: "query",
+        name: "song",
+        value: "song",
         type: 3,
         required: true,
-        description: "Search a song/playlist",
+        description: "Enter the song name or url you want to search",
       },
     ],
     /**
