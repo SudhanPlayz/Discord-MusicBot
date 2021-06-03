@@ -30,6 +30,7 @@
   "homepage": "https://github.com/SudhanPlayz/Discord-MusicBot#readme",
   "dependencies": {
     "colors": "^1.4.0",
+    "cpu-stat": "^2.0.1",
     "discord.js": "^12.5.3",
     "erela.js": "^2.3.2",
     "express": "^4.17.1",
@@ -38,6 +39,8 @@
     "lavasfy": "^2.1.2",
     "lodash": "^4.17.21",
     "lyrics-finder": "^21.7.0",
+    "moment": "^2.29.1",
+    "moment-duration-format": "^2.3.2",
     "mongoose": "^5.12.3",
     "node-fetch": "^2.6.1",
     "passport": "^0.4.1",
