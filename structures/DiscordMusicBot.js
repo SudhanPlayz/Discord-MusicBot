@@ -12,6 +12,8 @@ const prettyMilliseconds = require("pretty-ms");
 
 //Class extending Stuff
 require("./EpicPlayer"); //idk why im doing but i wanna learn something new so...
+//ahh yes my epik package xD
+require("discordjs-activity")
 
 class DiscordMusicBot extends Client {
   constructor(props) {
