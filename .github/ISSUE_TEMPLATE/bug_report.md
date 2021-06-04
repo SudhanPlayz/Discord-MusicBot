@@ -6,7 +6,7 @@ title: ''
 labels: 's: unverified, type: bug'
 assignees: ''
 ---
-<!-- Use Discord for questions: https://discord.gg/bRCvFy9 -->
+<!-- Use Discord for questions: https://discord.gg/a9SHDpD -->
 
 **Please describe the problem you are having in as much detail as possible:**
 
@@ -33,5 +33,4 @@ assignees: ''
 Remove the comment and fill out the commit hash if this applies to you:
 (While it's not a requirement to test your issue on the master branch, it would make fixing the problem a lot easier for us, so please do so if possible.)
 
-- I have also tested the issue on latest master, commit hash: `xxx`
 -->
