@@ -35,10 +35,10 @@ module.exports = {
     options: [
         {
             name: "avatar",
-            description: `Please provide a bassboost level. Available Levels: low, medium, high, or none`,
-            value: "[level]",
+            description: ``,
+            value: "",
             type: 3,
-            required: false,
+            required: true,
         },
     ],
   },
