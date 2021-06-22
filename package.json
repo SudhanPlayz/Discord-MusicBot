@@ -37,7 +37,7 @@
     "express": "^4.17.1",
     "express-session": "^1.17.1",
     "jsoning": "^0.11.0",
-    "lavasfy": "2.1.2",
+    "lavasfy": "2.3.0",
     "lodash": "^4.17.21",
     "lyrics-finder": "^21.7.0",
     "moment": "^2.29.1",
