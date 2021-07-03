@@ -96,7 +96,7 @@ What would you like to edit?
       });
 
       client.sendTime(
-        message.channel, "Successfully saved guild prefix as <@&" + role.id + ">"
+        message.channel, "Successfully saved DJ role as <@&" + role.id + ">"
       );
     }
   },
