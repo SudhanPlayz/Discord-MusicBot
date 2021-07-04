@@ -1,4 +1,6 @@
 const { MessageEmbed } = require("discord.js");
+const _fetch = require('node-fetch');
+const { Token } = require("../config.js");
 
 module.exports = {
     name: "youtube",
@@ -9,6 +11,7 @@ module.exports = {
         member: [],
     },
     aliases: ["yt"],
+    
     /**
      *
      * @param {import("../structures/DiscordMusicBot")} client
@@ -16,52 +19,82 @@ module.exports = {
      * @param {string[]} args
      * @param {*} param3
      */
+
     run: async (client, message, args, { GuildDB }) => {
-        if (!message.member.voice.channel) return client.sendTime(message.channel, "❌ | **You must be in a voice channel to play something!**");
-        if(!message.member.voice.channel.permissionsFor(message.guild.me).has("CREATE_INSTANT_INVITE"))return client.sendTime(message.channel, "❌ | **Bot doesn't have Create Invite Permission**");
 
-        let Invite = await message.member.voice.channel.activityInvite("755600276941176913")//Made using discordjs-activity package
-        let embed = new MessageEmbed()
-        .setAuthor("YouTube Together", "https://cdn.discordapp.com/emojis/749289646097432667.png?v=1")
-        .setColor("#FF0000")
-        .setDescription(`
-Using **YouTube Together** you can watch YouTube with your friends in a Voice Channel. Click *Join YouTube Together* to join in!
+        const voice = message.member.voice.channel
+        if (!message.member.voice.channel) return client.sendTime(message.channel, "❌ | **You must be in a voice channel to use this command!**");
+        if (!message.member.voice.channel.permissionsFor(message.guild.me).has("CREATE_INSTANT_INVITE")) return client.sendTime(message.channel, "❌ | **Please make sure I can create an invite for this command to work!**");
 
-__**[Join YouTube Together](https://discord.com/invite/${Invite.code})**__
+        _fetch(`https://discord.com/api/v8/channels/${voice.id}/invites`, {
+            method: 'POST',
+            body: JSON.stringify({
+                max_age: 86400,
+                max_uses: 0,
+                target_application_id: "755600276941176913",
+                target_type: 2,
+                temporary: false,
+                validate: null
+            }),
+            headers: {
+                "Authorization": `Bot ${Token}`,
+                "Content-Type": "application/json"
+            }
+        }).then(response => response.json()).then((invite) => {
+            let game1 = new MessageEmbed()
+                .setColor("#FF0000")
+                .setAuthor('YouTube Together', 'https://images-ext-1.discordapp.net/external/aAP-hvnvnxIMKvkUf1YMT9rqTU448PZbYfY1gnIMhRo/%3Fv%3D1/https/cdn.discordapp.com/emojis/749289646097432667.png')
+                .setDescription(`
+                            Using **YouTube Together**, you can watch YouTube with your friends directly in a Voice Channel. Click the invite below to watch together!
 
-⚠ **Note:** This only works in Desktop
-`)
-        message.channel.send(embed)
+                            __**https://discord.com/invite/${invite.code}**__
+                            
+                            :warning: **Attention**: This works only works in Desktop!`)
+            message.channel.send(game1)
+            message.channel.send(`https://discord.com/invite/${invite.code}`)
+        })
+
     },
+
     SlashCommand: {
-        options: [
-        ],
-    /**
-     *
-     * @param {import("../structures/DiscordMusicBot")} client
-     * @param {import("discord.js").Message} message
-     * @param {string[]} args
-     * @param {*} param3
-     */
+        /**
+         *
+         * @param {import("../structures/DiscordMusicBot")} client
+         * @param {import("discord.js").Message} message
+         * @param {string[]} args
+         * @param {*} param3
+         */
         run: async (client, interaction, args, { GuildDB }) => {
             const guild = client.guilds.cache.get(interaction.guild_id);
             const member = guild.members.cache.get(interaction.member.user.id);
+            const voiceChannel = member.voice.channel.id; // id was missin
 
-            if (!member.voice.channel) return client.sendTime(interaction, "❌ | You must be in a voice channel to use this command.");
-            if(!member.voice.channel.permissionsFor(guild.me).has("CREATE_INSTANT_INVITE"))return client.sendTime(interaction, "❌ | **Bot doesn't have Create Invite Permission**");
+            _fetch(`https://discord.com/api/v8/channels/${voiceChannel}/invites`, {
+                method: 'POST',
+                body: JSON.stringify({
+                    max_age: 86400,
+                    max_uses: 0,
+                    target_application_id: "755600276941176913",
+                    target_type: 2,
+                    temporary: false,
+                    validate: null
+                }),
+                headers: {
+                    "Authorization": `Bot ${Token}`,
+                    "Content-Type": "application/json"
+                }
+            }).then(response => response.json()).then((invite) => {
+                let embed = new MessageEmbed()
+                    .setColor("#FF0000")
+                    .setAuthor('YouTube Together', 'https://images-ext-1.discordapp.net/external/aAP-hvnvnxIMKvkUf1YMT9rqTU448PZbYfY1gnIMhRo/%3Fv%3D1/https/cdn.discordapp.com/emojis/749289646097432667.png')
+                    .setDescription(`
+                          Using **YouTube Together**, you can watch YouTube with your friends directly in a Voice Channel. Click the invite below to watch together!
 
-            let Invite = await member.voice.channel.activityInvite("755600276941176913")//Made using discordjs-activity package
-            let embed = new MessageEmbed()
-            .setAuthor("YouTube Together", "https://cdn.discordapp.com/emojis/749289646097432667.png?v=1")
-            .setColor("#FF0000")
-            .setDescription(`
-Using **YouTube Together** you can watch YouTube with your friends in a Voice Channel. Click *Join YouTube Together* to join in!
-
-__**[Join YouTube Together](https://discord.com/invite/${Invite.code})**__
-
-⚠ **Note:** This only works in Desktop
-`)
-            interaction.send(embed.toJSON())
+                            __**https://discord.com/invite/${invite.code}**__
+                            
+                            :warning: **Attention**: This works only works in Desktop!`)
+                interaction.send(embed)
+            })
         },
     },
 };
