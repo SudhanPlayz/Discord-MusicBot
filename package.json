@@ -32,7 +32,7 @@
     "colors": "^1.4.0",
     "cpu-stat": "^2.0.1",
     "discord.js": "^12.5.3",
-    "discordjs-activity": "^1.1.0",
+    "discordjs-activity": "1.2.0",
     "erela.js": "^2.3.2",
     "express": "^4.17.1",
     "express-session": "^1.17.1",
