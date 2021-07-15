@@ -12,9 +12,9 @@
 
 A Tutorial has been uploaded on YouTube <img src="https://www.youtube.com/about/static/svgs/icons/brand-resources/YouTube_icon_full-color.svg?cache=f2ec7a5" width="30px"> Watch it by clicking [here](https://www.youtube.com/watch?v=p4lP96Tiv9s)
 
-## 📝 [Support Server](https://discord.gg/a9SHDpD)
+## 📝 [Support Server](https://discord.gg/sbySMS7m3v)
 
-Do you have any issues with the bot? Head to our [Discord Server](https://discord.gg/a9SHDpD) where we can help you faster than creating a GitHub issue. If you have a major bug to report, it would be best to create an [issue here](https://github.com/SudhanPlayz/Discord-MusicBot/issues).
+Do you have any issues with the bot? Head to our [Discord Server](https://discord.gg/sbySMS7m3v) where we can help you faster than creating a GitHub issue. If you have a major bug to report, it would be best to create an [issue here](https://github.com/SudhanPlayz/Discord-MusicBot/issues).
 
 ## 📸 Screenshots
 
