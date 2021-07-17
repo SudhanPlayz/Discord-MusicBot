@@ -6,7 +6,7 @@ title: ''
 labels: 's: unverified, type: bug'
 assignees: ''
 ---
-<!-- Use Discord for questions: https://discord.gg/a9SHDpD -->
+<!-- Use Discord for questions: https://discord.gg/sbySMS7m3v -->
 
 **Please describe the problem you are having in as much detail as possible:**
 
