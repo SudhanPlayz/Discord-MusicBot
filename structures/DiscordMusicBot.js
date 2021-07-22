@@ -116,30 +116,31 @@ class DiscordMusicBot extends Client {
       },
       [
         {
-          id: "Main",
+          id: "1",
           host: "cookies.linath.net",
           port: 2095,
           password: "whatwasthelastingyousaid",
         },
         {
-          id: "Main",
+          id: "2", 
           host: "lava.link",
           port: 80,
-          password: "whatwasthelastingyousaid",
+          password: "anything as a password",
         },
       ]
     );
 
     this.Manager = new Manager({
       nodes: [
+        //Tip of the Day: read the goddamn thing
         {
-          identifier: "Main",
-          host: "cookies.linath.net",
+          identifier: "1",
+          host: "cookcockies.linath.net",
           port: 2095,
           password: "whatwasthelastingyousaid",
         },
         {
-          identifier: "Main",
+          identifier: "2", 
           host: "lava.link",
           port: 80,
           password: "anything as a password",
