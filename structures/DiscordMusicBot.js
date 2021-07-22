@@ -116,10 +116,16 @@ class DiscordMusicBot extends Client {
       },
       [
         {
-          id: this.config.Lavalink.id,
-          host: this.config.Lavalink.host,
-          port: this.config.Lavalink.port,
-          password: this.config.Lavalink.pass,
+          id: "Main",
+          host: "cookies.linath.net",
+          port: 2095,
+          password: "whatwasthelastingyousaid",
+        },
+        {
+          id: "Main",
+          host: "lava.link",
+          port: 80,
+          password: "whatwasthelastingyousaid",
         },
       ]
     );
@@ -127,10 +133,16 @@ class DiscordMusicBot extends Client {
     this.Manager = new Manager({
       nodes: [
         {
-          identifier: this.config.Lavalink.id,
-          host: this.config.Lavalink.host,
-          port: this.config.Lavalink.port,
-          password: this.config.Lavalink.pass,
+          identifier: "Main",
+          host: "cookies.linath.net",
+          port: 2095,
+          password: "whatwasthelastingyousaid",
+        },
+        {
+          identifier: "Main",
+          host: "lava.link",
+          port: 80,
+          password: "anything as a password",
         },
       ],
       send(id, payload) {
