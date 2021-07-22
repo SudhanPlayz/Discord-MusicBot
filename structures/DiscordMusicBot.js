@@ -136,7 +136,7 @@ class DiscordMusicBot extends Client {
           identifier: "Main",
           host: "cookies.linath.net",
           port: 2095,
-          password: "whatwasthelastingyousaid",
+          password: "anything as a password",
         },
         {
           identifier: "Main",
