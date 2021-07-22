@@ -1,5 +1,5 @@
 module.exports = {
-  Admins: ["416466935291576321", "717676378476249149"], //Admins of the bot
+  Admins: ["UserID", "UserID"], //Admins of the bot
   ExpressServer: false,//If you wanted to make the website run or not
   DefaultPrefix: process.env.Prefix || ">", //Default prefix, Server Admins can change the prefix
   Port: 3000, //Which port website gonna be hosted
