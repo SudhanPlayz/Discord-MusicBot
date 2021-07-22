@@ -125,7 +125,7 @@ class DiscordMusicBot extends Client {
           id: "Main",
           host: "lava.link",
           port: 80,
-          password: "whatwasthelastingyousaid",
+          password: "anything as a password",
         },
       ]
     );
@@ -136,7 +136,7 @@ class DiscordMusicBot extends Client {
           identifier: "Main",
           host: "cookies.linath.net",
           port: 2095,
-          password: "anything as a password",
+          password: "whatwasthelastingyousaid",
         },
         {
           identifier: "Main",
