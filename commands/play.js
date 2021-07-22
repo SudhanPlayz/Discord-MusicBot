@@ -25,9 +25,6 @@ module.exports = {
         if (!SearchString) return client.sendTime(message.channel, `**Usage - **\`${GuildDB.prefix}play [song]\``);
         let CheckNode = client.Manager.nodes.get(client.config.Lavalink.id);
         let Searching = await message.channel.send(":mag_right: Searching...");
-        if (!CheckNode || !CheckNode.connected) {
-       return client.sendTime(message.channel,"❌ | **Lavalink node not connected**");
-        }
         const player = client.Manager.create({
             guild: message.guild.id,
             voiceChannel: message.member.voice.channel.id,
@@ -45,6 +42,26 @@ module.exports = {
             if (SearchString.match(client.Lavasfy.spotifyPattern)) {
                 await client.Lavasfy.requestToken();
                 let node = client.Lavasfy.nodes.get(client.config.Lavalink.id);
+                //i made this and I know I am stupid so here is notes so you can optimise it - Bubz & Darren
+                const temp = 1;
+                // create temp var for for loop
+                const trueass = 0;
+                // create "boolean" 0,1 var bc idk how to boolean
+                if (trueass!=1){
+                // when trueass is 1, it means that the node that is currently using is working
+                    for(let temp = 1; temp>2; temp++){
+                        // recursively checks the nodes
+                        if (node) node = client.Manager.nodes.get(temp); 
+                        // ^^ suppose to set the current node to the one scanning so the (temp)th node
+                        if (!Checknode.connected) {
+                            //checks nodes is connected
+                            trueass = 1;
+                            //set trueass to one because it is working
+                            break;
+                            //break the loop
+                        }     
+                    }
+                }
                 let Searched = await node.load(SearchString);
 
                 if (Searched.loadType === "PLAYLIST_LOADED") {
@@ -125,10 +142,6 @@ module.exports = {
             let awaitchannel = client.channels.cache.get(interaction.channel_id); /// thanks Reyansh for this idea ;-;
             if (!member.voice.channel) return client.sendTime(interaction, "❌ | **You must be in a voice channel to use this command.**");
             if (guild.me.voice.channel && !guild.me.voice.channel.equals(member.voice.channel)) return client.sendTime(interaction, ":x: | **You must be in the same voice channel as me to use this command!**");
-            let CheckNode = client.Manager.nodes.get(client.config.Lavalink.id);
-            if (!CheckNode || !CheckNode.connected) {
-              return client.sendTime(interaction,"❌ | **Lavalink node not connected**");
-            }
     
             let player = client.Manager.create({
                 guild: interaction.guild_id,
@@ -143,8 +156,26 @@ module.exports = {
             if (search.match(client.Lavasfy.spotifyPattern)) {
                 await client.Lavasfy.requestToken();
                 let node = client.Lavasfy.nodes.get(client.config.Lavalink.id);
-                let Searched = await node.load(search);
-
+                //i made this and I know I am stupid so here is notes so you can optimise it - Bubz & Darren
+                const temp = 1;
+                // create temp var for for loop
+                const trueass = 0;
+                // create "boolean" 0,1 var bc idk how to boolean
+                if (trueass!=1){
+                // when trueass is 1, it means that the node that is currently using is working
+                    for(let temp = 1; temp>2; temp++){
+                        // recursively checks the nodes
+                        if (node) node = client.Manager.nodes.get(temp); 
+                        // ^^ suppose to set the current node to the one scanning so the (temp)th node
+                        if (!Checknode.connected) {
+                            //checks nodes is connected
+                            trueass = 1;
+                            //set trueass to one because it is working
+                            break;
+                            //break the loop
+                        }     
+                    }
+                }
                 switch (Searched.loadType) {
                     case "LOAD_FAILED":
                         if (!player.queue.current) player.destroy();
