@@ -19,19 +19,29 @@ module.exports = {
   //Lavalink
    Lavalink: {
     // add option for the amount of nodes
-    // Do not change the ID unless you know what you're doing. -Darren
+    // Do not change the ID unless you know what you're doing.
     // Lavalink 1
     id: "1",
-    host: "cookies.linath.net",
+    host: "fn.linath.net",
     port: 2095,
     pass: "whatwasthelastingyousaid", 
-    // Lavalink 2 (Optionals)
+    // Lavalink 2 (Optional)
     id2: "2",
     host2: "lava.link",
     port2: 80,
     pass2: "anything as password",
   },
   
+  // Alternative lavalink.
+  // Lavalink list: http://lavalink.org/ \\ https://lavalink.linath.net/
+   /*
+  Lavalink: {
+    id: "Main",
+    host: "lava.sudhan.tech",
+    port: 1234,
+    pass: "CodingWithSudhan", 
+  },
+  */
 
   //Please go to https://developer.spotify.com/dashboard/
   Spotify: {
