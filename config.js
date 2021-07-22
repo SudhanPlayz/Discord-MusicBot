@@ -9,8 +9,8 @@ module.exports = {
   ClientSecret: process.env.Discord_ClientSecret || "", //Discord Client Secret
   Scopes: ["identify", "guilds", "applications.commands"], //Discord OAuth2 Scopes
   CallbackURL: "/api/callback", //Discord OAuth2 Callback URL
-  "24/7": false, 
-  CookieSecret: "Cookies are nice", 
+  "24/7": false, //If you want the bot to be stay in the vc 24/7
+  CookieSecret: "Pikachu is cute", //A Secret like a password
   IconURL:
     "https://raw.githubusercontent.com/SudhanPlayz/Discord-MusicBot/master/assets/logo.gif", //URL of all embed author icons | Dont edit unless you dont need that Music CD Spining
   Permissions: 2205280576, //Bot Inviting Permissions
@@ -22,7 +22,7 @@ module.exports = {
     // Do not change the ID unless you know what you're doing.
     // Lavalink 1
     id: "1",
-    host: "fn.linath.net",
+    host: "lavalink.linath.net",
     port: 2095,
     pass: "whatwasthelastingyousaid", 
     // Lavalink 2 (Optional)

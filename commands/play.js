@@ -42,23 +42,14 @@ module.exports = {
             if (SearchString.match(client.Lavasfy.spotifyPattern)) {
                 await client.Lavasfy.requestToken();
                 let node = client.Lavasfy.nodes.get(client.config.Lavalink.id);
-                //i made this and I know I am stupid so here is notes so you can optimise it - Bubz & Darren
                 const temp = 1;
-                // create temp var for for loop
-                const trueass = 0;
-                // create "boolean" 0,1 var bc idk how to boolean
-                if (trueass!=1){
-                // when trueass is 1, it means that the node that is currently using is working
-                    for(let temp = 1; temp>client.cofig.Lavalink.nodecount; temp++){
-                        // recursively checks the nodes
+                var trueass = new Boolean(False);
+                if (!trueass){
+                    for(let temp = 1; temp>client.config.Lavalink.nodecount; temp++){
                         if (node) node = client.Manager.nodes.get(temp); 
-                        // ^^ suppose to set the current node to the one scanning so the (temp)th node
-                        if (!Checknode.connected) {
-                            //checks nodes is connected
+                        if (Checknode.connected) {
                             trueass = 1;
-                            //set trueass to one because it is working
                             break;
-                            //break the loop
                         }     
                     }
                 }
@@ -156,23 +147,14 @@ module.exports = {
             if (search.match(client.Lavasfy.spotifyPattern)) {
                 await client.Lavasfy.requestToken();
                 let node = client.Lavasfy.nodes.get(client.config.Lavalink.id);
-                //i made this and I know I am stupid so here is notes so you can optimise it - Bubz & Darren
                 const temp = 1;
-                // create temp var for for loop
-                const trueass = 0;
-                // create "boolean" 0,1 var bc idk how to boolean
-                if (trueass!=1){
-                // when trueass is 1, it means that the node that is currently using is working
-                    for(let temp = 1; temp>client.cofig.Lavalink.nodecount; temp++){
-                        // recursively checks the nodes
+                var trueass = new Boolean(False);
+                if (!trueass){
+                    for(let temp = 1; temp>client.config.Lavalink.nodecount; temp++){
                         if (node) node = client.Manager.nodes.get(temp); 
-                        // ^^ suppose to set the current node to the one scanning so the (temp)th node
-                        if (!Checknode.connected) {
-                            //checks nodes is connected
+                        if (Checknode.connected) {
                             trueass = 1;
-                            //set trueass to one because it is working
                             break;
-                            //break the loop
                         }     
                     }
                 }
