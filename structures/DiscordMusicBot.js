@@ -116,16 +116,16 @@ class DiscordMusicBot extends Client {
       },
       [
         {
-          id: "1",
-          host: "cookies.linath.net",
-          port: 2095,
-          password: "whatwasthelastingyousaid",
+          id: this.config.Lavalink.id,
+          host: this.config.Lavalink.host,
+          port: this.config.Lavalink.port,
+          password: this.config.Lavalink.pass,
         },
         {
-          id: "2", 
-          host: "lava.link",
-          port: 80,
-          password: "anything as a password",
+          id: this.config.Lavalink.id2, 
+          host: this.config.Lavalink.host2,
+          port: this.config.Lavalink.port,
+          password: this.config.Lavalink.pass2,
         },
       ]
     );
@@ -134,16 +134,16 @@ class DiscordMusicBot extends Client {
       nodes: [
         //Tip of the Day: read the goddamn thing
         {
-          identifier: "1",
-          host: "cookcockies.linath.net",
-          port: 2095,
-          password: "whatwasthelastingyousaid",
+          identifier: this.config.Lavalink.id, 
+          host: this.config.Lavalink.host,
+          port: this.config.Lavalink.port,
+          password: this.config.Lavalink.pass,
         },
         {
-          identifier: "2", 
-          host: "lava.link",
-          port: 80,
-          password: "anything as a password",
+          identifier: this.config.Lavalink.id2, 
+          host: this.config.Lavalink.host2,
+          port: this.config.Lavalink.port2,
+          password: this.config.Lavalink.pass2,
         },
       ],
       send(id, payload) {

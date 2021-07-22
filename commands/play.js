@@ -49,7 +49,7 @@ module.exports = {
                 // create "boolean" 0,1 var bc idk how to boolean
                 if (trueass!=1){
                 // when trueass is 1, it means that the node that is currently using is working
-                    for(let temp = 1; temp>2; temp++){
+                    for(let temp = 1; temp>client.cofig.Lavalink.nodecount; temp++){
                         // recursively checks the nodes
                         if (node) node = client.Manager.nodes.get(temp); 
                         // ^^ suppose to set the current node to the one scanning so the (temp)th node
@@ -163,7 +163,7 @@ module.exports = {
                 // create "boolean" 0,1 var bc idk how to boolean
                 if (trueass!=1){
                 // when trueass is 1, it means that the node that is currently using is working
-                    for(let temp = 1; temp>2; temp++){
+                    for(let temp = 1; temp>client.cofig.Lavalink.nodecount; temp++){
                         // recursively checks the nodes
                         if (node) node = client.Manager.nodes.get(temp); 
                         // ^^ suppose to set the current node to the one scanning so the (temp)th node
