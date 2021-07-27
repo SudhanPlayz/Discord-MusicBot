@@ -29,7 +29,7 @@ module.exports = {
               `Commands of ${client.user.username}`,
               client.config.IconURL
             )
-            .setColor("RANDOM")
+            .setColor("#ff9200")
             .setFooter(
               `To get info of each command type ${
                 GuildDB ? GuildDB.prefix : client.config.DefaultPrefix
@@ -51,7 +51,7 @@ module.exports = {
       let embed = new MessageEmbed()
         .setAuthor(`Command: ${cmd.name}`, client.config.IconURL)
         .setDescription(cmd.description)
-        .setColor("GREEN")
+        .setColor("#ff9200")
         //.addField("Name", cmd.name, true)
         .addField("Aliases", `\`${cmd.aliases.join(", ")}\``, true)
         .addField(
@@ -110,7 +110,7 @@ SlashCommand: {
               `Commands of ${client.user.username}`,
               client.config.IconURL
             )
-            .setColor("RANDOM")
+            .setColor("#ff9200")
             .setFooter(
               `To get info of each command type ${
                 GuildDB ? GuildDB.prefix : client.config.DefaultPrefix
@@ -132,7 +132,7 @@ SlashCommand: {
         let embed = new MessageEmbed()
           .setAuthor(`Command: ${cmd.name}`, client.config.IconURL)
           .setDescription(cmd.description)
-          .setColor("GREEN")
+          .setColor("#ff9200")
           //.addField("Name", cmd.name, true)
           .addField("Aliases", cmd.aliases.join(", "), true)
           .addField(

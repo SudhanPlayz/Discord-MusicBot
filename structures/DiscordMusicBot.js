@@ -160,7 +160,7 @@ class DiscordMusicBot extends Client {
             })}\``,
             true
           )
-          .setColor("RANDOM");
+          .setColor("#ff9200");
         //.setFooter("Started playing at");
         let NowPlaying = await client.channels.cache
           .get(player.textChannel)
@@ -170,7 +170,7 @@ class DiscordMusicBot extends Client {
       .on("queueEnd", (player) => {
         let QueueEmbed = new MessageEmbed()
           .setAuthor("The queue has ended", this.config.IconURL)
-          .setColor("RANDOM")
+          .setColor("#ff9200")
           .setTimestamp();
         client.channels.cache.get(player.textChannel).send(QueueEmbed);
         if (!this.config["24/7"]) player.destroy();
@@ -225,7 +225,7 @@ class DiscordMusicBot extends Client {
   sendError(Channel, Error) {
     let embed = new MessageEmbed()
       .setTitle("An error occured")
-      .setColor("RED")
+      .setColor("#ff9200")
       .setDescription(Error)
       .setFooter(
         "If you think this as a bug, please report it in the support server!"
@@ -235,7 +235,7 @@ class DiscordMusicBot extends Client {
   }
 
   sendTime(Channel, Error) {
-    let embed = new MessageEmbed().setColor("RANDOM").setDescription(Error);
+    let embed = new MessageEmbed().setColor("#ff9200").setDescription(Error);
 
     Channel.send(embed);
   }

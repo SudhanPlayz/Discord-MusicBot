@@ -22,7 +22,7 @@ module.exports = {
         "Invite " + client.user.tag + " to your server!",
         client.user.displayAvatarURL()
       )
-      .setColor("BLUE")
+      .setColor("#ff9200")
       .setDescription(
         `You can invite me by clicking [here](https://discord.com/oauth2/authorize?client_id=${
           client.config.ClientID
@@ -48,7 +48,7 @@ module.exports = {
         "Invite " + client.user.tag + " to your server!",
         client.user.displayAvatarURL()
       )
-      .setColor("BLUE")
+      .setColor("#ff9200")
       .setDescription(
         `You can invite me by clicking [here](https://discord.com/oauth2/authorize?client_id=${
           client.config.ClientID

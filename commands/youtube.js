@@ -23,7 +23,7 @@ module.exports = {
         let Invite = await message.member.voice.channel.activityInvite("755600276941176913")//Made using discordjs-activity package
         let embed = new MessageEmbed()
         .setAuthor("YouTube Together", "https://cdn.discordapp.com/emojis/749289646097432667.png?v=1")
-        .setColor("#FF0000")
+        .setColor("#ff9200")
         .setDescription(`
 Using **YouTube Together** you can watch YouTube with your friends in a Voice Channel. Click *Join YouTube Together* to join in!
 
@@ -53,7 +53,7 @@ __**[Join YouTube Together](https://discord.com/invite/${Invite.code})**__
             let Invite = await member.voice.channel.activityInvite("755600276941176913")//Made using discordjs-activity package
             let embed = new MessageEmbed()
             .setAuthor("YouTube Together", "https://cdn.discordapp.com/emojis/749289646097432667.png?v=1")
-            .setColor("#FF0000")
+            .setColor("#ff9200")
             .setDescription(`
 Using **YouTube Together** you can watch YouTube with your friends in a Voice Channel. Click *Join YouTube Together* to join in!
 
