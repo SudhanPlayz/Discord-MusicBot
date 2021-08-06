@@ -7,7 +7,9 @@
 >
 >
 > Please check out the latest list of updates, improvements, and fixes to be made in Version 5 in the Discussions section or by clicking [here](https://github.com/SudhanPlayz/Discord-MusicBot/discussions/236)
-> ### DO NOT INSTALL DISCORD.JS v13 FOR THIS BOT. IT IS NOT COMPATIBLE WITH THIS BOT YET. 
+
+> ### DISCORD.JS v13 IS NOT COMPATIBLE WITH THIS BOT YET. IT WILL BREAK THIS BOT.
+> This will be compatible once v5 of the bot is out. 
 
 ## ❗Prerequisites❗
 - [Node.js 14](https://nodejs.org/en/download/)
