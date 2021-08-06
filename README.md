@@ -3,7 +3,7 @@
 
 ## ✨Latest Updates✨
 
-> We are graciously waiting for Discord.js to update to v13 (as a stable version) so we can start updating the bot again. We can't fix all of them right now.
+> We are aware that discord.js v13 has been released. V5 of the music bot currently has NO release date. Please join our discord for any updated news.
 >
 > Please check out the latest list of updates, improvements, and fixes to be made in Version 5 in the Discussions section or by clicking [here](https://github.com/SudhanPlayz/Discord-MusicBot/discussions/236)
 
