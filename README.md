@@ -5,7 +5,19 @@
 
 > We are aware that discord.js v13 has been released. V5 of the music bot currently has NO release date. Please join our discord for any updated news.
 >
+>
 > Please check out the latest list of updates, improvements, and fixes to be made in Version 5 in the Discussions section or by clicking [here](https://github.com/SudhanPlayz/Discord-MusicBot/discussions/236)
+> ### DO NOT INSTALL DISCORD.JS v13 FOR THIS BOT. IT IS NOT COMPATIBLE WITH THIS BOT YET. 
+
+## ❗Prerequisites❗
+- [Node.js 14](https://nodejs.org/en/download/)
+- [Lavalink Server](https://github.com/freyacodes/Lavalink#server-configuration)
+
+`npm i`
+
+`npm install discord.js@12.5.3`
+
+> NOTE: This bot requires you to have knowledge of how to use Lavalink as well as utilizing it for music functionality
 
 
 ## 📝 Tutorial
