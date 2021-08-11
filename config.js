@@ -17,20 +17,31 @@ module.exports = {
   Website: process.env.Website || "http://localhost", //Website where it was hosted at includes http or https || Use "0.0.0.0" if you using Heroku
 
   //Lavalink
-   Lavalink: {
+Lavalink: {
     id: "Main",
-    host: "lava.link",
-    port: 80,
-    pass: "youshallnotpass", 
+    host: "nuremberg.linath.net",
+    port: 2095,
+    pass: "whatwasthelastingyousaid",
   },
-  
+/*
+
+  Uncomment the above lavalink and uncomment the below lavalink if these Errors come
+
+1) Lavalink Node not connected
+2) Music stops playing
+3) Queue ends as soon as song starts
+4) Bot does not play anything
+5) Bot instantly leaves the VC after joining
+
+Join Support server if you have any issues
+*/
   //Alternate Lavalink
   /*
-  Lavalink: {
+ Lavalink: {
     id: "Main",
-    host: "lava.sudhan.tech",
-    port: 1234,
-    pass: "CodingWithSudhan", 
+    host: "fn.linath.net",
+    port: 2095,
+    pass: "whatwasthelastingyousaid",
   },
   */
 
