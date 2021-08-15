@@ -28,7 +28,7 @@ module.exports = {
             const duration = moment.duration(message.client.uptime).format(" D[d], H[h], m[m]");
 
             const embed = new MessageEmbed()
-            embed.setColor("RANDOM")
+            embed.setColor("BLUE")
             embed.setTitle(`Stats from \`${client.user.username}\``)
             embed.addFields({
                 name: ':ping_pong: Ping',
@@ -93,7 +93,7 @@ SlashCommand: {
         const duration = moment.duration(client.uptime).format(" D[d], H[h], m[m]");
 
         const embed = new MessageEmbed()
-        embed.setColor("RANDOM")
+        embed.setColor("BLUE")
         embed.setTitle(`Stats from \`${client.user.username}\``)
         embed.addFields({
             name: ':ping_pong: Ping',

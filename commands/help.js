@@ -29,7 +29,7 @@ module.exports = {
               `Commands of ${client.user.username}`,
               client.config.IconURL
             )
-            .setColor("RANDOM")
+            .setColor("BLUE")
             .setFooter(
               `To get info of each command type ${
                 GuildDB ? GuildDB.prefix : client.config.DefaultPrefix
@@ -37,9 +37,9 @@ module.exports = {
             ).setDescription(`${Commands.join("\n")}
   
   Discord Music Bot Version: v${require("../package.json").version}
-  [✨ Support Server](${
+  [Support Server](${
     client.config.SupportServer
-  }) | [GitHub](https://github.com/SudhanPlayz/Discord-MusicBot) | By [SudhanPlayz](https://github.com/SudhanPlayz)`);
+  }) by vulix/mich and thanks to CodingWithSudhan for the amazing source code`);
     if (!args[0]) message.channel.send(Embed);
     else {
       let cmd =
@@ -51,7 +51,7 @@ module.exports = {
       let embed = new MessageEmbed()
         .setAuthor(`Command: ${cmd.name}`, client.config.IconURL)
         .setDescription(cmd.description)
-        .setColor("GREEN")
+        .setColor("BLUE")
         //.addField("Name", cmd.name, true)
         .addField("Aliases", `\`${cmd.aliases.join(", ")}\``, true)
         .addField(
@@ -110,7 +110,7 @@ SlashCommand: {
               `Commands of ${client.user.username}`,
               client.config.IconURL
             )
-            .setColor("RANDOM")
+            .setColor("BLUE")
             .setFooter(
               `To get info of each command type ${
                 GuildDB ? GuildDB.prefix : client.config.DefaultPrefix
@@ -120,7 +120,7 @@ SlashCommand: {
   Discord Music Bot Version: v${require("../package.json").version}
   [✨ Support Server](${
     client.config.SupportServer
-  }) | [GitHub](https://github.com/SudhanPlayz/Discord-MusicBot) | By [SudhanPlayz](https://github.com/SudhanPlayz)`);
+  }) by vulix/mich`);
       if (!args) return interaction.send(Embed);
       else {
         let cmd =
@@ -132,7 +132,7 @@ SlashCommand: {
         let embed = new MessageEmbed()
           .setAuthor(`Command: ${cmd.name}`, client.config.IconURL)
           .setDescription(cmd.description)
-          .setColor("GREEN")
+          .setColor("BLUE")
           //.addField("Name", cmd.name, true)
           .addField("Aliases", cmd.aliases.join(", "), true)
           .addField(

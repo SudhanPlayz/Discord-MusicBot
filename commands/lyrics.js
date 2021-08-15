@@ -34,7 +34,7 @@ module.exports = {
     let Pages = SplitedLyrics.map((ly) => {
       let em = new MessageEmbed()
         .setAuthor(`Lyrics for: ${SongTitle}`, client.config.IconURL)
-        .setColor("RANDOM")
+        .setColor("BLUE")
         .setDescription(ly.join("\n"));
 
       if (args.join(" ") !== SongTitle) em.setThumbnail(player.queue.current.displayThumbnail());
@@ -80,7 +80,7 @@ module.exports = {
       let Pages = SplitedLyrics.map((ly) => {
         let em = new MessageEmbed()
           .setAuthor(`Lyrics for: ${SongTitle}`, client.config.IconURL)
-          .setColor("RANDOM")
+          .setColor("BLUE")
           .setDescription(ly.join("\n"));
 
         if (SongTitle !== SongTitle) em.setThumbnail(player.queue.current.displayThumbnail());

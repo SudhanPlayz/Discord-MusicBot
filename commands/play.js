@@ -35,7 +35,7 @@ module.exports = {
             selfDeafen: false,
         });
 
-        let SongAddedEmbed = new MessageEmbed().setColor("RANDOM");
+        let SongAddedEmbed = new MessageEmbed().setColor("BLUE");
 
         if (!player) return client.sendTime(message.channel, "❌ | **Nothing is playing right now...**");
 
@@ -158,7 +158,7 @@ module.exports = {
                         if (!player.playing && !player.paused && !player.queue.length) player.play();
                         let SongAddedEmbed = new MessageEmbed();
                             SongAddedEmbed.setAuthor(`Added to queue`, client.config.IconURL);
-                            SongAddedEmbed.setColor("RANDOM");
+                            SongAddedEmbed.setColor("BLUE");
                             SongAddedEmbed.setDescription(`[${Searched.tracks[0].info.title}](${Searched.tracks[0].info.uri})`);
                             SongAddedEmbed.addField("Author", Searched.tracks[0].info.author, true);
                             if (player.queue.totalSize > 1) SongAddedEmbed.addField("Position in queue", `${player.queue.size - 0}`, true);
@@ -169,7 +169,7 @@ module.exports = {
                         if (!player.playing && !player.paused && !player.queue.length) player.play();
                         let SongAdded = new MessageEmbed();
                             SongAdded.setAuthor(`Added to queue`, client.config.IconURL);
-                            SongAdded.setColor("RANDOM");
+                            SongAdded.setColor("BLUE");
                             SongAdded.setDescription(`[${Searched.tracks[0].info.title}](${Searched.tracks[0].info.uri})`);
                             SongAdded.addField("Author", Searched.tracks[0].info.author, true);
                             if (player.queue.totalSize > 1) SongAdded.addField("Position in queue", `${player.queue.size - 0}`, true);
@@ -207,7 +207,7 @@ module.exports = {
                         let SongAddedEmbed = new MessageEmbed();
                             SongAddedEmbed.setAuthor(`Added to queue`, client.config.IconURL);
                             SongAddedEmbed.setThumbnail(res.tracks[0].displayThumbnail());
-                            SongAddedEmbed.setColor("RANDOM");
+                            SongAddedEmbed.setColor("BLUE");
                             SongAddedEmbed.setDescription(`[${res.tracks[0].title}](${res.tracks[0].uri})`);
                             SongAddedEmbed.addField("Author", res.tracks[0].author, true);
                             SongAddedEmbed.addField("Duration", `\`${prettyMilliseconds(res.tracks[0].duration, { colonNotation: true })}\``, true);
@@ -233,7 +233,7 @@ module.exports = {
                             let SongAddedEmbed = new MessageEmbed();
                             SongAddedEmbed.setAuthor(`Added to queue`, client.config.IconURL);
                             SongAddedEmbed.setThumbnail(track.displayThumbnail());
-                            SongAddedEmbed.setColor("RANDOM");
+                            SongAddedEmbed.setColor("BLUE");
                             SongAddedEmbed.setDescription(`[${track.title}](${track.uri})`);
                             SongAddedEmbed.addField("Author", track.author, true);
                             SongAddedEmbed.addField("Duration", `\`${prettyMilliseconds(track.duration, { colonNotation: true })}\``, true);
@@ -245,7 +245,7 @@ module.exports = {
                             let SongAddedEmbed = new MessageEmbed();
                             SongAddedEmbed.setAuthor(`Added to queue`, client.config.IconURL);
                             SongAddedEmbed.setThumbnail(track.displayThumbnail());
-                            SongAddedEmbed.setColor("RANDOM");
+                            SongAddedEmbed.setColor("BLUE");
                             SongAddedEmbed.setDescription(`[${track.title}](${track.uri})`);
                             SongAddedEmbed.addField("Author", track.author, true);
                             SongAddedEmbed.addField("Duration", `\`${prettyMilliseconds(track.duration, { colonNotation: true })}\``, true);

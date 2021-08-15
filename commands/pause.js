@@ -24,7 +24,7 @@ module.exports = {
         if (message.guild.me.voice.channel && message.member.voice.channel.id !== message.guild.me.voice.channel.id) return client.sendTime(message.channel, ":x: | **You must be in the same voice channel as me to use this command!**");
         if (player.paused) return client.sendTime(message.channel, "❌ | **Music is already paused!**");
         player.pause(true);
-        let embed = new MessageEmbed().setAuthor(`Paused!`, client.config.IconURL).setColor("RANDOM").setDescription(`Type \`${GuildDB.prefix}resume\` to continue playing!`);
+        let embed = new MessageEmbed().setAuthor(`Paused!`, client.config.IconURL).setColor("BLUE").setDescription(`Type \`${GuildDB.prefix}resume\` to continue playing!`);
         await message.channel.send(embed);
         await message.react("✅");
     },
