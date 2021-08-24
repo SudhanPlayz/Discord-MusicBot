@@ -124,7 +124,7 @@ class DiscordMusicBot extends Client {
           host: this.config.Lavalink.host,
           port: this.config.Lavalink.port,
           password: this.config.Lavalink.pass,
-          secure: this.config.Lavalink.secure
+          secure: this.config.Lavalink.secure,
         },
       ]
     );
@@ -136,7 +136,7 @@ class DiscordMusicBot extends Client {
           host: this.config.Lavalink.host,
           port: this.config.Lavalink.port,
           password: this.config.Lavalink.pass,
-          secure: this.config.Lavalink.secure
+          secure: this.config.Lavalink.secure,
         },
       ],
       send(id, payload) {

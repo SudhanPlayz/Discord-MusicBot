@@ -22,7 +22,7 @@ module.exports = {
     host: "lava.link",
     port: 80,
     pass: "youshallnotpass", 
-    secure: false // Set this to true if you're self-hosting lavalink on replit.
+    secure: false, // Set this to true if you're self-hosting lavalink on replit.
   },
   
   //Alternate Lavalink
