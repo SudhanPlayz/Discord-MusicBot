@@ -328,6 +328,7 @@
       socket.emit("server", window.location.pathname.split("/")[2]);
 
       socket.on("server", (data) => {
+        $("#songInQueue").text(data.queue);
         $("#songLoop").text(data.songsLoop);
         $("#queueLoop").text(data.queueLoop);
         $("#prefix").text(data.prefix);
