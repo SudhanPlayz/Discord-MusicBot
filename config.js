@@ -22,6 +22,7 @@ module.exports = {
     host: "lava.link",
     port: 80,
     pass: "youshallnotpass", 
+    secure: false, // Set this to true if you're self-hosting lavalink on replit.
   },
   
   //Alternate Lavalink
@@ -31,6 +32,7 @@ module.exports = {
     host: "lava.sudhan.tech",
     port: 1234,
     pass: "CodingWithSudhan", 
+    secure: false // Set this to true if you're self-hosting lavalink on replit.
   },
   */
 
