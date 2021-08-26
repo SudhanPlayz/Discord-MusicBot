@@ -8,7 +8,7 @@ const { VoiceState } = require("discord.js");
  * @returns {Promise<void>}
  */
 module.exports = async (client, oldState, newState) => {
-    // skip bot users
+    // skip bot users, just like the message event
     if (newState.member.user.bot) return;
 
     // get guild and player
@@ -38,14 +38,17 @@ module.exports = async (client, oldState, newState) => {
     // check if the bot's voice channel is involved (return otherwise)
     if (!stateChange.channel || stateChange.channel.id !== player.voiceChannel) return;
 
+    // filter current users based on being a bot
+    stateChange.members = stateChange.channel.members.filter(member => !member.user.bot);
+
     switch (stateChange.type) {
         case "JOIN":
-            if (stateChange.channel.members.size === 2 && player.paused) {
+            if (stateChange.members.size === 1 && player.paused) {
                 player.pause(false);
             }
             break;
         case "LEAVE":
-            if (stateChange.channel.members.size === 1 && !player.paused && player.playing) {
+            if (stateChange.members.size === 0 && !player.paused && player.playing) {
                 player.pause(true);
             }
             break;
