@@ -1,5 +1,5 @@
 const { DiscordMusicBot } = require('../structures/DiscordMusicBot');
-const { VoiceState } = require("discord.js");
+const { VoiceState, MessageEmbed} = require("discord.js");
 /**
  *
  * @param {DiscordMusicBot} client
@@ -44,12 +44,28 @@ module.exports = async (client, oldState, newState) => {
     switch (stateChange.type) {
         case "JOIN":
             if (stateChange.members.size === 1 && player.paused) {
+                let emb = new MessageEmbed()
+                    .setAuthor(`Resuming paused queue`, client.config.IconURL)
+                    .setColor("RANDOM")
+                    .setDescription(`Resuming playback because you left me with music to play when all of you just left me all alone`);
+                await client.channels.cache.get(player.textChannel).send(emb);
+
+                // update the now playing message and bring it to the front
+                let msg2 = await client.channels.cache.get(player.textChannel).send(player.nowPlayingMessage.embeds[0])
+                player.setNowplayingMessage(msg2);
+
                 player.pause(false);
             }
             break;
         case "LEAVE":
             if (stateChange.members.size === 0 && !player.paused && player.playing) {
                 player.pause(true);
+
+                let emb = new MessageEmbed()
+                    .setAuthor(`Paused!`, client.config.IconURL)
+                    .setColor("RANDOM")
+                    .setDescription(`The player has been paused because everybody left`);
+                await client.channels.cache.get(player.textChannel).send(emb);
             }
             break;
     }
