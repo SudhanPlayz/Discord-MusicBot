@@ -23,7 +23,7 @@ module.exports = {
         if (message.guild.me.voice.channel && message.member.voice.channel.id !== message.guild.me.voice.channel.id) return client.sendTime(message.channel, ":x: | **You must be in the same voice channel as me to use this command!**");
         let SearchString = args.join(" ");
         if (!SearchString) return client.sendTime(message.channel, `**Usage - **\`${GuildDB.prefix}play [song]\``);
-        let CheckNode = client.Manager.nodes.get(client.config.Lavalink.id);
+        let CheckNode = client.Manager.nodes.get(client.botconfig.Lavalink.id);
         let Searching = await message.channel.send(":mag_right: Searching...");
         if (!CheckNode || !CheckNode.connected) {
        return client.sendTime(message.channel,"❌ | **Lavalink node not connected**");
@@ -44,7 +44,7 @@ module.exports = {
         try {
             if (SearchString.match(client.Lavasfy.spotifyPattern)) {
                 await client.Lavasfy.requestToken();
-                let node = client.Lavasfy.nodes.get(client.config.Lavalink.id);
+                let node = client.Lavasfy.nodes.get(client.botconfig.Lavalink.id);
                 let Searched = await node.load(SearchString);
 
                 if (Searched.loadType === "PLAYLIST_LOADED") {
@@ -59,7 +59,7 @@ module.exports = {
                 } else if (Searched.loadType.startsWith("TRACK")) {
                     player.queue.add(TrackUtils.build(Searched.tracks[0], message.author));
                     if (!player.playing && !player.paused && !player.queue.size) player.play();
-                    SongAddedEmbed.setAuthor(`Added to queue`, client.config.IconURL);
+                    SongAddedEmbed.setAuthor(`Added to queue`, client.botconfig.IconURL);
                     SongAddedEmbed.setDescription(`[${Searched.tracks[0].info.title}](${Searched.tracks[0].info.uri})`);
                     SongAddedEmbed.addField("Author", Searched.tracks[0].info.author, true);
                     //SongAddedEmbed.addField("Duration", `\`${prettyMilliseconds(Searched.tracks[0].length, { colonNotation: true })}\``, true);
@@ -76,7 +76,7 @@ module.exports = {
                 else if (Searched.loadType == "PLAYLIST_LOADED") {
                     player.queue.add(Searched.tracks);
                     if (!player.playing && !player.paused && player.queue.totalSize === Searched.tracks.length) player.play();
-                    SongAddedEmbed.setAuthor(`Playlist added to queue`, client.config.IconURL);
+                    SongAddedEmbed.setAuthor(`Playlist added to queue`, client.botconfig.IconURL);
                     SongAddedEmbed.setThumbnail(Searched.tracks[0].displayThumbnail());
                     SongAddedEmbed.setDescription(`[${Searched.playlist.name}](${SearchString})`);
                     SongAddedEmbed.addField("Enqueued", `\`${Searched.tracks.length}\` songs`, false);
@@ -85,7 +85,7 @@ module.exports = {
                 } else {
                     player.queue.add(Searched.tracks[0]);
                     if (!player.playing && !player.paused && !player.queue.size) player.play();
-                    SongAddedEmbed.setAuthor(`Added to queue`, client.config.IconURL);
+                    SongAddedEmbed.setAuthor(`Added to queue`, client.botconfig.IconURL);
 
                     SongAddedEmbed.setThumbnail(Searched.tracks[0].displayThumbnail());
                     SongAddedEmbed.setDescription(`[${Searched.tracks[0].title}](${Searched.tracks[0].uri})`);
@@ -125,7 +125,7 @@ module.exports = {
             let awaitchannel = client.channels.cache.get(interaction.channel_id); /// thanks Reyansh for this idea ;-;
             if (!member.voice.channel) return client.sendTime(interaction, "❌ | **You must be in a voice channel to use this command.**");
             if (guild.me.voice.channel && !guild.me.voice.channel.equals(member.voice.channel)) return client.sendTime(interaction, ":x: | **You must be in the same voice channel as me to use this command!**");
-            let CheckNode = client.Manager.nodes.get(client.config.Lavalink.id);
+            let CheckNode = client.Manager.nodes.get(client.botconfig.Lavalink.id);
             if (!CheckNode || !CheckNode.connected) {
               return client.sendTime(interaction,"❌ | **Lavalink node not connected**");
             }
@@ -142,7 +142,7 @@ module.exports = {
 
             if (search.match(client.Lavasfy.spotifyPattern)) {
                 await client.Lavasfy.requestToken();
-                let node = client.Lavasfy.nodes.get(client.config.Lavalink.id);
+                let node = client.Lavasfy.nodes.get(client.botconfig.Lavalink.id);
                 let Searched = await node.load(search);
 
                 switch (Searched.loadType) {
@@ -157,7 +157,7 @@ module.exports = {
                         player.queue.add(TrackUtils.build(Searched.tracks[0], member.user));
                         if (!player.playing && !player.paused && !player.queue.length) player.play();
                         let SongAddedEmbed = new MessageEmbed();
-                            SongAddedEmbed.setAuthor(`Added to queue`, client.config.IconURL);
+                            SongAddedEmbed.setAuthor(`Added to queue`, client.botconfig.IconURL);
                             SongAddedEmbed.setColor("RANDOM");
                             SongAddedEmbed.setDescription(`[${Searched.tracks[0].info.title}](${Searched.tracks[0].info.uri})`);
                             SongAddedEmbed.addField("Author", Searched.tracks[0].info.author, true);
@@ -168,7 +168,7 @@ module.exports = {
                         player.queue.add(TrackUtils.build(Searched.tracks[0], member.user));
                         if (!player.playing && !player.paused && !player.queue.length) player.play();
                         let SongAdded = new MessageEmbed();
-                            SongAdded.setAuthor(`Added to queue`, client.config.IconURL);
+                            SongAdded.setAuthor(`Added to queue`, client.botconfig.IconURL);
                             SongAdded.setColor("RANDOM");
                             SongAdded.setDescription(`[${Searched.tracks[0].info.title}](${Searched.tracks[0].info.uri})`);
                             SongAdded.addField("Author", Searched.tracks[0].info.author, true);
@@ -182,7 +182,7 @@ module.exports = {
                         player.queue.add(songs);
                         if (!player.playing && !player.paused && player.queue.totalSize === Searched.tracks.length) player.play();
                         let Playlist = new MessageEmbed();
-                        Playlist.setAuthor(`Playlist added to queue`, client.config.IconURL);
+                        Playlist.setAuthor(`Playlist added to queue`, client.botconfig.IconURL);
                         Playlist.setDescription(`[${Searched.playlistInfo.name}](${interaction.data.options[0].value})`);
                         Playlist.addField("Enqueued", `\`${Searched.tracks.length}\` songs`, false);
                         return interaction.send(Playlist);
@@ -205,7 +205,7 @@ module.exports = {
                         player.queue.add(res.tracks[0]);
                         if (!player.playing && !player.paused && !player.queue.length) player.play();
                         let SongAddedEmbed = new MessageEmbed();
-                            SongAddedEmbed.setAuthor(`Added to queue`, client.config.IconURL);
+                            SongAddedEmbed.setAuthor(`Added to queue`, client.botconfig.IconURL);
                             SongAddedEmbed.setThumbnail(res.tracks[0].displayThumbnail());
                             SongAddedEmbed.setColor("RANDOM");
                             SongAddedEmbed.setDescription(`[${res.tracks[0].title}](${res.tracks[0].uri})`);
@@ -218,7 +218,7 @@ module.exports = {
                         player.queue.add(res.tracks);
                         await player.play();
                         let SongAdded = new MessageEmbed();
-                        SongAdded.setAuthor(`Playlist added to queue`, client.config.IconURL);
+                        SongAdded.setAuthor(`Playlist added to queue`, client.botconfig.IconURL);
                         SongAdded.setThumbnail(res.tracks[0].displayThumbnail());
                         SongAdded.setDescription(`[${res.playlist.name}](${interaction.data.options[0].value})`);
                         SongAdded.addField("Enqueued", `\`${res.tracks.length}\` songs`, false);
@@ -231,7 +231,7 @@ module.exports = {
 
                         if (!player.playing && !player.paused && !player.queue.length) {
                             let SongAddedEmbed = new MessageEmbed();
-                            SongAddedEmbed.setAuthor(`Added to queue`, client.config.IconURL);
+                            SongAddedEmbed.setAuthor(`Added to queue`, client.botconfig.IconURL);
                             SongAddedEmbed.setThumbnail(track.displayThumbnail());
                             SongAddedEmbed.setColor("RANDOM");
                             SongAddedEmbed.setDescription(`[${track.title}](${track.uri})`);
@@ -243,7 +243,7 @@ module.exports = {
                             
                         } else {
                             let SongAddedEmbed = new MessageEmbed();
-                            SongAddedEmbed.setAuthor(`Added to queue`, client.config.IconURL);
+                            SongAddedEmbed.setAuthor(`Added to queue`, client.botconfig.IconURL);
                             SongAddedEmbed.setThumbnail(track.displayThumbnail());
                             SongAddedEmbed.setColor("RANDOM");
                             SongAddedEmbed.setDescription(`[${track.title}](${track.uri})`);
