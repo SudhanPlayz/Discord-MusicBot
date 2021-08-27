@@ -7,7 +7,7 @@
 
 module.exports = async (client, message) => {
   if (message.author.bot || message.channel.type === "dm") return;
-  let prefix = client.config.DefaultPrefix;
+  let prefix = client.botconfig.DefaultPrefix;
 
   let GuildDB = await client.GetGuild(message.guild.id);
   if (GuildDB && GuildDB.prefix) prefix = GuildDB.prefix;
