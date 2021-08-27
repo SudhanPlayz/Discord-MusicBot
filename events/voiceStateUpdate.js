@@ -45,7 +45,7 @@ module.exports = async (client, oldState, newState) => {
         case "JOIN":
             if (stateChange.members.size === 1 && player.paused) {
                 let emb = new MessageEmbed()
-                    .setAuthor(`Resuming paused queue`, client.config.IconURL)
+                    .setAuthor(`Resuming paused queue`, client.botconfig.IconURL)
                     .setColor("RANDOM")
                     .setDescription(`Resuming playback because you left me with music to play when all of you just left me all alone`);
                 await client.channels.cache.get(player.textChannel).send(emb);
