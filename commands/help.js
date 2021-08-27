@@ -19,7 +19,7 @@ module.exports = {
    run: async (client, message, args, { GuildDB }) => {
     let Commands = client.commands.map(
       (cmd) =>
-        `\`${GuildDB ? GuildDB.prefix : client.config.DefaultPrefix}${
+        `\`${GuildDB ? GuildDB.prefix : client.botconfig.DefaultPrefix}${
           cmd.name
         }${cmd.usage ? " " + cmd.usage : ""}\` - ${cmd.description}`
     );
@@ -32,13 +32,13 @@ module.exports = {
             .setColor("RANDOM")
             .setFooter(
               `To get info of each command type ${
-                GuildDB ? GuildDB.prefix : client.config.DefaultPrefix
+                GuildDB ? GuildDB.prefix : client.botconfig.DefaultPrefix
               }help [Command] | Have a nice day!`
             ).setDescription(`${Commands.join("\n")}
   
   Discord Music Bot Version: v${require("../package.json").version}
   [✨ Support Server](${
-    client.config.SupportServer
+    client.botconfig.SupportServer
   }) | [GitHub](https://github.com/SudhanPlayz/Discord-MusicBot) | By [SudhanPlayz](https://github.com/SudhanPlayz)`);
     if (!args[0]) message.channel.send(Embed);
     else {
@@ -49,14 +49,14 @@ module.exports = {
         return client.sendTime(message.channel, `❌ | Unable to find that command.`);
 
       let embed = new MessageEmbed()
-        .setAuthor(`Command: ${cmd.name}`, client.config.IconURL)
+        .setAuthor(`Command: ${cmd.name}`, client.botconfig.IconURL)
         .setDescription(cmd.description)
         .setColor("GREEN")
         //.addField("Name", cmd.name, true)
         .addField("Aliases", `\`${cmd.aliases.join(", ")}\``, true)
         .addField(
           "Usage",
-          `\`${GuildDB ? GuildDB.prefix : client.config.DefaultPrefix}${
+          `\`${GuildDB ? GuildDB.prefix : client.botconfig.DefaultPrefix}${
             cmd.name
           }${cmd.usage ? " " + cmd.usage : ""}\``,
           true
@@ -71,7 +71,7 @@ module.exports = {
         )
         .setFooter(
           `Prefix - ${
-            GuildDB ? GuildDB.prefix : client.config.DefaultPrefix
+            GuildDB ? GuildDB.prefix : client.botconfig.DefaultPrefix
           }`
         );
 
@@ -100,7 +100,7 @@ SlashCommand: {
     run: async (client, interaction, args, { GuildDB }) => {
       let Commands = client.commands.map(
         (cmd) =>
-          `\`${GuildDB ? GuildDB.prefix : client.config.DefaultPrefix}${
+          `\`${GuildDB ? GuildDB.prefix : client.botconfig.DefaultPrefix}${
             cmd.name
           }${cmd.usage ? " " + cmd.usage : ""}\` - ${cmd.description}`
       );
@@ -108,18 +108,18 @@ SlashCommand: {
       let Embed = new MessageEmbed()
             .setAuthor(
               `Commands of ${client.user.username}`,
-              client.config.IconURL
+              client.botconfig.IconURL
             )
             .setColor("RANDOM")
             .setFooter(
               `To get info of each command type ${
-                GuildDB ? GuildDB.prefix : client.config.DefaultPrefix
+                GuildDB ? GuildDB.prefix : client.botconfig.DefaultPrefix
               }help [Command] | Have a nice day!`
             ).setDescription(`${Commands.join("\n")}
   
   Discord Music Bot Version: v${require("../package.json").version}
   [✨ Support Server](${
-    client.config.SupportServer
+    client.botconfig.SupportServer
   }) | [GitHub](https://github.com/SudhanPlayz/Discord-MusicBot) | By [SudhanPlayz](https://github.com/SudhanPlayz)`);
       if (!args) return interaction.send(Embed);
       else {
@@ -130,14 +130,14 @@ SlashCommand: {
           return client.sendTime(interaction, `❌ | Unable to find that command.`);
   
         let embed = new MessageEmbed()
-          .setAuthor(`Command: ${cmd.name}`, client.config.IconURL)
+          .setAuthor(`Command: ${cmd.name}`, client.botconfig.IconURL)
           .setDescription(cmd.description)
           .setColor("GREEN")
           //.addField("Name", cmd.name, true)
           .addField("Aliases", cmd.aliases.join(", "), true)
           .addField(
             "Usage",
-            `\`${GuildDB ? GuildDB.prefix : client.config.DefaultPrefix}${
+            `\`${GuildDB ? GuildDB.prefix : client.botconfig.DefaultPrefix}${
               cmd.name
             }\`${cmd.usage ? " " + cmd.usage : ""}`,
             true
@@ -152,7 +152,7 @@ SlashCommand: {
           )
           .setFooter(
             `Prefix - ${
-              GuildDB ? GuildDB.prefix : client.config.DefaultPrefix
+              GuildDB ? GuildDB.prefix : client.botconfig.DefaultPrefix
             }`
           );
   
