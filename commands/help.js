@@ -27,7 +27,7 @@ module.exports = {
     let Embed = new MessageEmbed()
             .setAuthor(
               `Commands of ${client.user.username}`,
-              client.config.IconURL
+              client.botconfig.IconURL
             )
             .setColor("RANDOM")
             .setFooter(
