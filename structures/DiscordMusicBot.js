@@ -74,7 +74,7 @@ class DiscordMusicBot extends Client {
       //Initialize GuildDB
       if (!GuildDB) {
         await this.database.guild.set(interaction.guild_id, {
-          prefix: this.config.DefaultPrefix,
+          prefix: this.botconfig.DefaultPrefix,
           DJ: null,
         });
         GuildDB = await this.GetGuild(interaction.guild_id);
@@ -111,8 +111,8 @@ class DiscordMusicBot extends Client {
 
     this.Lavasfy = new LavasfyClient(
       {
-        clientID: this.config.Spotify.ClientID,
-        clientSecret: this.config.Spotify.ClientSecret,
+        clientID: this.botconfig.Spotify.ClientID,
+        clientSecret: this.botconfig.Spotify.ClientSecret,
         playlistLoadLimit: 3,
         audioOnlyResults: true,
         autoResolve: true,
@@ -120,11 +120,11 @@ class DiscordMusicBot extends Client {
       },
       [
         {
-          id: this.config.Lavalink.id,
-          host: this.config.Lavalink.host,
-          port: this.config.Lavalink.port,
-          password: this.config.Lavalink.pass,
-          secure: this.config.Lavalink.secure,
+          id: this.botconfig.Lavalink.id,
+          host: this.botconfig.Lavalink.host,
+          port: this.botconfig.Lavalink.port,
+          password: this.botconfig.Lavalink.pass,
+          secure: this.botconfig.Lavalink.secure,
         },
       ]
     );
@@ -132,11 +132,11 @@ class DiscordMusicBot extends Client {
     this.Manager = new Manager({
       nodes: [
         {
-          identifier: this.config.Lavalink.id,
-          host: this.config.Lavalink.host,
-          port: this.config.Lavalink.port,
-          password: this.config.Lavalink.pass,
-          secure: this.config.Lavalink.secure,
+          identifier: this.botconfig.Lavalink.id,
+          host: this.botconfig.Lavalink.host,
+          port: this.botconfig.Lavalink.port,
+          password: this.botconfig.Lavalink.pass,
+          secure: this.botconfig.Lavalink.secure,
         },
       ],
       send(id, payload) {
@@ -155,7 +155,7 @@ class DiscordMusicBot extends Client {
       .on("trackStart", async (player, track) => {
         this.SongsPlayed++;
         let TrackStartedEmbed = new MessageEmbed()
-          .setAuthor(`Now playing ♪`, this.config.IconURL)
+          .setAuthor(`Now playing ♪`, this.botconfig.IconURL)
           .setThumbnail(player.queue.current.displayThumbnail())
           .setDescription(`[${track.title}](${track.uri})`)
           .addField("Requested by", `${track.requester}`, true)
@@ -175,11 +175,11 @@ class DiscordMusicBot extends Client {
       })
       .on("queueEnd", (player) => {
         let QueueEmbed = new MessageEmbed()
-          .setAuthor("The queue has ended", this.config.IconURL)
+          .setAuthor("The queue has ended", this.botconfig.IconURL)
           .setColor("RANDOM")
           .setTimestamp();
         client.channels.cache.get(player.textChannel).send(QueueEmbed);
-        if (!this.config["24/7"]) player.destroy();
+        if (!this.botconfig["24/7"]) player.destroy();
       });
   }
 
@@ -247,9 +247,9 @@ class DiscordMusicBot extends Client {
   }
 
   build() {
-    this.login(this.config.Token);
-    if(this.config.ExpressServer){
-      this.http.listen(process.env.PORT || this.config.Port, () => this.log("Web Server has been started"));
+    this.login(this.botconfig.Token);
+    if(this.botconfig.ExpressServer){
+      this.http.listen(process.env.PORT || this.botconfig.Port, () => this.log("Web Server has been started"));
     }
   }
 
