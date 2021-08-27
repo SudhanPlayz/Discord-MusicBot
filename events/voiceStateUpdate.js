@@ -62,7 +62,7 @@ module.exports = async (client, oldState, newState) => {
                 player.pause(true);
 
                 let emb = new MessageEmbed()
-                    .setAuthor(`Paused!`, client.config.IconURL)
+                    .setAuthor(`Paused!`, client.botconfig.IconURL)
                     .setColor("RANDOM")
                     .setDescription(`The player has been paused because everybody left`);
                 await client.channels.cache.get(player.textChannel).send(emb);
