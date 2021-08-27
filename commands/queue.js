@@ -28,7 +28,7 @@ module.exports = {
 
     if (!player.queue || !player.queue.length || player.queue === 0) {
       let QueueEmbed = new MessageEmbed()
-        .setAuthor("Currently playing", client.config.IconURL)
+        .setAuthor("Currently playing", client.botconfig.IconURL)
         .setColor("RANDOM")
         .setDescription(
           `[${player.queue.current.title}](${player.queue.current.uri})`
@@ -71,7 +71,7 @@ module.exports = {
       ).join("\n");
 
       let Embed = new MessageEmbed()
-        .setAuthor("Queue", client.config.IconURL)
+        .setAuthor("Queue", client.botconfig.IconURL)
         .setColor("RANDOM")
         .setDescription(
           `**Currently Playing:** \n[${player.queue.current.title}](${player.queue.current.uri}) \n\n**Up Next:** \n${SongsDescription}\n\n`
@@ -134,7 +134,7 @@ module.exports = {
 
       if (!player.queue || !player.queue.length || player.queue === 0) {
         let QueueEmbed = new MessageEmbed()
-          .setAuthor("Currently playing", client.config.IconURL)
+          .setAuthor("Currently playing", client.botconfig.IconURL)
           .setColor("RANDOM")
           .setDescription(
             `[${player.queue.current.title}](${player.queue.current.uri})`
@@ -176,7 +176,7 @@ module.exports = {
         ).join("\n");
 
         let Embed = new MessageEmbed()
-          .setAuthor("Queue", client.config.IconURL)
+          .setAuthor("Queue", client.botconfig.IconURL)
           .setColor("RANDOM")
           .setDescription(
             `**Currently Playing:** \n[${player.queue.current.title}](${player.queue.current.uri}) \n\n**Up Next:** \n${SongsDescription}\n\n`
