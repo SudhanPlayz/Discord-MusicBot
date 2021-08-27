@@ -32,7 +32,7 @@ run: async (client, message, args, { GuildDB }) => {
   .setTitle(`**${player.queue.current.title}**`)
   .addField(`⌛ Duration: `, `\`${prettyMilliseconds(player.queue.current.duration, {colonNotation: true})}\``, true)
   .addField(`🎵 Author: `, `\`${player.queue.current.author}\``, true)
-  .addField(`▶ Play it:`, `\`${GuildDB ? GuildDB.prefix : client.config.DefaultPrefix
+  .addField(`▶ Play it:`, `\`${GuildDB ? GuildDB.prefix : client.botconfig.DefaultPrefix
   }play ${player.queue.current.uri}\``)
   .addField(`🔎 Saved in:`, `<#${message.channel.id}>`)
   .setFooter(`Requested by: ${player.queue.current.requester.tag}`, player.queue.current.requester.displayAvatarURL({
@@ -70,7 +70,7 @@ run: async (client, message, args, { GuildDB }) => {
       .setTitle(`**${player.queue.current.title}**`)
       .addField(`⌛ Duration: `, `\`${prettyMilliseconds(player.queue.current.duration, {colonNotation: true})}\``, true)
       .addField(`🎵 Author: `, `\`${player.queue.current.author}\``, true)
-      .addField(`▶ Play it:`, `\`${GuildDB ? GuildDB.prefix : client.config.DefaultPrefix
+      .addField(`▶ Play it:`, `\`${GuildDB ? GuildDB.prefix : client.botconfig.DefaultPrefix
         }play ${player.queue.current.uri}\``)
       .addField(`🔎 Saved in:`, `<#${interaction.channel_id}>`)
       .setFooter(`Requested by: ${player.queue.current.requester.tag}`, player.queue.current.requester.displayAvatarURL({
