@@ -27,7 +27,7 @@ module.exports = {
 
     let song = player.queue.current;
     let QueueEmbed = new MessageEmbed()
-      .setAuthor("Currently playing", client.config.IconURL)
+      .setAuthor("Currently playing", client.botconfig.IconURL)
       .setColor("RANDOM")
       .setDescription(`[${song.title}](${song.uri})`)
       .addField("Requested by", `${song.requester}`, true)
@@ -64,7 +64,7 @@ module.exports = {
 
       let song = player.queue.current;
       let QueueEmbed = new MessageEmbed()
-        .setAuthor("Currently playing", client.config.IconURL)
+        .setAuthor("Currently playing", client.botconfig.IconURL)
         .setColor("RANDOM")
         .setDescription(`[${song.title}](${song.uri})`)
         .addField("Requested by", `${song.requester}`, true)
