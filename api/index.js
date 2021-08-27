@@ -26,7 +26,7 @@ try {
   config = require("../dev-config");
 } catch {
   //Config for production
-  config = require("../config");
+  config = require("../botconfig");
 }
 
 passport.use(
