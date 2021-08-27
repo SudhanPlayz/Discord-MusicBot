@@ -7,7 +7,7 @@ try {
   config = require("../dev-config");
 } catch {
   //Config for production
-  config = require("../config");
+  config = require("../botconfig");
 }
 const Auth = require("./Middlewares/Auth");
 const fs = require("fs");

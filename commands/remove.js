@@ -30,7 +30,7 @@ const { TrackUtils } = require("erela.js");
     let rm = new MessageEmbed()
       .setDescription(`✅ **|** Removed track **\`${Number(args[0])}\`** from the queue!`)
       .setColor("GREEN")
-      if (isNaN(args[0]))rm.setDescription(`**Usage - **${client.config.prefix}\`remove [track]\``);
+      if (isNaN(args[0]))rm.setDescription(`**Usage - **${client.botconfig.prefix}\`remove [track]\``);
       if (args[0] > player.queue.length)
       rm.setDescription(`The queue has only ${player.queue.length} songs!`);
     await message.channel.send(rm);

@@ -25,12 +25,12 @@ module.exports = {
       .setColor("BLUE")
       .setDescription(
         `You can invite me by clicking [here](https://discord.com/oauth2/authorize?client_id=${
-          client.config.ClientID
+          client.botconfig.ClientID
         }&permissions=${
-          client.config.Permissions
+          client.botconfig.Permissions
         }&scope=bot%20${client.config.Scopes.join("%20")}&redirect_url=${
-          client.config.Website
-        }${client.config.CallbackURL}&response_type=code)`
+          client.botconfig.Website
+        }${client.botconfig.CallbackURL}&response_type=code)`
       );
     message.channel.send(embed);
   },
@@ -51,12 +51,12 @@ module.exports = {
       .setColor("BLUE")
       .setDescription(
         `You can invite me by clicking [here](https://discord.com/oauth2/authorize?client_id=${
-          client.config.ClientID
+          client.botconfig.ClientID
         }&permissions=${
-          client.config.Permissions
+          client.botconfig.Permissions
         }&scope=bot%20${client.config.Scopes.join("%20")}&redirect_url=${
-          client.config.Website
-        }${client.config.CallbackURL}&response_type=code)`
+          client.botconfig.Website
+        }${client.botconfig.CallbackURL}&response_type=code)`
       );
     interaction.send(embed);
   },
