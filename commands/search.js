@@ -33,7 +33,7 @@ module.exports = {
         message.channel,
         `**Usage - **\`${GuildDB.prefix}search [query]\``
       );
-    let CheckNode = client.Manager.nodes.get(client.config.Lavalink.id);
+    let CheckNode = client.Manager.nodes.get(client.botconfig.Lavalink.id);
     if (!CheckNode || !CheckNode.connected) {
       return client.sendTime(
         message.channel,
@@ -72,7 +72,7 @@ module.exports = {
         );
 
         let em = new MessageEmbed()
-          .setAuthor("Search Results of " + SearchString, client.config.IconURL)
+          .setAuthor("Search Results of " + SearchString, client.botconfig.IconURL)
           .setColor("RANDOM")
           .setDescription(MappedSongs.join("\n\n"));
         return em;
@@ -113,7 +113,7 @@ module.exports = {
       if (!player.playing && !player.paused && !player.queue.size)
         player.play();
       let SongAddedEmbed = new MessageEmbed();
-      SongAddedEmbed.setAuthor(`Added to queue`, client.config.IconURL);
+      SongAddedEmbed.setAuthor(`Added to queue`, client.botconfig.IconURL);
       SongAddedEmbed.setThumbnail(Song.displayThumbnail());
       SongAddedEmbed.setColor("RANDOM");
       SongAddedEmbed.setDescription(`[${Song.title}](${Song.uri})`);
@@ -170,7 +170,7 @@ module.exports = {
           interaction,
           ":x: | **You must be in the same voice channel as me to use this command!**"
         );
-      let CheckNode = client.Manager.nodes.get(client.config.Lavalink.id);
+      let CheckNode = client.Manager.nodes.get(client.botconfig.Lavalink.id);
       if (!CheckNode || !CheckNode.connected) {
         return client.sendTime(
           interaction,
@@ -189,7 +189,7 @@ module.exports = {
 
       if (search.match(client.Lavasfy.spotifyPattern)) {
         await client.Lavasfy.requestToken();
-        let node = client.Lavasfy.nodes.get(client.config.Lavalink.id);
+        let node = client.Lavasfy.nodes.get(client.botconfig.Lavalink.id);
         let Searched = await node.load(search);
 
         switch (Searched.loadType) {
@@ -284,7 +284,7 @@ module.exports = {
                 `${results}\n\n\t**Type the number of the song you want to play!**\n`
               )
               .setColor("RANDOM")
-              .setAuthor(`Search results for ${search}`, client.config.IconURL);
+              .setAuthor(`Search results for ${search}`, client.botconfig.IconURL);
             interaction.send(resultss);
             try {
               collected = await awaitchannel.awaitMessages(filter, {
@@ -318,7 +318,7 @@ module.exports = {
               player.play();
             } else {
               let SongAddedEmbed = new MessageEmbed();
-              SongAddedEmbed.setAuthor(`Added to queue`, client.config.IconURL);
+              SongAddedEmbed.setAuthor(`Added to queue`, client.botconfig.IconURL);
               SongAddedEmbed.setThumbnail(track.displayThumbnail());
               SongAddedEmbed.setColor("RANDOM");
               SongAddedEmbed.setDescription(`[${track.title}](${track.uri})`);
