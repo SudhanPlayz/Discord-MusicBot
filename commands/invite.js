@@ -28,7 +28,7 @@ module.exports = {
           client.botconfig.ClientID
         }&permissions=${
           client.botconfig.Permissions
-        }&scope=bot%20${client.config.Scopes.join("%20")}&redirect_url=${
+        }&scope=bot%20${client.botconfig.Scopes.join("%20")}&redirect_url=${
           client.botconfig.Website
         }${client.botconfig.CallbackURL}&response_type=code)`
       );
@@ -54,7 +54,7 @@ module.exports = {
           client.botconfig.ClientID
         }&permissions=${
           client.botconfig.Permissions
-        }&scope=bot%20${client.config.Scopes.join("%20")}&redirect_url=${
+        }&scope=bot%20${client.botconfig.Scopes.join("%20")}&redirect_url=${
           client.botconfig.Website
         }${client.botconfig.CallbackURL}&response_type=code)`
       );
@@ -62,3 +62,4 @@ module.exports = {
   },
   },
 };
+
