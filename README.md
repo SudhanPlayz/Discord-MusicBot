@@ -1,9 +1,9 @@
 <h1 align="center"><img src="./assets/logo.gif" width="30px"> Discord Music Bot <img src="./assets/logo.gif" width="30px"></h1>
-<p align="center">Thanks for 25k Views with 500 subs!</p>
+<p align="center">
 
 ## ✨Latest Updates✨
 
-> We are aware that discord.js v13 has been released. V5 of the music bot currently has NO release date. Please join our discord for any updated news.
+>
 >
 >
 > Please check out the latest list of updates, improvements, and fixes to be made in Version 5 in the Discussions section or by clicking [here](https://github.com/SudhanPlayz/Discord-MusicBot/discussions/236)
