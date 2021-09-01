@@ -35,6 +35,19 @@ module.exports = {
     secure: false // Set this to true if you're self-hosting lavalink on replit.
   },
   */
+  
+  //Alternate Lavalink
+  /*
+  Lavalink: {
+    id: "Main",
+    host: "lavalink.franciscooliveira.xyz",
+    port: 8088,
+    pass: "youshallnotpass", 
+    secure: false // Set this to true if you're self-hosting lavalink on replit.
+  },
+  */
+  
+  
 
   //Please go to https://developer.spotify.com/dashboard/
   Spotify: {
