@@ -95,8 +95,8 @@ class DiscordMusicBot extends Client {
                 typeof message == "string"
                   ? { content: message }
                   : message.type && message.type === "rich"
-                  ? { embeds: [message] }
-                  : message,
+                    ? { embeds: [message] }
+                    : message,
             },
           });
       };
@@ -137,6 +137,8 @@ class DiscordMusicBot extends Client {
           port: this.botconfig.Lavalink.port,
           password: this.botconfig.Lavalink.pass,
           secure: this.botconfig.Lavalink.secure,
+          retryDelay: this.botconfig.Lavalink.retrydelay,
+          retryAmount: this.botconfig.Lavalink.retryamount,
         },
       ],
       send(id, payload) {
@@ -193,8 +195,8 @@ class DiscordMusicBot extends Client {
           if (!cmd.name || !cmd.description || !cmd.run)
             return this.log(
               "Unable to load Command: " +
-                file.split(".")[0] +
-                ", Reason: File doesn't had run/name/desciption"
+              file.split(".")[0] +
+              ", Reason: File doesn't had run/name/desciption"
             );
           this.commands.set(file.split(".")[0].toLowerCase(), cmd);
           this.log("Command Loaded: " + file.split(".")[0]);
@@ -248,7 +250,7 @@ class DiscordMusicBot extends Client {
 
   build() {
     this.login(this.botconfig.Token);
-    if(this.botconfig.ExpressServer){
+    if (this.botconfig.ExpressServer) {
       this.http.listen(process.env.PORT || this.botconfig.Port, () => this.log("Web Server has been started"));
     }
   }
