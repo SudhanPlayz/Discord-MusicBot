@@ -3,23 +3,18 @@
 
 ## ✨Latest Updates✨
 
-> We are aware that discord.js v13 has been released. V5 of the music bot currently has NO release date. Please join our discord for any updated news.
+> **DISCORD.JS v13 WILL BREAK THIS BOT. DO NOT USE IT UNTIL v5 IS OUT.**
 >
->
-> Please check out the latest list of updates, improvements, and fixes to be made in Version 5 in the Discussions section or by clicking [here](https://github.com/SudhanPlayz/Discord-MusicBot/discussions/236)
-
-> ### DISCORD.JS v13 IS NOT COMPATIBLE WITH THIS BOT YET. IT WILL BREAK THIS BOT.
-> This will be compatible once v5 of the bot is out. 
+> **VERSION 5 OF THIS BOT HAS NO RELEASE DATE**
 
 ## ❗Prerequisites❗
-- [Node.js 14](https://nodejs.org/en/download/)
+- [Node.js 14+](https://nodejs.org/en/download/)
+- discord.js@12.5.3
 - [Lavalink Server](https://github.com/freyacodes/Lavalink#server-configuration)
 
-`npm i`
+**DO NOT JOIN OUR DISCORD FOR LAVALINK ISSUES**
 
-`npm install discord.js@12.5.3`
-
-> NOTE: This bot requires you to have knowledge of how to use Lavalink as well as utilizing it for music functionality
+> NOTE: Lavalink is needed for music functionality. You need to
 
 
 ## 📝 Tutorial
@@ -28,7 +23,9 @@ A Tutorial has been uploaded on YouTube, Watch it by clicking [here](https://www
 
 ## 📝 [Support Server](https://discord.gg/sbySMS7m3v)
 
-Do you have any issues with the bot? Head to our [Discord Server](https://discord.gg/sbySMS7m3v) where we can help you faster than creating a GitHub issue. If you have a major bug to report, it would be best to create an [issue here](https://github.com/SudhanPlayz/Discord-MusicBot/issues).
+### **DO NOT JOIN OUR DISCORD FOR DASHBOARD ISSUES AND LAVALINK ISSUES. WE WILL NOT HELP YOU.**
+
+If you have major coding issues with this bot, please join and ask for help.
 
 ## 📸 Screenshots
 
