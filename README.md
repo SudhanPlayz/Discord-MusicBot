@@ -14,7 +14,7 @@
 
 **DO NOT JOIN OUR DISCORD FOR LAVALINK ISSUES**
 
-> NOTE: Lavalink is needed for music functionality. You need to
+> NOTE: Lavalink is needed for music functionality. You need to have a working Lavalink server to make the bot work.
 
 
 ## 📝 Tutorial
