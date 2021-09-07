@@ -52,7 +52,8 @@ module.exports = {
             },
             {
                 name: ':busts_in_silhouette: Users',
-                value: `┕\`${client.users.cache.size}\``,
+                value: `┕\`${client.guilds.cache.reduce(
+    (prev, guild) => prev + guild.memberCount, 0)}\``,
                 inline: true
             },{
                 name: ':control_knobs: API Latency',
@@ -117,7 +118,8 @@ SlashCommand: {
         },
         {
             name: ':busts_in_silhouette: Users',
-            value: `┕\`${client.users.cache.size}\``,
+            value: `┕\`${client.guilds.cache.reduce(
+    (prev, guild) => prev + guild.memberCount, 0)}\``,
             inline: true
         },{
             name: ':control_knobs: API Latency',
