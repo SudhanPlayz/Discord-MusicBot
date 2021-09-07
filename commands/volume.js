@@ -25,7 +25,7 @@ module.exports = {
         if (message.guild.me.voice.channel && message.member.voice.channel.id !== message.guild.me.voice.channel.id) return client.sendTime(message.channel, ":x: | **You must be in the same voice channel as me to use this command!**");
         if (!parseInt(args[0])) return client.sendTime(message.channel, `**Please choose a number between** \`1 - 100\``);
         let vol = parseInt(args[0]);
-        if(vol>0 && vol>101){
+        if(vol < 0 || vol > 100){
           return  client.sendTime(message.channel, "❌ | **Please Choose A Number Between `1-100`**");
         }
         else{
