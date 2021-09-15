@@ -47,7 +47,7 @@ module.exports = async (client, oldState, newState) => {
                 let emb = new MessageEmbed()
                     .setAuthor(`Resuming paused queue`, client.botconfig.IconURL)
                     .setColor("RANDOM")
-                    .setDescription(`Resuming playback because you all left me with music to play all alone`);
+                    .setDescription(`Resuming playback because you all of you left me with music to play all alone`);
                 await client.channels.cache.get(player.textChannel).send(emb);
 
                 // update the now playing message and bring it to the front
