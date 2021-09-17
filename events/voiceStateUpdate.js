@@ -46,7 +46,7 @@ module.exports = async (client, oldState, newState) => {
             if (stateChange.members.size === 1 && player.paused) {
                 let emb = new MessageEmbed()
                     .setAuthor(`Resuming paused queue`, client.botconfig.IconURL)
-                    .setColor("RANDOM")
+                    .setColor(client.botconfig.EmbedColor)
                     .setDescription(`Resuming playback because you left me with music to play when all of you just left me all alone`);
                 await client.channels.cache.get(player.textChannel).send(emb);
 
@@ -63,7 +63,7 @@ module.exports = async (client, oldState, newState) => {
 
                 let emb = new MessageEmbed()
                     .setAuthor(`Paused!`, client.botconfig.IconURL)
-                    .setColor("RANDOM")
+                    .setColor(client.botconfig.EmbedColor)
                     .setDescription(`The player has been paused because everybody left`);
                 await client.channels.cache.get(player.textChannel).send(emb);
             }

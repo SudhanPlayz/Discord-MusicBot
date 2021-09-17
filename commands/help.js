@@ -29,7 +29,7 @@ module.exports = {
               `Commands of ${client.user.username}`,
               client.botconfig.IconURL
             )
-            .setColor("RANDOM")
+            .setColor(client.botconfig.EmbedColor)
             .setFooter(
               `To get info of each command type ${
                 GuildDB ? GuildDB.prefix : client.botconfig.DefaultPrefix
@@ -110,7 +110,7 @@ SlashCommand: {
               `Commands of ${client.user.username}`,
               client.botconfig.IconURL
             )
-            .setColor("RANDOM")
+            .setColor(client.botconfig.EmbedColor)
             .setFooter(
               `To get info of each command type ${
                 GuildDB ? GuildDB.prefix : client.botconfig.DefaultPrefix
