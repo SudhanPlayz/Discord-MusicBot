@@ -1,7 +1,7 @@
 version: "3"
 
 services:
-  music-bot:
+  discord-musicbot:
     build: .
     image: discord-musicbot:latest
     container_name: discord-musicbot
