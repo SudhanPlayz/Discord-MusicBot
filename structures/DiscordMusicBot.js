@@ -125,6 +125,8 @@ class DiscordMusicBot extends Client {
           port: this.botconfig.Lavalink.port,
           password: this.botconfig.Lavalink.pass,
           secure: this.botconfig.Lavalink.secure,
+          retryDelay: this.botconfig.Lavalink.retrydelay,
+          retryAmount: this.botconfig.Lavalink.retryamount,
         },
       ]
     );
@@ -137,6 +139,8 @@ class DiscordMusicBot extends Client {
           port: this.botconfig.Lavalink.port,
           password: this.botconfig.Lavalink.pass,
           secure: this.botconfig.Lavalink.secure,
+          retryDelay: this.botconfig.Lavalink.retrydelay,
+          retryAmount: this.botconfig.Lavalink.retryamount,
         },
       ],
       send(id, payload) {
