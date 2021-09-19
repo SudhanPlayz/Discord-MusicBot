@@ -3,7 +3,7 @@ version: "3"
 services:
   music-bot:
     build: .
-    image: music-bot:latest
+    image: discord-musicbot:latest
     container_name: music-bot
     restart: unless-stopped
     networks:
