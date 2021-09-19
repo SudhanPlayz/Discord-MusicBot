@@ -4,7 +4,7 @@ services:
   music-bot:
     build: .
     image: discord-musicbot:latest
-    container_name: music-bot
+    container_name: discord-musicbot
     restart: unless-stopped
     networks:
       - lavalink-net
