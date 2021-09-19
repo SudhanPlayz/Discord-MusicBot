@@ -24,8 +24,8 @@ module.exports = {
     port: (port),
     pass: "(password)", 
     secure: false, // Set this to true if you're hosting your own lavalink on replit and/or using SSL.
-    retrydelay: 15000, // Delay for reconnect in ms.
-    retryamount: 10000000, // Retry amout if the lavalink is dead and/or restarting.
+    retryDelay: 15000, // Delay for reconnect in ms.
+    retryAmount: 10000000, // Retry amount if the lavalink is dead and/or restarting.
   },
 
 
