@@ -30,23 +30,26 @@
           <div class="position-sticky">
             <div class="list-group list-group-flush mx-3 mt-4">
               <a
-                href="/dashboard"
-                class="list-group-item list-group-item-action py-2 ripple"
-                aria-current="true"
+                      href="/dashboard"
+                      class="list-group-item list-group-item-action py-2 ripple"
+                      aria-current="true"
+                      style="background: #0c0c0c; color: #fff"
               >
                 <i class="fas fa-tachometer-alt fa-fw me-3"></i
                 ><span>Main dashboard</span>
               </a>
               <a
-                href="/servers"
-                class="list-group-item list-group-item-action py-2 ripple"
+                      href="/servers"
+                      class="list-group-item list-group-item-action py-2 ripple active"
+                      style="background: #5828EE"
               >
                 <i class="fas fa-server fa-fw me-3"></i
                 ><span>Manage Servers</span>
               </a>
               <a
-                href="/logout"
-                class="list-group-item list-group-item-action py-2 ripple"
+                      href="/logout"
+                      class="list-group-item list-group-item-action py-2 ripple"
+                      style="background: #0c0c0c; color: #fff"
               >
                 <i class="fas fa-sign-out-alt fa-fw me-3"></i
                 ><span>Logout</span>
@@ -168,33 +171,29 @@
               <p id="duration"></p>
             </div>
           </section>
-          <!-- Footer -->
-          <div class="footer">
-            <div class="container">
-              <div class="row">
-                <div class="col-md-12">
-                  <div class="copyright-text">
-                    <p>
-                      © 2021
-                      <a href="//github.com/SudhanPlayz/Discord-MusicBot"
-                        >Discord Music Bot</a
-                      >. All rights reserved. Made by
-                      <a href="//github.com/SudhanPlayz">Sudhan</a> and its
-                      <a
-                        href="//github.com/SudhanPlayz/Discord-MusicBot/graphs/contributors"
-                        >contributors</a
-                      >
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- End Footer -->
         </div>
       </main>
       <!--Main layout-->
     </section>
+
+    <!-- Footer -->
+    <div class="footer">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="copyright-text">
+              <p>
+                © 2021 <a href="//github.com/SudhanPlayz/Discord-MusicBot">Discord Music Bot</a>. All rights reserved.
+                <br>
+                Made by <a href="//github.com/SudhanPlayz">Sudhan</a> and its <a href="//github.com/SudhanPlayz/Discord-MusicBot/graphs/contributors">contributors</a>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End Footer -->
+
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
@@ -204,14 +203,16 @@
     <script src="https://cdn.socket.io/4.0.1/socket.io.min.js"></script>
   </body>
   <style>
+
     body {
-      background: var(--bs-gray-dark);
+      background: #191919;
       color: #fff;
       overflow-x: hidden;
     }
 
     .card {
-      color: black;
+      background: #0c0c0c;
+      color: white;
     }
 
     @media (min-width: 991.98px) {
@@ -264,22 +265,22 @@
     .footer {
       position: fixed;
       bottom: 0;
-      background: #192027;
+      background: #0c0c0c;
       text-align: center;
-      padding: 32px 0;
-      width: 85%;
+      padding: 26px 0;
+      width: 100%;
       overflow: hidden;
     }
 
     .footer p {
       margin: 0;
-      line-height: 26px;
+      line-height: 22px;
       font-size: 15px;
       color: #999;
     }
 
     .footer p a {
-      color: #5867dd;
+      color: #5828EE;
       text-decoration: none;
     }
 
