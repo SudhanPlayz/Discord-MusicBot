@@ -3,9 +3,10 @@ const client = require("../../");
 const api = require("express").Router();
 
 api.get("/", async (req, res) => {
-  if (!req.user) return res.send({});
+  if (!req.user) return res.send({ error: "Invalid User Id"});
   req.user.guilds.map((g) => {
-    g.hasPerms = new Permissions(g.permissions).has("MANAGE_GUILD", true);
+    
+    g.hasPerms = new Permissions(BigInt(g.permissions)).has("MANAGE_GUILD", true);
     g.inGuild = client.guilds.cache.has(g.id);
     return g;
   });
