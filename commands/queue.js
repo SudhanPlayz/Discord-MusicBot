@@ -20,7 +20,7 @@ module.exports = {
    */
   run: async (client, message, args, { GuildDB }) => {
     let player = await client.Manager.get(message.guild.id);
-    if (!player || !player.queue.current)
+    if (!player.queue.current)
       return client.sendTime(
         message.channel,
         "❌ | **Nothing is playing right now...**"

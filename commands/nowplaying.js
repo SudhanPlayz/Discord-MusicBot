@@ -56,7 +56,7 @@ module.exports = {
      */
     run: async (client, interaction, args, { GuildDB }) => {
       let player = await client.Manager.get(interaction.guild_id);
-      if (!player || !player.queue.current)
+      if (!player.queue.current)
         return client.sendTime(
           interaction,
           "❌ | **Nothing is playing right now...**"
