@@ -1,0 +1,27 @@
+version: "3"
+
+services:
+  discord-musicbot:
+    build: .
+    image: discord-musicbot:latest
+    container_name: discord-musicbot
+    restart: unless-stopped
+    networks:
+      - lavalink-net
+    depends_on:
+      - lavalink
+    volumes:
+      - ./botconfig.js:/usr/src/app/botconfig.js:ro
+
+  lavalink:
+    image: fredboat/lavalink:dev
+    container_name: music-lavalink
+    hostname: lavalink
+    restart: unless-stopped
+    networks:
+      - lavalink-net
+    volumes:
+      - ./application.yml:/opt/Lavalink/application.yml:ro
+
+networks:
+  lavalink-net:
