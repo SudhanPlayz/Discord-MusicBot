@@ -21,15 +21,17 @@ module.exports = {
         let player = await client.Manager.get(message.guild.id);
         if (!player) return client.sendTime(message.channel, "❌ | **Nothing is playing right now...**");
         
-		// check if args[0] - 1 is a valid number between 2 and player.queue.length - 1
+		// Check if (args[0] - 1) is a valid index
 		let trackNum = parseInt(args[0] - 1);
         if (trackNum < 1 || trackNum > player.queue.length - 1) {
 			return client.sendTime(message.channel, "❌ | **Invalid track number.**");
-		}
+        }
         
-        // Swap array elements
-        [player.queue[0], player.queue[trackNum]] = [player.queue[trackNum], player.queue[0]];
-		client.sendTime(message.channel, "✅ | **" + player.queue[0].title + "** has been moved to the front of the queue.");
+        // Remove from and shift array
+        const track = player.queue[trackNum];
+        player.queue.splice(trackNum, 1);
+        player.queue.unshift(track);
+		client.sendTime(message.channel, "✅ | **" + track.title + "** has been moved to the front of the queue.");
     },
 
     SlashCommand: {
@@ -57,14 +59,16 @@ module.exports = {
             if (!player) return client.sendTime(interaction, "❌ | **Nothing is playing right now...**");
             if (!args[0].value) return client.sendTime(interaction, "❌ | **Invalid track number.**");
             
-            // check if args[0].value - 1 is a valid number between track 2 and player.queue.length - 1
+            // Check if (args[0] - 1) is a valid index
             let trackNum = parseInt(args[0].value - 1);
             if (trackNum < 1 || trackNum > player.queue.length - 1) {
                 return client.sendTime(interaction, "❌ | **Invalid track number.**");
             }
 
-            // Swap array elements
-            [player.queue[0], player.queue[trackNum]] = [player.queue[trackNum], player.queue[0]];
+            // Remove from and shift array
+            const track = player.queue[trackNum];
+            player.queue.splice(trackNum, 1);
+            player.queue.unshift(track);
             client.sendTime(interaction, "✅ | **" + player.queue[0].title + "** has been moved to the front of the queue.");
         },
     },
