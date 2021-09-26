@@ -35,14 +35,14 @@ module.exports = (io) => {
             queue: 0,
             songsLoop: "Disabled",
             queueLoop: "Disabled",
-            prefix: GuildDB ? GuildDB.prefix : Client.config.DefaultPrefix,
+            prefix: GuildDB ? GuildDB.prefix : Client.botconfig.DefaultPrefix,
           });
         } else {
           socket.emit("server", {
             queue: player.queue ? player.queue.length : 0,
             songsLoop: player.trackRepeat ? "Enabled" : "Disabled",
             queueLoop: player.queueRepeat ? "Enabled" : "Disabled",
-            prefix: GuildDB ? GuildDB.prefix : Client.config.DefaultPrefix,
+            prefix: GuildDB ? GuildDB.prefix : Client.botconfig.DefaultPrefix,
             bar: player.queue.current
               ? Client.ProgressBar(
                   player.position,
