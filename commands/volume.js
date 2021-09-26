@@ -23,9 +23,9 @@ module.exports = {
         if (!args[0]) return client.sendTime(message.channel, `🔉 | Current volume \`${player.volume}\`.`);
         if (!message.member.voice.channel) return client.sendTime(message.channel, "❌ | **You must be in a voice channel to use this command!**");
         if (message.guild.me.voice.channel && message.member.voice.channel.id !== message.guild.me.voice.channel.id) return client.sendTime(message.channel, ":x: | **You must be in the same voice channel as me to use this command!**");
-        if (!parseInt(args[0])) return client.sendTime(message.channel, `**Please choose a number between** \`1 - 100\``);
+        if (!parseInt(args[0])) return client.sendTime(message.channel, `**Please choose a number between** \`1 - 200\``);
         let vol = parseInt(args[0]);
-        if(vol < 0 || vol > 100){
+        if(vol < 0 || vol > 200){
           return  client.sendTime(message.channel, "❌ | **Please Choose A Number Between `1-100`**");
         }
         else{
@@ -60,7 +60,7 @@ module.exports = {
             if (!player) return client.sendTime(interaction, "❌ | **Nothing is playing right now...**");
             if (!args[0].value) return client.sendTime(interaction, `🔉 | Current volume \`${player.volume}\`.`);
             let vol = parseInt(args[0].value);
-            if (!vol || vol < 1 || vol > 100) return client.sendTime(interaction, `**Please choose a number between** \`1 - 100\``);
+            if (!vol || vol < 1 || vol > 200) return client.sendTime(interaction, `**Please choose a number between** \`1 - 200\``);
             player.setVolume(vol);
             client.sendTime(interaction, `🔉 | Volume set to \`${player.volume}\``);
         },

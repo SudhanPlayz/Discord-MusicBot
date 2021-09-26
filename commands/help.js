@@ -36,10 +36,7 @@ module.exports = {
               }help [Command] | Have a nice day!`
             ).setDescription(`${Commands.join("\n")}
   
-  Discord Music Bot Version: v${require("../package.json").version}
-  [✨ Support Server](${
-    client.botconfig.SupportServer
-  }) | [GitHub](https://github.com/SudhanPlayz/Discord-MusicBot) | By [SudhanPlayz](https://github.com/SudhanPlayz)`);
+  **LilBops™** Version: v${require("../package.json").version}`);
     if (!args[0]) message.channel.send(Embed);
     else {
       let cmd =
@@ -117,10 +114,7 @@ SlashCommand: {
               }help [Command] | Have a nice day!`
             ).setDescription(`${Commands.join("\n")}
   
-  Discord Music Bot Version: v${require("../package.json").version}
-  [✨ Support Server](${
-    client.botconfig.SupportServer
-  }) | [GitHub](https://github.com/SudhanPlayz/Discord-MusicBot) | By [SudhanPlayz](https://github.com/SudhanPlayz)`);
+  **LilBops™** Version: v${require("../package.json").version}`);
       if (!args) return interaction.send(Embed);
       else {
         let cmd =
