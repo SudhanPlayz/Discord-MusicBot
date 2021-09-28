@@ -10,7 +10,7 @@ module.exports = {
   Scopes: ["identify", "guilds", "applications.commands"],//Discord OAuth2 Scopes
   ServerDeafen : true,//If you want bot to stay deafened
   CallbackURL: "/api/callback", //Discord OAuth2 Callback URL
-  "24/7": false, //If you want the bot to be stay in the vc 24/7
+  "24/7": true, //If you want the bot to be stay in the vc 24/7
   CookieSecret: "Pikachu is cute", //A Secret like a password
   IconURL:
     "https://raw.githubusercontent.com/SudhanPlayz/Discord-MusicBot/master/assets/logo.gif", //URL of all embed author icons | Dont edit unless you dont need that Music CD Spining
