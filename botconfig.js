@@ -22,7 +22,7 @@ module.exports = {
    Lavalink: {
     id: "Main",
     host: "host name or IP",
-    port: port,
+    port: 80, // The port that lavalink is listening to. This must be a number!
     pass: "your password", 
     secure: false, // Set this to true if the lavalink uses SSL or you're hosting lavalink on repl.it
   },
