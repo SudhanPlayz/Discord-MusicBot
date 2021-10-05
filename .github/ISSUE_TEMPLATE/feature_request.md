@@ -1,11 +1,11 @@
 ---
-
 name: Feature request
 about: Request a feature for the Music Bot
-title: ''
-labels: 'type: enhancement'
-assignees: ''
+title: ""
+labels: "type: enhancement"
+assignees: ""
 ---
+
 <!-- Use Discord for questions: https://discord.gg/bRCvFy9 -->
 
 **Is your feature request related to a problem? Please describe.**

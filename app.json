@@ -3,41 +3,49 @@
   "description": "Very simple discord music bot with the discord.js with Song Name playing. It can able to play music with the song name",
   "repository": "https://github.com/SudhanPlayz/Discord-MusicBot",
   "logo": "https://cdn.discordapp.com/avatars/750613142488481843/e6326038dbe2243ca551ba5b6ecd8bf2.png?size=1024",
-  "keywords": ["node", "discord", "youtube", "music", "bot", "lavalink", "dashboard"],
+  "keywords": [
+    "node",
+    "discord",
+    "youtube",
+    "music",
+    "bot",
+    "lavalink",
+    "dashboard"
+  ],
   "image": "heroku/nodejs",
   "buildpacks": [
-      {
-          "url": "heroku/nodejs"
-      }
+    {
+      "url": "heroku/nodejs"
+    }
   ],
-"env": {
-  "Prefix": {
-    "description": "The Discord Bot Prefix",
-    "required": "true"
-  },      
-  "Token": {
-    "description": "The Discord Bot Token (https://discord.com/developers/applications)",
-    "required": "true"
-  },
-  "Discord_ClientID": {
-    "description": "The Discord Bot ClientID",
-    "required": "true"
-  },
-  "Discord_ClientSecret": {
-    "description": "The Discord Bot ClientSecret",
-    "required": "true"
-  },
-  "Website": {
-    "description": "URL of your webserver (Example: https://domain.xyz). Change this if you want to use the web-dashboard.",
-    "value": "http://localhost"
-  },
-  "Spotify_ClientID": {
-    "description": "Spotify ClientID. This is used if you want to use Spotify features for your bot. (https://developer.spotify.com/dashboard/)",
-    "required": "true"
-  },
-  "Spotify_ClientSecret": {
-    "description": "Spotify ClientSecret. This is used if you want to use Spotify features for your bot. (https://developer.spotify.com/dashboard/)",
-    "required": "true"
+  "env": {
+    "Prefix": {
+      "description": "The Discord Bot Prefix",
+      "required": "true"
+    },
+    "Token": {
+      "description": "The Discord Bot Token (https://discord.com/developers/applications)",
+      "required": "true"
+    },
+    "Discord_ClientID": {
+      "description": "The Discord Bot ClientID",
+      "required": "true"
+    },
+    "Discord_ClientSecret": {
+      "description": "The Discord Bot ClientSecret",
+      "required": "true"
+    },
+    "Website": {
+      "description": "URL of your webserver (Example: https://domain.xyz). Change this if you want to use the web-dashboard.",
+      "value": "http://localhost"
+    },
+    "Spotify_ClientID": {
+      "description": "Spotify ClientID. This is used if you want to use Spotify features for your bot. (https://developer.spotify.com/dashboard/)",
+      "required": "true"
+    },
+    "Spotify_ClientSecret": {
+      "description": "Spotify ClientSecret. This is used if you want to use Spotify features for your bot. (https://developer.spotify.com/dashboard/)",
+      "required": "true"
+    }
   }
-}
 }

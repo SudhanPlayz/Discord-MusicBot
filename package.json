@@ -6,7 +6,9 @@
   "scripts": {
     "install-node-v14": "wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.2/install.sh | bash && export NVM_DIR=\"$([ -z \"${XDG_CONFIG_HOME-}\" ] && printf %s \"${HOME}/.nvm\" || printf %s \"${XDG_CONFIG_HOME}/nvm\")\" && [ -s \"$NVM_DIR/nvm.sh\" ] && \\. \"$NVM_DIR/nvm.sh\" && nvm install 14 && nvm use 14",
     "start": "node index",
-    "rm-logs": "rm Logs.log"
+    "rm-logs": "rm Logs.log",
+    "format": "prettier --write .",
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
@@ -51,6 +53,11 @@
     "winston": "^3.3.3"
   },
   "devDependencies": {
-    "prettier": "2.4.1"
+    "husky": "^7.0.2",
+    "lint-staged": "^11.2.0",
+    "prettier": "^2.4.1"
+  },
+  "lint-staged": {
+    "*.{js,json,md}": "prettier --write"
   }
 }

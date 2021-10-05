@@ -23,12 +23,23 @@ module.exports = {
     let player = await client.Manager.get(message.guild.id);
     let SongTitle = args.join(" ");
     let SearchString = args.join(" ");
-    if (!args[0] && !player) return client.sendTime(message.channel, "❌ | **Nothing is playing right now...**");
+    if (!args[0] && !player)
+      return client.sendTime(
+        message.channel,
+        "❌ | **Nothing is playing right now...**"
+      );
     if (!args[0]) SongTitle = player.queue.current.title;
-    SongTitle = SongTitle.replace(/lyrics|lyric|lyrical|official music video|\(official music video\)|audio|official|official video|official video hd|official hd video|offical video music|\(offical video music\)|extended|hd|(\[.+\])/gi, "");
+    SongTitle = SongTitle.replace(
+      /lyrics|lyric|lyrical|official music video|\(official music video\)|audio|official|official video|official video hd|official hd video|offical video music|\(offical video music\)|extended|hd|(\[.+\])/gi,
+      ""
+    );
 
     let lyrics = await lyricsFinder(SongTitle);
-    if (!lyrics) return client.sendTime(message.channel, `**No lyrics found for -** \`${SongTitle}\``);
+    if (!lyrics)
+      return client.sendTime(
+        message.channel,
+        `**No lyrics found for -** \`${SongTitle}\``
+      );
     lyrics = lyrics.split("\n"); //spliting into lines
     let SplitedLyrics = _.chunk(lyrics, 40); //45 lines each page
 
@@ -38,12 +49,14 @@ module.exports = {
         .setColor(client.botconfig.EmbedColor)
         .setDescription(ly.join("\n"));
 
-      if (args.join(" ") !== SongTitle) em.setThumbnail(player.queue.current.displayThumbnail());
+      if (args.join(" ") !== SongTitle)
+        em.setThumbnail(player.queue.current.displayThumbnail());
 
       return em;
     });
 
-    if (!Pages.length || Pages.length === 1) return message.channel.send(Pages[0]);
+    if (!Pages.length || Pages.length === 1)
+      return message.channel.send(Pages[0]);
     else return client.Pagination(message, Pages);
   },
 
@@ -68,13 +81,22 @@ module.exports = {
     run: async (client, interaction, args, { GuildDB }) => {
       let player = await client.Manager.get(interaction.guild_id);
 
-      if (!interaction.data.options && !player) return client.sendTime(interaction, "❌ | **Nothing is playing right now...**");
+      if (!interaction.data.options && !player)
+        return client.sendTime(
+          interaction,
+          "❌ | **Nothing is playing right now...**"
+        );
 
-      SongTitle = interaction.data.options ? interaction.data.options[0].value : player.queue.current.title;
+      SongTitle = interaction.data.options
+        ? interaction.data.options[0].value
+        : player.queue.current.title;
       let lyrics = await lyricsFinder(SongTitle);
-      console.log(lyrics.length === 0)
+      console.log(lyrics.length === 0);
       if (lyrics.length === 0)
-        return client.sendTime(interaction, `**No lyrics found for -** \`${SongTitle}\``);
+        return client.sendTime(
+          interaction,
+          `**No lyrics found for -** \`${SongTitle}\``
+        );
       lyrics = lyrics.split("\n"); //spliting into lines
       let SplitedLyrics = _.chunk(lyrics, 40); //45 lines each page
 
@@ -84,13 +106,13 @@ module.exports = {
           .setColor(client.botconfig.EmbedColor)
           .setDescription(ly.join("\n"));
 
-        if (SongTitle !== SongTitle) em.setThumbnail(player.queue.current.displayThumbnail());
+        if (SongTitle !== SongTitle)
+          em.setThumbnail(player.queue.current.displayThumbnail());
 
         return em;
       });
       if (!Pages.length || Pages.length === 1)
         return interaction.send(Pages[0]);
-
     },
-  }
+  },
 };
