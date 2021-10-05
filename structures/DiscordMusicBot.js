@@ -116,7 +116,7 @@ class DiscordMusicBot extends Client {
         playlistPageLoadLimit: 3,
         filterAudioOnlyResult: true,
         autoResolve: true,
-        useSpotifyMetadata: true
+        useSpotifyMetadata: true,
       },
       [
         {
@@ -241,15 +241,19 @@ class DiscordMusicBot extends Client {
   }
 
   sendTime(Channel, Error) {
-    let embed = new MessageEmbed().setColor(this.botconfig.EmbedColor).setDescription(Error);
+    let embed = new MessageEmbed()
+      .setColor(this.botconfig.EmbedColor)
+      .setDescription(Error);
 
     Channel.send(embed);
   }
 
   build() {
     this.login(this.botconfig.Token);
-    if(this.botconfig.ExpressServer){
-      this.http.listen(process.env.PORT || this.botconfig.Port, () => this.log("Web Server has been started"));
+    if (this.botconfig.ExpressServer) {
+      this.http.listen(process.env.PORT || this.botconfig.Port, () =>
+        this.log("Web Server has been started")
+      );
     }
   }
 

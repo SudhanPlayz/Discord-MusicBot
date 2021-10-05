@@ -130,7 +130,10 @@ module.exports = {
     run: async (client, interaction, args, { GuildDB }) => {
       let player = await client.Manager.get(interaction.guild_id);
       if (!player)
-        return client.sendTime(interaction, "❌ | **Nothing is playing right now...**");
+        return client.sendTime(
+          interaction,
+          "❌ | **Nothing is playing right now...**"
+        );
 
       if (!player.queue || !player.queue.length || player.queue === 0) {
         let QueueEmbed = new MessageEmbed()

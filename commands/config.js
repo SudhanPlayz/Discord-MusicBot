@@ -40,7 +40,8 @@ What would you like to edit?
     ).catch(() => {
       ConfigMessage.reactions.removeAll();
       client.sendTime(
-        message.channel, "❌ | **You took too long to respond. If you want to edit the settings, run the command again!**"
+        message.channel,
+        "❌ | **You took too long to respond. If you want to edit the settings, run the command again!**"
       );
       ConfigMessage.delete(Config);
     });
@@ -55,13 +56,19 @@ What would you like to edit?
     let em = emoji;
     ConfigMessage.reactions.removeAll();
     if (em._emoji.name === "1️⃣") {
-      await client.sendTime(message.channel, "What do you want to change the prefix to?");
+      await client.sendTime(
+        message.channel,
+        "What do you want to change the prefix to?"
+      );
       let prefix = await message.channel.awaitMessages(
         (msg) => msg.author.id === message.author.id,
         { max: 1, time: 30000, errors: ["time"] }
       );
       if (!prefix.first())
-        return client.sendTime(message.channel, "You took too long to respond.");
+        return client.sendTime(
+          message.channel,
+          "You took too long to respond."
+        );
       prefix = prefix.first();
       prefix = prefix.content;
 
@@ -71,22 +78,28 @@ What would you like to edit?
       });
 
       client.sendTime(
-        message.channel, `Successfully saved guild prefix as \`${prefix}\``
+        message.channel,
+        `Successfully saved guild prefix as \`${prefix}\``
       );
     } else {
       await client.sendTime(
-        message.channel, "Please mention the role you want `DJ's` to have."
+        message.channel,
+        "Please mention the role you want `DJ's` to have."
       );
       let role = await message.channel.awaitMessages(
         (msg) => msg.author.id === message.author.id,
         { max: 1, time: 30000, errors: ["time"] }
       );
       if (!role.first())
-        return client.sendTime(message.channel, "You took too long to respond.");
+        return client.sendTime(
+          message.channel,
+          "You took too long to respond."
+        );
       role = role.first();
       if (!role.mentions.roles.first())
         return client.sendTime(
-          message.channel, "Please mention the role that you want for DJ's only."
+          message.channel,
+          "Please mention the role that you want for DJ's only."
         );
       role = role.mentions.roles.first();
 
@@ -96,7 +109,8 @@ What would you like to edit?
       });
 
       client.sendTime(
-        message.channel, "Successfully saved DJ role as <@&" + role.id + ">"
+        message.channel,
+        "Successfully saved DJ role as <@&" + role.id + ">"
       );
     }
   },
@@ -133,12 +147,12 @@ What would you like to edit?
       },
     ],
     /**
-       *
-       * @param {import("../structures/DiscordMusicBot")} client
-       * @param {import("discord.js").Message} message
-       * @param {string[]} args
-       * @param {*} param3
-       */
+     *
+     * @param {import("../structures/DiscordMusicBot")} client
+     * @param {import("discord.js").Message} message
+     * @param {string[]} args
+     * @param {*} param3
+     */
     run: async (client, interaction, args, { GuildDB }) => {
       let config = interaction.data.options[0].name;
       let member = await interaction.guild.members.fetch(interaction.user_id);
@@ -155,10 +169,16 @@ What would you like to edit?
             prefix: prefix,
             DJ: GuildDB.DJ,
           });
-          client.sendTime(interaction, `The prefix has now been set to \`${prefix}\``);
+          client.sendTime(
+            interaction,
+            `The prefix has now been set to \`${prefix}\``
+          );
         } else {
           //has not prefix
-          client.sendTime(interaction, `The prefix of this server is \`${GuildDB.prefix}\``);
+          client.sendTime(
+            interaction,
+            `The prefix of this server is \`${GuildDB.prefix}\``
+          );
         }
       } else if (config === "djrole") {
         //DJ role
@@ -174,14 +194,18 @@ What would you like to edit?
             DJ: role.id,
           });
           client.sendTime(
-            interaction, `Successfully changed the DJ role of this server to ${role.name}`
+            interaction,
+            `Successfully changed the DJ role of this server to ${role.name}`
           );
         } else {
           /**
            * @type {require("discord.js").Role}
            */
           let role = interaction.guild.roles.cache.get(GuildDB.DJ);
-          client.sendTime(interaction, `The DJ role of this server is ${role.name}`);
+          client.sendTime(
+            interaction,
+            `The DJ role of this server is ${role.name}`
+          );
         }
       }
     },

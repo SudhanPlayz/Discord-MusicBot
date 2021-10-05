@@ -10,7 +10,8 @@ Structure.extend(
        * @param {Message} message
        */
       setNowplayingMessage(message) {
-        if (this.nowPlayingMessage && !this.nowPlayingMessage.deleted) this.nowPlayingMessage.delete();
+        if (this.nowPlayingMessage && !this.nowPlayingMessage.deleted)
+          this.nowPlayingMessage.delete();
         return (this.nowPlayingMessage = message);
       }
     }
