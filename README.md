@@ -3,11 +3,10 @@
 
 ## ✨Latest Updates✨
 
-> **DISCORD.JS v13 WILL BREAK THIS BOT. DO NOT USE IT UNTIL v5 IS OUT.**
->
-> **VERSION 5 OF THIS BOT HAS NO RELEASE DATE**
+> **discord.js v13 Will Break This Bot.** Do Not Use It Until V5 Is Out.
+> _version 5 of This Bot Has No Release Date_
 
-## ❗Prerequisites❗
+## ❗ Prerequisites
 
 - [Node.js 14+](https://nodejs.org/en/download/)
 - discord.js@12.5.3
@@ -26,8 +25,7 @@ Repl.it [Tutorial](https://github.com/SudhanPlayz/Discord-MusicBot/wiki/Installa
 VPS / Server [Tutorial](https://github.com/SudhanPlayz/Discord-MusicBot/wiki/Installation-on-a-Linux-server)
 
 ## 📝 [Support Server](https://discord.gg/sbySMS7m3v)
-
-### **DO NOT JOIN OUR DISCORD FOR DASHBOARD ISSUES AND LAVALINK ISSUES. WE WILL NOT HELP YOU.**
+Do Not Join Our Discord for Dashboard Issues and Lavalink Issues. We Will Not Help You.
 
 If you have major coding issues with this bot, please join and ask for help.
 
