@@ -35,7 +35,7 @@ passport.use(
       clientID: config.ClientID,
       clientSecret: config.ClientSecret,
       callbackURL: config.Website + config.CallbackURL,
-      scope: config.Scopes.join(" "),
+      scope: "identify guilds",
     },
     function (accessToken, refreshToken, profile, done) {
       //User logged in yay!
