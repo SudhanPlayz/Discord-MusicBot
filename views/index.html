@@ -20,13 +20,49 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/fontawesome.min.css"
     />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="//db.onlinewebfonts.com/c/721c73bcd2e49f3a621991089838b503?family=Euclid+Circular+B+Medium"
+      rel="stylesheet"
+      type="text/css"
+    />
   </head>
+
   <body>
     <section class="main">
       <!-- Navbar -->
-      <nav class="navbar navbar-dark bg-dark">
+      <nav
+        class="navbar"
+        style="
+          overflow: hidden;
+          position: fixed; /* Set the navbar to fixed position */
+          top: 0; /* Position the navbar at the top of the page */
+          width: 100%;
+          z-index: 100;
+          background: rgba(255, 255, 255, 0.35);
+          box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+          backdrop-filter: blur(9px);
+          -webkit-backdrop-filter: blur(9px);
+          border: 1px solid rgba(255, 255, 255, 0.18);
+          height: 10%;
+        "
+      >
         <div class="container-fluid">
-          <a class="navbar-brand" href="#">
+          <a
+            class="navbar-brand"
+            href="#"
+            style="
+              color: white;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+            "
+          >
             <img
               src="/logo.gif"
               alt="Music Bot Logo"
@@ -49,15 +85,21 @@
           </button>
           <div class="d-flex nav-links">
             <div class="d-flex justify-content-center">
-              <a class="nav-link active" aria-current="page" href="/">Home</a>
-              <a class="nav-link" href="#features">Features</a>
-              <a class="nav-link" href="#commands">Commands</a>
+              <a
+                class="nav-link active"
+                aria-current="page"
+                href="/"
+                style="color: white"
+                >Home</a
+              >
+              <a class="nav-link" href="#features" style="color: white"
+                >Features</a
+              >
+              <a class="nav-link" href="#commands" style="color: white"
+                >Commands</a
+              >
             </div>
-            <a
-              href="/dashboard"
-              class="btn btn-outline-success me-2"
-              type="button"
-            >
+            <a href="/dashboard" class="btn" type="button" style="color: white">
               Dashboard
             </a>
           </div>
@@ -79,8 +121,12 @@
       <!-- End Navbar -->
 
       <!-- Hero entry 👌 -->
-      <div class="hero">
-        <div id="hero" class="text-center">
+      <div class="hero" style="height: 100vh; width: 100%">
+        <div
+          id="hero"
+          class="text-center"
+          style="position: relative; top: 50%; transform: translateY(-50%)"
+        >
           <h1>Discord Music Bot</h1>
           <p>
             An advanced discord music bot, supports Spotify, Soundcloud, YouTube
@@ -96,11 +142,7 @@
           <div class="row justify-content-center text-center">
             <div class="col-md-10 col-lg-8">
               <div class="header-section">
-                <h2 class="title">Exclusive <span>Features</span></h2>
-                <p class="description">
-                  There are many Features in discord music bot! Every awesome
-                  features of this bot has been described below check it out 😉
-                </p>
+                <h2 class="title-features">Exclusive <span>Features</span></h2>
               </div>
             </div>
           </div>
@@ -108,7 +150,8 @@
             <div class="col-md-6 col-lg-4">
               <div class="single-service">
                 <div class="part-1">
-                  <i class="fab fa-spotify"></i>
+                  <i class="fab fa-spotify"></i> <i class="fab fa-youtube"></i>
+                  <i class="fab fa-soundcloud"></i>
                   <h3 class="title">Spotify, Sound Cloud, YouTube Support</h3>
                 </div>
                 <div class="part-2">
@@ -155,16 +198,89 @@
       <div class="commands" id="commands">
         <div class="container">
           <h2 class="title text-center">Commands</h2>
-          <table class="table table-dark">
+          <table
+            class="table"
+            style="
+              background: rgba(255, 255, 255, 0.35);
+              box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+              backdrop-filter: blur(9px);
+              -webkit-backdrop-filter: blur(9px);
+              border-radius: 10px;
+            "
+          >
             <thead>
               <tr>
-                <th scope="col">Command</th>
-                <th scope="col">Aliases</th>
-                <th scope="col">Usage</th>
-                <th scope="col">Description</th>
+                <th
+                  scope="col"
+                  style="
+                    background: linear-gradient(
+                      to right,
+                      #8a2387,
+                      #e94057,
+                      #f27121
+                    );
+                    color: transparent;
+                    -webkit-background-clip: text;
+                    background-clip: text;
+                    text-decoration: none;
+                  "
+                >
+                  Command
+                </th>
+                <th
+                  scope="col"
+                  style="
+                    background: linear-gradient(
+                      to right,
+                      #8a2387,
+                      #e94057,
+                      #f27121
+                    );
+                    color: transparent;
+                    -webkit-background-clip: text;
+                    background-clip: text;
+                    text-decoration: none;
+                  "
+                >
+                  Aliases
+                </th>
+                <th
+                  scope="col"
+                  style="
+                    background: linear-gradient(
+                      to right,
+                      #8a2387,
+                      #e94057,
+                      #f27121
+                    );
+                    color: transparent;
+                    -webkit-background-clip: text;
+                    background-clip: text;
+                    text-decoration: none;
+                  "
+                >
+                  Usage
+                </th>
+                <th
+                  scope="col"
+                  style="
+                    background: linear-gradient(
+                      to right,
+                      #8a2387,
+                      #e94057,
+                      #f27121
+                    );
+                    color: transparent;
+                    -webkit-background-clip: text;
+                    background-clip: text;
+                    text-decoration: none;
+                  "
+                >
+                  Description
+                </th>
               </tr>
             </thead>
-            <tbody id="commands-body"></tbody>
+            <tbody id="commands-body" style="color: white"></tbody>
           </table>
         </div>
       </div>
@@ -201,9 +317,25 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   </body>
   <style>
+    @font-face {
+      font-family: "Euclid Circular B Medium";
+      src: url("//db.onlinewebfonts.com/t/721c73bcd2e49f3a621991089838b503.eot");
+      src: url("//db.onlinewebfonts.com/t/721c73bcd2e49f3a621991089838b503.eot?#iefix")
+          format("embedded-opentype"),
+        url("//db.onlinewebfonts.com/t/721c73bcd2e49f3a621991089838b503.woff2")
+          format("woff2"),
+        url("//db.onlinewebfonts.com/t/721c73bcd2e49f3a621991089838b503.woff")
+          format("woff"),
+        url("//db.onlinewebfonts.com/t/721c73bcd2e49f3a621991089838b503.ttf")
+          format("truetype"),
+        url("//db.onlinewebfonts.com/t/721c73bcd2e49f3a621991089838b503.svg#Euclid Circular B Medium")
+          format("svg");
+    }
+
     body {
-      background: var(--bs-gray-dark);
+      background: linear-gradient(to right, #8a2387, #e94057, #f27121);
       color: #fff;
+      font-family: "Euclid Circular B Medium", Poppins;
     }
 
     .navbar-toggler {
@@ -216,37 +348,16 @@
 
     .commands {
       margin-top: 100px;
+      padding-top: 110px;
+      padding-bottom: 120px;
     }
 
     .commands .title {
       position: relative;
-      margin-bottom: 40px;
       padding-bottom: 25px;
       text-transform: uppercase;
       font-weight: 700;
       color: white;
-    }
-
-    .commands .title:before {
-      content: "";
-      position: absolute;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 140px;
-      height: 1px;
-      background-color: #f70037;
-    }
-
-    .commands .title:after {
-      content: "";
-      position: absolute;
-      bottom: -1px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 45px;
-      height: 3px;
-      background-color: #f70037;
     }
 
     @media only screen and (max-width: 630px) {
@@ -263,11 +374,24 @@
       margin-top: 100px;
     }
 
+    .title-features {
+      color: white;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
     .section-features {
       padding-top: 110px;
       padding-bottom: 120px;
-      background-color: #211f24;
-      color: #fff;
+      color: white;
+    }
+
+    .title {
+      background: linear-gradient(to right, #8a2387, #e94057, #f27121);
+      color: transparent;
+      -webkit-background-clip: text;
+      background-clip: text;
+      text-decoration: none;
     }
 
     .section-features .header-section {
@@ -314,8 +438,12 @@
 
     .section-features .single-service {
       margin-top: 40px;
-      background-color: #24252a;
-      box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+      background: rgba(255, 255, 255, 0.35);
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+      backdrop-filter: blur(9px);
+      -webkit-backdrop-filter: blur(9px);
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
     }
 
     .section-features .single-service .part-1 {
@@ -342,7 +470,7 @@
 
     .section-features .single-service .part-2 .description {
       margin-bottom: 22px;
-      color: #6f6f71;
+      color: white;
       font-size: 14px;
       line-height: 1.8em;
     }
@@ -359,42 +487,36 @@
     }
 
     .footer {
-      background: #192027;
-      text-align: center;
       padding: 32px 0;
+      position: absolute;
+      width: 100%;
+      background-color: red;
+      color: white;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.5);
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+      backdrop-filter: blur(9px);
+      -webkit-backdrop-filter: blur(9px);
+      border: 1px solid rgba(255, 255, 255, 0.18);
     }
 
     .footer p {
       margin: 0;
       line-height: 26px;
       font-size: 15px;
-      color: #999;
+      color: #fff;
     }
 
     .footer p a {
-      color: #5867dd;
+      background: linear-gradient(to right, #8a2387, #e94057, #f27121);
+      color: transparent;
+      -webkit-background-clip: text;
+      background-clip: text;
       text-decoration: none;
     }
 
     .footer p a:hover {
-      color: #34bfa3;
-    }
-
-    ::-webkit-scrollbar {
-      width: 15px;
-    }
-
-    ::-webkit-scrollbar-track {
-      background: #192027;
-    }
-
-    ::-webkit-scrollbar-thumb {
-      background: #5867dd;
-      border-radius: 20px;
-    }
-
-    ::-webkit-scrollbar-thumb:hover {
-      background: #414ca1;
+      color: white;
     }
   </style>
   <script>
@@ -403,10 +525,17 @@
         //check api/routes.js
         let url = `https://discord.com/oauth2/authorize?client_id=${
           data.ClientID
-        }&permissions=${data.Permissions}&scope=${data.Scopes.join("%20")}&redirect_uri=${data.Website}${data.CallbackURL}&response_type=code`;
-        
-        $("#hero").append(`<a href="${url}" class="btn btn-primary" type="button">Invite</a>
-            <a href="/dashboard" class="btn btn-outline-primary" type="button">Dashboard</a>`);
+        }&permissions=${data.Permissions}&scope=${data.Scopes.join(
+          "%20"
+        )}&redirect_uri=${data.Website}${data.CallbackURL}&response_type=code`;
+
+        $("#hero").append(`
+            <a href="/dashboard" class="btn" type="button" style="background: rgba( 255, 255, 255, 0.35 );
+box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+backdrop-filter: blur( 9px );
+-webkit-backdrop-filter: blur( 9px );
+border-radius: 10px;
+border: 1px solid rgba( 255, 255, 255, 0.18 );">Dashboard</a>`);
       });
 
       $.get("/api/commands", (data) => {
