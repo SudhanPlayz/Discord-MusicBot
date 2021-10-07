@@ -20,7 +20,19 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/fontawesome.min.css"
     />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="//db.onlinewebfonts.com/c/721c73bcd2e49f3a621991089838b503?family=Euclid+Circular+B+Medium"
+      rel="stylesheet"
+      type="text/css"
+    />
   </head>
+
   <body>
     <section class="main">
       <!--Main Navigation-->
@@ -32,21 +44,47 @@
               <a
                 href="/dashboard"
                 class="list-group-item list-group-item-action py-2 ripple"
+                style="
+                  background: rgba(255, 255, 255, 0.35);
+                  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+                  backdrop-filter: blur(9px);
+                  -webkit-backdrop-filter: blur(9px);
+                  border-radius: 10px;
+                  border: 1px solid rgba(255, 255, 255, 0.18);
+                "
                 aria-current="true"
               >
                 <i class="fas fa-tachometer-alt fa-fw me-3"></i
-                ><span>Main dashboard</span>
+                ><span>Main Dashboard</span>
               </a>
+              <br />
               <a
                 href="/servers"
                 class="list-group-item list-group-item-action py-2 ripple"
+                style="
+                  background: rgba(255, 255, 255, 0.35);
+                  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+                  backdrop-filter: blur(9px);
+                  -webkit-backdrop-filter: blur(9px);
+                  border-radius: 10px;
+                  border: 1px solid rgba(255, 255, 255, 0.18);
+                "
               >
                 <i class="fas fa-server fa-fw me-3"></i
                 ><span>Manage Servers</span>
               </a>
+              <br />
               <a
                 href="/logout"
                 class="list-group-item list-group-item-action py-2 ripple"
+                style="
+                  background: rgba(255, 255, 255, 0.35);
+                  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+                  backdrop-filter: blur(9px);
+                  -webkit-backdrop-filter: blur(9px);
+                  border-radius: 10px;
+                  border: 1px solid rgba(255, 255, 255, 0.18);
+                "
               >
                 <i class="fas fa-sign-out-alt fa-fw me-3"></i
                 ><span>Logout</span>
@@ -96,7 +134,7 @@
         <div class="container pt-4">
           <!--Section: Manage Server -->
           <section>
-            <h1>Manage server</h1>
+            <h1>Manage Server</h1>
             <div class="row">
               <div class="col-xl-3 col-sm-6 col-12 mb-4">
                 <div class="card">
@@ -104,7 +142,7 @@
                     <div class="d-flex justify-content-between px-md-1">
                       <div>
                         <h3 class="text-danger" id="songInQueue">0</h3>
-                        <p class="mb-0">Song in queue</p>
+                        <p class="mb-0">Songs In Queue</p>
                       </div>
                       <div class="align-self-center">
                         <i class="fas fa-music text-danger fa-3x"></i>
@@ -161,8 +199,8 @@
             </div>
 
             <div class="container text-center" id="song-info">
-              <h1>Song info</h1>
-              <p>Now playing: <span id="now-playing"></span></p>
+              <h1>Song Info</h1>
+              <p>Now Playing: <span id="now-playing"></span></p>
               <br />
               <p>Duration</p>
               <p id="duration"></p>
@@ -202,16 +240,41 @@
     ></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.socket.io/4.0.1/socket.io.min.js"></script>
+    <div class="circle1"></div>
+    <div class="circle2"></div>
+    <div class="circle3"></div>
   </body>
   <style>
+    @font-face {
+      font-family: "Euclid Circular B Medium";
+      src: url("//db.onlinewebfonts.com/t/721c73bcd2e49f3a621991089838b503.eot");
+      src: url("//db.onlinewebfonts.com/t/721c73bcd2e49f3a621991089838b503.eot?#iefix")
+          format("embedded-opentype"),
+        url("//db.onlinewebfonts.com/t/721c73bcd2e49f3a621991089838b503.woff2")
+          format("woff2"),
+        url("//db.onlinewebfonts.com/t/721c73bcd2e49f3a621991089838b503.woff")
+          format("woff"),
+        url("//db.onlinewebfonts.com/t/721c73bcd2e49f3a621991089838b503.ttf")
+          format("truetype"),
+        url("//db.onlinewebfonts.com/t/721c73bcd2e49f3a621991089838b503.svg#Euclid Circular B Medium")
+          format("svg");
+    }
+
     body {
-      background: var(--bs-gray-dark);
+      background: linear-gradient(to right, #8a2387, #e94057, #f27121);
       color: #fff;
       overflow-x: hidden;
+      font-family: "Euclid Circular B Medium", Poppins;
     }
 
     .card {
-      color: black;
+      background: rgba(255, 255, 255, 0.35);
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+      backdrop-filter: blur(9px);
+      -webkit-backdrop-filter: blur(9px);
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      z-index: 2;
     }
 
     @media (min-width: 991.98px) {
@@ -226,19 +289,51 @@
       top: 0;
       bottom: 0;
       left: 0;
-      padding: 58px 0 0; /* Height of navbar */
-      box-shadow: 0 2px 5px 0 rgb(0 0 0 / 5%), 0 2px 10px 0 rgb(0 0 0 / 5%);
+      padding: 100px 0 0; /* Height of navbar */
       width: 240px;
-      z-index: 600;
+    }
+
+    .circle1,
+    .circle2,
+    .circle3 {
+      background: linear-gradient(
+        to right bottom,
+        rgba(255, 255, 255, 0.2),
+        rgba(255, 255, 255, 0.1)
+      );
+      position: absolute;
+      border-radius: 50%;
+      z-index: -100;
+    }
+
+    .circle1 {
+      top: 5%;
+      right: 5%;
+      height: 10rem;
+      width: 10rem;
+    }
+    .circle2 {
+      top: 10%;
+      left: 10%;
+      border-radius: 50%;
+      height: 8rem;
+      width: 8rem;
+    }
+    .circle3 {
+      bottom: 10%;
+      left: 5%;
+      border-radius: 50%;
+      height: 6rem;
+      width: 6rem;
     }
 
     @media (max-width: 991.98px) {
       .sidebar {
         width: 100%;
+        z-index: 100;
       }
     }
     .sidebar .active {
-      border-radius: 5px;
       box-shadow: 0 2px 5px 0 rgb(0 0 0 / 16%), 0 2px 10px 0 rgb(0 0 0 / 12%);
     }
 
@@ -262,46 +357,37 @@
     }
 
     .footer {
-      position: fixed;
+      position: absolute;
+      left: 0;
       bottom: 0;
-      background: #192027;
+      width: 100%;
+      background-color: red;
+      color: white;
       text-align: center;
-      padding: 32px 0;
-      width: 85%;
-      overflow: hidden;
+      background: rgba(255, 255, 255, 0.5);
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+      backdrop-filter: blur(9px);
+      -webkit-backdrop-filter: blur(9px);
+      border: 1px solid rgba(255, 255, 255, 0.18);
     }
 
     .footer p {
       margin: 0;
       line-height: 26px;
       font-size: 15px;
-      color: #999;
+      color: #fff;
     }
 
     .footer p a {
-      color: #5867dd;
+      background: linear-gradient(to right, #8a2387, #e94057, #f27121);
+      color: transparent;
+      -webkit-background-clip: text;
+      background-clip: text;
       text-decoration: none;
     }
 
     .footer p a:hover {
-      color: #34bfa3;
-    }
-
-    ::-webkit-scrollbar {
-      width: 15px;
-    }
-
-    ::-webkit-scrollbar-track {
-      background: #192027;
-    }
-
-    ::-webkit-scrollbar-thumb {
-      background: #5867dd;
-      border-radius: 20px;
-    }
-
-    ::-webkit-scrollbar-thumb:hover {
-      background: #414ca1;
+      color: white;
     }
   </style>
   <script>
