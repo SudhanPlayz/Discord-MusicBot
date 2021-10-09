@@ -9,6 +9,7 @@ module.exports = {
   ClientSecret: process.env.Discord_ClientSecret || "", //Discord Client Secret
   Scopes: ["identify", "guilds", "applications.commands"], //Discord OAuth2 Scopes
   ServerDeafen: true, //If you want bot to stay deafened
+  DefaultVolume: 100, //Sets the default volume of the bot, You can change this number anywhere from 1 to 100
   CallbackURL: "/api/callback", //Discord OAuth2 Callback URL
   "24/7": false, //If you want the bot to be stay in the vc 24/7
   CookieSecret: "Pikachu is cute", //A Secret like a password
