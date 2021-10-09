@@ -52,6 +52,7 @@ module.exports = {
       voiceChannel: message.member.voice.channel.id,
       textChannel: message.channel.id,
       selfDeafen: client.botconfig.ServerDeafen,
+      volume: client.botconfig.DefaultVolume,
     });
 
     if (player.state != "CONNECTED") await player.connect();
