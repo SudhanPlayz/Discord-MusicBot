@@ -8,6 +8,7 @@ const { VoiceState, MessageEmbed } = require("discord.js");
  * @returns {Promise<void>}
  */
 module.exports = async (client, oldState, newState) => {
+
   // get guild and player
   let guildId = newState.guild.id;
   const player = client.Manager.get(guildId);
@@ -18,11 +19,11 @@ module.exports = async (client, oldState, newState) => {
   // prepreoces the data
   const stateChange = {};
   // get the state change
-  if (oldState.channel === null && newState.channel !== null)
+  if (!oldState.channel && newState.channel)
     stateChange.type = "JOIN";
-  if (oldState.channel !== null && newState.channel === null)
+  if (oldState.channel && !newState.channel)
     stateChange.type = "LEAVE";
-  if (oldState.channel !== null && newState.channel !== null)
+  if (oldState.channel && newState.channel)
     stateChange.type = "MOVE";
   if (oldState.channel === null && newState.channel === null) return; // you never know, right
   if (newState.serverMute == true && oldState.serverMute == false)
@@ -32,7 +33,7 @@ module.exports = async (client, oldState, newState) => {
   // move check first as it changes type
   if (stateChange.type === "MOVE") {
     if (oldState.channel.id === player.voiceChannel) stateChange.type = "LEAVE";
-    if (newState.channel.id === player.voiceChannel) stateChange.type = "JOIN";
+    if (newState.channel.id === player.voiceChannel && !newState.member.user.bot) stateChange.type = "JOIN";
   }
   // double triggered on purpose for MOVE events
   if (stateChange.type === "JOIN") stateChange.channel = newState.channel;
@@ -45,8 +46,8 @@ module.exports = async (client, oldState, newState) => {
   // filter current users based on being a bot
   stateChange.members = stateChange.channel.members.filter(
     (member) => !member.user.bot
-  );
-
+  );  
+  
   switch (stateChange.type) {
     case "JOIN":
       if (stateChange.members.size === 1 && player.paused) {
@@ -74,9 +75,17 @@ module.exports = async (client, oldState, newState) => {
         let emb = new MessageEmbed()
           .setAuthor(`Paused!`, client.botconfig.IconURL)
           .setColor(client.botconfig.EmbedColor)
-          .setDescription(`The player has been paused because everybody left`);
+          .setDescription(`The player has been paused because everybody left.`);
         await client.channels.cache.get(player.textChannel).send(emb);
       }
+      if (stateChange.members.size > 0) {
+        player.destroy(true);
+
+        let emb = new MessageEmbed()
+        .setAuthor(`Disconnected!`, client.botconfig.IconURL)
+        .setColor(client.botconfig.EmbedColor)
+        .setDescription(`The player has been paused because the bot has been kicked.`);
+      await client.channels.cache.get(player.textChannel).send(emb);      }
       break;
   }
 };
