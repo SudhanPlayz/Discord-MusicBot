@@ -51,6 +51,7 @@ module.exports = {
       voiceChannel: message.member.voice.channel.id,
       textChannel: message.channel.id,
       selfDeafen: client.botconfig.ServerDeafen,
+      volume: client.botconfig.DefaultVolume,
     });
 
     let SongAddedEmbed = new MessageEmbed().setColor(
