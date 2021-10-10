@@ -36,10 +36,10 @@ class DiscordMusicBot extends Client {
       //Config for production
       this.botconfig = require("../botconfig");
     }
-    if (this.botconfig.Token === "")
-      return new TypeError(
-        "The botconfig.js is not filled out. Please make sure nothing is blank, otherwise the bot will not work properly."
-      );
+    if (this.botconfig.Token === ""){
+      console.error("The botconfig.js is not filled out. Please make sure nothing is blank, otherwise the bot will not work properly.");
+      process.exit(1);
+    }
 
     this.LoadCommands();
     this.LoadEvents();

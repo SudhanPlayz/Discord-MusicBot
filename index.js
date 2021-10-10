@@ -1,6 +1,6 @@
 const DiscordMusicBot = require("./structures/DiscordMusicBot");
 const client = new DiscordMusicBot();
 
-client.build();
+client.build()
 
-module.exports = client; //;-;
+module.exports = client;
