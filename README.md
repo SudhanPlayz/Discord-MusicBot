@@ -1,13 +1,10 @@
 <h1 align="center"><img src="./assets/logo.gif" width="30px"> Discord Music Bot <img src="./assets/logo.gif" width="30px"></h1>
 <p align="center">Thanks for 25k Views with 500 subs!</p>
 
-## ✨Latest Updates✨
+## ✨Latest Updates
+Discord.js v13 will break this bot so do not use this with it. We have been started working on [v5](https://github.com/SudhanPlayz/Discord-MusicBot/tree/v5) which will be out in some days/months with new features and much more are on the way.
 
-> **discord.js v13 Will Break This Bot.** Do Not Use It Until V5 Is Out.
-> 
-> _version 5 of This Bot Has No Release Date_
-
-## 🚧 Prerequisites
+## 🚧 Prerequisites 
 
 - [Node.js 14+](https://nodejs.org/en/download/)
 - discord.js@12.5.3
@@ -48,6 +45,6 @@ Contributions are always welcomed :D Make sure to follow [Contributing.md](/CONT
   <img src="https://contributors-img.web.app/image?repo=SudhanPlayz/Discord-MusicBot" />
 </a>
 
-> **Note:** Contributions are not accepted in the master branch. If you like to contribute check out v5 branch
+> **Note:** Contributions are not accepted in the master branch. If you like to contribute check out [v5 branch](https://github.com/SudhanPlayz/Discord-MusicBot/tree/v5)
 
 Made with :heart: and JavaScript!
