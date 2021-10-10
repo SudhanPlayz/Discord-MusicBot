@@ -33,7 +33,7 @@
   "dependencies": {
     "colors": "^1.4.0",
     "cpu-stat": "^2.0.1",
-    "discord.js": "^12.5.3",
+    "discord.js": "^13.0.0",
     "discordjs-activity": "1.3.0",
     "erela.js": "^2.3.2",
     "express": "^4.17.1",
