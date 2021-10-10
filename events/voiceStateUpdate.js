@@ -78,7 +78,7 @@ module.exports = async (client, oldState, newState) => {
           .setDescription(`The player has been paused because everybody left.`);
         await client.channels.cache.get(player.textChannel).send(emb);
       }
-      if (stateChange.members.size > 0) {
+      if (stateChange.members.size > 0 && player.paused) {
         player.destroy(true);
 
         let emb = new MessageEmbed()
