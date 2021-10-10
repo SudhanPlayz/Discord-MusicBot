@@ -48,4 +48,6 @@ Contributions are always welcomed :D Make sure to follow [Contributing.md](/CONT
   <img src="https://contributors-img.web.app/image?repo=SudhanPlayz/Discord-MusicBot" />
 </a>
 
+> **Note:** Contributions are not accepted in the master branch. If you like to contribute check out v5 branch
+
 Made with :heart: and JavaScript!
