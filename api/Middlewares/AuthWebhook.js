@@ -8,7 +8,7 @@ try {
 }
 
 const Auth = (req, res, next) => {
-    if(!req.query.code || req.query.code !== config.WebhookSecret) {
+    if(!req.query.code || req.params.code !== config.WebhookSecret) {
         return res.status(401).send({
             message: "You are not authorized"
         });

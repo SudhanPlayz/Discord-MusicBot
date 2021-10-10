@@ -3,7 +3,7 @@ const Auth = require("../Middlewares/AuthWebhook")
 
 api.use(Auth)
 
-api.get("/", async (req, res) => {
+api.post("/restart", async (req, res) => {
   console.log("wanted to restart")
   res.status(400).send("Test")
 });
