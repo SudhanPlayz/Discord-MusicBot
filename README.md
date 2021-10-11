@@ -28,7 +28,7 @@ If you have major coding issues with this bot, please join and ask for help.
 
 <div align="left"><img src="/assets/Screenshot_1.png"></div><div align="center"><img src="/assets/Screenshot_2.png"></div><div align="right"><img src="/assets/Screenshot_3.png"></div>
 
-<div align="center"><img src="/assets/Features.png"></div>
+<div align="center"><img src="/assets/features.png"></div>
 
 ## 💨 Run the projects
 
