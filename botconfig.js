@@ -21,11 +21,11 @@ module.exports = {
 
   //Lavalink
    Lavalink: {
-    id: "Main",
-    host: "(host name or IP)",
-    port: "(port)",
-    pass: "(password)", 
-    secure: false, // Set this to true if you're self-hosting lavalink on replit.
+    id: "Main", // Do not touch unless you know what your doing.
+    host: "host name or IP", // The iP / Host where the lavalink is hosted.
+    port: 80, // Port where the lavalink is hosted. Must be a number.
+    pass: "password", // Password for lavalink 
+    secure: false, // Set this to true if the lavalink your using has SSL or your hosting lavalink on repl.it
   },
 
   //Please go to https://developer.spotify.com/dashboard/
