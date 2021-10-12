@@ -19,6 +19,12 @@ module.exports = {
   Permissions: 2205280576, //Bot Inviting Permissions
   Website: process.env.Website || "http://localhost", //Website where it was hosted at includes http or https || Use "0.0.0.0" if you using Heroku
 
+  Presence: {
+    status: "online", // You can show online, idle, and dnd
+    name: "Music", // The message shown
+    type: "LISTENING", // PLAYING, WATCHING, LISTENING, STREAMING
+  },
+  
   //Lavalink
    Lavalink: {
     id: "Main", // Do not touch unless you know what your doing.
