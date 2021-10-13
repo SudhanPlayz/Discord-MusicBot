@@ -77,7 +77,7 @@ module.exports = {
                     player.queue.add(Searched.tracks);
                     if (!player.playing && !player.paused && player.queue.totalSize === Searched.tracks.length) player.play();
                     SongAddedEmbed.setAuthor(`Playlist added to queue`, client.botconfig.IconURL);
-                    SongAddedEmbed.setThumbnail(Searched.tracks[0].displayThumbnail());
+                    // SongAddedEmbed.setThumbnail(Searched.tracks[0].displayThumbnail()); # someone fix this, if playing from erelajs plugin it will show error thx.
                     SongAddedEmbed.setDescription(`[${Searched.playlist.name}](${SearchString})`);
                     SongAddedEmbed.addField("Enqueued", `\`${Searched.tracks.length}\` songs`, false);
                     SongAddedEmbed.addField("Playlist duration", `\`${prettyMilliseconds(Searched.playlist.duration, { colonNotation: true })}\``, false);
@@ -87,7 +87,7 @@ module.exports = {
                     if (!player.playing && !player.paused && !player.queue.size) player.play();
                     SongAddedEmbed.setAuthor(`Added to queue`, client.botconfig.IconURL);
 
-                    SongAddedEmbed.setThumbnail(Searched.tracks[0].displayThumbnail());
+                    // SongAddedEmbed.setThumbnail(Searched.tracks[0].displayThumbnail()); # someone fix this, if playing from erelajs plugin it will show error thx.
                     SongAddedEmbed.setDescription(`[${Searched.tracks[0].title}](${Searched.tracks[0].uri})`);
                     SongAddedEmbed.addField("Author", Searched.tracks[0].author, true);
                     SongAddedEmbed.addField("Duration", `\`${prettyMilliseconds(Searched.tracks[0].duration, { colonNotation: true })}\``, true);
@@ -206,7 +206,7 @@ module.exports = {
                         if (!player.playing && !player.paused && !player.queue.length) player.play();
                         let SongAddedEmbed = new MessageEmbed();
                             SongAddedEmbed.setAuthor(`Added to queue`, client.botconfig.IconURL);
-                            SongAddedEmbed.setThumbnail(res.tracks[0].displayThumbnail());
+                            // SongAddedEmbed.setThumbnail(res.tracks[0].displayThumbnail());
                             SongAddedEmbed.setColor(client.botconfig.EmbedColor);
                             SongAddedEmbed.setDescription(`[${res.tracks[0].title}](${res.tracks[0].uri})`);
                             SongAddedEmbed.addField("Author", res.tracks[0].author, true);
@@ -219,7 +219,7 @@ module.exports = {
                         await player.play();
                         let SongAdded = new MessageEmbed();
                         SongAdded.setAuthor(`Playlist added to queue`, client.botconfig.IconURL);
-                        SongAdded.setThumbnail(res.tracks[0].displayThumbnail());
+                        // SongAdded.setThumbnail(res.tracks[0].displayThumbnail());
                         SongAdded.setDescription(`[${res.playlist.name}](${interaction.data.options[0].value})`);
                         SongAdded.addField("Enqueued", `\`${res.tracks.length}\` songs`, false);
                         SongAdded.addField("Playlist duration", `\`${prettyMilliseconds(res.playlist.duration, { colonNotation: true })}\``, false);
