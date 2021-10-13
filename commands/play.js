@@ -148,7 +148,7 @@ module.exports = {
             `Playlist added to queue`,
             client.botconfig.IconURL
           );
-          SongAddedEmbed.setThumbnail(Searched.tracks[0].displayThumbnail());
+          // SongAddedEmbed.setThumbnail(Searched.tracks[0].displayThumbnail());
           SongAddedEmbed.setDescription(
             `[${Searched.playlist.name}](${SearchString})`
           );
@@ -171,7 +171,7 @@ module.exports = {
             player.play();
           SongAddedEmbed.setAuthor(`Added to queue`, client.botconfig.IconURL);
 
-          SongAddedEmbed.setThumbnail(Searched.tracks[0].displayThumbnail());
+          // SongAddedEmbed.setThumbnail(Searched.tracks[0].displayThumbnail());
           SongAddedEmbed.setDescription(
             `[${Searched.tracks[0].title}](${Searched.tracks[0].uri})`
           );
@@ -376,7 +376,7 @@ module.exports = {
               `Added to queue`,
               client.botconfig.IconURL
             );
-            SongAddedEmbed.setThumbnail(res.tracks[0].displayThumbnail());
+            //SongAddedEmbed.setThumbnail(res.tracks[0].displayThumbnail());
             SongAddedEmbed.setColor(client.botconfig.EmbedColor);
             SongAddedEmbed.setDescription(
               `[${res.tracks[0].title}](${res.tracks[0].uri})`
@@ -405,7 +405,7 @@ module.exports = {
               `Playlist added to queue`,
               client.botconfig.IconURL
             );
-            SongAdded.setThumbnail(res.tracks[0].displayThumbnail());
+            //SongAdded.setThumbnail(res.tracks[0].displayThumbnail());
             SongAdded.setDescription(
               `[${res.playlist.name}](${interaction.data.options[0].value})`
             );
