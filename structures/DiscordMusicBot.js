@@ -9,6 +9,10 @@ const path = require("path");
 const Express = require("express");
 const Logger = require("./Logger");
 const prettyMilliseconds = require("pretty-ms");
+const deezer = require("erela.js-deezer");
+const spotifyfallback = require("better-erela.js-spotify").default;
+const apple = require("erela.js-apple");
+const facebook = require("erela.js-facebook");
 
 //Class extending Stuff
 require("discordjs-activity"); //Epic Package, For more details: https://www.npmjs.com/package/discordjs-activity
@@ -130,6 +134,12 @@ class DiscordMusicBot extends Client {
     );
 
     this.Manager = new Manager({
+      plugins: [
+        new deezer(),
+        new spotifyfallback(),
+        new apple(),
+        new facebook(),
+      ],
       nodes: [
         {
           identifier: this.botconfig.Lavalink.id,
