@@ -9,4 +9,4 @@ module.exports = {
         retryDelay: "",
         secure: false
     }]//Lavalink servers
-}//config.js better ;-; @DarrenOfficial 
+}
