@@ -18,6 +18,12 @@ module.exports = {
   EmbedColor: "RANDOM", //Color of most embeds | Dont edit unless you want a specific color instead of a random one each time
   Permissions: 2205281600, //Bot Inviting Permissions
   Website: process.env.Website || "http://localhost", //Website where it was hosted at includes http or https || Use "0.0.0.0" if you using Heroku
+  
+  Presence: {
+    status: "online", // You can show online, idle, and dnd
+    name: "Music", // The message shown
+    type: "LISTENING", // PLAYING, WATCHING, LISTENING, STREAMING
+  },
 
   //Lavalink
   Lavalink: {
