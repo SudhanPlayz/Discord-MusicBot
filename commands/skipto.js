@@ -22,7 +22,7 @@ module.exports = {
       guild: message.guild.id,
       voiceChannel: message.member.voice.channel.id,
       textChannel: message.channel.id,
-      selfDeafen: false,
+      selfDeafen: client.botconfig.ServerDeafen,
     });
 
     if (!player)
@@ -117,7 +117,7 @@ module.exports = {
         guild: interaction.guild_id,
         voiceChannel: voiceChannel.id,
         textChannel: interaction.channel_id,
-        selfDeafen: false,
+        selfDeafen: client.botconfig.ServerDeafen,
       });
 
       try {
