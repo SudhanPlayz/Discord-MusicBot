@@ -7,14 +7,16 @@ Discord.js v13 will break this bot so do not use this with it. We have been star
 ## 🚧 Prerequisites 
 
 - [Node.js 14+](https://nodejs.org/en/download/)
-- discord.js@12.5.3
+- [discord.js@12.5.3](https://www.npmjs.com/package/discord.js/v/12.5.3)
 - [Lavalink Server](https://github.com/freyacodes/Lavalink#server-configuration)
 
 > NOTE: Lavalink is needed for music functionality. You need to have a working Lavalink server to make the bot work.
 
 ## 📝 Tutorial
 
-A Tutorial has been uploaded on YouTube, Watch it by clicking [here](https://www.youtube.com/watch?v=p4lP96Tiv9s)
+A Tutorial has been uploaded on YouTube, Watch it by clicking on the image down below
+
+[![Advanced Discord Music Bot with Web Dashboard | Spotify Support](https://img.youtube.com/vi/p4lP96Tiv9s/maxresdefault.jpg)](https://www.youtube.com/watch?v=p4lP96Tiv9s)
 
 Repl.it [Tutorial](https://github.com/SudhanPlayz/Discord-MusicBot/wiki/Installation-on-Repl-it)
 
