@@ -249,6 +249,7 @@ module.exports = {
         voiceChannel: voiceChannel.id,
         textChannel: interaction.channel_id,
         selfDeafen: client.botconfig.ServerDeafen,
+        volume: client.botconfig.DefaultVolume,
       });
       if (player.state != "CONNECTED") await player.connect();
       let search = interaction.data.options[0].value;
