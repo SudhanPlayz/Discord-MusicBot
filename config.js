@@ -27,6 +27,7 @@ module.exports = {
       {
         name: "Music", //Status Text
         type: "LISTENING", // PLAYING, WATCHING, LISTENING, STREAMING
+        url: "https://twitch.tv/jeffbezos" // Link streaming url
       },
     ],
   },
