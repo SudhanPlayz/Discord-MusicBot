@@ -1,2 +1,2 @@
-run = "bash replitstart.sh"
+run = "bash replitStart.sh"
 language = "NodeJS"

@@ -1,11 +1,11 @@
 ---
-
 name: Bug report
 about: Report incorrect or unexpected behavior of the Music Bot
-title: ''
-labels: 's: unverified, type: bug'
-assignees: ''
+title: ""
+labels: "s: unverified, type: bug"
+assignees: ""
 ---
+
 <!-- Use Discord for questions: https://discord.gg/sbySMS7m3v -->
 
 **Please describe the problem you are having in as much detail as possible:**
