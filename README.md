@@ -2,7 +2,7 @@
 
 ## 🚧 | Prerequisites
 
-- [Node.js 14+](https://nodejs.org/en/download/)
+- [Node.js 16+](https://nodejs.org/en/download/)
 - discord.js@13.2.0 or above
 - [Lavalink Server](https://github.com/freyacodes/Lavalink#server-configuration)
 
