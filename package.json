@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node index",
-    "rm-logs": "rm logs.log"
+    "rm-logs": "rm logs.log",
+    "prettify": "yarn prettier --write ."
   },
   "repository": {
     "type": "git",
