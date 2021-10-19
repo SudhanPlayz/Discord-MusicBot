@@ -19,7 +19,7 @@ const Command = {
       .addUserOption(
         new SlashCommandUserOption()
           .setRequired(true)
-          .setName("User")
+          .setName("user")
           .setDescription("User who you wanted to tell hello")
       ),
 
@@ -29,14 +29,14 @@ const Command = {
      * @param {import("discord.js").CommandInteractionOptionResolver} options
      */
     run: (interaction, options) => {
-      interaction.reply(`<@${options.getUser("User", true).id}>, Hello!`);
+      interaction.reply(`<@${options.getUser("user", true).id}>, Hello!`);
     },
   },
 
-  ContextCommand: {
+  ContextMenu: {
     command: new ContextMenuCommandBuilder()
       .setName(Properties.name)
-      .setType("USER"),
+      .setType(2),
 
     /**
      * This function will handle context menu interaction

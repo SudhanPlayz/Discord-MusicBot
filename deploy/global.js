@@ -4,11 +4,11 @@ const getConfig = require('../util/getConfig');
 const LoadCommands = require("../util/loadCommands");
 
 (async () => {
-    console.log("Please wait this may take a while")
-
     const config = await getConfig()
     const rest = new REST({ version: '9' }).setToken(config.token);
-    const commands = await LoadCommands()
-
-    //will do tmrw 
-});
+    const commands = await LoadCommands().then(cmds => cmds.map(cmd => cmd.command))
+    
+    console.log("Deploying commands to global...")
+    await rest.put(Routes.applicationCommands(config.clientId), { body: commands });
+    console.log("Successfully deployed commands!")
+})();

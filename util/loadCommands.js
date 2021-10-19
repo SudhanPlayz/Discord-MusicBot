@@ -1,9 +1,9 @@
-const { Collection } = require("discordjs");
+const path = require("path")
+const fs = require("fs")
 
-let collection = new Collection();
-
-function LoadCommands() {
+const LoadCommands = () => {
   return new Promise((resolve) => {
+    let commands = []
     let CommandsDir = path.join(__dirname, "..", "commands");
     let i = 0,
       f = 0,
@@ -27,8 +27,9 @@ function LoadCommands() {
               file.split(".")[0] +
               ", File doesn't have either name/desciption or an command to run"
           );
-        collection.set(file.split(".")[0].toLowerCase(), cmd);
-        if (r) resolve(collection);
+        if(cmd.Command.SlashCommand)commands.push(cmd.Command.SlashCommand)
+        if(cmd.Command.ContextMenu)commands.push(cmd.Command.ContextMenu)
+        if (r) resolve(commands);
       });
     });
   });
