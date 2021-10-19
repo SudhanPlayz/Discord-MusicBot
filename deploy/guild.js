@@ -12,8 +12,8 @@ const rl = readline.createInterface({
 (async () => {
   const config = await getConfig();
   const rest = new REST({ version: "9" }).setToken(config.token);
-  const commands = await LoadCommands().then((cmds) =>{
-    return [].concat(cmds.slash).concat(cmds.context)
+  const commands = await LoadCommands().then((cmds) => {
+    return [].concat(cmds.slash).concat(cmds.context);
   });
 
   rl.question("Enter the guild id you wanted to deploy commands ", (guild) => {
