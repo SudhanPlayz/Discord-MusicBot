@@ -3,10 +3,10 @@ const fs = require("fs");
 
 const LoadCommands = () => {
   return new Promise(async (resolve) => {
-    let slash = await LoadDirectory("slash")
-    let context = await LoadDirectory("context")
+    let slash = await LoadDirectory("slash");
+    let context = await LoadDirectory("context");
 
-    resolve({ slash, context })
+    resolve({ slash, context });
   });
 };
 
@@ -26,10 +26,7 @@ const LoadDirectory = (dir) => {
         let cmd = require(CommandsDir + "/" + file);
         i++;
         if (i == f) r = true;
-        if (
-          !cmd.command ||
-          !cmd.run
-        )
+        if (!cmd.command || !cmd.run)
           return console.log(
             "Unable to load Command: " +
               file.split(".")[0] +
@@ -40,7 +37,7 @@ const LoadDirectory = (dir) => {
         if (r) resolve(commands);
       });
     });
-  })
-}
+  });
+};
 
 module.exports = LoadCommands;
