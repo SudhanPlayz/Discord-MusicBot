@@ -32,8 +32,8 @@ const LoadDirectory = (dir) => {
               file.split(".")[0] +
               ", File doesn't have either name/desciption or an command to run"
           );
-        if (cmd.Command.SlashCommand) commands.push(cmd.Command.SlashCommand);
-        if (cmd.Command.ContextMenu) commands.push(cmd.Command.ContextMenu);
+        if (cmd.commnd) commands.push(cmd.command);
+        if (cmd.command) commands.push(cmd.command);
         if (r) resolve(commands);
       });
     });

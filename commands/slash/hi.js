@@ -5,8 +5,8 @@ const {
 
 module.exports = {
   command: new SlashCommandBuilder()
-    .setName(Properties.name)
-    .setDescription(Properties.description)
+    .setName("hi")
+    .setDescription("this is a nice description")
     .addUserOption(
       new SlashCommandUserOption()
         .setRequired(true)
