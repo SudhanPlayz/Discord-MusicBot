@@ -25,10 +25,11 @@ const Command = {
 
     /**
      * This function will handle slash command interaction
+     * @param {import("../lib/DiscordMusicBot")} client
      * @param {import("discord.js").CommandInteraction} interaction
      * @param {import("discord.js").CommandInteractionOptionResolver} options
      */
-    run: (interaction, options) => {
+    run: (client, interaction, options) => {
       interaction.reply(`<@${options.getUser("user", true).id}>, Hello!`);
     },
   },
@@ -40,10 +41,11 @@ const Command = {
 
     /**
      * This function will handle context menu interaction
+     * @param {import("../lib/DiscordMusicBot")} client
      * @param {import("discord.js").GuildContextMenuInteraction} interaction
      */
-    run: (interaction) => {
-      interaction.reply(`<@${interaction.options.getUser("USER").id}>, Hello!`);
+    run: (client, interaction) => {
+      interaction.reply(`<@${interaction.options.getUser("user").id}>, Hello!`);
     },
   },
 };
