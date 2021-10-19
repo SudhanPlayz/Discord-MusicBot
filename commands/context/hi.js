@@ -8,7 +8,7 @@ module.exports = {
    * @param {import("../lib/DiscordMusicBot")} client
    * @param {import("discord.js").GuildContextMenuInteraction} interaction
    */
-  run: (client, interaction) => {
+  run: (client, interaction, options) => {
     interaction.reply(`<@${interaction.options.getUser("user").id}>, Hello!`);
   },
 };
