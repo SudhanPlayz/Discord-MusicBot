@@ -1,7 +1,7 @@
 module.exports = {
-  token: process.env.Token || "", //Bot's Token
-  clientId: "", //ID of the bot
-  clientSecret: "", //Client Secret of the bot
+  token: process.env.token || "", //Bot's Token
+  clientId: process.env.clientId || "", //ID of the bot
+  clientSecret: process.env.clientSecret || "", //Client Secret of the bot
   port: 3000, //Port of the API and Dashboard
   scopes: ["identify", "guilds", "applications.commands"], //Discord OAuth2 Scopes
   serverDeafen: true, //If you want bot to stay deafened
