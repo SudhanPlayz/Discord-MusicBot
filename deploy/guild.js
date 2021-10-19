@@ -16,7 +16,7 @@ const rl = readline.createInterface({
     return [].concat(cmds.slash).concat(cmds.context);
   });
 
-  rl.question("Enter the guild id you wanted to deploy commands ", (guild) => {
+  rl.question("Enter the guild id you wanted to deploy commands: ", async (guild) => {
     console.log("Deploying commands to guild...");
     await rest.put(Routes.applicationGuildCommands(config.clientId, guild), {
       body: commands,
