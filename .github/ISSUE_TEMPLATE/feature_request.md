@@ -8,14 +8,14 @@ assignees: ""
 
 <!-- Use Discord for questions: https://discord.gg/bRCvFy9 -->
 
-**Is your feature request related to a problem? Please describe.**
+## Is your feature request related to a problem? Please describe.
 A clear and concise description of what the problem is. Eg. I'm always frustrated when [...]
 
-**Describe the ideal solution**
+## Describe the ideal solution
 A clear and concise description of what you want to happen.
 
-**Describe alternatives you've considered**
+## Describe alternatives you've considered
 A clear and concise description of any alternative solutions or features you've considered.
 
-**Additional context**
+## Additional context
 Add any other context or screenshots about the feature request here.

@@ -8,22 +8,22 @@ assignees: ""
 
 <!-- Use Discord for questions: https://discord.gg/sbySMS7m3v -->
 
-**Please describe the problem you are having in as much detail as possible:**
+## Please describe the problem you are having in as much detail as possible:
 
-**Include a reproducible code sample here, if possible:**
+## Include a reproducible code sample here, if possible:
 
 ```js
 // Place your code here
 ```
 
-**Further details:**
+## Further details:
 
 - discord.js version:
 - Node.js version:
 - Operating system:
 - Priority this issue should have – please be realistic and elaborate if possible:
 
-**Relevant client options:**
+## Relevant client options:
 
 - partials: none
 - gateway intents: none

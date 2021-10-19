@@ -1,6 +1,6 @@
-**Please describe the changes this PR makes and why it should be merged:**
+## Please describe the changes this PR makes and why it should be merged:
 
-**Status and versioning classification:**
+## Status and versioning classification:
 
 <!--
 Please move lines that apply to you out of the comment:
