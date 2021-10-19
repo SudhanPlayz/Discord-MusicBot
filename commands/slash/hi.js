@@ -11,7 +11,7 @@ module.exports = {
       new SlashCommandUserOption()
         .setRequired(true)
         .setName("user")
-        .setDescription("User who you wanted to tell hello")
+        .setDescription("The user who you wanted to tell hello")
     ),
 
   /**
