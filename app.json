@@ -37,57 +37,57 @@
     },
     "sdeafen": {
       "description": "Sever Deafen the discord bot",
-      "required": "true"
+      "required": "true",
       "value": "true"
     },
     "dvolume": {
       "description": "Volume of Discord Bot",
-      "required": "true"
+      "required": "true",
       "value": "100"
     },
     "llhost": {
       "description": "Lava Link Host",
-      "required": "true"
+      "required": "true",
       "value": "lava.link"
     },
     "llport": {
       "description": "Lava Link Port",
-      "required": "true"
+      "required": "true",
       "value": "80"
     },
     "llpass": {
       "description": "Lava Link Password",
-      "required": "true"
+      "required": "true",
       "value": "youshallnotpass"
     },
     "color": {
       "description": "Color of Discord embeds",
-      "required": "true"
+      "required": "true",
       "value": "BLUE"
     },
     "status": {
       "description": "Status of Discord Bot",
-      "required": "true"
+      "required": "true",
       "value": "online"
     },
     "statustext": {
       "description": "Status text of Discord Bot",
-      "required": "true"
+      "required": "true",
       "value": "music"
     },
     "statustype": {
       "description": "Status type of Discord Bot",
-      "required": "true"
+      "required": "true",
       "value": "LISTENING"
     },
     "surl": {
       "description": "Streaming Url (if status type is STREAMING) of Discord Bot",
-      "required": "true"
+      "required": "true",
       "value": "https://twitch.tv/jeffbezos"
     },
     "icon": {
       "description": "This icon will be in every embed's author field",
-      "required": "true"
+      "required": "true",
       "value": "https://github.com/SudhanPlayz/Discord-MusicBot/raw/master/assets/logo.gif"
     }
   }
