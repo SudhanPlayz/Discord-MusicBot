@@ -51,7 +51,7 @@
       "value": "lava.link"
     },
     "llport": {
-      "description": "Lava Link Port,
+      "description": "Lava Link Port",
       "required": "true"
       "value": "80"
     },
