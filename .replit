@@ -1,2 +1,2 @@
-run = "bash replit.sh"
-language = "bash"
+run = "node index.js"
+language = "NodeJS"
