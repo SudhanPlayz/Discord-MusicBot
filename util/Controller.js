@@ -10,6 +10,32 @@ module.exports = async (client, interaction) => {
 
     if(property === "LowVolume"){
         player.setVolume(player.volume-10)
-        interaction.reply({ embeds: [ client.Embed("Successfully set server volume to "+player.volume) ] })
+        return interaction.reply({ embeds: [ client.Embed("Successfully set server volume to "+player.volume) ] })
     }
+
+    if(property === "Previous"){
+        if(!player.queue.previous)return interaction.reply({ embeds: [ client.ErrorEmbed("There is no previous played song") ] })
+        player.queue.unshift(player.queue.previous)
+        player.queue.unshift(player.queue.current)
+        player.stop()
+        return interaction.deferReply()
+    }
+
+    if(property === "PlayAndPause"){
+        if(player.paused)player.play()
+        else player.pause()
+        return interaction.reply({ embeds: [ client.Embed(player.paused?"Paused":"Resumed")] })
+    }
+
+    if(property === "Next"){
+        player.stop()
+        return interaction.deferReply()
+    }
+
+    if(property === "HighVolume"){
+        player.setVolume(player.volume+10)
+        return interaction.reply({ embeds: [ client.Embed("Successfully set server volume to "+player.volume) ] })
+    }
+
+    return interaction.reply({ ephemeral: true, context: "Unknown controller option" })
 }
