@@ -2,7 +2,7 @@ const SlashCommand = require("../../lib/SlashCommand");
 
 const command = new SlashCommand()
   .setName("join")
-  .setDescription(" Joins the voice channel")
+  .setDescription("Joins the voice channel")
   .setRun(async (client, interaction, options) => {
     let channel = await client.getChannel(client, interaction);
     let node = await client.getLavalink(client);
