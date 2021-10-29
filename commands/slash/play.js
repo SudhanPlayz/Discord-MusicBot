@@ -1,26 +1,16 @@
-const {
-  SlashCommandBuilder,
-  SlashCommandStringOption,
-} = require("@discordjs/builders");
+const SlashCommand = require("../../lib/SlashCommand");
+const { SlashCommandStringOption } = require("@discordjs/builders");
 
-module.exports = {
-  command: new SlashCommandBuilder()
-    .setName("play")
-    .setDescription("Play music in the voice channel")
-    .addStringOption(
-      new SlashCommandStringOption()
-        .setName("query")
-        .setDescription("Search string to search the music")
-        .setRequired(true)
-    ),
-
-  /**
-   * This function will handle slash command interaction
-   * @param {import("../../lib/DiscordMusicBot")} client
-   * @param {import("discord.js").CommandInteraction} interaction
-   * @param {import("discord.js").CommandInteractionOptionResolver} options
-   */
-  run: async (client, interaction, options) => {
+const command = new SlashCommand()
+  .setName("play")
+  .setDescription("Play music in the voice channel")
+  .addStringOption(
+    new SlashCommandStringOption()
+      .setName("query")
+      .setDescription("Search string to search the music")
+      .setRequired(true)
+  )
+  .setRun(async (client, interaction, options) => {
     let channel = await client.getChannel(client, interaction);
     if (!channel) return;
 
@@ -96,5 +86,6 @@ module.exports = {
         );
       return interaction.reply({ embeds: [embed] });
     }
-  },
-};
+  });
+
+module.exports = command;
