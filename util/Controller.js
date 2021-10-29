@@ -8,6 +8,8 @@ module.exports = async (client, interaction) => {
     let property = interaction.customId.split(":")[2]
     let player = client.manager.get(guild.id)
 
+    if(!player)return interaction.reply({ embeds: [ client.Embed("There is no player to control in this server.")] })
+
     if(property === "LowVolume"){
         player.setVolume(player.volume-10)
         return interaction.reply({ embeds: [ client.Embed("Successfully set server volume to "+player.volume) ] })
@@ -18,7 +20,7 @@ module.exports = async (client, interaction) => {
         player.queue.unshift(player.queue.previous)
         player.queue.unshift(player.queue.current)
         player.stop()
-        return interaction.deferReply()
+        return interaction.deferUpdate()
     }
 
     if(property === "PlayAndPause"){
@@ -29,7 +31,7 @@ module.exports = async (client, interaction) => {
 
     if(property === "Next"){
         player.stop()
-        return interaction.deferReply()
+        return interaction.deferUpdate()
     }
 
     if(property === "HighVolume"){
@@ -37,5 +39,5 @@ module.exports = async (client, interaction) => {
         return interaction.reply({ embeds: [ client.Embed("Successfully set server volume to "+player.volume) ] })
     }
 
-    return interaction.reply({ ephemeral: true, context: "Unknown controller option" })
+    return interaction.reply({ ephemeral: true, content: "Unknown controller option" })
 }
