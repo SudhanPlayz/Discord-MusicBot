@@ -1,3 +1,5 @@
+const Controller = require("../util/Controller");
+
 /**
  *
  * @param {import("../lib/DiscordMusicBot")} client
@@ -26,5 +28,9 @@ module.exports = (client, interaction) => {
       );
     command.run(client, interaction, interaction.options);
     return;
+  }
+
+  if(interaction.isButton()){
+    if(interaction.customId.startsWith("controller"))Controller(client, interaction)
   }
 };

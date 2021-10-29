@@ -24,7 +24,7 @@ const command = new SlashCommand()
 
     interaction.reply({
       embeds: [
-        client.Embed().setDescription(`Successfully joined <#${channel.id}>!`),
+        client.Embed(`Successfully joined <#${channel.id}>!`),
       ],
     });
   });

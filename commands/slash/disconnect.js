@@ -11,7 +11,7 @@ const command = new SlashCommand()
 
     interaction.reply({
       embeds: [
-        client.Embed().setDescription(`Successfully left <#${player.voiceChannel.id}>!`),
+        client.Embed(`Successfully left <#${player.voiceChannel.id}>!`),
       ],
     });
   });
