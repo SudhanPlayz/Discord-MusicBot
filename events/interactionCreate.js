@@ -5,7 +5,6 @@
  */
 module.exports = (client, interaction) => {
   if (interaction.isCommand()) {
-    
     let command = client.slashCommands.find(
       (x) => x.name == interaction.commandName
     );

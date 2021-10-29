@@ -10,7 +10,7 @@ module.exports = async (client, interaction, props) => {
       interaction.reply({
         embeds: [
           client.ErrorEmbed(
-            "You must be in a voice channel to play something!"
+            "You must be in a voice channel to use this command!"
           ),
         ],
       });

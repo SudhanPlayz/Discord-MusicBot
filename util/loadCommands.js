@@ -26,14 +26,14 @@ const LoadDirectory = (dir) => {
         let cmd = require(CommandsDir + "/" + file);
         i++;
         if (i == f) r = true;
-        if (!cmd.command || !cmd.run)
+        if (!cmd || dir == "context" && !cmd.command)
           return console.log(
             "Unable to load Command: " +
               file.split(".")[0] +
-              ", File doesn't have either name/desciption or an command to run"
+              ", File doesn't have either command"
           );
-        if (cmd.commnd) commands.push(cmd.command);
-        if (cmd.command) commands.push(cmd.command);
+          if(dir == "context")commands.push(cmd.command)
+          else commands.push(cmd)
         if (r) resolve(commands);
       });
     });
