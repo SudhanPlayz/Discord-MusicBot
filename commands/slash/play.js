@@ -16,7 +16,7 @@ const command = new SlashCommand()
     let node = await client.getLavalink(client);
     if (!node)
       return interaction.reply({
-        embeds: [client.ErrorEmbed("Lavalink node not connected")],
+        embeds: [client.ErrorEmbed("Lavalink node is not connected")],
       });
 
     let query = options.getString("query", true);

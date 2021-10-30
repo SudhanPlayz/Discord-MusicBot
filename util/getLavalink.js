@@ -5,13 +5,10 @@
  */
 module.exports = async (client) => {
   return new Promise((resolve) => {
-    let node;
-    client.manager.nodes.forEach((lNode) => {
-      if (lNode.connected) {
-        node = lNode;
-        resolve(node);
-      }
-    });
-    resolve(node);
+    for (let i = 0; i < client.manager.nodes.size; i++) {
+      const node = client.manager.nodes.array()[i]
+      if(node.connected)resolve(node)
+    }
+    resolve(undefined)
   });
 };

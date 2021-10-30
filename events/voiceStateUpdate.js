@@ -10,6 +10,9 @@ module.exports = async (client, oldState, newState) => {
   let guildId = newState.guild.id;
   const player = client.manager.get(guildId);
 
+  if(newState.member.id == client.user.id && newState.channel.id !== player.voiceChannel)player.setVoiceChannel(newState.channel.id)
+  if(!newState.channel && !newState.guild.me.voice.channel)return player.destroy()
+
   // check if the bot is active (playing, paused or empty does not matter (return otherwise)
   if (!player || player.state !== "CONNECTED") return;
 
@@ -30,7 +33,7 @@ module.exports = async (client, oldState, newState) => {
   // move check first as it changes type
   if (stateChange.type === "MOVE") {
     if (oldState.channel.id === player.voiceChannel) stateChange.type = "LEAVE";
-    if (newState.channel.id === player.voiceChannel) stateChange.type = "JOIN";
+    if (newState.channel.id === player.voiceChannel)stateChange.type = "JOIN";
   }
   // double triggered on purpose for MOVE events
   if (stateChange.type === "JOIN") stateChange.channel = newState.channel;

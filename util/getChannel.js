@@ -1,13 +1,13 @@
 /**
  *
  * @param {import("../lib/DiscordMusicBot")} client
- * @param {import("discord.js").CommandInteraction | import("discord.js").ContextMenuInteraction} interaction
+ * @param {import("discord.js").GuildCommandInteraction} interaction
  * @returns
  */
-module.exports = async (client, interaction, props) => {
-  return new Promise((resolve) => {
+module.exports = async (client, interaction) => {
+  return new Promise(async (resolve) => {
     if (!interaction.member.voice.channel) {
-      interaction.reply({
+      await interaction.reply({
         embeds: [
           client.ErrorEmbed(
             "You must be in a voice channel to use this command!"
@@ -21,7 +21,7 @@ module.exports = async (client, interaction, props) => {
       interaction.member.voice.channel.id !==
         interaction.guild.me.voice.channel.id
     ) {
-      interaction.reply({
+      await interaction.reply({
         embeds: [
           client.ErrorEmbed(
             "You must be in the same voice channel as me to use this command!"
@@ -30,14 +30,7 @@ module.exports = async (client, interaction, props) => {
       });
       return resolve(false);
     }
-    if (props && props.checkPlaying) {
-      let player = client.manager.players.get(interaction.guild.id);
-      if (!player)
-        interaction.reply({
-          embeds: [client.ErrorEmbed("Nothing is playing right now...")],
-        });
-      return resolve(false);
-    }
+
     resolve(interaction.member.voice.channel);
   });
 };

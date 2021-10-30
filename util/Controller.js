@@ -22,7 +22,7 @@ module.exports = async (client, interaction) => {
     });
   }
 
-  if (property === "Previous") {
+  if (property === "Replay") {
     if (!player.queue.previous)
       return interaction.reply({
         embeds: [client.ErrorEmbed("There is no previous played song")],
@@ -34,8 +34,8 @@ module.exports = async (client, interaction) => {
   }
 
   if (property === "PlayAndPause") {
-    if (player.paused) player.play();
-    else player.pause();
+    if (player.paused) player.pause(false)
+    else player.pause(true);
     return interaction.reply({
       embeds: [client.Embed(player.paused ? "Paused" : "Resumed")],
     });
