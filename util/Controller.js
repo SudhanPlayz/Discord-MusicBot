@@ -34,7 +34,7 @@ module.exports = async (client, interaction) => {
   }
 
   if (property === "PlayAndPause") {
-    if (player.paused) player.pause(false)
+    if (player.paused) player.pause(false);
     else player.pause(true);
     return interaction.reply({
       embeds: [client.Embed(player.paused ? "Paused" : "Resumed")],
