@@ -5,24 +5,13 @@
  * @param {import("discord.js").VoiceState} newState
  * @returns {Promise<void>}
  */
-
-//Sorry this whole file is a broken shit, If you like to help fixing make a pull request
 module.exports = async (client, oldState, newState) => {
   // get guild and player
   let guildId = newState.guild.id;
   const player = client.manager.get(guildId);
 
-  if(!player)return
-  if (
-    newState.member.id == client.user.id &&
-    newState.channel.id !== player.voiceChannel
-  )
-    player.setVoiceChannel(newState.channel.id);
-  if (!newState.channel && !newState.guild.me.voice.channel)
-    return player.destroy();
-
   // check if the bot is active (playing, paused or empty does not matter (return otherwise)
-  if (player.state !== "CONNECTED") return;
+  if (!player || player.state !== "CONNECTED") return;
 
   // prepreoces the data
   const stateChange = {};
