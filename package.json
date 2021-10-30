@@ -7,7 +7,8 @@
     "start": "node index",
     "rm-logs": "rm logs.log",
     "format": "prettier --write .",
-    "lint": "prettier --check ."
+    "lint": "prettier --check .",
+    "deploy": "node deploy/global"
   },
   "repository": {
     "type": "git",
