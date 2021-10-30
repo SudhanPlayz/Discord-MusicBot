@@ -9,11 +9,6 @@
     "format": "prettier --write .",
     "lint": "prettier --check ."
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm format"
-    }
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/SudhanPlayz/Discord-MusicBot.git"
