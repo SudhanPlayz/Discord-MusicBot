@@ -6,7 +6,14 @@
   "scripts": {
     "start": "node index",
     "rm-logs": "rm logs.log",
-    "prettify": "yarn prettier --write ."
+    "format": "prettier --write .",
+    "lint": "prettier --check ."
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm format",
+      "pre-push": "npm lint"
+    }
   },
   "repository": {
     "type": "git",
@@ -44,6 +51,7 @@
     "winston": "^3.3.3"
   },
   "devDependencies": {
-    "prettier": "2.4.1"
+    "husky": "^7.0.4",
+    "prettier": "^2.4.1"
   }
 }
