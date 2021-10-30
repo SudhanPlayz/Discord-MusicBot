@@ -12,7 +12,7 @@ const command = new SlashCommand()
       });
 
     let player = client.manager.players.get(interaction.guild.id);
-    if (!player){
+    if (!player) {
       player = client.createPlayer(interaction.channel, channel);
       player.connect();
     }
@@ -23,9 +23,7 @@ const command = new SlashCommand()
     }
 
     interaction.reply({
-      embeds: [
-        client.Embed(`Successfully joined <#${channel.id}>!`),
-      ],
+      embeds: [client.Embed(`Successfully joined <#${channel.id}>!`)],
     });
   });
 

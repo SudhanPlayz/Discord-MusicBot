@@ -30,7 +30,8 @@ module.exports = (client, interaction) => {
     return;
   }
 
-  if(interaction.isButton()){
-    if(interaction.customId.startsWith("controller"))Controller(client, interaction)
+  if (interaction.isButton()) {
+    if (interaction.customId.startsWith("controller"))
+      Controller(client, interaction);
   }
 };

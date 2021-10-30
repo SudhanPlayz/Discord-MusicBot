@@ -13,7 +13,7 @@ const rl = readline.createInterface({
   const config = await getConfig();
   const rest = new REST({ version: "9" }).setToken(config.token);
   const commands = await LoadCommands().then((cmds) => {
-    return [].concat(cmds.slash).concat(cmds.context)
+    return [].concat(cmds.slash).concat(cmds.context);
   });
 
   rl.question(

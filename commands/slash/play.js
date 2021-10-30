@@ -3,9 +3,12 @@ const SlashCommand = require("../../lib/SlashCommand");
 const command = new SlashCommand()
   .setName("play")
   .setDescription("Play music in the voice channel")
-  .addStringOption(option => option.setName("query")
-  .setDescription("Search string to search the music")
-  .setRequired(true))
+  .addStringOption((option) =>
+    option
+      .setName("query")
+      .setDescription("Search string to search the music")
+      .setRequired(true)
+  )
   .setRun(async (client, interaction, options) => {
     let channel = await client.getChannel(client, interaction);
     if (!channel) return;

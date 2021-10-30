@@ -5,14 +5,19 @@ const command = new SlashCommand()
   .setDescription("Stop the music and leave the voice channel")
   .setRun(async (client, interaction, options) => {
     let player = client.manager.players.get(interaction.guild.id);
-    if(!player)return interaction.reply({ embeds: [ client.ErrorEmbed("Bot must need to be in a voice channel to disconnect") ]})
+    if (!player)
+      return interaction.reply({
+        embeds: [
+          client.ErrorEmbed(
+            "Bot must need to be in a voice channel to disconnect"
+          ),
+        ],
+      });
 
-    player.destroy()
+    player.destroy();
 
     interaction.reply({
-      embeds: [
-        client.Embed(`Successfully left <#${player.voiceChannel.id}>!`),
-      ],
+      embeds: [client.Embed(`Successfully left <#${player.voiceChannel.id}>!`)],
     });
   });
 
