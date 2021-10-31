@@ -7,14 +7,14 @@ module.exports = {
   ], //Admins of the bot [Ignoramous, 5LOTH, Paul, Raldor]
   ExpressServer: process.env.EXPRESS_SERVER || true, //If you wanted to make the website run or not
   DefaultPrefix: process.env.PREFIX || "!", //Default prefix, Server Admins can change the prefix
-  Port: process.env.PORT || 3000, //Which port website gonna be hosted
+  Port: Number(process.env.PORT) || 3000, //Which port website gonna be hosted
   SupportServer: "https://discord.gg/sbySMS7m3v", //Support Server Link
   Token: process.env.TOKEN || "", //Discord Bot Token
   ClientID: process.env.DISCORD_CLIENT_ID || "", //Discord Client ID
   ClientSecret: process.env.DISCORD_CLIENT_SECRET || "", //Discord Client Secret
   Scopes: ["identify", "guilds", "applications.commands"], //Discord OAuth2 Scopes
   ServerDeafen: process.env.SERVER_DEAFEN || true, //If you want bot to stay deafened
-  DefaultVolume: process.env.VOLUME || 100, //Sets the default volume of the bot, You can change this number anywhere from 1 to 100
+  DefaultVolume: Number(process.env.VOLUME) || 100, //Sets the default volume of the bot, You can change this number anywhere from 1 to 100
   CallbackURL: process.env.OAUTH2 || "/api/callback", //Discord OAuth2 Callback URL
   "24/7": false, //If you want the bot to be stay in the vc 24/7
   CookieSecret: process.env.COOKIESECRET || "Pikachu is cute", //A Secret like a password
@@ -34,7 +34,7 @@ module.exports = {
   Lavalink: {
     id: process.env.LAVA_ID || "Main",
     host: process.env.LAVA_HOST || "host name or IP",
-    port: process.env.LAVA_PORT || 80, // The port that lavalink is listening to. This must be a number!
+    port: Number(process.env.LAVA_PORT) || 80, // The port that lavalink is listening to. This must be a number!
     pass: process.env.LAVA_PASS || "your password",
     secure: process.env.LAVA_SECURE || false, // Set this to true if the lavalink uses SSL or you're hosting lavalink on repl.it
   },
