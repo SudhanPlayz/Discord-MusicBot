@@ -5,7 +5,7 @@ module.exports = {
     "687672297804267520",
     "665722059589943297",
   ], //Admins of the bot [Ignoramous, 5LOTH, Paul, Raldor]
-  ExpressServer: process.env.EXPRESS_SERVER || true, //If you wanted to make the website run or not
+  ExpressServer: process.env.EXPRESS_SERVER || false, //If you wanted to make the website run or not
   DefaultPrefix: process.env.PREFIX || "!", //Default prefix, Server Admins can change the prefix
   Port: Number(process.env.PORT) || 3000, //Which port website gonna be hosted
   SupportServer: "https://discord.gg/sbySMS7m3v", //Support Server Link
