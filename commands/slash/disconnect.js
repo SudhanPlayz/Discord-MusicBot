@@ -2,7 +2,7 @@ const SlashCommand = require("../../lib/SlashCommand");
 
 const command = new SlashCommand()
   .setName("disconnect")
-  .setDescription("Stop the music and leave the voice channel")
+  .setDescription("Stops the music and leaves the voice channel")
   .setRun(async (client, interaction, options) => {
     let player = client.manager.players.get(interaction.guild.id);
     if (!player)
