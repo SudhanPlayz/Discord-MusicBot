@@ -1,4 +1,4 @@
-FROM node:16
+FROM node:16-bullseye
 
 #copy scripts
 ADD init.sh /usr/local/bin/init.sh
