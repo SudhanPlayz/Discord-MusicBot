@@ -1,10 +1,15 @@
 module.exports = {
-  Admins: [
-    "323130717808754688",
-    "171308954633240578",
-    "687672297804267520",
-    "665722059589943297",
-  ], //Admins of the bot [Ignoramous, 5LOTH, Paul, Raldor]
+  Admins: process.env.BOT_ADMINS.split(",") || [
+    "323130717808754688", //Ignoramus
+    "171308954633240578", // 5LOTH
+    "687672297804267520", // Paul
+    "665722059589943297", // Raldor
+  ],
+  DJ: process.env.DJ.split(",") || [
+    "740630695373963334", // Lich
+    "898215498146250822", // Guardian
+    "740630138873577544", // Necromancer
+  ],
   ExpressServer: process.env.EXPRESS_SERVER || false, //If you wanted to make the website run or not
   DefaultPrefix: process.env.PREFIX || "!", //Default prefix, Server Admins can change the prefix
   Port: Number(process.env.PORT) || 3000, //Which port website gonna be hosted

@@ -10,19 +10,13 @@ module.exports = async (client, message) => {
   let prefix = client.botconfig.DefaultPrefix;
 
   let GuildDB = await client.GetGuild(message.guild.id);
-  if (GuildDB && GuildDB.prefix) prefix = GuildDB.prefix;
+  if (GuildDB && GuildDB.prefix) prefix = client.botconfig.DefaultPrefix;
 
   //Initialize GuildDB
   if (!GuildDB) {
     await client.database.guild.set(message.guild.id, {
-      prefix: prefix,
-      DJ: [
-        "740630695373963334", // Lich
-        "898215498146250822", // Guardian
-        "740630138873577544", // Necromancer
-        "740630795613634651", // Wight
-        "740630795684675624"  // Ghoul
-      ],
+      prefix: client.botconfig.DefaultPrefix,
+      DJ: client.botconfig.DJ,
     });
     GuildDB = await client.GetGuild(message.guild.id);
   }
@@ -44,16 +38,25 @@ module.exports = async (client, message) => {
     client.commands.get(command) ||
     client.commands.find((x) => x.aliases && x.aliases.includes(command));
 
-  const hasRole =
-    message.member.roles.cache.has(GuildDB.DJ[0]) ||
-    message.member.roles.cache.has(GuildDB.DJ[1]) ||
-    message.member.roles.cache.has(GuildDB.DJ[2]) ||
-    message.member.roles.cache.has(GuildDB.DJ[3]) ||
-    message.member.roles.cache.has(GuildDB.DJ[4]);
+  let hasRole = 0;
+
+  message.member.roles.cache.forEach(set_hasRole);
+  function set_hasRole(value, index, array) {
+    if (GuildDB.DJ.includes(value)) hasRole = 1;
+  }
 
   //Executing the codes when we get the command or aliases
   if (cmd) {
-    if(cmd.name === "disconnect" || cmd.name === "loop" || cmd.name === "loopqueue" || cmd.name === "skip" || cmd.name === "skipto" || cmd.name === "volume" || cmd.name === "youtube" || cmd.name == "config") {
+    if (
+      cmd.name === "disconnect" ||
+      cmd.name === "loop" ||
+      cmd.name === "loopqueue" ||
+      cmd.name === "skip" ||
+      cmd.name === "skipto" ||
+      cmd.name === "volume" ||
+      cmd.name === "youtube" ||
+      cmd.name == "config"
+    ) {
       if (
         (cmd.permissions &&
           cmd.permissions.channel &&
