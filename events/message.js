@@ -16,7 +16,7 @@ module.exports = async (client, message) => {
   if (!GuildDB) {
     await client.database.guild.set(message.guild.id, {
       prefix: prefix,
-      DJ: null,
+      DJ: ["904880016146444348", "904879944268648538"],
     });
     GuildDB = await client.GetGuild(message.guild.id);
   }
@@ -38,6 +38,10 @@ module.exports = async (client, message) => {
     client.commands.get(command) ||
     client.commands.find((x) => x.aliases && x.aliases.includes(command));
 
+  const hasRole =
+    message.member.roles.cache.has(GuildDB.DJ[0]) ||
+    message.member.roles.cache.has(GuildDB.DJ[1]);
+
   //Executing the codes when we get the command or aliases
   if (cmd) {
     if (
@@ -56,7 +60,7 @@ module.exports = async (client, message) => {
         !message.channel
           .permissionsFor(message.member)
           .has(["ADMINISTRATOR"]) &&
-        !message.member.roles.cache.has(GuildDB.DJ))
+        !hasRole)
     )
       return client.sendError(
         message.channel,
