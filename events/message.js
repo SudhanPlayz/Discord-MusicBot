@@ -16,7 +16,13 @@ module.exports = async (client, message) => {
   if (!GuildDB) {
     await client.database.guild.set(message.guild.id, {
       prefix: prefix,
-      DJ: null,
+      DJ: [
+        "740630695373963334", // Lich
+        "898215498146250822", // Guardian
+        "740630138873577544", // Necromancer
+        "740630795613634651", // Wight
+        "740630795684675624"  // Ghoul
+      ],
     });
     GuildDB = await client.GetGuild(message.guild.id);
   }
@@ -38,32 +44,41 @@ module.exports = async (client, message) => {
     client.commands.get(command) ||
     client.commands.find((x) => x.aliases && x.aliases.includes(command));
 
+  const hasRole =
+    message.member.roles.cache.has(GuildDB.DJ[0]) ||
+    message.member.roles.cache.has(GuildDB.DJ[1]) ||
+    message.member.roles.cache.has(GuildDB.DJ[2]) ||
+    message.member.roles.cache.has(GuildDB.DJ[3]) ||
+    message.member.roles.cache.has(GuildDB.DJ[4]);
+
   //Executing the codes when we get the command or aliases
   if (cmd) {
-    if (
-      (cmd.permissions &&
-        cmd.permissions.channel &&
-        !message.channel
-          .permissionsFor(client.user)
-          .has(cmd.permissions.channel)) ||
-      (cmd.permissions &&
-        cmd.permissions.member &&
-        !message.channel
-          .permissionsFor(message.member)
-          .has(cmd.permissions.member)) ||
-      (cmd.permissions &&
-        GuildDB.DJ &&
-        !message.channel
-          .permissionsFor(message.member)
-          .has(["ADMINISTRATOR"]) &&
-        !message.member.roles.cache.has(GuildDB.DJ))
-    )
-      return client.sendError(
-        message.channel,
-        "Missing Permissions!" + GuildDB.DJ
-          ? " You need the `DJ` role to access this command."
-          : ""
-      );
+    if(cmd.name === "disconnect" || cmd.name === "loop" || cmd.name === "loopqueue" || cmd.name === "skip" || cmd.name === "skipto" || cmd.name === "volume" || cmd.name === "youtube" || cmd.name == "config") {
+      if (
+        (cmd.permissions &&
+          cmd.permissions.channel &&
+          !message.channel
+            .permissionsFor(client.user)
+            .has(cmd.permissions.channel)) ||
+        (cmd.permissions &&
+          cmd.permissions.member &&
+          !message.channel
+            .permissionsFor(message.member)
+            .has(cmd.permissions.member)) ||
+        (cmd.permissions &&
+          GuildDB.DJ &&
+          !message.channel
+            .permissionsFor(message.member)
+            .has(["ADMINISTRATOR"]) &&
+          !hasRole)
+      )
+        return client.sendError(
+          message.channel,
+          "Missing Permissions!" + GuildDB.DJ
+            ? " You need the `DJ` role to access this command."
+            : ""
+        );
+    }
     cmd.run(client, message, args, { GuildDB });
     client.CommandsRan++;
   } else return;
