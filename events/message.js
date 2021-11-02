@@ -44,7 +44,7 @@ module.exports = async (client, message) => {
 
   //Executing the codes when we get the command or aliases
   if (cmd) {
-    if(cmd.name === "disconnect" || cmd.name === "loop" || cmd.name === "loopqueue" || cmd.name === "skip" || cmd.name === "skipto" || cmd.name === "volume" || cmd.name === "youtube") {
+    if(cmd.name === "disconnect" || cmd.name === "loop" || cmd.name === "loopqueue" || cmd.name === "skip" || cmd.name === "skipto" || cmd.name === "volume" || cmd.name === "youtube" || cmd.name == "config") {
       if (
         (cmd.permissions &&
           cmd.permissions.channel &&
