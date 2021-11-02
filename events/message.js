@@ -38,16 +38,28 @@ module.exports = async (client, message) => {
     client.commands.get(command) ||
     client.commands.find((x) => x.aliases && x.aliases.includes(command));
 
-  const hasRole = vibeCheck();
+  // const hasRole = vibeCheck();
 
-  function vibeCheck() {
-    message.member.roles.cache.forEach(set_hasRole);
-    function set_hasRole(value, index, array) {
-      if (GuildDB.DJ.includes(value)) return 1;
-    }
-    return 0;
-  } //vibeCheck()
-  console.log(hasRole);
+  // function vibeCheck() {
+  //   message.member.roles.cache.forEach(set_hasRole);
+  //   function set_hasRole(value, index, array) {
+  //     if (GuildDB.DJ.includes(value)) return 1;
+  //   }
+  //   return 0;
+  // } //vibeCheck()
+  // console.log(hasRole);
+  // for(var i = 0; i<message.member.roles.cache.length; i++)
+  // {
+  //   for()
+  // }
+
+  let hasRole = 0;
+  console.log("Initial value of hasRole: " + hasRole);
+  console.log("Guild DJ roles :" + GuildDB.DJ);
+  message.member.roles.cache.forEach(function (role) {
+    if (GuildDB.DJ.includes(role)) hasRole = 1;
+  });
+  console.log("Username: " + message.member.name + " Role: " + hasRole);
 
   //Executing the codes when we get the command or aliases
   if (cmd) {
