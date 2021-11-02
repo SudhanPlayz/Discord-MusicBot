@@ -16,7 +16,13 @@ module.exports = async (client, message) => {
   if (!GuildDB) {
     await client.database.guild.set(message.guild.id, {
       prefix: prefix,
-      DJ: ["904880016146444348", "904879944268648538"],
+      DJ: [
+        "740630695373963334", // Lich
+        "898215498146250822", // Guardian
+        "740630138873577544", // Necromancer
+        "740630795613634651", // Wight
+        "740630795684675624"  // Ghoul
+      ],
     });
     GuildDB = await client.GetGuild(message.guild.id);
   }
@@ -40,7 +46,10 @@ module.exports = async (client, message) => {
 
   const hasRole =
     message.member.roles.cache.has(GuildDB.DJ[0]) ||
-    message.member.roles.cache.has(GuildDB.DJ[1]);
+    message.member.roles.cache.has(GuildDB.DJ[1]) ||
+    message.member.roles.cache.has(GuildDB.DJ[2]) ||
+    message.member.roles.cache.has(GuildDB.DJ[3]) ||
+    message.member.roles.cache.has(GuildDB.DJ[4]);
 
   //Executing the codes when we get the command or aliases
   if (cmd) {
