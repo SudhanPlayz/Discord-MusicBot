@@ -10,6 +10,7 @@ module.exports = async (client, message) => {
   let prefix = client.botconfig.DefaultPrefix;
 
   let GuildDB = await client.GetGuild(message.guild.id);
+  //GUILDDB ALWAYS REFER TO THE DEADMINISTRATION ENVIRONMENT VARIABLES. OUR VARIABLES
   if (GuildDB && GuildDB.prefix) prefix = client.botconfig.DefaultPrefix;
 
   //Initialize GuildDB
@@ -38,29 +39,15 @@ module.exports = async (client, message) => {
     client.commands.get(command) ||
     client.commands.find((x) => x.aliases && x.aliases.includes(command));
 
-  // const hasRole = vibeCheck();
-
-  // function vibeCheck() {
-  //   message.member.roles.cache.forEach(set_hasRole);
-  //   function set_hasRole(value, index, array) {
-  //     if (GuildDB.DJ.includes(value)) return 1;
-  //   }
-  //   return 0;
-  // } //vibeCheck()
-  // console.log(hasRole);
-  // for(var i = 0; i<message.member.roles.cache.length; i++)
-  // {
-  //   for()
-  // }
-
+  //Checking if the member passing the command has the DJ role?
   let hasRole = false;
-  console.log("Initial value of hasRole: " + hasRole);
-  console.log("Guild DJ roles :" + GuildDB.DJ);
+  //console.log("Initial value of hasRole: " + hasRole);
+  //console.log("Guild DJ roles :" + GuildDB.DJ);
   GuildDB.DJ.forEach(function (role) {
-    console.log("Current Role: " + role);
+    //console.log("Current Role: " + role);
     if (message.member.roles.cache.has(role)) hasRole = true;
   });
-  console.log("Username: " + message.member.name + " Role: " + hasRole);
+  //console.log("Username: " + message.member.name + " Role: " + hasRole);
 
   //Executing the codes when we get the command or aliases
   if (cmd) {
