@@ -53,10 +53,11 @@ module.exports = async (client, message) => {
   //   for()
   // }
 
-  let hasRole = 0;
+  let hasRole = false;
   console.log("Initial value of hasRole: " + hasRole);
   console.log("Guild DJ roles :" + GuildDB.DJ);
   message.member.roles.cache.forEach(function (role) {
+    console.log("Current Role: " + role);
     if (GuildDB.DJ.includes(role)) hasRole = 1;
   });
   console.log("Username: " + message.member.name + " Role: " + hasRole);
