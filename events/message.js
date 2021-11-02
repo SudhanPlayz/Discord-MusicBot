@@ -38,12 +38,16 @@ module.exports = async (client, message) => {
     client.commands.get(command) ||
     client.commands.find((x) => x.aliases && x.aliases.includes(command));
 
-  let hasRole = 0;
+  const hasRole = vibeCheck();
 
-  message.member.roles.cache.forEach(set_hasRole);
-  function set_hasRole(value, index, array) {
-    if (GuildDB.DJ.includes(value)) hasRole = 1;
-  }
+  function vibeCheck() {
+    message.member.roles.cache.forEach(set_hasRole);
+    function set_hasRole(value, index, array) {
+      if (GuildDB.DJ.includes(value)) return 1;
+    }
+    return 0;
+  } //vibeCheck()
+  console.log(hasRole);
 
   //Executing the codes when we get the command or aliases
   if (cmd) {
