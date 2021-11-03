@@ -19,6 +19,7 @@ module.exports = {
    * @param {*} param3
    */
   run: async (client, message, args, { GuildDB }) => {
+    const prune = client.botconfig.Prune;
     if (!message.member.voice.channel)
       return client.sendTime(
         message.channel,
@@ -93,7 +94,11 @@ module.exports = {
             false
           );
           //SongAddedEmbed.addField("Playlist duration", `\`${prettyMilliseconds(Searched.tracks, { colonNotation: true })}\``, false)
-          Searching.edit(SongAddedEmbed);
+          Searching.edit(SongAddedEmbed)
+            .then((msg) => {
+              msg.delete({ timeout: prune });
+            })
+            .catch(console.log("Pruning Failed"));
         } else if (Searched.loadType.startsWith("TRACK")) {
           player.queue.add(
             TrackUtils.build(Searched.tracks[0], message.author)
@@ -116,7 +121,11 @@ module.exports = {
               `${player.queue.size - 0}`,
               true
             );
-          Searching.edit(SongAddedEmbed);
+          Searching.edit(SongAddedEmbed)
+            .then((msg) => {
+              msg.delete({ timeout: prune });
+            })
+            .catch(console.log("Pruning Failed"));
         } else {
           return client.sendTime(
             message.channel,
@@ -164,7 +173,11 @@ module.exports = {
             })}\``,
             false
           );
-          Searching.edit(SongAddedEmbed);
+          Searching.edit(SongAddedEmbed)
+            .then((msg) => {
+              msg.delete({ timeout: prune });
+            })
+            .catch(console.log("Pruning Failed"));
         } else {
           player.queue.add(Searched.tracks[0]);
           if (!player.playing && !player.paused && !player.queue.size)
@@ -189,7 +202,11 @@ module.exports = {
               `${player.queue.size - 0}`,
               true
             );
-          Searching.edit(SongAddedEmbed);
+          Searching.edit(SongAddedEmbed)
+            .then((msg) => {
+              msg.delete({ timeout: prune });
+            })
+            .catch(console.log("Pruning Failed"));
         }
       }
     } catch (e) {

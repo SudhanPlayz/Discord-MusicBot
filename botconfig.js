@@ -28,6 +28,7 @@ module.exports = {
   EmbedColor: process.env.EMBEDCOLOR || "RANDOM", //Color of most embeds | Dont edit unless you want a specific color instead of a random one each time
   Permissions: process.env.PERMISSIONS || 2205281600, //Bot Inviting Permissions
   Website: process.env.WEBSITE || "http://localhost", //Website where it was hosted at includes http or https || Use "0.0.0.0" if you're using Heroku
+  Prune: Number(process.env.PRUNE) || 10000,
 
   Presence: {
     status: process.env.DISCORD_ONLINE_STATUS || "online", // You can show online, idle, and dnd
