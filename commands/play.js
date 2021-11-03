@@ -40,12 +40,7 @@ module.exports = {
         `**Usage - **\`${GuildDB.prefix}play [song]\``
       );
     let CheckNode = client.Manager.nodes.get(client.botconfig.Lavalink.id);
-    let Searching = await message.channel
-      .send(":mag_right: Searching...")
-      .then((msg) => {
-        msg.delete({ timeout: prune });
-      })
-      .catch(console.log("Pruning Failed"));
+    let Searching = await message.channel.send(":mag_right: Searching...");
     if (!CheckNode || !CheckNode.connected) {
       return client.sendTime(
         message.channel,
@@ -99,11 +94,10 @@ module.exports = {
             false
           );
           //SongAddedEmbed.addField("Playlist duration", `\`${prettyMilliseconds(Searched.tracks, { colonNotation: true })}\``, false)
-          Searching.edit(SongAddedEmbed)
-            .then((msg) => {
-              msg.delete({ timeout: prune });
-            })
-            .catch(console.log("Pruning Failed"));
+          Searching.edit(SongAddedEmbed);
+          Searching.delete({ timeout: prune }).catch(
+            console.log("Pruning Failed")
+          );
         } else if (Searched.loadType.startsWith("TRACK")) {
           player.queue.add(
             TrackUtils.build(Searched.tracks[0], message.author)
@@ -126,11 +120,10 @@ module.exports = {
               `${player.queue.size - 0}`,
               true
             );
-          Searching.edit(SongAddedEmbed)
-            .then((msg) => {
-              msg.delete({ timeout: prune });
-            })
-            .catch(console.log("Pruning Failed"));
+          Searching.edit(SongAddedEmbed);
+          Searching.delete({ timeout: prune }).catch(
+            console.log("Pruning Failed")
+          );
         } else {
           return client.sendTime(
             message.channel,
@@ -178,11 +171,10 @@ module.exports = {
             })}\``,
             false
           );
-          Searching.edit(SongAddedEmbed)
-            .then((msg) => {
-              msg.delete({ timeout: prune });
-            })
-            .catch(console.log("Pruning Failed"));
+          Searching.edit(SongAddedEmbed);
+          Searching.delete({ timeout: prune }).catch(
+            console.log("Pruning Failed")
+          );
         } else {
           player.queue.add(Searched.tracks[0]);
           if (!player.playing && !player.paused && !player.queue.size)
@@ -207,11 +199,10 @@ module.exports = {
               `${player.queue.size - 0}`,
               true
             );
-          Searching.edit(SongAddedEmbed)
-            .then((msg) => {
-              msg.delete({ timeout: prune });
-            })
-            .catch(console.log("Pruning Failed"));
+          Searching.edit(SongAddedEmbed);
+          Searching.delete({ timeout: prune }).catch(
+            console.log("Pruning Failed")
+          );
         }
       }
     } catch (e) {
