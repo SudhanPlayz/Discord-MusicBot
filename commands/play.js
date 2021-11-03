@@ -40,7 +40,12 @@ module.exports = {
         `**Usage - **\`${GuildDB.prefix}play [song]\``
       );
     let CheckNode = client.Manager.nodes.get(client.botconfig.Lavalink.id);
-    let Searching = await message.channel.send(":mag_right: Searching...");
+    let Searching = await message.channel
+      .send(":mag_right: Searching...")
+      .then((msg) => {
+        msg.delete({ timeout: prune });
+      })
+      .catch(console.log("Pruning Failed"));
     if (!CheckNode || !CheckNode.connected) {
       return client.sendTime(
         message.channel,
