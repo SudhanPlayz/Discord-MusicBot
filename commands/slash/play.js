@@ -1,3 +1,4 @@
+// const { Manager } = require("erela.js/structures/Manager");
 const SlashCommand = require("../../lib/SlashCommand");
 
 const command = new SlashCommand()
@@ -51,13 +52,16 @@ const command = new SlashCommand()
         .setThumbnail(res.tracks[0].thumbnail)
         .setDescription(`[${res.tracks[0].title}](${res.tracks[0].uri})`)
         .addField("Author", res.tracks[0].author, true)
+        // snow duration of the current song
         .addField(
           "Duration",
-          `\`${client.ms(res.tracks[0].duration, {
-            colonNotation: true,
-          })}\``,
+          res.tracks[0].isStream
+            ? "LIVE"
+            : `${client.ms(res.tracks[0].duration, {
+              colonNotation: true,
+            })}`,
           true
-        );
+        )
       if (player.queue.totalSize > 1)
         embed.addField("Position in queue", `${player.queue.size - 0}`, true);
       return interaction.reply({ embeds: [embed] });
