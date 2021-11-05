@@ -11,7 +11,7 @@ const command = new SlashCommand()
       return interaction.reply({
         embeds: [
           client.ErrorEmbed(
-            "Bot must need to be in a voice channel to disconnect"
+            "There's nothing to skipped."
           ),
         ],
       });
