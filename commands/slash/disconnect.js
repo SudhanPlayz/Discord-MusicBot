@@ -7,17 +7,13 @@ const command = new SlashCommand()
     let player = client.manager.players.get(interaction.guild.id);
     if (!player)
       return interaction.reply({
-        embeds: [
-          client.ErrorEmbed(
-            "Theres nothing to disconnect!"
-          ),
-        ],
+        embeds: [client.ErrorEmbed("Theres nothing to disconnect!")],
       });
 
     player.destroy();
 
     interaction.reply({
-      embeds: [client.Embed(`Successfully left <#${channel.id}>!`)],
+      embeds: [client.Embed(`Disconnected!`)],
     });
   });
 

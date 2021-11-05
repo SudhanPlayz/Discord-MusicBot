@@ -15,30 +15,42 @@ const command = new SlashCommand()
     if (!channel) return;
 
     let node = await client.getLavalink(client);
-    if (!node)
+    if (!node) {
       return interaction.reply({
         embeds: [client.ErrorEmbed("Lavalink node is not connected")],
       });
+    }
 
     let query = options.getString("query", true);
     let player = client.createPlayer(interaction.channel, channel);
 
     if (player.state != "CONNECTED") await player.connect();
 
-    let res = await player.search(query, interaction.user);
+    await interaction.reply({ embeds: [client.Embed("Searching...")] });
+
+    let res = await player.search(query, interaction.user).catch((err) => {
+      client.error(err);
+      return {
+        loadType: "LOAD_FAILED",
+      };
+    });
 
     if (res.loadType === "LOAD_FAILED") {
       if (!player.queue.current) player.destroy();
-      return interaction.reply({
-        embeds: [client.ErrorEmbed("There was an error while searching")],
-      });
+      return interaction
+        .editReply({
+          embeds: [client.ErrorEmbed("There was an error while searching")],
+        })
+        .catch(this.warn);
     }
 
     if (res.loadType === "NO_MATCHES") {
       if (!player.queue.current) player.destroy();
-      return interaction.reply({
-        embeds: [client.ErrorEmbed("No results were found")],
-      });
+      return interaction
+        .editReply({
+          embeds: [client.ErrorEmbed("No results were found")],
+        })
+        .catch(this.warn);
     }
 
     if (res.loadType === "TRACK_LOADED" || res.loadType === "SEARCH_RESULT") {
@@ -48,23 +60,21 @@ const command = new SlashCommand()
       let embed = client
         .Embed()
         .setAuthor("Added to queue", client.config.iconURL)
-        // display the track thumnaill
         .setThumbnail(res.tracks[0].thumbnail)
         .setDescription(`[${res.tracks[0].title}](${res.tracks[0].uri})`)
         .addField("Author", res.tracks[0].author, true)
-        // snow duration of the current song
         .addField(
           "Duration",
           res.tracks[0].isStream
             ? "LIVE"
             : `${client.ms(res.tracks[0].duration, {
-              colonNotation: true,
-            })}`,
+                colonNotation: true,
+              })}`,
           true
-        )
+        );
       if (player.queue.totalSize > 1)
         embed.addField("Position in queue", `${player.queue.size - 0}`, true);
-      return interaction.reply({ embeds: [embed] });
+      return interaction.editReply({ embeds: [embed] }).catch(this.warn);
     }
 
     if (res.loadType === "PLAYLIST_LOADED") {
@@ -78,7 +88,6 @@ const command = new SlashCommand()
       let embed = client
         .Embed()
         .setAuthor("Playlist added to queue", client.config.iconURL)
-        // display thumnail of the first track
         .setThumbnail(res.tracks[0].thumbnail)
         .setDescription(`[${res.playlist.name}](${query})`)
         .addField("Enqueued", `\`${res.tracks.length}\` songs`, false)
@@ -89,7 +98,7 @@ const command = new SlashCommand()
           })}\``,
           false
         );
-      return interaction.reply({ embeds: [embed] });
+      return interaction.editReply({ embeds: [embed] }).catch(this.warn);
     }
   });
 

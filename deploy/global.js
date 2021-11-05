@@ -11,8 +11,10 @@ const LoadCommands = require("../util/loadCommands");
   });
 
   console.log("Deploying commands to global...");
-  await rest.put(Routes.applicationCommands(config.clientId), {
-    body: commands,
-  });
+  await rest
+    .put(Routes.applicationCommands(config.clientId), {
+      body: commands,
+    })
+    .catch(console.log);
   console.log("Successfully deployed commands!");
 })();

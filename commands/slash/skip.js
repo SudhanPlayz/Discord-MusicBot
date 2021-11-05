@@ -9,11 +9,7 @@ const command = new SlashCommand()
     let player = client.manager.players.get(interaction.guild.id);
     if (!player)
       return interaction.reply({
-        embeds: [
-          client.ErrorEmbed(
-            "There's nothing to skipped!"
-          ),
-        ],
+        embeds: [client.ErrorEmbed("There's nothing to skipped!")],
       });
 
     player.stop();

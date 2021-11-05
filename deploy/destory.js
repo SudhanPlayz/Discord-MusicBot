@@ -22,9 +22,11 @@ const rl = readline.createInterface({
       );
       for (let i = 0; i < commands.length; i++) {
         const cmd = commands[i];
-        await rest.delete(
-          Routes.applicationGuildCommand(config.clientId, guild, cmd.id)
-        );
+        await rest
+          .delete(
+            Routes.applicationGuildCommand(config.clientId, guild, cmd.id)
+          )
+          .catch(console.log);
         console.log("Deleted command: " + cmd.name);
       }
       if (commands.length === 0)

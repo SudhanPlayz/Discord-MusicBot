@@ -20,9 +20,11 @@ const rl = readline.createInterface({
     "Enter the guild id you wanted to deploy commands: ",
     async (guild) => {
       console.log("Deploying commands to guild...");
-      await rest.put(Routes.applicationGuildCommands(config.clientId, guild), {
-        body: commands,
-      });
+      await rest
+        .put(Routes.applicationGuildCommands(config.clientId, guild), {
+          body: commands,
+        })
+        .catch(console.log);
       console.log("Successfully deployed commands!");
       rl.close();
     }
