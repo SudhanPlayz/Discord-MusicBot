@@ -47,7 +47,8 @@ const command = new SlashCommand()
       let embed = client
         .Embed()
         .setAuthor("Added to queue", client.config.iconURL)
-        .setThumbnail(res.tracks[0].displayThumbnail())
+        // display the track thumnaill
+        .setThumbnail(res.tracks[0].thumbnail)
         .setDescription(`[${res.tracks[0].title}](${res.tracks[0].uri})`)
         .addField("Author", res.tracks[0].author, true)
         .addField(
@@ -73,7 +74,8 @@ const command = new SlashCommand()
       let embed = client
         .Embed()
         .setAuthor("Playlist added to queue", client.config.iconURL)
-        .setThumbnail(res.tracks[0].displayThumbnail())
+        // display thumnail of the first track
+        .setThumbnail(res.tracks[0].thumbnail)
         .setDescription(`[${res.playlist.name}](${query})`)
         .addField("Enqueued", `\`${res.tracks.length}\` songs`, false)
         .addField(
