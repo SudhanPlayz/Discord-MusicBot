@@ -9,7 +9,7 @@ const command = new SlashCommand()
       return interaction.reply({
         embeds: [
           client.ErrorEmbed(
-            "Bot must need to be in a voice channel to disconnect"
+            "Theres nothing to disconnect!"
           ),
         ],
       });

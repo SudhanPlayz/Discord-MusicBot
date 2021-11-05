@@ -11,7 +11,7 @@ const command = new SlashCommand()
       return interaction.reply({
         embeds: [
           client.ErrorEmbed(
-            "There's nothing to skipped."
+            "There's nothing to skipped!"
           ),
         ],
       });
