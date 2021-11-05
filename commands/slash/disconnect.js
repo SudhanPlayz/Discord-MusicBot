@@ -17,7 +17,7 @@ const command = new SlashCommand()
     player.destroy();
 
     interaction.reply({
-      embeds: [client.Embed(`Successfully left <#${player.voiceChannel.id}>!`)],
+      embeds: [client.Embed(`Successfully left <#${channel.id}>!`)],
     });
   });
 
