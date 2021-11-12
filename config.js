@@ -14,8 +14,8 @@ module.exports = {
       host: "",
       port: 80,
       password: "",
-      //retryAmount: 5, - Optional
-      //retryDelay: 1000, - Optional
+      retryAmount: 5, //- Optional
+      retryDelay: 1000, //- Optional
       //secure: false - Optional | Default: false
     },
   ], //Lavalink servers
