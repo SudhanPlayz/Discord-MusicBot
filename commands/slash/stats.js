@@ -25,7 +25,7 @@ const command = new SlashCommand()
         .setTitle(`Stats from` + ` \`${client.user.username}\``)
         .setFields([
             { name: ":ping_pong: Ping", value: `┕\`${client.ws.ping}ms\``, inline: true },
-            { name: ":clock2: Uptime", value: `┕\`${duration}\``, inline: true },
+            { name: ":clock2: Uptime", value: `┕\`${uptime}\``, inline: true },
             { name: ":file_cabinet: Memory", value: `┕\`${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)}MB\``, inline: true },
             { name: ":homes: Servers", value: `┕\`${client.guilds.cache.size}\``, inline: true },
             { name: ":green_book: Node", value: `┕\`${process.version}\``, inline: true },
@@ -36,7 +36,7 @@ const command = new SlashCommand()
         // display cpu usage in persentage
         // display uptime of lavalink
         .setDescription(`\`\`\`fix
-Total Players :: ${client.manager.nodes.values().next().value.stats.playingPlayers} out of ${client.manager.nodes.values().next().value.stats.players} connected clients
+Players :: ${client.manager.nodes.values().next().value.stats.playingPlayers} of ${client.manager.nodes.values().next().value.stats.players} Players Playing
 CPU Usage :: ${client.manager.nodes.values().next().value.stats.cpu.lavalinkLoad.toFixed(2) * 100}%
 \`\`\`
 `)

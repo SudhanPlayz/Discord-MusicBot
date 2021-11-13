@@ -41,6 +41,7 @@
     "erela.js-apple": "^1.2.2",
     "erela.js-deezer": "^1.0.7",
     "erela.js-facebook": "^1.0.4",
+    "genius-lyrics": "^4.3.4",
     "jsoning": "^0.12.22",
     "moment": "^2.29.1",
     "moment-duration-format": "^2.3.2",
