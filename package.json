@@ -42,7 +42,11 @@
     "erela.js-deezer": "^1.0.7",
     "erela.js-facebook": "^1.0.4",
     "jsoning": "^0.12.22",
+    "moment": "^2.29.1",
+    "moment-duration-format": "^2.3.2",
+    "os": "^0.1.2",
     "pretty-ms": "^7.0.1",
+    "systeminformation": "^5.9.12",
     "winston": "^3.3.3"
   },
   "devDependencies": {
