@@ -14,6 +14,7 @@ const command = new SlashCommand()
     let channel = await client.getChannel(client, interaction);
     if (!channel) return;
 
+
     let node = await client.getLavalink(client);
     if (!node) {
       return interaction.reply({
@@ -24,7 +25,12 @@ const command = new SlashCommand()
     let query = options.getString("query", true);
     let player = client.createPlayer(interaction.channel, channel);
 
-    if (player.state != "CONNECTED") await player.connect();
+    // connect then check if it's connected if not connect again
+    if (player.state != "CONNECTED") {
+      await player.connect();
+    }
+    // TODO: auto join stage channel.
+
 
     await interaction.reply({ embeds: [client.Embed("Searching...")] });
 
