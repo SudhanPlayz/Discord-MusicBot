@@ -60,8 +60,13 @@ const command = new SlashCommand()
       let embed = client
         .Embed()
         .setAuthor("Added to queue", client.config.iconURL)
-        .setThumbnail(res.tracks[0].thumbnail)
-        .setDescription(`[${res.tracks[0].title}](${res.tracks[0].uri})`)
+        .setThumbnail(
+          res.tracks[0].thumbnail
+            ? res.tracks[0].thumbnail
+            : "https://darrennathanael.com/cdn/spinningdisk.gif"
+        )
+        .setTitle(res.tracks[0].title)
+        .setURL(res.tracks[0].uri)
         .addField("Author", res.tracks[0].author, true)
         .addField(
           "Duration",

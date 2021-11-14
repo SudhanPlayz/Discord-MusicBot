@@ -1,10 +1,9 @@
 const SlashCommand = require("../../lib/SlashCommand");
-const erelastats = require("erela.js");
+const commit = require('git-last-commit');
 const { MessageEmbed } = require("discord.js");
 const moment = require("moment");
 require("moment-duration-format");
 const os = require('os');
-const prettyMs = require("pretty-ms");
 
 
 const duration = moment
@@ -18,8 +17,6 @@ const command = new SlashCommand()
   .setName("stats")
   .setDescription("Get stats for lavalink")
   .setRun(async (client, interaction, options) => {
-    let channel = await client.getChannel(client, interaction);
-    if (!channel) return;
     // create new embed
     const embed = new MessageEmbed()
         .setTitle(`Stats from` + ` \`${client.user.username}\``)
@@ -40,7 +37,6 @@ Players :: ${client.manager.nodes.values().next().value.stats.playingPlayers} of
 CPU Usage :: ${client.manager.nodes.values().next().value.stats.cpu.lavalinkLoad.toFixed(2) * 100}%
 \`\`\`
 `)
-    // Credits to https://dorndev.net/
     // Send the embed using interaction reply
     // TODO: @SudhanPlaz Fix this ok? just make color works thx!
     return interaction.reply({ embeds: [embed] });

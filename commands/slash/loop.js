@@ -10,11 +10,11 @@ const command = new SlashCommand()
         embeds: [client.ErrorEmbed("There's nothing to be looped!")],
       });
     }
-    if (!player.loop(false)) player.loop(true);
-    else if (!player.loop(true)) player.loop(false);
+    if (!player.setTrackRepeat(false)) player.setTrackRepeat(true);
+    else if (!player.setTrackRepeat(true)) player.setTrackRepeat(false);
 
     interaction.reply({
-      embeds: [client.Embed(`Loop has been set to ${player.loop}`)],
+      embeds: [client.Embed(`Loop has been set to ${player.setTrackRepeat}`)],
     });
   });
 
