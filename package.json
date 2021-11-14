@@ -8,7 +8,8 @@
     "rm-logs": "rm logs.log",
     "format": "prettier --write .",
     "lint": "prettier --check .",
-    "deploy": "node deploy/global"
+    "deploy": "node deploy/global",
+    "guild": "node deploy/guild"
   },
   "repository": {
     "type": "git",
@@ -42,6 +43,7 @@
     "erela.js-deezer": "^1.0.7",
     "erela.js-facebook": "^1.0.4",
     "genius-lyrics": "^4.3.4",
+    "git-last-commit": "^1.0.1",
     "jsoning": "^0.12.22",
     "moment": "^2.29.1",
     "moment-duration-format": "^2.3.2",
