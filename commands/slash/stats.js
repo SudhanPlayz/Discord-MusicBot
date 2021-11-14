@@ -12,8 +12,6 @@ const duration = moment
 
 
 
-
-
 const command = new SlashCommand()
   .setName("stats")
   .setDescription("Get stats for lavalink")
@@ -26,27 +24,11 @@ const command = new SlashCommand()
     const lavamemalocated = (client.manager.nodes.values().next().value.stats.memory.allocated / 1024 / 1024).toFixed(2);
 
     const embed = new MessageEmbed()
-        .setTitle(`Stats from` + ` \`${client.user.username}\``)
-        .setFields([
-            { name: ":ping_pong: Ping", value: `┕\`${client.ws.ping}ms\``, inline: true },
-            { name: ":clock2: Uptime", value: `┕\`${duration}\``, inline: true },
-            { name: ":file_cabinet: Memory", value: `┕\`${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)}MB\``, inline: true },
-            { name: ":homes: Servers", value: `┕\`${client.guilds.cache.size}\``, inline: true },
-            { name: ":green_book: Node", value: `┕\`${process.version}\``, inline: true },
-            { name: ":blue_book: Discord.Js", value: `┕\`v${require("discord.js").version}\``, inline: true }
-        ])
-        .setDescription(`
-**Lavalink stats**
-
-Uptime → \`${lavauptime}\`
-CPU Usage → \`${client.manager.nodes.values().next().value.stats.cpu.lavalinkLoad.toFixed(2) * 100}%\`
-RAM Usage → \`${lavaram}MB / ${lavamemalocated}MB\`
-Players → \`${client.manager.nodes.values().next().value.stats.playingPlayers} of ${client.manager.nodes.values().next().value.stats.players} Players Playing\`
-
-**Bot Stats**
-`)
-    // Send the embed using interaction reply
-    // TODO: @SudhanPlaz Fix this ok? just make color works thx!
+    .setTitle(`Stats from` + ` \`${client.user.username}\``)
+    .setFields([
+        { name: "**Bot Statistic**", value: `📶 Ping • \`${client.ws.ping}ms\n\`:file_cabinet: Memory • \`${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)}MB\`\n\n🕒 Uptime • \`${duration}\`\n👨‍💻 Servers • \`${client.guilds.cache.size}\``, inline: true },
+        { name: "**Lavalink Statistic**", value: `🖥 CPU Load • \`${client.manager.nodes.values().next().value.stats.cpu.lavalinkLoad.toFixed(2) * 100}%\`\n:file_cabinet: Memory • \`${lavaram}MB / ${lavamemalocated}MB\`\n\n🕒 Uptime • \`${lavauptime}\`\n🎵 Players • \`${client.manager.nodes.values().next().value.stats.playingPlayers} / ${client.manager.nodes.values().next().value.stats.players} playing\``, inline: true },
+    ])
     return interaction.reply({ embeds: [embed] });
     })
 

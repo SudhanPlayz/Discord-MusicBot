@@ -68,7 +68,7 @@ const command = new SlashCommand()
         .setAuthor("Added to queue", client.config.iconURL)
         // display thumbnail
         .setThumbnail(res.tracks[0].thumbnail)
-        .setTitle(res.tracks[0].title)
+        .setTitle(res.tracks[0].title || "Unknown")
         .setURL(res.tracks[0].uri)
         .addField("Author", res.tracks[0].author, true)
         .addField(
