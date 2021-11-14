@@ -14,7 +14,7 @@ const command = new SlashCommand()
     else if (!player.setTrackRepeat(true)) player.setTrackRepeat(false);
 
     interaction.reply({
-      embeds: [client.Embed(`Loop has been set to ${player.setTrackRepeat}`)],
+      embeds: [client.Embed(`Loop has been toggled`)],
     });
   });
 
