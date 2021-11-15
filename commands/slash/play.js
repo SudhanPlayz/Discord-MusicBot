@@ -22,17 +22,19 @@ const command = new SlashCommand()
       });
     }
 
+    // !BUG: if you play .mp3 files, it will not play, but if you play redirection links to mp3, it will play
     let query = options.getString("query", true);
     let player = client.createPlayer(interaction.channel, channel);
 
     // connect then check if it's connected if not connect again
     if (player.state != "CONNECTED") {
-      await player.connect();
+      player.connect();
     }
     // TODO: auto join stage channel.
 
 
     await interaction.reply({ embeds: [client.Embed("Searching...")] });
+
 
     let res = await player.search(query, interaction.user).catch((err) => {
       client.error(err);
@@ -67,7 +69,7 @@ const command = new SlashCommand()
         .Embed()
         .setAuthor("Added to queue", client.config.iconURL)
         // display thumbnail
-        .setThumbnail(res.tracks[0].thumbnail)
+        .setThumbnail(res.tracks[0].displayThumbnail(`maxresdefault`) || res.tracks[0].thumbnail)
         .setTitle(res.tracks[0].title || "Unknown")
         .setURL(res.tracks[0].uri)
         .addField("Author", res.tracks[0].author, true)
