@@ -16,7 +16,7 @@ module.exports = {
       password: "",
       retryAmount: 5, //- Optional
       retryDelay: 1000, //- Optional
-      //secure: false - Optional | Default: false
+      //secure: true //- Optional | Default: false
     },
   ], //Lavalink servers
   embedColor: "BLUE", //Color of the embeds
