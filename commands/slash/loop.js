@@ -8,14 +8,14 @@ const command = new SlashCommand()
     let player = client.manager.players.get(interaction.guild.id);
     if (!player) {
       return interaction.reply({
-        embeds: [client.ErrorEmbed("There is no music playing")],
+        embeds: [client.ErrorEmbed("❌ | **Nothing is playing right now...**")],
       });
     }
     if (!interaction.member.voice.channel) {
       const JoinEmbed = new MessageEmbed()
         .setColor(client.config.embedColor)
         .setDescription(
-          "You need to join voice channel first before you can use this command"
+          "❌ | You must be in a voice channel to use this command."
         );
       return interaction.reply({ embeds: [JoinEmbed], ephemeral: true });
     }
@@ -28,7 +28,7 @@ const command = new SlashCommand()
     ) {
       const SameEmbed = new MessageEmbed()
         .setColor(client.config.embedColor)
-        .setDescription("You must be in the same voice channel as me.");
+        .setDescription("❌ | **You must be in the same voice channel as me to use this command!**");
       return interaction.reply({ embeds: [SameEmbed], ephemeral: true });
     }
     if (player.setTrackRepeat(!player.trackRepeat));

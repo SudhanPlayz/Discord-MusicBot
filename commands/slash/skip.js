@@ -13,7 +13,7 @@ const command = new SlashCommand()
       });
 
     player.stop();
-    interaction.reply({ embeds: [client.Embed("skiped yay")] });
+    interaction.reply({ embeds: [client.Embed("✅ | **Skipped!**")] });
   });
 
 module.exports = command;
