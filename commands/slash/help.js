@@ -5,7 +5,9 @@ const command = new SlashCommand()
   .setDescription("Shows help commands")
   .setRun(async (client, interaction) => {
     interaction.reply({
-      embeds: [client.Embed(`You press \`/\` and it shows command, thank me later`)],
+      embeds: [
+        client.Embed(`You press \`/\` and it shows command, thank me later`),
+      ],
     });
   });
 

@@ -12,12 +12,12 @@ const command = new SlashCommand()
       });
     }
     if (player.setTrackRepeat(!player.trackRepeat));
-      const trackRepeat = player.trackRepeat ? "enabled" : "disabled";
-     
-     let loopembed = new MessageEmbed()
-    .setColor(client.config.embedColor)
-    .setDescription(`Loop track is now \`${trackRepeat}\``)
-    interaction.reply({embeds: [loopembed]});
-    });
+    const trackRepeat = player.trackRepeat ? "enabled" : "disabled";
+
+    let loopembed = new MessageEmbed()
+      .setColor(client.config.embedColor)
+      .setDescription(`Loop track is now \`${trackRepeat}\``);
+    interaction.reply({ embeds: [loopembed] });
+  });
 
 module.exports = command;
