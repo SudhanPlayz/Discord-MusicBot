@@ -29,23 +29,10 @@ module.exports = async (client, interaction) => {
     }, 5000);
     return;
   }
-
+  
+  // !BUG no previous queue
   if (property === "Replay") {
-    if (!player.queue.previous)
-      interaction
-        .reply({
-          embeds: [client.ErrorEmbed("There is no previous played song")],
-        })
-        .then(() => {
-          setTimeout(() => {
-            interaction.deleteReply();
-          }, 5000);
-        });
-
-    player.queue.unshift(player.queue.previous);
-    player.queue.unshift(player.queue.current);
     player.stop();
-    return interaction.deferUpdate();
   }
 
   if (property === "PlayAndPause") {
