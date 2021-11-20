@@ -17,7 +17,7 @@ const command = new SlashCommand()
       const JoinEmbed = new MessageEmbed()
         .setColor(client.config.embedColor)
         .setDescription(
-          "You have to join voice channel first before you can use this command"
+          "❌ | **You must be in a voice channel to use this command!**"
         );
       return interaction.reply({ embeds: [JoinEmbed], ephemeral: true });
     }
@@ -31,7 +31,7 @@ const command = new SlashCommand()
       const SameEmbed = new MessageEmbed()
         .setColor(client.config.embedColor)
         .setDescription(
-          "You must be in the same voice channel as me first before you can use this command"
+          "❌ | **You must be in the same voice channel as me to use this command!**"
         );
       return interaction.reply({ embeds: [SameEmbed], ephemeral: true });
     }
