@@ -9,28 +9,28 @@ const command = new SlashCommand()
     if (!player) {
       const QueueEmbed = new MessageEmbed()
       .setColor(client.config.embedColor)
-      .setDescription("There's nothing playing in the queue")
+      .setDescription("❌ | **Nothing is playing right now...**")
       return interaction.reply({ embeds: [QueueEmbed], ephemeral:true });
     }
 
     if (!interaction.member.voice.channel) {
       const JoinEmbed = new MessageEmbed()
       .setColor(client.config.embedColor)
-      .setDescription("You have to join voice channel first before you can use this command")
+      .setDescription("❌ | **You must be in a voice channel to use this command!**")
       return interaction.reply({ embeds: [JoinEmbed], ephemeral: true })
     }
 
     if (interaction.guild.me.voice.channel && !interaction.guild.me.voice.channel.equals(interaction.member.voice.channel)) {
       const SameEmbed = new MessageEmbed()
       .setColor(client.config.embedColor)
-      .setDescription("You must be in the same voice channel as me first before you can use this command")
+      .setDescription("❌ | **You must be in the same voice channel as me to use this command!**")
       return interaction.reply({ embeds: [SameEmbed], ephemeral: true })
     }
 
     if (!player.queue || !player.queue.length || player.queue.length === 0) {
         let cembed = new MessageEmbed()
         .setColor(client.config.embedColor)
-        .setDescription("There's not enough track to remove")
+        .setDescription("❌ | **Invalid, Not enough track to be cleared.**")
 
         return interaction.reply({ embeds: [cembed], ephemeral: true })
     }
@@ -39,7 +39,7 @@ const command = new SlashCommand()
 
     let clearembed = new MessageEmbed()
     .setColor(client.config.embedColor)
-    .setDescription(`Clear all tracks from queue`)
+    .setDescription(`✅ | **Cleared the queue!**`)
 
     return interaction.reply({ embeds: [clearembed] })
 
