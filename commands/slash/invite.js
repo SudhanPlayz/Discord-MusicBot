@@ -9,7 +9,7 @@ const command = new SlashCommand()
       .setColor(client.config.embedColor)
       .setTitle(`Invite me to your server`)
       .setDescription(
-        `You can invite me to your server by clicking [here](https://discord.com/oauth2/authorize?client_id=${client.config.clientId}&permissions=0&scope=bot%20applications.commands)`
+        `You can invite me to your server by clicking [here](https://discord.com/oauth2/authorize?client_id=${client.config.clientId}&permissions=${client.config.permissions}&scope=bot%20applications.commands)`
       );
     return interaction.reply({ embeds: [embed] });
   });
