@@ -13,16 +13,23 @@ const command = new SlashCommand()
     }
     if (!interaction.member.voice.channel) {
       const JoinEmbed = new MessageEmbed()
-      .setColor(client.config.embedColor)
-      .setDescription("You need to join voice channel first before you can use this command")
-      return interaction.reply({ embeds: [JoinEmbed], ephemeral: true })
+        .setColor(client.config.embedColor)
+        .setDescription(
+          "You need to join voice channel first before you can use this command"
+        );
+      return interaction.reply({ embeds: [JoinEmbed], ephemeral: true });
     }
 
-    if (interaction.guild.me.voice.channel && !interaction.guild.me.voice.channel.equals(interaction.member.voice.channel)) {
+    if (
+      interaction.guild.me.voice.channel &&
+      !interaction.guild.me.voice.channel.equals(
+        interaction.member.voice.channel
+      )
+    ) {
       const SameEmbed = new MessageEmbed()
-      .setColor(client.config.embedColor)
-      .setDescription("You must be in the same voice channel as me.")
-      return interaction.reply({ embeds: [SameEmbed], ephemeral: true })
+        .setColor(client.config.embedColor)
+        .setDescription("You must be in the same voice channel as me.");
+      return interaction.reply({ embeds: [SameEmbed], ephemeral: true });
     }
     if (player.setTrackRepeat(!player.trackRepeat));
     const trackRepeat = player.trackRepeat ? "enabled" : "disabled";
