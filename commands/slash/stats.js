@@ -1,8 +1,6 @@
 const SlashCommand = require("../../lib/SlashCommand");
 const moment = require("moment");
 require("moment-duration-format");
-const os = require("os");
-const prettyMs = require("pretty-ms");
 const { MessageEmbed } = require("discord.js");
 
 const command = new SlashCommand()
@@ -32,6 +30,7 @@ const command = new SlashCommand()
 
     const embed = new MessageEmbed()
       .setTitle(`Stats from` + ` \`${client.user.username}\``)
+      .setColor(client.config.embedColor)
       .setFields([
         {
           name: "**Bot Statistic**",
