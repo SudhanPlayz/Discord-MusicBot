@@ -66,17 +66,28 @@ module.exports = async (client, interaction) => {
   }
 
   if (property === "HighVolume") {
-    player.setVolume(player.volume + 10);
-    interaction.reply({
-      embeds: [
-        client.Embed("Successfully set server volume to " + player.volume),
-      ],
-    });
-    setTimeout(() => {
-      interaction.deleteReply();
-    }, 5000);
+    // increase volume by 10% else if volume at 200% do nothing
+    if (player.volume < 100) {
+      player.setVolume(player.volume + 5);
+      interaction.reply({
+        embeds: [
+          client.Embed("Successfully set server volume to " + player.volume),
+        ],
+      });
+      setTimeout(() => {
+        interaction.deleteReply();
+      }, 5000);
+    } else {
+      interaction.reply({
+        embeds: [client.Embed("Volume is at max")],
+      });
+      setTimeout(() => {
+        interaction.deleteReply();
+      }, 5000);
+    }
     return;
   }
+
 
   return interaction.reply({
     ephemeral: true,
