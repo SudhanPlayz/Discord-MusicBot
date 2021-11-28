@@ -23,12 +23,12 @@ module.exports = {
   embedColor: "BLUE", //Color of the embeds
   presence: {
     //PresenceData object | https://discord.js.org/#/docs/main/stable/typedef/PresenceData
-    status: "idle", // You can have online, idle, and dnd
+    status: "idle", // You can have online, idle, and dnd(invisible too but it make people think the bot is offline)
     activities: [
       {
         name: "Music", //Status Text
         type: "LISTENING", // PLAYING, WATCHING, LISTENING, STREAMING
-        url: "https://twitch.tv/jeffbezos", // Link streaming url
+        url: "https://github.com/SudhanPlayz/Discord-MusicBot", // Link streaming url
       },
     ],
   },

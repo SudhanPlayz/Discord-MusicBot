@@ -29,37 +29,40 @@ const command = new SlashCommand()
     let channel = await client.getChannel(client, interaction);
 
     fetch(`https://discord.com/api/v8/channels/${channel.id}/invites`, {
-        method: "POST",
-        body: JSON.stringify({
-          max_age: 86400,
-          max_uses: 0,
-          target_application_id: "755600276941176913",
-          target_type: 2,
-          temporary: false,
-          validate: null,
-    }), 
-        headers: {
-          "Authorization": `Bot ${client.config.token}`,
-          "Content-Type": "application/json",
-        }
-      }).then(async (res) => {
-        if (res.status !== 200) {
-          console.log(res.status);
-          return interaction.reply(
-            "There was an error creating the invite. Please try again later."
-          );
-        }
-    const invite = await res.json();
-    const Embed = new MessageEmbed()
-      .setAuthor(`YouTube Together`, "https://darrennathanael.com/cdn/youtube.png")
-      .setColor(client.config.embedColor)
-      .setDescription(`Using **YouTube Together** you can watch YouTube with your friends in a Voice Channel. Click *Join YouTube Together* to join in!
+      method: "POST",
+      body: JSON.stringify({
+        max_age: 86400,
+        max_uses: 0,
+        target_application_id: "755600276941176913",
+        target_type: 2,
+        temporary: false,
+        validate: null,
+      }),
+      headers: {
+        Authorization: `Bot ${client.config.token}`,
+        "Content-Type": "application/json",
+      },
+    }).then(async (res) => {
+      if (res.status !== 200) {
+        console.log(res.status);
+        return interaction.reply(
+          "There was an error creating the invite. Please try again later."
+        );
+      }
+      const invite = await res.json();
+      const Embed = new MessageEmbed()
+        .setAuthor(
+          `YouTube Together`,
+          "https://darrennathanael.com/cdn/youtube.png"
+        )
+        .setColor(client.config.embedColor)
+        .setDescription(`Using **YouTube Together** you can watch YouTube with your friends in a Voice Channel. Click *Join YouTube Together* to join in!
       
       __**[Join YouTube Together](https://discord.com/invite/${invite.code})**__
 
       ⚠ **Note:** This only works in Desktop`);
-    return interaction.reply({ embeds: [Embed] });
+      return interaction.reply({ embeds: [Embed] });
+    });
   });
-});
-  
+
 module.exports = command;

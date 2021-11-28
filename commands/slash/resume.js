@@ -30,7 +30,9 @@ const command = new SlashCommand()
     ) {
       const SameEmbed = new MessageEmbed()
         .setColor(client.config.embedColor)
-        .setDescription("❌ | **You must be in the same voice channel as me to use this command!**");
+        .setDescription(
+          "❌ | **You must be in the same voice channel as me to use this command!**"
+        );
       return interaction.reply({ embeds: [SameEmbed], ephemeral: true });
     }
 

@@ -29,7 +29,7 @@ module.exports = async (client, interaction) => {
     }, 5000);
     return;
   }
-  
+
   // !BUG no previous queue
   if (property === "Replay") {
     player.stop();
@@ -74,7 +74,6 @@ module.exports = async (client, interaction) => {
     }
     return;
   }
-
 
   return interaction.reply({
     ephemeral: true,
