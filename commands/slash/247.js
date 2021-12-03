@@ -8,15 +8,15 @@ const command = new SlashCommand()
     const player = interaction.client.manager.players.get(interaction.guild.id);
     if (!player) {
       return interaction.reply({
-        embeds: [client.ErrorEmbed("There's nothing to play 24/7!")],
+        embeds: [client.ErrorEmbed("❌ | **There's nothing to play 24/7!**")],
       });
     } else if (player.twentyFourSeven) {
       player.twentyFourSeven = false;
-      const embed = client.Embed(`24/7 mode is now off.`);
+      const embed = client.Embed(`❌ | **24/7 mode is now off.**`);
       return interaction.reply({ embeds: [embed] });
     } else {
       player.twentyFourSeven = true;
-      const embed = client.Embed(`24/7 mode is now on.`);
+      const embed = client.Embed(`❌ | **24/7 mode is now on.**`);
       return interaction.reply({ embeds: [embed] });
     }
   });
