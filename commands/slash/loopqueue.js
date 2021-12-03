@@ -15,7 +15,7 @@ const command = new SlashCommand()
       const JoinEmbed = new MessageEmbed()
         .setColor(client.config.embedColor)
         .setDescription(
-          "You need to join voice channel first before you can use this command"
+          "❌ | **You need to join voice channel first before you can use this command.**"
         );
       return interaction.reply({ embeds: [JoinEmbed], ephemeral: true });
     }
@@ -28,7 +28,7 @@ const command = new SlashCommand()
     ) {
       const SameEmbed = new MessageEmbed()
         .setColor(client.config.embedColor)
-        .setDescription("You must be in the same voice channel as me.");
+        .setDescription("❌ | **You must be in the same voice channel as me.**");
       return interaction.reply({ embeds: [SameEmbed], ephemeral: true });
     }
     if (player.setQueueRepeat(!player.queueRepeat));
@@ -36,7 +36,7 @@ const command = new SlashCommand()
 
     let loopembed = new MessageEmbed()
       .setColor(client.config.embedColor)
-      .setDescription(`Loop queue is now \`${queueRepeat}\``);
+      .setDescription(`❌ | **Loop queue is now \`${queueRepeat}\`**`);
     interaction.reply({ embeds: [loopembed] });
   });
 
