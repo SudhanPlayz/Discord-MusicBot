@@ -9,7 +9,7 @@ const command = new SlashCommand()
     if (!player) {
       const QueueEmbed = new MessageEmbed()
         .setColor(client.config.embedColor)
-        .setDescription("❌ | Nothing is playing right now...");
+        .setDescription("❌ | **Nothing is playing right now...**");
       return interaction.reply({ embeds: [QueueEmbed], ephemeral: true });
     }
 
@@ -39,7 +39,7 @@ const command = new SlashCommand()
     if (player.paused) {
       let pembed = new MessageEmbed()
         .setColor(client.config.embedColor)
-        .setDescription("Current playing track is already paused");
+        .setDescription("❌ | **Current playing track is already paused!**");
       return interaction.reply({ embeds: [pembed], ephemeral: true });
     }
 
