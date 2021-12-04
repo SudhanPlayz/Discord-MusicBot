@@ -122,12 +122,12 @@ Then once done save it then restart apache.
 > for https support use https://letsencrypt.org/
 
 
-#### Dashboard with IP
+<!-- #### Dashboard with IP
 
 - open port 80, Then edit the `botconfig.js` and change the `Port` on line `5`, change it to 80, `Website` line `18` to `https://192.yourserverip.0.0`
 
 ![BangExample](https://i.imgur.com/4t4Zm2a.png)
 
-- Go to the Discord Developer Portal under the OAuth2 tab. Then put your server ip in this format `http://yourip.yes.number.only/api/callback`
+- Go to the Discord Developer Portal under the OAuth2 tab. Then put your server ip in this format `http://69.69.69.69/api/callback`
 
-![Example](https://i.imgur.com/JmxmdM0.png)
+![Example](https://i.imgur.com/JmxmdM0.png) -->
