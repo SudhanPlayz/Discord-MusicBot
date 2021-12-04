@@ -9,7 +9,8 @@
     "format": "prettier --write .",
     "lint": "prettier --check .",
     "deploy": "node deploy/global",
-    "guild": "node deploy/guild"
+    "guild": "node deploy/guild",
+    "build:docs": "cd documentation && mkdocs build -d public"
   },
   "repository": {
     "type": "git",
