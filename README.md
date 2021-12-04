@@ -4,7 +4,7 @@
 
 - [Node.js 16+](https://nodejs.org/en/download/)
 - discord.js@13.2.0 or above
-- [Lavalink Server](https://github.com/freyacodes/Lavalink#server-configuration)
+- [Lavalink Server](https://code.darrennathanael.com/how-to-lavalink)
 
 > NOTE: Lavalink is needed for music functionality. You need to have a working Lavalink server to make the bot work.
 
