@@ -30,15 +30,9 @@ follow [those](https://github.com/nodesource/distributions) instructions
 
 ### lavalink
 
-use
+use [public lavalink](https://lavalink-list.darrennathanael.com)
 
-```
-host: "lava.link",
-port: 80,
-pass: "youshallnotpass"
-```
-
-or [host your own](https://github.com/freyacodes/Lavalink)
+or [host your own](https://code.darrennathanael.com/how-to-lavalink)
 
 ### Final steps
 
@@ -63,7 +57,7 @@ Then enter this example config
 ```c
 server {
     listen 80;
-    server_name example.co,;
+    server_name foo.bar;
 
     location / {
         proxy_set_header   X-Forwarded-For $remote_addr;
@@ -73,9 +67,60 @@ server {
 }
 ```
 
-> Replace `example.com` with your domain
+then saved it and quit `:wq`
 
-##### [not done] With Apache
+> Replace `foo.bar` with your domain
+> for https support use https://letsencrypt.org/
+
+##### With Apache
+
+
+**Apache Conf file**
+Go to your apache configuration file then paste this in
+```apache
+<VirtualHost *:80>
+    ServerAdmin wilbur@example.com
+    DocumentRoot "/path/to/bot/file"
+    ServerName example.com
+    ServerAlias example.com
+    #errorDocument 404 /404.html
+
+
+	#Referenced reverse proxy rule, if commented, the configured reverse proxy will be invalid
+    #Take a note of this dir
+	IncludeOptional /server/apache/proxy/example.com/*.conf
+
+    #DENY FILES
+     <Files ~ (\.user.ini|\.htaccess|\.git|\.svn|\.project|LICENSE|README.md)$>
+       Order allow,deny
+       Deny from all
+    </Files>
+    
+</VirtualHost>
+```
+
+
+**Apache Reverse Proxy file**
+> put it in /server/apache/proxy/example.com/discordbot.conf 
+
+Make a new file at your config dir, above for reference
+```apache
+#PROXY-START/
+<IfModule mod_proxy.c>
+    ProxyRequests Off
+    SSLProxyEngine on
+    ProxyPass / http://127.0.0.1:3000/
+    ProxyPassReverse / http://127.0.0.1:3000/
+    </IfModule>
+#PROXY-END/
+```
+
+Then once done save it then restart apache.
+
+
+> Replace `example.com` with your domain
+> for https support use https://letsencrypt.org/
+
 
 #### Dashboard with IP
 
