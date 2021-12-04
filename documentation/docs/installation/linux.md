@@ -74,9 +74,9 @@ then saved it and quit `:wq`
 
 ##### With Apache
 
-
 **Apache Conf file**
 Go to your apache configuration file then paste this in
+
 ```apache
 <VirtualHost *:80>
     ServerAdmin wilbur@example.com
@@ -95,15 +95,16 @@ Go to your apache configuration file then paste this in
        Order allow,deny
        Deny from all
     </Files>
-    
+
 </VirtualHost>
 ```
 
-
 **Apache Reverse Proxy file**
-> put it in /server/apache/proxy/example.com/discordbot.conf 
+
+> put it in /server/apache/proxy/example.com/discordbot.conf
 
 Make a new file at your config dir, above for reference
+
 ```apache
 #PROXY-START/
 <IfModule mod_proxy.c>
@@ -117,10 +118,8 @@ Make a new file at your config dir, above for reference
 
 Then once done save it then restart apache.
 
-
 > Replace `example.com` with your domain
 > for https support use https://letsencrypt.org/
-
 
 <!-- #### Dashboard with IP
 

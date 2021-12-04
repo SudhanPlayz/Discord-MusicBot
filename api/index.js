@@ -1,5 +1,5 @@
 const express = require("express");
-const fs = require("fs")
+const fs = require("fs");
 const { EventEmitter } = require("events");
 const { join } = require("path");
 const getConfig = require("../util/getConfig");

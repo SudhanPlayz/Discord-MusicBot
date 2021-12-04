@@ -15,8 +15,6 @@ const command = new SlashCommand()
     if (!player) {
       player = client.createPlayer(interaction.channel, channel);
       player.connect(true);
-
-        
     }
 
     if (channel.id !== player.voiceChannel) {
@@ -25,7 +23,9 @@ const command = new SlashCommand()
     }
 
     interaction.reply({
-      embeds: [client.Embed(`:thumbsup: | **Successfully joined <#${channel.id}>!**`)],
+      embeds: [
+        client.Embed(`:thumbsup: | **Successfully joined <#${channel.id}>!**`),
+      ],
     });
   });
 

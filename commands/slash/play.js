@@ -31,7 +31,9 @@ const command = new SlashCommand()
     }
     // TODO: auto join stage channel.
 
-    await interaction.reply({ embeds: [client.Embed(":mag_right: **Searching...**")] });
+    await interaction.reply({
+      embeds: [client.Embed(":mag_right: **Searching...**")],
+    });
 
     let res = await player.search(query, interaction.user).catch((err) => {
       client.error(err);

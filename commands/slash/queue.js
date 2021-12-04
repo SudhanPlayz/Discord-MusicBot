@@ -14,16 +14,20 @@ const command = new SlashCommand()
     }
     const queue = player.queue;
     if (queue.length === 0) {
-        return interaction.reply({
-            embeds: [client.ErrorEmbed("**There's nothing in the queue**")],
-        });
+      return interaction.reply({
+        embeds: [client.ErrorEmbed("**There's nothing in the queue**")],
+      });
     }
     const embed = new MessageEmbed()
-        .setColor(client.config.embedColor)
-        .setTitle("Server Queue")
-        .setDescription(queue.map((song, index) => `${index + 1}. [${song.title}](${song.uri})`).join("\n"))
-        .setFooter(`there are ${queue.length} songs in queue`);
+      .setColor(client.config.embedColor)
+      .setTitle("Server Queue")
+      .setDescription(
+        queue
+          .map((song, index) => `${index + 1}. [${song.title}](${song.uri})`)
+          .join("\n")
+      )
+      .setFooter(`there are ${queue.length} songs in queue`);
     return interaction.reply({ embeds: [embed] });
-    });
+  });
 
 module.exports = command;
