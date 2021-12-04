@@ -28,7 +28,7 @@ module.exports = {
       {
         name: "Music", //Status Text
         type: "LISTENING", // PLAYING, WATCHING, LISTENING, STREAMING
-        url: "https://github.com/SudhanPlayz/Discord-MusicBot", // Link streaming url
+        url: "https://cdn.darrennathanael.com/icons/spinning_disk.gif", // Link streaming url
       },
     ],
   },

@@ -8,13 +8,15 @@ const command = new SlashCommand()
     let node = await client.getLavalink(client);
     if (!node)
       return interaction.reply({
-        embeds: [client.ErrorEmbed("❌ | **Lavalink node not connected**")],
+        embeds: [client.ErrorEmbed("**Lavalink node not connected**")],
       });
 
     let player = client.manager.players.get(interaction.guild.id);
     if (!player) {
       player = client.createPlayer(interaction.channel, channel);
-      player.connect();
+      player.connect(true);
+
+        
     }
 
     if (channel.id !== player.voiceChannel) {
