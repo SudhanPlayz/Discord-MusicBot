@@ -12,16 +12,16 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Prettify the files
+      - name: ✨ Prettify the files
         run: npx prettier --write .
 
-      - name: Declaring variables
+      - name: 📝 Declaring variables
         id: vars
         shell: bash
         run: |
           echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
           
-      - name: Check for any changes
+      - name: 🔍 Check for any changes
         run: |
           STATUS_ARGS=$1
           PATHSPEC=$2
@@ -37,8 +37,7 @@ jobs:
 
           echo ::set-output name=changed::$(check)
        
-
-      - name: Publish to github
+      - name: 🚀 Publish to github
         run: |
           if [ ${{ steps.vars.outputs.changed }} = "1" ];
           then
