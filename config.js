@@ -20,7 +20,7 @@ module.exports = {
       //secure: true //- Optional | Default: false
     },
   ], //Lavalink servers
-  embedColor: "BLUE", //Color of the embeds
+  embedColor: "BLUE", //Color of the embeds, hex supported
   presence: {
     //PresenceData object | https://discord.js.org/#/docs/main/stable/typedef/PresenceData
     status: "idle", // You can have online, idle, and dnd(invisible too but it make people think the bot is offline)
