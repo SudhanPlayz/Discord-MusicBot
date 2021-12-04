@@ -8,7 +8,7 @@ const command = new SlashCommand()
     let node = await client.getLavalink(client);
     if (!node)
       return interaction.reply({
-        embeds: [client.ErrorEmbed("Lavalink node not connected")],
+        embeds: [client.ErrorEmbed("❌ | **Lavalink node not connected**")],
       });
 
     let player = client.manager.players.get(interaction.guild.id);
@@ -23,7 +23,7 @@ const command = new SlashCommand()
     }
 
     interaction.reply({
-      embeds: [client.Embed(`Successfully joined <#${channel.id}>!`)],
+      embeds: [client.Embed(`:thumbsup: | **Successfully joined <#${channel.id}>!**`)],
     });
   });
 

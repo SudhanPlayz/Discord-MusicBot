@@ -36,7 +36,7 @@ const command = new SlashCommand()
     player.destroy();
 
     interaction.reply({
-      embeds: [client.Embed(`:notes: | **Disconnected!**`)],
+      embeds: [client.Embed(`:wave: | **Disconnected!**`)],
     });
   });
 

@@ -39,7 +39,7 @@ const command = new SlashCommand()
     if (!player.paused) {
       let ResumedEmbed = new MessageEmbed()
         .setColor(client.config.embedColor)
-        .setDescription("Current track is already resumed");
+        .setDescription("❌ | **Current track is already resumed**");
       return interaction.reply({ embeds: [ResumedEmbed], ephemeral: true });
     }
 

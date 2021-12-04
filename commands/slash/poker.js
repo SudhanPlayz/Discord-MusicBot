@@ -26,7 +26,7 @@ const command = new SlashCommand()
         .setDescription("You must be in the same voice channel as me.");
       return interaction.reply({ embeds: [SameEmbed], ephemeral: true });
     }
-    async let channel = await client.getChannel(client, interaction);
+    let channel = await client.getChannel(client, interaction);
 
     fetch(`https://discord.com/api/v8/channels/${channel.id}/invites`, {
       method: "POST",
