@@ -40,7 +40,7 @@ jobs:
 
       - name: Publish to github
         run: |
-          if [ ${{ changed }} = "1" ];
+          if [ ${{ steps.vars.outputs.changed }} = "1" ];
           then
             git add .
             git config --local user.email "55418697+sudhanplayz@users.noreply.github.com"
