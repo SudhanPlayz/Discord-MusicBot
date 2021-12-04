@@ -28,7 +28,9 @@ const command = new SlashCommand()
     ) {
       const SameEmbed = new MessageEmbed()
         .setColor(client.config.embedColor)
-        .setDescription("❌ | **You must be in the same voice channel as me.**");
+        .setDescription(
+          "❌ | **You must be in the same voice channel as me.**"
+        );
       return interaction.reply({ embeds: [SameEmbed], ephemeral: true });
     }
     if (player.setQueueRepeat(!player.queueRepeat));

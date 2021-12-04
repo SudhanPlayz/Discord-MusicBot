@@ -12,15 +12,18 @@ const command = new SlashCommand()
       });
       // check current playing song
     } else {
-        const song = player.queue.current;
-        const embed = new MessageEmbed()
-            .setColor(client.config.embedColor)
-            .setTitle(`Current Song: ${song.title}`, "https://cdn.darrennathanael.com/icons/spinning_disk.gif")
-            .setURL(song.uri)
-            .setDescription(`**Requested by:** ${song.requester}`)
-            .setThumbnail(song.displayThumbnail("maxresdefault"))
-        return interaction.reply({ embeds: [embed] });
+      const song = player.queue.current;
+      const embed = new MessageEmbed()
+        .setColor(client.config.embedColor)
+        .setTitle(
+          `Current Song: ${song.title}`,
+          "https://cdn.darrennathanael.com/icons/spinning_disk.gif"
+        )
+        .setURL(song.uri)
+        .setDescription(`**Requested by:** ${song.requester}`)
+        .setThumbnail(song.displayThumbnail("maxresdefault"));
+      return interaction.reply({ embeds: [embed] });
     }
-    });
+  });
 
 module.exports = command;

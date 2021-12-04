@@ -9,12 +9,12 @@ repo_name: sudhanplayz/discord-musicbot
 repo_url: https://github.com/sudhanplayz/discord-musicbot
 edit_uri: https://github.com/sudhanplayz/discord-musicbot/blob/docs/documentation
 
-theme: 
-  name: 'material'
-  logo: 'https://raw.githubusercontent.com/SudhanPlayz/Discord-MusicBot/master/assets/logo.gif'
+theme:
+  name: "material"
+  logo: "https://raw.githubusercontent.com/SudhanPlayz/Discord-MusicBot/master/assets/logo.gif"
   include_search_page: false
   search_index_only: true
-  favicon: 'https://raw.githubusercontent.com/SudhanPlayz/Discord-MusicBot/master/assets/logo.gif'
+  favicon: "https://raw.githubusercontent.com/SudhanPlayz/Discord-MusicBot/master/assets/logo.gif"
   features:
     - content.code.annotate
     - navigation.expand
@@ -28,11 +28,11 @@ theme:
 
   palette:
     scheme: slate
-    primary: 'deep purple'
-    accent: 'indigo'
+    primary: "deep purple"
+    accent: "indigo"
   font:
-    text: 'Roboto'
-    code: 'Fira Mono'
+    text: "Roboto"
+    code: "Fira Mono"
 
 markdown_extensions:
   - admonition
@@ -50,8 +50,8 @@ extra:
       link: https://youtube.com/CodingWithSudhan
     - icon: fontawesome/brands/discord
       link: https://discord.gg/sbySMS7m3v
-    - icon: 'fontawesome/brands/github-alt'
-      link: 'https://github.com/SudhanPlayz' 
+    - icon: "fontawesome/brands/github-alt"
+      link: "https://github.com/SudhanPlayz"
   generator: false
 
 copyright: Copyright &copy; 2020 - 2021 Sudhan

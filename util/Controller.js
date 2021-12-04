@@ -10,7 +10,9 @@ module.exports = async (client, interaction) => {
 
   if (!player) {
     interaction.reply({
-      embeds: [client.Embed("❌ | **There is no player to control in this server.**")],
+      embeds: [
+        client.Embed("❌ | **There is no player to control in this server.**"),
+      ],
     });
     setTimeout(() => {
       interaction.deleteReply();
@@ -21,7 +23,11 @@ module.exports = async (client, interaction) => {
     player.setVolume(player.volume - 10);
     interaction.reply({
       embeds: [
-        client.Embed("🔉 | **Successfully lowered server volume to** `" + player.volume + "%`"),
+        client.Embed(
+          "🔉 | **Successfully lowered server volume to** `" +
+            player.volume +
+            "%`"
+        ),
       ],
     });
     setTimeout(() => {
@@ -39,7 +45,13 @@ module.exports = async (client, interaction) => {
     if (player.paused) player.pause(false);
     else player.pause(true);
     interaction.reply({
-      embeds: [client.Embed(player.paused ? ":white_check_mark: | **Paused**" : ":white_check_mark: | **Resumed**")],
+      embeds: [
+        client.Embed(
+          player.paused
+            ? ":white_check_mark: | **Paused**"
+            : ":white_check_mark: | **Resumed**"
+        ),
+      ],
     });
     setTimeout(() => {
       interaction.deleteReply();
@@ -58,7 +70,11 @@ module.exports = async (client, interaction) => {
       player.setVolume(player.volume + 5);
       interaction.reply({
         embeds: [
-          client.Embed("🔊 | **Successfully increased server volume to** `" + player.volume + "%`"),
+          client.Embed(
+            "🔊 | **Successfully increased server volume to** `" +
+              player.volume +
+              "%`"
+          ),
         ],
       });
       setTimeout(() => {
@@ -66,7 +82,11 @@ module.exports = async (client, interaction) => {
       }, 5000);
     } else {
       interaction.reply({
-        embeds: [client.Embed("👍 | **Volume is at maximum** `" + player.volume + "%`")],
+        embeds: [
+          client.Embed(
+            "👍 | **Volume is at maximum** `" + player.volume + "%`"
+          ),
+        ],
       });
       setTimeout(() => {
         interaction.deleteReply();
@@ -80,4 +100,3 @@ module.exports = async (client, interaction) => {
     content: "❌ | **Unknown controller option**",
   });
 };
-  
