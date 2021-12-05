@@ -14,7 +14,7 @@ class Logger {
       level: "info",
       message:
         `${d.getHours()}:${
-          d.getMinutes
+          d.getMinutes()
         } - ${d.getDate()}:${d.getMonth()}:${d.getFullYear()} | Info: ` + Text,
     });
     console.log(
