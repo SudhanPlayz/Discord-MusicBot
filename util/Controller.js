@@ -40,9 +40,7 @@ module.exports = async (client, interaction) => {
   if (property === "Replay") {
     if (!player.queue.previous) {
       interaction.reply({
-        embeds: [
-          client.Embed("❌ | **There is no previous song to replay.**"),
-        ],
+        embeds: [client.Embed("❌ | **There is no previous song to replay.**")],
       });
       setTimeout(() => {
         interaction.deleteReply();
