@@ -2,23 +2,22 @@ const SlashCommand = require("../../lib/SlashCommand");
 const { MessageEmbed } = require("discord.js");
 
 const command = new SlashCommand()
-  .setName("remove")
-  .setDescription("Remove track you don't want from queue")
+  .setName("volume")
+  .setDescription("Change the volume of the current song.")
   .addNumberOption((option) =>
     option
-      .setName("number")
-      .setDescription("Enter track number.")
-      .setRequired(true)
+      .setName("amount")
+      .setDescription("Amount of volume you want to change. Ex: 10")
+      .setRequired(false)
   )
-
   .setRun(async (client, interaction) => {
-    const args = interaction.options.getNumber("number");
+    const category = interaction.options.getNumber("options");
 
     let player = client.manager.players.get(interaction.guild.id);
     if (!player) {
       const QueueEmbed = new MessageEmbed()
         .setColor(client.config.embedColor)
-        .setDescription("There's nothing playing in the queue");
+        .setDescription("❌ | **There's nothing playing in the queue**");
       return interaction.reply({ embeds: [QueueEmbed], ephemeral: true });
     }
 
@@ -26,7 +25,7 @@ const command = new SlashCommand()
       const JoinEmbed = new MessageEmbed()
         .setColor(client.config.embedColor)
         .setDescription(
-          "You have to join voice channel first before you can use this command"
+          "❌ | **You must be in a voice channel to use this command.**"
         );
       return interaction.reply({ embeds: [JoinEmbed], ephemeral: true });
     }
@@ -40,31 +39,27 @@ const command = new SlashCommand()
       const SameEmbed = new MessageEmbed()
         .setColor(client.config.embedColor)
         .setDescription(
-          "You must be in the same voice channel as me first before you can use this command"
+          "❌ | **You must be in the same voice channel as me to use this command!**"
         );
       return interaction.reply({ embeds: [SameEmbed], ephemeral: true });
     }
 
-    await interaction.deferReply();
-
-    const position = Number(args) - 1;
-    if (position > player.queue.size) {
-      let thing = new MessageEmbed()
+    let vol = interaction.options.getNumber("amount");
+    if (!vol || vol < 1 || vol > 100) {
+      const NumberEmbed = new MessageEmbed()
         .setColor(client.config.embedColor)
-        .setDescription(
-          `Current queue has only **${player.queue.size}** track`
-        );
-      return interaction.editReply({ embeds: [thing] });
+        .setDescription(`Current volume **${player.volume}**`);
+      return interaction.reply({ embeds: [NumberEmbed] });
     }
 
-    const song = player.queue[position];
-    player.queue.remove(position);
-
-    const number = position + 1;
-    let thing = new MessageEmbed()
-      .setColor(client.config.embedColor)
-      .setDescription(`Removed track number **${number}** from queue`);
-    return interaction.editReply({ embeds: [thing] });
+    player.setVolume(vol);
+    return interaction.reply({
+      embeds: [
+        new MessageEmbed()
+          .setColor(client.config.embedColor)
+          .setDescription(`Successfully set volume to **${player.volume}**`),
+      ],
+    });
   });
 
 module.exports = command;

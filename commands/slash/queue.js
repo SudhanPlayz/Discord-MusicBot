@@ -1,5 +1,6 @@
 const { MessageEmbed } = require("discord.js");
 const SlashCommand = require("../../lib/SlashCommand");
+const prettyMilliseconds = require("pretty-ms");
 
 const command = new SlashCommand()
   .setName("queue")
@@ -14,13 +15,39 @@ const command = new SlashCommand()
     }
     const queue = player.queue;
     if (queue.length === 0) {
-      return interaction.reply({
-        embeds: [client.ErrorEmbed("**There's nothing in the queue**")],
-      });
+      const song = player.queue.current;
+      const embed = new MessageEmbed()
+        .setColor(client.config.embedColor)
+        // show icon from url in botconfig
+        .setTitle("Now playing ♪", client.config.iconURL)
+        // show who requested the song via setField, also show the duration of the song
+        .setFields([
+          {
+            name: "Requested by",
+            value: `${song.requester.username}#${song.requester.discriminator}`,
+            inline: true,
+          },
+          // show duration if live show live
+          {
+            name: "Duration",
+            value: song.isStream
+              ? `\`LIVE\``
+              : `${prettyMilliseconds(song.duration, {
+                  secondsDecimalDigits: 0,
+                })}`,
+            inline: true,
+          },
+        ])
+        // show the thumbnail of the song using displayThumbnail("maxresdefault")
+        .setThumbnail(song.displayThumbnail("maxresdefault"))
+        // show the title of the song and link to it
+        .setDescription(`[${song.title}](${song.uri})`);
+      return interaction.reply({ embeds: [embed] });
     }
     const embed = new MessageEmbed()
       .setColor(client.config.embedColor)
-      .setTitle("Server Queue")
+      .setTitle("Queue", client.config.iconURL)
+      .setThumbnail(player.queue.current.displayThumbnail("maxresdefault"))
       .setDescription(
         queue
           .map((song, index) => `${index + 1}. [${song.title}](${song.uri})`)

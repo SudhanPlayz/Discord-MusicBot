@@ -2,15 +2,17 @@ const SlashCommand = require("../../lib/SlashCommand");
 const { MessageEmbed } = require("discord.js");
 
 const command = new SlashCommand()
-  .setName("loop")
-  .setDescription("Loop the current song")
+  .setName("shuffle")
+  .setDescription("Shuffle the current queue.")
   .setRun(async (client, interaction, options) => {
     let player = client.manager.players.get(interaction.guild.id);
     if (!player) {
-      return interaction.reply({
-        embeds: [client.ErrorEmbed("❌ | **Nothing is playing right now...**")],
-      });
+      const QueueEmbed = new MessageEmbed()
+        .setColor(client.config.embedColor)
+        .setDescription("❌ | **There's nothing playing in the queue**");
+      return interaction.reply({ embeds: [QueueEmbed], ephemeral: true });
     }
+
     if (!interaction.member.voice.channel) {
       const JoinEmbed = new MessageEmbed()
         .setColor(client.config.embedColor)
@@ -33,13 +35,19 @@ const command = new SlashCommand()
         );
       return interaction.reply({ embeds: [SameEmbed], ephemeral: true });
     }
-    if (player.setTrackRepeat(!player.trackRepeat));
-    const trackRepeat = player.trackRepeat ? "enabled" : "disabled";
 
-    let loopembed = new MessageEmbed()
+    if (!player.queue || !player.queue.length || player.queue.length === 0) {
+      const AddEmbed = new MessageEmbed()
+        .setColor(client.config.embedColor)
+        .setDescription("❌ | **There are no songs in the queue.**");
+      return interaction.reply({ embeds: [AddEmbed], ephemeral: true });
+    }
+
+    if (player.queue.shuffle);
+    let ShuffleEmbed = new MessageEmbed()
       .setColor(client.config.embedColor)
-      .setDescription(`Loop has been \`${trackRepeat}\``);
-    interaction.reply({ embeds: [loopembed] });
+      .setDescription(`Shuffle queue has been \`enabled\``);
+    interaction.reply({ embeds: [ShuffleEmbed] });
   });
 
 module.exports = command;

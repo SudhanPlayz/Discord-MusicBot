@@ -2,15 +2,17 @@ const SlashCommand = require("../../lib/SlashCommand");
 const { MessageEmbed } = require("discord.js");
 
 const command = new SlashCommand()
-  .setName("loop")
-  .setDescription("Loop the current song")
+  .setName("previous")
+  .setDescription("Go back to the previous song.")
   .setRun(async (client, interaction, options) => {
     let player = client.manager.players.get(interaction.guild.id);
     if (!player) {
-      return interaction.reply({
-        embeds: [client.ErrorEmbed("❌ | **Nothing is playing right now...**")],
-      });
+      const QueueEmbed = new MessageEmbed()
+        .setColor(client.config.embedColor)
+        .setDescription("❌ | **There's nothing playing in the queue**");
+      return interaction.reply({ embeds: [QueueEmbed], ephemeral: true });
     }
+
     if (!interaction.member.voice.channel) {
       const JoinEmbed = new MessageEmbed()
         .setColor(client.config.embedColor)
@@ -33,13 +35,29 @@ const command = new SlashCommand()
         );
       return interaction.reply({ embeds: [SameEmbed], ephemeral: true });
     }
-    if (player.setTrackRepeat(!player.trackRepeat));
-    const trackRepeat = player.trackRepeat ? "enabled" : "disabled";
 
-    let loopembed = new MessageEmbed()
-      .setColor(client.config.embedColor)
-      .setDescription(`Loop has been \`${trackRepeat}\``);
-    interaction.reply({ embeds: [loopembed] });
+    if (!player.queue.previous)
+      return interaction.reply({
+        embeds: [
+          new MessageEmbed()
+            .setColor(client.config.embedColor)
+            .setDescription("❌ | **There is no previous song in the queue.**"),
+        ],
+      });
+
+    const currentSong = player.queue.current;
+    player.play(player.queue.previous);
+    interaction.reply({
+      embeds: [
+        new MessageEmbed()
+          .setColor(client.config.embedColor)
+          .setDescription(
+            `⏮ | Previous song: **${currentSong.title}** by **${currentSong.requester.username}**`
+          ),
+      ],
+    });
+
+    if (currentSong) player.queue.unshift(currentSong);
   });
 
 module.exports = command;

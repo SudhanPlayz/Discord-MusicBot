@@ -20,12 +20,8 @@ const command = new SlashCommand()
         embeds: [client.ErrorEmbed("Lavalink node is not connected")],
       });
     }
-
-    // !BUG: if you play .mp3 files, it will not play, but if you play redirection links to mp3, it will play
     let query = options.getString("query", true);
     let player = client.createPlayer(interaction.channel, channel);
-
-    // connect then check if it's connected if not connect again
     if (player.state != "CONNECTED") {
       player.connect();
     }
@@ -67,18 +63,19 @@ const command = new SlashCommand()
       let embed = client
         .Embed()
         .setAuthor("Added to queue", client.config.iconURL)
-        // display thumbnail
         .setThumbnail(res.tracks[0].thumbnail)
-        .setTitle(res.tracks[0].title || "Unknown")
+        .setDescription(
+          `[${res.tracks[0].title}](${res.tracks[0].uri})` || "No Title"
+        )
         .setURL(res.tracks[0].uri)
         .addField("Author", res.tracks[0].author, true)
         .addField(
           "Duration",
           res.tracks[0].isStream
-            ? "LIVE"
-            : `${client.ms(res.tracks[0].duration, {
+            ? `\`LIVE\``
+            : `\`${client.ms(res.tracks[0].duration, {
                 colonNotation: true,
-              })}`,
+              })}\``,
           true
         );
       if (player.queue.totalSize > 1)

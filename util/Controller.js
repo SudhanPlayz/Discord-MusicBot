@@ -36,9 +36,23 @@ module.exports = async (client, interaction) => {
     return;
   }
 
-  // !BUG no previous queue
+  // if theres no previous song, return an error.
   if (property === "Replay") {
-    player.stop();
+    if (!player.queue.previous) {
+      interaction.reply({
+        embeds: [
+          client.Embed("❌ | **There is no previous song to replay.**"),
+        ],
+      });
+      setTimeout(() => {
+        interaction.deleteReply();
+      }, 5000);
+      return;
+    }
+    const currentSong = player.queue.current;
+    player.play(player.queue.previous);
+    if (currentSong) player.queue.unshift(currentSong);
+    return;
   }
 
   if (property === "PlayAndPause") {
