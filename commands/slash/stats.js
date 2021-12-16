@@ -5,7 +5,7 @@ const { MessageEmbed } = require("discord.js");
 
 const command = new SlashCommand()
   .setName("stats")
-  .setDescription("Get stats for lavalink")
+  .setDescription("Get information about the bot")
   .setRun(async (client, interaction) => {
     // show lavalink uptime in a nice format
     const lavauptime = moment
