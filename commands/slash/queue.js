@@ -24,7 +24,8 @@ const command = new SlashCommand()
         .setFields([
           {
             name: "Requested by",
-            value: `${song.requester.username}#${song.requester.discriminator}`,
+            // show who requested the song mentioned id
+            value: `<@${song.requester.id}>`,
             inline: true,
           },
           // show duration if live show live
@@ -47,7 +48,6 @@ const command = new SlashCommand()
     const embed = new MessageEmbed()
       .setColor(client.config.embedColor)
       .setTitle("Queue", client.config.iconURL)
-      .setThumbnail(player.queue.current.displayThumbnail("maxresdefault"))
       .setDescription(
         queue
           .map((song, index) => `${index + 1}. [${song.title}](${song.uri})`)

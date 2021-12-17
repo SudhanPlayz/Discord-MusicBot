@@ -21,7 +21,7 @@ const command = new SlashCommand()
         .setFields([
           {
             name: "Requested by",
-            value: `${song.requester.username}#${song.requester.discriminator}`,
+            value: `<@${song.requester.id}>`,
             inline: true,
           },
           // show duration if live show live
