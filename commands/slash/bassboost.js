@@ -49,22 +49,22 @@ const command = new SlashCommand()
                 { band: 0, gain: 0.35 },
             ];
             player.setEQ(...bands);
-            thing.setDescription(`✅ | **Set the bassboost level to** \`high\``);
+            takemethere.setDescription(`✅ | **Set the bassboost level to** \`high\``);
         } else if (args == 'medium') {
             var bands = [
                 { band: 0, gain: 0.3 },
             ];
             player.setEQ(...bands);
-            thing.setDescription(`✅ | **Set the bassboost level to** \`medium\``);
+            takemethere.setDescription(`✅ | **Set the bassboost level to** \`medium\``);
         } else if (args == 'low') {
             var bands = [
                 { band: 0, gain: 0.2 },
             ];
             player.setEQ(...bands);
-            thing.setDescription(`✅ | **Set the bassboost level to** \`low\``);
+            takemethere.setDescription(`✅ | **Set the bassboost level to** \`low\``);
         } else if (args == 'off') {
             player.clearEQ();
-            thing.setDescription(`✅ | **Set the bassboost level to** \`none\``);
+            takemethere.setDescription(`✅ | **Set the bassboost level to** \`none\``);
         }
 
         return interaction.reply({ embeds: [takemethere] })
