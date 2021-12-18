@@ -47,7 +47,7 @@ module.exports = async (client, interaction) => {
       }, 5000);
       return;
     }
-    console.log("This is a test of the test lamo hiiii")
+    console.log("This is a test of the test lamo hiiii");
     const currentSong = player.queue.current;
     player.play(player.queue.previous);
     if (currentSong) player.queue.unshift(currentSong);
