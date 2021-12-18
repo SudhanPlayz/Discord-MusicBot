@@ -28,9 +28,15 @@ module.exports = {
       {
         name: "Music", //Status Text
         type: "LISTENING", // PLAYING, WATCHING, LISTENING, STREAMING
-        url: "https://cdn.darrennathanael.com/icons/spinning_disk.gif", // Link streaming url
+        url: "", // Link streaming url
       },
     ],
+  },
+  spotify: { // This is optional, by default it will scrape the spotify api.
+    clientId: "",
+    clientSecret: "",
+    playlistPageLimit: 10,
+    albumPageLimit: 10,
   },
   iconURL:
     "https://github.com/SudhanPlayz/Discord-MusicBot/raw/master/assets/logo.gif", //This icon will be in every embed's author field

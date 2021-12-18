@@ -42,9 +42,7 @@ const command = new SlashCommand()
         .setDescription("❌ | **Current track is already resumed**");
       return interaction.reply({ embeds: [ResumedEmbed], ephemeral: true });
     }
-
     player.pause(false);
-
     let ResEmbed = new MessageEmbed()
       .setColor(client.config.embedColor)
       .setDescription(`⏯ **Resumed!**`);
