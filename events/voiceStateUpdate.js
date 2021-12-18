@@ -47,37 +47,51 @@ module.exports = async (client, oldState, newState) => {
 
   switch (stateChange.type) {
     case "JOIN":
-      if (stateChange.members.size === 1 && player.paused) {
-        let emb = client
-          .Embed()
-          .setAuthor(`Resuming paused queue`, client.config.iconURL)
-          .setDescription(
-            `Resuming playback because all of you left me with music to play all alone`
-          );
-        await client.channels.cache
-          .get(player.textChannel)
-          .send({ embeds: [emb] });
+      if (client.config.alwaysplay === false) {
+        if (stateChange.members.size === 1 && player.paused) {
+          let emb = client
+            .Embed()
+            // say that the queue has been resumed
+            .setTitle(`Resumed`)
+            .setDescription(
+              `:arrow_forward: **Resuming queue**\n\n${player.queue.current.title}`
+            )
+            .setFooter(`The current queue has been resumed.`);
+          await client.channels.cache
+            .get(player.textChannel)
+            .send({ embeds: [emb] });
+          // update the now playing message and bring it to the front
+          let msg2 = await client.channels.cache
+            .get(player.textChannel)
+            .send({ embeds: [player.nowPlayingMessage.embeds[0]] });
+          player.setNowplayingMessage(msg2);
 
-        // update the now playing message and bring it to the front
-        let msg2 = await client.channels.cache
-          .get(player.textChannel)
-          .send({ embeds: [player.nowPlayingMessage.embeds[0]] });
-        player.setNowplayingMessage(msg2);
-
-        player.pause(false);
+          player.pause(false);
+        }
       }
       break;
     case "LEAVE":
-      if (stateChange.members.size === 0 && !player.paused && player.playing) {
-        player.pause(true);
+      if (client.config.alwaysplay === false) {
+        if (
+          stateChange.members.size === 0 &&
+          !player.paused &&
+          player.playing
+        ) {
+          player.pause(true);
 
-        let emb = client
-          .Embed()
-          .setAuthor(`Paused!`, client.config.iconURL)
-          .setDescription(`The player has been paused because everybody left`);
-        await client.channels.cache
-          .get(player.textChannel)
-          .send({ embeds: [emb] });
+          let emb = client
+            .Embed()
+            .setAuthor(`Paused!`, client.config.iconURL)
+            .setDescription(
+              `:pause_button: **Paused**\n\n${player.queue.current.title}`
+            )
+            .setFooter(
+              `The current queue has been paused because theres no one in the voice channel.`
+            );
+          await client.channels.cache
+            .get(player.textChannel)
+            .send({ embeds: [emb] });
+        }
       }
       break;
   }

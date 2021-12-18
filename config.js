@@ -10,6 +10,7 @@ module.exports = {
   permissions: 2205281600, //Bot Inviting Permissions
   disconnectTime: 30000, //How long should the bot wait before disconnecting from the voice channel. in miliseconds. set to 1 for instant disconnect.
   // lavalink list https://lavalink-list.darrennathanael.com/
+  alwaysplay: true, // when set to true music will always play no matter if theres no one in voice channel.
   nodes: [
     {
       identifier: "Main",
