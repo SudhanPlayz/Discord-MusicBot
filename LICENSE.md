@@ -1,7 +1,7 @@
-<h1 align="center">License for Discord-MusicBot</h1>
+# License for Discord-MusicBot
 
-- The credits should not be changed.
-- You can make your bot public
-- Don't republish like uploading a YouTube video
-- Don't create your own repo with these codes, If you wanted to add my codes then just fork it
-- (Optional) Make sure to [subscribe to coding with sudhan](https://youtube.com/CodingWithSudhan) ;)
+* The credits should not be changed.
+* The bot-code should be used for **private hosting** and **personal usage** only.
+* Using the code for public usage is **not allowed**.
+
+> **Note:** if you are found to be violating any of the above stated rule you might be asked to takedown your bot, happy listening!! Incase of any doubts in the license contact owner.
