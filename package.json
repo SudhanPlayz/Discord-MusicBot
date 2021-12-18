@@ -1,6 +1,6 @@
 {
   "name": "discord-musicbot",
-  "version": "4.1.3",
+  "version": "4.1.4",
   "description": "Very simple discord music bot with the discord.js with Song Name playing. It can able to play music with the song name",
   "main": "index.js",
   "scripts": {
