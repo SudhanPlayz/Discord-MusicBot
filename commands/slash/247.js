@@ -12,11 +12,11 @@ const command = new SlashCommand()
       });
     } else if (player.twentyFourSeven) {
       player.twentyFourSeven = false;
-      const embed = client.Embed(`❌ | **24/7 mode is now off.**`);
+      const embed = client.Embed(`✅ | **24/7 mode is now off.**`);
       return interaction.reply({ embeds: [embed] });
     } else {
       player.twentyFourSeven = true;
-      const embed = client.Embed(`❌ | **24/7 mode is now on.**`);
+      const embed = client.Embed(`✅ | **24/7 mode is now on.**`);
       return interaction.reply({ embeds: [embed] });
     }
   });

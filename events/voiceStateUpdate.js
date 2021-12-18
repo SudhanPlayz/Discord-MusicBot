@@ -52,11 +52,11 @@ module.exports = async (client, oldState, newState) => {
           let emb = client
             .Embed()
             // say that the queue has been resumed
-            .setTitle(`Resumed`)
+            .setTitle(`Resumed!`, client.config.iconURL)
             .setDescription(
-              `:arrow_forward: **Resuming queue**\n\n${player.queue.current.title}`
+              `[${player.queue.current.title}](${player.queue.current.uri})`
             )
-            .setFooter(`The current queue has been resumed.`);
+            .setFooter(`The current song has been resumed.`);
           await client.channels.cache
             .get(player.textChannel)
             .send({ embeds: [emb] });
@@ -65,7 +65,6 @@ module.exports = async (client, oldState, newState) => {
             .get(player.textChannel)
             .send({ embeds: [player.nowPlayingMessage.embeds[0]] });
           player.setNowplayingMessage(msg2);
-
           player.pause(false);
         }
       }
@@ -83,10 +82,10 @@ module.exports = async (client, oldState, newState) => {
             .Embed()
             .setAuthor(`Paused!`, client.config.iconURL)
             .setDescription(
-              `:pause_button: **Paused**\n\n${player.queue.current.title}`
+              `[${player.queue.current.title}](${player.queue.current.uri})`
             )
             .setFooter(
-              `The current queue has been paused because theres no one in the voice channel.`
+              `The current song has been paused because theres no one in the voice channel.`
             );
           await client.channels.cache
             .get(player.textChannel)
