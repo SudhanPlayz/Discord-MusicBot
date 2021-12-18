@@ -63,7 +63,6 @@ const command = new SlashCommand()
       let embed = client
         .Embed()
         .setAuthor("Added to queue", client.config.iconURL)
-        .setThumbnail(res.tracks[0].thumbnail)
         .setDescription(
           `[${res.tracks[0].title}](${res.tracks[0].uri})` || "No Title"
         )
@@ -78,6 +77,11 @@ const command = new SlashCommand()
               })}\``,
           true
         );
+      try {
+        embed.setThumbnail(res.tracks[0].displayThumbnail("maxresdefault"));
+      } catch (err) {
+        embed.setThumbnail(res.tracks[0].thumbnail);
+      }
       if (player.queue.totalSize > 1)
         embed.addField("Position in queue", `${player.queue.size - 0}`, true);
       return interaction.editReply({ embeds: [embed] }).catch(this.warn);

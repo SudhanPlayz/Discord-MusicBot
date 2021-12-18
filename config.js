@@ -8,7 +8,7 @@ module.exports = {
   defaultVolume: 100, //Sets the default volume of the bot, You can change this number anywhere from 1 to 100
   supportServer: "https://discord.gg/sbySMS7m3v", //Support Server Link
   permissions: 2205281600, //Bot Inviting Permissions
-  disconnectTime: 30000, //How long should the bot wait before disconnecting from the voice channel
+  disconnectTime: 30000, //How long should the bot wait before disconnecting from the voice channel. in miliseconds. set to 1 for instant disconnect.
   // lavalink list https://lavalink-list.darrennathanael.com/
   nodes: [
     {
@@ -33,7 +33,8 @@ module.exports = {
       },
     ],
   },
-  spotify: { // This is optional, by default it will scrape the spotify api.
+  spotify: {
+    // This is optional, by default it will scrape the spotify api.
     clientId: "",
     clientSecret: "",
     playlistPageLimit: 10,
