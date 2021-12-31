@@ -2,6 +2,7 @@ const { MessageEmbed } = require("discord.js");
 const SlashCommand = require("../../lib/SlashCommand");
 const prettyMilliseconds = require("pretty-ms");
 
+
 const command = new SlashCommand()
   .setName("nowplaying")
   .setDescription("Shows the current song playing in the voice channel.")
@@ -29,9 +30,11 @@ const command = new SlashCommand()
             name: "Duration",
             value: song.isStream
               ? `\`LIVE\``
-              : `${prettyMilliseconds(song.duration, {
+              : `\`${prettyMilliseconds(player.position, {
                   secondsDecimalDigits: 0,
-                })}`,
+                })} / ${prettyMilliseconds(song.duration, {
+                  secondsDecimalDigits: 0,
+                })}\``,
             inline: true,
           },
         ])
