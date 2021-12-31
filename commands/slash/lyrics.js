@@ -22,6 +22,10 @@ const command = new SlashCommand()
 
     let player = client.manager.players.get(interaction.guild.id);
 
+    if (!args && !player) return interaction.editReply({
+      embeds: [client.ErrorEmbed("**There's nothing playing**")],
+    });
+
     // get the input then search for it via https://api.popcat.xyz/lyrics?song=
     // if no input, search for the current song. if no song console.log("No song input");
     let search = args ? args : player.queue.current.title;
@@ -36,7 +40,7 @@ const command = new SlashCommand()
         .setDescription(
           `❌ | No lyrics found for ${search}! Please try again.`
         );
-      return interaction.reply({ embeds: [noLyrics], ephemeral: true });
+      return interaction.editReply({ embeds: [noLyrics], ephemeral: true });
     }
 
     // if there are lyrics, show it in an embed.
@@ -46,7 +50,7 @@ const command = new SlashCommand()
       .setURL(lyrics.url)
       .setColor(client.config.embedColor)
       .setDescription(lyrics.lyrics);
-    return interaction.reply({ embeds: [lyricsEmbed] });
+    return interaction.editReply({ embeds: [lyricsEmbed] });
   });
 
 module.exports = command;
