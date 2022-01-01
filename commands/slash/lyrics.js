@@ -41,9 +41,7 @@ const command = new SlashCommand()
         );
       return interaction.editReply({ embeds: [noLyrics], ephemeral: true });
     }
-    // if theres lyrics, split them into embeds
-    let lyricsEmbed = new MessageEmbed()
-    
+
 
     // if there are lyrics, show it in an embed.
     let lyricsEmbed = new MessageEmbed()
