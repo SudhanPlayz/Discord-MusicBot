@@ -2,7 +2,6 @@ const { MessageEmbed } = require("discord.js");
 const SlashCommand = require("../../lib/SlashCommand");
 const prettyMilliseconds = require("pretty-ms");
 
-
 const command = new SlashCommand()
   .setName("nowplaying")
   .setDescription("Shows the current song playing in the voice channel.")

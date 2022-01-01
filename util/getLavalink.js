@@ -1,4 +1,3 @@
-
 /**
  *
  * @param {import("../lib/DiscordMusicBot")} client

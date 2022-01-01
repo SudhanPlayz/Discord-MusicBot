@@ -13,7 +13,6 @@ const command = new SlashCommand()
       .setRequired(false)
   )
   .setRun(async (client, interaction, options) => {
-
     await interaction.reply({
       embeds: [client.Embed(":mag_right: **Searching...**")],
     });
@@ -22,14 +21,14 @@ const command = new SlashCommand()
 
     let player = client.manager.players.get(interaction.guild.id);
 
-    if (!args && !player) return interaction.editReply({
-      embeds: [client.ErrorEmbed("**There's nothing playing**")],
-    });
+    if (!args && !player)
+      return interaction.editReply({
+        embeds: [client.ErrorEmbed("**There's nothing playing**")],
+      });
 
-    // get the input then search for it via https://api.popcat.xyz/lyrics?song=
     // if no input, search for the current song. if no song console.log("No song input");
     let search = args ? args : player.queue.current.title;
-    let url = `https://api.popcat.xyz/lyrics?song=${search}`;
+    let url = `https://api.darrennathanael.com/lyrics?song=${search}`;
     // get the lyrics
     let lyrics = await fetch(url).then((res) => res.json());
 
@@ -42,11 +41,14 @@ const command = new SlashCommand()
         );
       return interaction.editReply({ embeds: [noLyrics], ephemeral: true });
     }
+    // if theres lyrics, split them into embeds
+    let lyricsEmbed = new MessageEmbed()
+    
 
     // if there are lyrics, show it in an embed.
     let lyricsEmbed = new MessageEmbed()
       .setTitle(lyrics.full_title)
-      .setThumbnail(lyrics.image)
+      .setThumbnail(lyrics.thumnail)
       .setURL(lyrics.url)
       .setColor(client.config.embedColor)
       .setDescription(lyrics.lyrics);

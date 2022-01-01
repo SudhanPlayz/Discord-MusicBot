@@ -28,7 +28,7 @@ const command = new SlashCommand()
       .duration(client.uptime)
       .format(" D[d], H[h], m[m]");
     // calculate the average ping to lavalink server
-    
+
     const embed = new MessageEmbed()
       .setTitle(`Stats from` + ` \`${client.user.username}\``)
       .setColor(client.config.embedColor)
