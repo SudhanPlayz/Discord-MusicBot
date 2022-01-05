@@ -32,8 +32,8 @@ const command = new SlashCommand()
     // get the lyrics
     let lyrics = await fetch(url).then((res) => res.json());
 
-    // if no lyrics, return
-    if (!lyrics.lyrics) {
+    // check if the response is 200
+    if (lyrics.response !== 200) {
       let noLyrics = new MessageEmbed()
         .setColor(client.config.embedColor)
         .setDescription(
@@ -41,15 +41,16 @@ const command = new SlashCommand()
         );
       return interaction.editReply({ embeds: [noLyrics], ephemeral: true });
     }
-
-    // if there are lyrics, show it in an embed.
-    let lyricsEmbed = new MessageEmbed()
+    else {
+      let lyricsEmbed = new MessageEmbed()
       .setTitle(lyrics.full_title)
-      .setThumbnail(lyrics.thumbnail)
+      .setThumbnail(lyrics.thumbnail_full)
       .setURL(lyrics.url)
       .setColor(client.config.embedColor)
       .setDescription(lyrics.lyrics);
-    return interaction.editReply({ embeds: [lyricsEmbed] });
+      return interaction.editReply({ embeds: [lyricsEmbed] });
+    }
   });
+
 
 module.exports = command;
