@@ -45,7 +45,7 @@ const command = new SlashCommand()
     // if there are lyrics, show it in an embed.
     let lyricsEmbed = new MessageEmbed()
       .setTitle(lyrics.full_title)
-      .setThumbnail(lyrics.thumnail)
+      .setThumbnail(lyrics.thumbnail)
       .setURL(lyrics.url)
       .setColor(client.config.embedColor)
       .setDescription(lyrics.lyrics);
