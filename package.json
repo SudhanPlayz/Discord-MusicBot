@@ -34,6 +34,7 @@
     "colors": "^1.4.0",
     "cpu-stat": "^2.0.1",
     "discord.js": "^12.5.3",
+    "discord.js-commando": "^0.12.3",
     "discordjs-activity": "1.4.1",
     "erela.js": "^2.3.2",
     "erela.js-apple": "^1.2.2",

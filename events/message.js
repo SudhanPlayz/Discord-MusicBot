@@ -6,7 +6,7 @@
  */
 
 module.exports = async (client, message) => {
-  if (message.author.bot || message.channel.type === "dm") return;
+  if (message.channel.type === "dm") return;
   let prefix = client.botconfig.DefaultPrefix;
 
   let GuildDB = await client.GetGuild(message.guild.id);
