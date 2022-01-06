@@ -79,13 +79,16 @@ module.exports = {
       );
 
     if (player.state != "CONNECTED") await player.connect();
-    for (let i = 0; i <= song_list.length; i++) {
+    for (let i = 0; i < song_list.length; i++) {
       SearchString = song_list[i];
+      console.log(SearchString);
+      console.log(song_list[i]);
       setTimeout(() => {
         console.log("Adding track");
       }, 800);
       try {
-        if (SearchString.match(client.Lavasfy.spotifyPattern)) {
+        if (false) {
+          // if (SearchString.match(client.Lavasfy.spotifyPattern)) {
           await client.Lavasfy.requestToken();
           let node = client.Lavasfy.nodes.get(client.botconfig.Lavalink.id);
           let Searched = await node.load(SearchString);
@@ -146,18 +149,20 @@ module.exports = {
           }
         } else {
           let Searched = await player.search(SearchString, message.author);
-          if (!player)
-            return client.sendTime(
+          if (!player) {
+            client.sendTime(
               message.channel,
               "❌ | **Nothing is playing right now...**"
             );
-
-          if (Searched.loadType === "NO_MATCHES")
-            return client.sendTime(
+            continue;
+          }
+          if (Searched.loadType === "NO_MATCHES") {
+            client.sendTime(
               message.channel,
               "**No matches found for - **" + SearchString
             );
-          else if (Searched.loadType == "PLAYLIST_LOADED") {
+            continue;
+          } else if (Searched.loadType == "PLAYLIST_LOADED") {
             player.queue.add(Searched.tracks);
             if (
               !player.playing &&
