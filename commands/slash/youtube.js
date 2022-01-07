@@ -51,10 +51,8 @@ const command = new SlashCommand()
       }
       const invite = await res.json();
       const Embed = new MessageEmbed()
-        .setAuthor(
-          `YouTube Together`,
-          "https://darrennathanael.com/cdn/youtube.png"
-        )
+        .setAuthor({ name: "YouTube Together", iconURL: "https://darrennathanael.com/cdn/youtube.png" })
+        //.setAuthor(`YouTube Together`, "https://darrennathanael.com/cdn/youtube.png")
         .setColor(client.config.embedColor)
         .setDescription(`Using **YouTube Together** you can watch YouTube with your friends in a Voice Channel. Click *Join YouTube Together* to join in!
       
