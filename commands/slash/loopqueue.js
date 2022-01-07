@@ -38,7 +38,7 @@ const command = new SlashCommand()
 
     let loopembed = new MessageEmbed()
       .setColor(client.config.embedColor)
-      .setDescription(`❌ | **Loop queue is now \`${queueRepeat}\`**`);
+      .setDescription(`:thumbsup: | **Loop queue is now \`${queueRepeat}\`**`);
     interaction.reply({ embeds: [loopembed] });
   });
 
