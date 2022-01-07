@@ -75,7 +75,8 @@ const command = new SlashCommand()
       return interaction.reply({
         embeds: [
           new MessageEmbed()
-            .setAuthor("An error occured while searching for the song")
+            .setAuthor({ name: "An error occured while searching for the song" })
+            //.setAuthor("An error occured while searching for the song")
             .setColor(client.config.embedColor),
         ],
         ephemeral: true,
