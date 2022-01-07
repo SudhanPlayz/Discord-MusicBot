@@ -98,7 +98,8 @@ const command = new SlashCommand()
         player.play();
       let embed = client
         .Embed()
-        .setAuthor("Playlist added to queue", client.config.iconURL)
+        .setAuthor({ name: "Playlist added to queue", client.config.iconURL })
+        //.setAuthor("Playlist added to queue", client.config.iconURL)
         .setThumbnail(res.tracks[0].thumbnail)
         .setDescription(`[${res.playlist.name}](${query})`)
         .addField("Enqueued", `\`${res.tracks.length}\` songs`, false)
