@@ -9,9 +9,8 @@ module.exports = {
   supportServer: "https://discord.gg/sbySMS7m3v", //Support Server Link
   permissions: 2205281600, //Bot Inviting Permissions
   disconnectTime: 30000, //How long should the bot wait before disconnecting from the voice channel. in miliseconds. set to 1 for instant disconnect.
-  // lavalink list https://lavalink-list.darrennathanael.com/
   alwaysplay: true, // when set to true music will always play no matter if theres no one in voice channel.
-  geniusToken: process.env.geniusToken || "", // Genius Token
+  // Lavalink server; optional public lavalink -> https://lavalink-list.darrennathanael.com/
   nodes: [
     {
       identifier: "Main",
@@ -22,7 +21,7 @@ module.exports = {
       retryDelay: 1000, //- Optional
       //secure: true //- Optional | Default: false
     },
-  ], //Lavalink servers
+  ],
   embedColor: "BLUE", //Color of the embeds, hex supported
   presence: {
     //PresenceData object | https://discord.js.org/#/docs/main/stable/typedef/PresenceData
