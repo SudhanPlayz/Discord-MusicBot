@@ -51,7 +51,10 @@ const command = new SlashCommand()
       }
       const invite = await res.json();
       const Embed = new MessageEmbed()
-        .setAuthor({ name: "Poker Night", iconURL: "https://darrennathanael.com/cdn/poker.png" })
+        .setAuthor({
+          name: "Poker Night",
+          iconURL: "https://cdn.darrennathanael.com/assets/discord/poker.png",
+        })
         //.setAuthor(`Poker Night`, "https://darrennathanael.com/cdn/poker.png")
         .setColor(client.config.embedColor)
         .setDescription(`Using **Poker Night** you can play Poker with your friends in a Voice Channel. Click *Join Poker Night* to join in!

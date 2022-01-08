@@ -40,17 +40,15 @@ const command = new SlashCommand()
           `❌ | No lyrics found for ${search}! Please try again.`
         );
       return interaction.editReply({ embeds: [noLyrics], ephemeral: true });
-    }
-    else {
+    } else {
       let lyricsEmbed = new MessageEmbed()
-      .setTitle(lyrics.full_title)
-      .setThumbnail(lyrics.thumbnail_full)
-      .setURL(lyrics.url)
-      .setColor(client.config.embedColor)
-      .setDescription(lyrics.lyrics);
+        .setTitle(lyrics.full_title)
+        .setThumbnail(lyrics.thumbnail_full)
+        .setURL(lyrics.url)
+        .setColor(client.config.embedColor)
+        .setDescription(lyrics.lyrics);
       return interaction.editReply({ embeds: [lyricsEmbed] });
     }
   });
-
 
 module.exports = command;
