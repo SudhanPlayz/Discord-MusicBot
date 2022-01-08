@@ -62,7 +62,8 @@ const command = new SlashCommand()
         player.play();
       let embed = client
         .Embed()
-        .setAuthor("Added to queue", client.config.iconURL)
+        .setAuthor({ name: "Added to queue", iconURL: client.config.iconURL })
+        //.setAuthor("Added to queue", client.config.iconURL) Deprecated soon
         .setDescription(
           `[${res.tracks[0].title}](${res.tracks[0].uri})` || "No Title"
         )
@@ -97,7 +98,8 @@ const command = new SlashCommand()
         player.play();
       let embed = client
         .Embed()
-        .setAuthor("Playlist added to queue", client.config.iconURL)
+        .setAuthor({ name: "Playlist added to queue", client.config.iconURL })
+        //.setAuthor("Playlist added to queue", client.config.iconURL)
         .setThumbnail(res.tracks[0].thumbnail)
         .setDescription(`[${res.playlist.name}](${query})`)
         .addField("Enqueued", `\`${res.tracks.length}\` songs`, false)
