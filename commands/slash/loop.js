@@ -38,7 +38,7 @@ const command = new SlashCommand()
 
     let loopembed = new MessageEmbed()
       .setColor(client.config.embedColor)
-      .setDescription(`Loop has been \`${trackRepeat}\``);
+      .setDescription(`👍 | **Loop has been \`${trackRepeat}\`**`);
     interaction.reply({ embeds: [loopembed] });
   });
 
