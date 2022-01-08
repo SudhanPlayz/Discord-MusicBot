@@ -53,7 +53,7 @@ const command = new SlashCommand()
           .map((song, index) => `${index + 1}. [${song.title}](${song.uri})`)
           .join("\n")
       )
-      .setFooter(`there are ${queue.length} songs in queue`);
+      .setFooter({ text: `there are ${queue.length} songs in queue` });
     return interaction.reply({ embeds: [embed] });
   });
 
