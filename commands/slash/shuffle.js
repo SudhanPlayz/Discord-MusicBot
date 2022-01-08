@@ -46,7 +46,7 @@ const command = new SlashCommand()
     if (player.queue.shuffle);
     let ShuffleEmbed = new MessageEmbed()
       .setColor(client.config.embedColor)
-      .setDescription(`Shuffle queue has been \`enabled\``);
+      .setDescription(`👍 | **The queue has been shuffled**`);
     interaction.reply({ embeds: [ShuffleEmbed] });
   });
 
