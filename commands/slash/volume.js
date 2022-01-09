@@ -45,10 +45,10 @@ const command = new SlashCommand()
     }
 
     let vol = interaction.options.getNumber("amount");
-    if (!vol || vol < 1 || vol > 100) {
+    if (!vol || vol < 1 || vol > 120) {
       const NumberEmbed = new MessageEmbed()
         .setColor(client.config.embedColor)
-        .setDescription(`Current volume **${player.volume}**`);
+        .setDescription(`:loud_sound: | **Current volume ${player.volume}**`);
       return interaction.reply({ embeds: [NumberEmbed] });
     }
 
@@ -57,7 +57,7 @@ const command = new SlashCommand()
       embeds: [
         new MessageEmbed()
           .setColor(client.config.embedColor)
-          .setDescription(`Successfully set volume to **${player.volume}**`),
+          .setDescription(`:loud_sound: | Successfully set volume to **${player.volume}**`),
       ],
     });
   });
