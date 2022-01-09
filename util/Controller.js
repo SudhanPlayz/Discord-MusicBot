@@ -1,3 +1,4 @@
+const { MessageEmbed } = require("discord.js");
 /**
  *
  * @param {import("../lib/DiscordMusicBot")} client
@@ -18,6 +19,28 @@ module.exports = async (client, interaction) => {
       interaction.deleteReply();
     }, 5000);
     return;
+  }
+  if (!interaction.member.voice.channel) {
+    const JoinEmbed = new MessageEmbed()
+      .setColor(client.config.embedColor)
+      .setDescription(
+        "❌ | **You must be in a voice channel to use this command!**"
+      );
+    return interaction.reply({ embeds: [JoinEmbed], ephemeral: true });
+  }
+
+  if (
+    interaction.guild.me.voice.channel &&
+    !interaction.guild.me.voice.channel.equals(
+      interaction.member.voice.channel
+    )
+  ) {
+    const SameEmbed = new MessageEmbed()
+      .setColor(client.config.embedColor)
+      .setDescription(
+        "❌ | **You must be in the same voice channel as me to use this command!**"
+      );
+    return interaction.reply({ embeds: [SameEmbed], ephemeral: true });
   }
   if (property === "LowVolume") {
     player.setVolume(player.volume - 10);
