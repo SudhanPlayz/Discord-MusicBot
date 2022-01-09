@@ -45,7 +45,7 @@ const command = new SlashCommand()
     }
 
     let vol = interaction.options.getNumber("amount");
-    if (!vol || vol < 1 || vol > 120) {
+    if (!vol || vol < 1 || vol > 125) {
       const NumberEmbed = new MessageEmbed()
         .setColor(client.config.embedColor)
         .setDescription(`:loud_sound: | **Current volume ${player.volume}**`);
