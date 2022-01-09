@@ -43,11 +43,12 @@ const command = new SlashCommand()
       return interaction.reply({ embeds: [AddEmbed], ephemeral: true });
     }
 
-    if (player.queue.shuffle);
-    let ShuffleEmbed = new MessageEmbed()
+    //  if the queue is not empty, shuffle the entire queue
+    player.queue.shuffle();
+    const ShuffleEmbed = new MessageEmbed()
       .setColor(client.config.embedColor)
-      .setDescription(`👍 | **The queue has been shuffled**`);
-    interaction.reply({ embeds: [ShuffleEmbed] });
+      .setDescription("🔀 | **Successfully shuffled the queue.**");
+    return interaction.reply({ embeds: [ShuffleEmbed] });
   });
 
 module.exports = command;
