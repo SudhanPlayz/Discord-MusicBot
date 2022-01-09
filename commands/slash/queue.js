@@ -45,7 +45,7 @@ const command = new SlashCommand()
         .setDescription(`[${song.title}](${song.uri})`);
       return interaction.reply({ embeds: [embed] });
     }
-    // map the queue if queue too long show the first 15 songs
+    // map the queue if queue too long show the first 20 songs
     const mappedQueue = queue.map((song, index) => {
       return `[${song.title}](${song.uri}) - Requested by: <@${song.requester.id}>`;
     });
@@ -57,7 +57,8 @@ const command = new SlashCommand()
     const embed = new MessageEmbed()
       .setColor(client.config.embedColor)
       .setTitle("Queue", client.config.iconURL)
-      .setDescription(joinedQueue);
+      .setDescription(joinedQueue)
+      .setFooter({ text: `There are ${queue.length} songs in queue` });
     return interaction.reply({ embeds: [embed] });
   });
 
