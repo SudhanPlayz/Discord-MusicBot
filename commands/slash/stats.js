@@ -3,7 +3,6 @@ const moment = require("moment");
 require("moment-duration-format");
 const { MessageEmbed } = require("discord.js");
 
-
 const command = new SlashCommand()
   .setName("stats")
   .setDescription("Get information about the bot")
@@ -62,7 +61,11 @@ const command = new SlashCommand()
           inline: true,
         },
       ])
-      .setFooter({ text: `Discord Music Bot Version: v${require("../../package.json").version}` });
+      .setFooter({
+        text: `Discord Music Bot Version: v${
+          require("../../package.json").version
+        }`,
+      });
     return interaction.reply({ embeds: [embed] });
   });
 

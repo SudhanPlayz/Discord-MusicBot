@@ -57,7 +57,9 @@ const command = new SlashCommand()
       embeds: [
         new MessageEmbed()
           .setColor(client.config.embedColor)
-          .setDescription(`:loud_sound: | Successfully set volume to **${player.volume}**`),
+          .setDescription(
+            `:loud_sound: | Successfully set volume to **${player.volume}**`
+          ),
       ],
     });
   });
