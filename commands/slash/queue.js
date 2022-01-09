@@ -45,15 +45,19 @@ const command = new SlashCommand()
         .setDescription(`[${song.title}](${song.uri})`);
       return interaction.reply({ embeds: [embed] });
     }
+    // map the queue if queue too long show the first 15 songs
+    const mappedQueue = queue.map((song, index) => {
+      return `[${song.title}](${song.uri}) - Requested by: <@${song.requester.id}>`;
+    });
+    // slice the queue if too long
+    const slicedQueue = mappedQueue.slice(0, 20);
+    // join the queue
+    const joinedQueue = slicedQueue.join("\n");
+    // show the queue
     const embed = new MessageEmbed()
       .setColor(client.config.embedColor)
       .setTitle("Queue", client.config.iconURL)
-      .setDescription(
-        queue
-          .map((song, index) => `${index + 1}. [${song.title}](${song.uri})`)
-          .join("\n")
-      )
-      .setFooter({ text: `there are ${queue.length} songs in queue` });
+      .setDescription(joinedQueue);
     return interaction.reply({ embeds: [embed] });
   });
 
