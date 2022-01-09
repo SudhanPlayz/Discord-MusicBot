@@ -8,7 +8,7 @@ const command = new SlashCommand()
     const player = interaction.client.manager.players.get(interaction.guild.id);
     if (!player) {
       return interaction.reply({
-        embeds: [client.ErrorEmbed("❌ | **There's nothing to play 24/7!**")],
+        embeds: [client.ErrorEmbed("**There's nothing to play 24/7!**")],
       });
     } else if (player.twentyFourSeven) {
       player.twentyFourSeven = false;
