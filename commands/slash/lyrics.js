@@ -1,6 +1,6 @@
 const SlashCommand = require("../../lib/SlashCommand");
-const fetch = require("node-fetch");
 const { MessageEmbed } = require("discord.js");
+var fetch = require("node-fetch");
 
 const command = new SlashCommand()
   .setName("lyrics")
