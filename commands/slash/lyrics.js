@@ -56,7 +56,7 @@ const command = new SlashCommand()
     // if the response is 200
     let embed = new MessageEmbed()
       .setColor(client.config.embedColor)
-      .setTitle(lyrics.full_title)
+      .setTitle(`${lyrics.full_title}`)
       .setURL(lyrics.url)
       .setThumbnail(lyrics.thumbnail)
       .setDescription(lyrics.lyrics);
