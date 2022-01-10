@@ -14,7 +14,11 @@ const command = new SlashCommand()
     const filteredCommands = commands.filter((cmd) => cmd.description);
     // create the embed
     const embed = new MessageEmbed()
-      .setTitle(`Commands of ${client.user.username}`)
+      .setAuthor({
+        name: `Commands of ${client.user.username}`,
+        iconURL: client.config.iconURL,
+        url: client.config.website,
+      })
       .setColor(client.config.embedColor)
       .setDescription(
         filteredCommands
