@@ -34,33 +34,42 @@ const command = new SlashCommand()
     let lyrics = await fetch(url).then((res) => res.json());
 
     // check if the response is 200
-    if (lyrics.response !== 200) {
-      let lyrics2 = await fetch(url2).then((res) => res.json());
-      if (lyrics2.response !== 200) {
-        let noLyrics = new MessageEmbed()
-          .setColor(client.config.embedColor)
-          .setDescription(
-            `❌ | No lyrics found for ${search}! Please try again.`
-          );
-        return interaction.editReply({ embeds: [noLyrics], ephemeral: true });
-      } else {
-        let embed = new MessageEmbed()
-          .setColor(client.config.embedColor)
-          .setTitle(`${lyrics2.full_title}`)
-          .setURL(lyrics2.url)
-          .setThumbnail(lyrics2.thumbnail)
-          .setDescription(lyrics2.lyrics);
-        return interaction.editReply({ embeds: [embed], ephemeral: false });
+    try {
+      if (lyrics.response !== 200) {
+        let lyrics2 = await fetch(url2).then((res) => res.json());
+        if (lyrics2.response !== 200) {
+          let noLyrics = new MessageEmbed()
+            .setColor(client.config.embedColor)
+            .setDescription(
+              `❌ | No lyrics found for ${search}! Please try again.`
+            );
+          return interaction.editReply({ embeds: [noLyrics], ephemeral: true });
+        } else {
+          let embed = new MessageEmbed()
+            .setColor(client.config.embedColor)
+            .setTitle(`${lyrics2.full_title}`)
+            .setURL(lyrics2.url)
+            .setThumbnail(lyrics2.thumbnail)
+            .setDescription(lyrics2.lyrics);
+          return interaction.editReply({ embeds: [embed], ephemeral: false });
+        }
       }
+      // if the response is 200
+      let embed = new MessageEmbed()
+        .setColor(client.config.embedColor)
+        .setTitle(`${lyrics.full_title}`)
+        .setURL(lyrics.url)
+        .setThumbnail(lyrics.thumbnail)
+        .setDescription(lyrics.lyrics);
+      return interaction.editReply({ embeds: [embed], ephemeral: false });
+    } catch (err) {
+      let noLyrics = new MessageEmbed()
+        .setColor(client.config.embedColor)
+        .setDescription(
+          `❌ | No lyrics found for ${search}! Please try again.`
+        );
+      return interaction.editReply({ embeds: [noLyrics], ephemeral: true });
     }
-    // if the response is 200
-    let embed = new MessageEmbed()
-      .setColor(client.config.embedColor)
-      .setTitle(`${lyrics.full_title}`)
-      .setURL(lyrics.url)
-      .setThumbnail(lyrics.thumbnail)
-      .setDescription(lyrics.lyrics);
-    return interaction.editReply({ embeds: [embed], ephemeral: false });
   });
 
 module.exports = command;
