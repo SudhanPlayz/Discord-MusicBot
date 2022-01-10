@@ -1,2 +1,2 @@
-run = "bash replitStart.sh"
+run = "npx node index.js"
 language = "NodeJS"
