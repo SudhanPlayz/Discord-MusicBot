@@ -29,26 +29,38 @@ const command = new SlashCommand()
     // if no input, search for the current song. if no song console.log("No song input");
     let search = args ? args : player.queue.current.title;
     let url = `https://api.darrennathanael.com/lyrics?song=${search}`;
+    let url2 = `https://api.darrennathanael.com/lyrics-genius?song=${search}`;
     // get the lyrics
     let lyrics = await fetch(url).then((res) => res.json());
 
     // check if the response is 200
     if (lyrics.response !== 200) {
-      let noLyrics = new MessageEmbed()
-        .setColor(client.config.embedColor)
-        .setDescription(
-          `❌ | No lyrics found for ${search}! Please try again.`
-        );
-      return interaction.editReply({ embeds: [noLyrics], ephemeral: true });
-    } else {
-      let lyricsEmbed = new MessageEmbed()
-        .setTitle(lyrics.full_title)
-        .setThumbnail(lyrics.thumbnail_full)
-        .setURL(lyrics.url)
-        .setColor(client.config.embedColor)
-        .setDescription(lyrics.lyrics);
-      return interaction.editReply({ embeds: [lyricsEmbed] });
+      let lyrics2 = await fetch(url2).then((res) => res.json());
+      if (lyrics2.response !== 200) {
+        let noLyrics = new MessageEmbed()
+          .setColor(client.config.embedColor)
+          .setDescription(
+            `❌ | No lyrics found for ${search}! Please try again.`
+          );
+        return interaction.editReply({ embeds: [noLyrics], ephemeral: true });
+      } else {
+        let embed = new MessageEmbed()
+          .setColor(client.config.embedColor)
+          .setTitle(`${lyrics2.full_title}`)
+          .setURL(lyrics2.url)
+          .setThumbnail(lyrics2.thumbnail)
+          .setDescription(lyrics2.lyrics);
+        return interaction.editReply({ embeds: [embed], ephemeral: false });
+      }
     }
+    // if the response is 200
+    let embed = new MessageEmbed()
+      .setColor(client.config.embedColor)
+      .setTitle(lyrics.full_title)
+      .setURL(lyrics.url)
+      .setThumbnail(lyrics.thumbnail)
+      .setDescription(lyrics.lyrics);
+    return interaction.editReply({ embeds: [embed], ephemeral: false });
   });
 
 module.exports = command;
