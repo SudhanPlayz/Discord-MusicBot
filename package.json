@@ -54,7 +54,8 @@
     "os": "^0.1.2",
     "pretty-ms": "^7.0.1",
     "systeminformation": "^5.9.12",
-    "winston": "^3.3.3"
+    "winston": "^3.3.3",
+    "node-fetch": "2.6.6"
   },
   "devDependencies": {
     "prettier": "^2.5.0"
