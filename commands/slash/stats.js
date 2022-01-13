@@ -41,14 +41,14 @@ const command = new SlashCommand()
             process.memoryUsage().heapUsed /
             1024 /
             1024
-          ).toFixed(2)}MB\`\n\n🕒 Uptime • \`${botuptime}\`\n👨‍💻 Servers • \`${
+          ).toFixed(2)}MB\`\n\n🕒 Uptime • \`${botuptime}\`\n👨‍💻 Guilds • \`${
             client.guilds.cache.size
           }\``,
           inline: true,
         },
         {
           name: "**Lavalink Statistic**",
-          value: `🖥 CPU Load • \`${
+          value: `🖥 CPU • \`${
             client.manager.nodes
               .values()
               .next()
