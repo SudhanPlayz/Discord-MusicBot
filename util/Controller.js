@@ -31,9 +31,7 @@ module.exports = async (client, interaction) => {
 
   if (
     interaction.guild.me.voice.channel &&
-    !interaction.guild.me.voice.channel.equals(
-      interaction.member.voice.channel
-    )
+    !interaction.guild.me.voice.channel.equals(interaction.member.voice.channel)
   ) {
     const SameEmbed = new MessageEmbed()
       .setColor(client.config.embedColor)

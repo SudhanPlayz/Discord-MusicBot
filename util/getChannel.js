@@ -30,6 +30,16 @@ module.exports = async (client, interaction) => {
       });
       return resolve(false);
     }
+    if (!interaction.member.voice.channel.joinable) {
+      await interaction.reply({
+        embeds: [
+          client.ErrorEmbed(
+            "I don't have permission to connect to the voice channel!"
+          ),
+        ],
+      });
+      return resolve(false);
+    }
 
     resolve(interaction.member.voice.channel);
   });
