@@ -39,7 +39,7 @@
     "better-erela.js-apple": "^0.1.0",
     "better-erela.js-spotify": "^1.1.3",
     "colors": "1.3.3",
-    "discord-api-types": "^0.24.0",
+    "discord-api-types": "^0.26.0",
     "discord-together": "^1.3.25",
     "discord.js": "^13.5.1",
     "erela.js": "^2.3.3",
