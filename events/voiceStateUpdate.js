@@ -56,7 +56,7 @@ module.exports = async (client, oldState, newState) => {
             .setDescription(
               `[${player.queue.current.title}](${player.queue.current.uri})`
             )
-            .setFooter({ text:`The current song has been resumed.`});
+            .setFooter({ text: `The current song has been resumed.` });
           await client.channels.cache
             .get(player.textChannel)
             .send({ embeds: [emb] });
@@ -80,12 +80,12 @@ module.exports = async (client, oldState, newState) => {
 
           let emb = client
             .Embed()
-            .setAuthor({ text:`Paused!`, iconURL: client.config.iconURL })
+            .setAuthor({ text: `Paused!`, iconURL: client.config.iconURL })
             .setDescription(
               `[${player.queue.current.title}](${player.queue.current.uri})`
             )
-            .setFooter( {
-              text:`The current song has been paused because theres no one in the voice channel.`
+            .setFooter({
+              text: `The current song has been paused because theres no one in the voice channel.`,
             });
           await client.channels.cache
             .get(player.textChannel)
