@@ -28,7 +28,7 @@ const command = new SlashCommand()
     }
     let channel = await client.getChannel(client, interaction);
 
-    fetch(`https://discord.com/api/v8/channels/${channel.id}/invites`, {
+    fetch(`https://discord.com/api/v9/channels/${channel.id}/invites`, {
       method: "POST",
       body: JSON.stringify({
         max_age: 86400,
