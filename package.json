@@ -48,7 +48,7 @@
     "moment": "^2.29.1",
     "moment-duration-format": "^2.3.2",
     "mongoose": "^5.12.3",
-    "node-fetch": "^2.6.1",
+    "node-fetch": "^3.1.1",
     "passport": "^0.5.0",
     "passport-discord": "^0.1.4",
     "pretty-ms": "^7.0.1",
