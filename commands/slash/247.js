@@ -2,6 +2,9 @@ const { MessageEmbed } = require("discord.js");
 const SlashCommand = require("../../lib/SlashCommand");
 
 const command = new SlashCommand()
+   let channel = await client.getChannel(client, interaction);
+   if (!channel) return;
+
   .setName("247")
   .setDescription("toggles 24/7")
   .setRun(async (client, interaction, options) => {
