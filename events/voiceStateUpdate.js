@@ -57,12 +57,9 @@ module.exports = async (client, oldState, newState) => {
 
           let emb = client
             .Embed()
-            .setTitle(`⏸️┋ Paused!`, client.config.iconURL)
-            .setDescription(
-              `[${player.queue.current.title}](${player.queue.current.uri})`
-            )
+            .setTitle(`⏸️ | Paused!`, client.config.iconURL)
             .setFooter({
-              text: `The current song has been paused because theres no one in the voice channel.\nIf i'm left alone for 3 minutes, i'll leave the voice channel `,
+              text: `The current song has been paused because theres no one in the voice channel.`,
             });
           await client.channels.cache
             .get(player.textChannel)
@@ -76,7 +73,7 @@ module.exports = async (client, oldState, newState) => {
           let emb = client
             .Embed()
             // say that the queue has been resumed
-            .setTitle(`▶️┋ Resumed!`, client.config.iconURL)
+            .setTitle(`▶️ | Resumed!`, client.config.iconURL)
             .setDescription(
               `[${player.queue.current.title}](${player.queue.current.uri})`
             )
@@ -95,32 +92,31 @@ module.exports = async (client, oldState, newState) => {
       break;
   }
 
-if (!player.twentyFourSeven) {
-  // if nobody left the channel in question, return.
-  if (stateChange.members.size === 1 && player.paused)
-    return;
+  if (!player.twentyFourSeven) {
+    // if nobody left the channel in question, return.
+    if (stateChange.members.size === 1 && player.paused) return;
 
-  // otherwise, check how many people are in the channel now
-  if (stateChange.members.size === 0 &&
+    // otherwise, check how many people are in the channel now
+    if (stateChange.members.size === 0 && player.paused && !player.playing)
+      setTimeout(() => {
+        if (
+          stateChange.members.size === 0 &&
           player.paused &&
-          !player.playing) 
-    setTimeout(() => { // if 1 (you), wait five minutes
-      if (stateChange.members.size === 0 &&
-          player.paused &&
-          !player.playing) {// if there's still 1 member, 
-         let DisconnectedEmbed = client
+          !player.playing
+        ) {
+          let DisconnectedEmbed = client
             .Embed()
             .setAuthor({
-              name: "📤┋ **Disconnected!**",
-          })
+              name: "📤 | Disconnected!",
+            })
             .setDescription(
-              `I was alone for 3 minutes and went to get a tea.`
-            );
+              `I was alone for 3 minutes and went to get a coffee.`
+            ); // coffee is always better than a tea.
           client.channels.cache
             .get(player.textChannel)
-            .send({ embeds: [DisconnectedEmbed] });          
-          player.destroy();; // leave
+            .send({ embeds: [DisconnectedEmbed] });
+          player.destroy(); // leave
         }
-     }, 180000); // (5 min in ms)
+      }, client.config.disconnectTime); // config time
   }
 };
