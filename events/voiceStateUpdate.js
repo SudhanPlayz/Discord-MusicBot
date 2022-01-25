@@ -74,9 +74,6 @@ export default async (client, oldState, newState) => {
             .Embed()
             // say that the queue has been resumed
             .setTitle(`▶️ | Resumed!`, client.config.iconURL)
-            .setDescription(
-              `[${player.queue.current.title}](${player.queue.current.uri})`
-            )
             .setFooter({ text: `The current song has been resumed.` });
           await client.channels.cache
             .get(player.textChannel)
