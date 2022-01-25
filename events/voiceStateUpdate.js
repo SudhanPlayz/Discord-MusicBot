@@ -110,7 +110,7 @@ export default async (client, oldState, newState) => {
               name: "📤 | Disconnected!",
             })
             .setDescription(
-              `I was alone for 3 minutes and went to get a coffee.`
+              `I was alone, so I disconnected myself and get a cup of coffee.`
             ); // coffee is always better than a tea.
           client.channels.cache
             .get(player.textChannel)
