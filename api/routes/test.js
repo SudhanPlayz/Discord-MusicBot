@@ -1,6 +1,6 @@
-const { Router } = require("express");
+import { Router } from "express";
 const api = Router();
 
 api.get("*", (req, res) => res.send("amogus"));
 
-module.exports = api;
+export default api;

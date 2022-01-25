@@ -5,7 +5,7 @@
  * @param {import("discord.js").VoiceState} newState
  * @returns {Promise<void>}
  */
-module.exports = async (client, oldState, newState) => {
+export default async (client, oldState, newState) => {
   // get guild and player
   let guildId = newState.guild.id;
   const player = client.manager.get(guildId);

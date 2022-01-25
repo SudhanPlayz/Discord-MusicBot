@@ -1,4 +1,4 @@
-const SlashCommand = require("../../lib/SlashCommand");
+import SlashCommand from "../../lib/SlashCommand.js";
 const {
   MessageEmbed,
   MessageActionRow,
@@ -178,4 +178,4 @@ const command = new SlashCommand()
     }
   });
 
-module.exports = command;
+export default command;

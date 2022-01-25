@@ -1,5 +1,5 @@
-const SlashCommand = require("../../lib/SlashCommand");
-const { MessageEmbed } = require("discord.js");
+import SlashCommand from "../../lib/SlashCommand.js";
+import { MessageEmbed } from "discord.js";
 
 const command = new SlashCommand()
   .setName("skipto")
@@ -67,4 +67,4 @@ const command = new SlashCommand()
     return interaction.editReply({ embeds: [thing] });
   });
 
-module.exports = command;
+export default command;

@@ -1,5 +1,5 @@
-const path = require("path");
-const fs = require("fs");
+import path, { dirname as __dirname } from "path";
+import fs from "fs";
 
 const LoadCommands = () => {
   return new Promise(async (resolve) => {
@@ -13,7 +13,7 @@ const LoadCommands = () => {
 const LoadDirectory = (dir) => {
   return new Promise((resolve) => {
     let commands = [];
-    let CommandsDir = path.join(__dirname, "..", "commands", dir);
+    let CommandsDir = path.join(__dirname("."), "..", "commands", dir);
     let i = 0,
       f = 0,
       r = false;
@@ -40,4 +40,4 @@ const LoadDirectory = (dir) => {
   });
 };
 
-module.exports = LoadCommands;
+export default LoadCommands;

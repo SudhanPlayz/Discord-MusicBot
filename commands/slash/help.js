@@ -1,5 +1,5 @@
-const SlashCommand = require("../../lib/SlashCommand");
-const { MessageEmbed } = require("discord.js");
+import SlashCommand from "../../lib/SlashCommand.js";
+import { MessageEmbed } from "discord.js";
 const LoadCommands = require("../../util/loadCommands");
 
 const command = new SlashCommand()
@@ -37,4 +37,4 @@ const command = new SlashCommand()
     return interaction.reply({ embeds: [embed] });
   });
 
-module.exports = command;
+export default command

@@ -1,6 +1,6 @@
-const { ContextMenuCommandBuilder } = require("@discordjs/builders");
+import { ContextMenuCommandBuilder } from "@discordjs/builders";
 
-module.exports = {
+export default {
   command: new ContextMenuCommandBuilder().setName("Say Hello").setType(2),
 
   /**

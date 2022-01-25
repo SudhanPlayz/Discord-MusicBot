@@ -4,7 +4,7 @@
  * @param {import("discord.js").GuildCommandInteraction} interaction
  * @returns
  */
-module.exports = async (client, interaction) => {
+ export default async (client, interaction) => {
   return new Promise(async (resolve) => {
     if (!interaction.member.voice.channel) {
       await interaction.reply({

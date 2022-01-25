@@ -1,5 +1,5 @@
-const { MessageEmbed } = require("discord.js");
-const SlashCommand = require("../../lib/SlashCommand");
+import { MessageEmbed } from "discord.js";
+import SlashCommand from "../../lib/SlashCommand.js";
 
 const command = new SlashCommand()
   .setName("247")
@@ -42,7 +42,7 @@ const command = new SlashCommand()
       return interaction.reply({ embeds: [embed] });
     }
   });
-module.exports = command;
+export default command;
 // check above message, it is a little bit confusing. and erros are not handled. probably should be fixed.
 // ok use catch ez kom  follow meh ;_;
 // the above message meaning error, if it cant find it or take too long the bot crashed

@@ -1,9 +1,9 @@
-const express = require("express");
-const fs = require("fs");
-const { EventEmitter } = require("events");
-const { join } = require("path");
-const getConfig = require("../util/getConfig");
-const DiscordMusicBot = require("../lib/DiscordMusicBot");
+import express from "express";
+import fs from "fs";
+import { EventEmitter } from "events";
+import { join, dirname as __dirname } from "path";
+import getConfig from "../util/getConfig.js";
+import DiscordMusicBot from "../lib/DiscordMusicBot.js";
 
 class Server extends EventEmitter {
   /**
@@ -24,12 +24,12 @@ class Server extends EventEmitter {
     this.app = express();
 
     //Stuff
-    fs.readdir(join(__dirname, "routes"), (err, files) => {
+    fs.readdir(join(__dirname("."), "routes"), (err, files) => {
       if (err) return console.log(err);
-      files.forEach((file) => {
+      files.forEach(async (file) => {
         this.app.use(
           "/api/" + file.split(".")[0],
-          require(join(__dirname, "routes") + "/" + file)
+          await import(join(__dirname("."), "routes") + "/" + file)
         );
       });
     });
@@ -40,4 +40,4 @@ class Server extends EventEmitter {
   }
 }
 
-module.exports = Server;
+export default Server;

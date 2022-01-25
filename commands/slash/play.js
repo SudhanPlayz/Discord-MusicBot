@@ -1,5 +1,5 @@
 // const { Manager } = require("erela.js/structures/Manager");
-const SlashCommand = require("../../lib/SlashCommand");
+import SlashCommand from "../../lib/SlashCommand.js";
 
 const command = new SlashCommand()
   .setName("play")
@@ -117,4 +117,4 @@ const command = new SlashCommand()
     }
   });
 
-module.exports = command;
+export default command;

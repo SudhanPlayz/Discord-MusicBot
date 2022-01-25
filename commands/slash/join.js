@@ -1,4 +1,4 @@
-const SlashCommand = require("../../lib/SlashCommand");
+import SlashCommand from "../../lib/SlashCommand.js";
 
 const command = new SlashCommand()
   .setName("join")
@@ -29,4 +29,4 @@ const command = new SlashCommand()
     });
   });
 
-module.exports = command;
+export default command;

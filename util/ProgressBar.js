@@ -5,7 +5,7 @@
  * @param {Number} size - The bar size (in letters)
  * @return {{Bar: string, percentageText: string}} - The bar
  */
-module.exports = (value, maxValue, size) => {
+export default (value, maxValue, size) => {
   const percentage = value / maxValue; // Calculate the percentage of the bar
   const progress = Math.round(size * percentage); // Calculate the number of square caracters to fill the progress side.
   const emptyProgress = size - progress; // Calculate the number of dash caracters to fill the empty progress side.

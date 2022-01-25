@@ -1,9 +1,9 @@
 //Deletes every commands from every server yikes!!1!!11!!
-const readline = require("readline");
-const { REST } = require("@discordjs/rest");
-const { Routes } = require("discord-api-types/v9");
-const getConfig = require("../util/getConfig");
-const LoadCommands = require("../util/loadCommands");
+import readline from "readline";
+import { REST } from "@discordjs/rest";
+import { Routes } from "discord-api-types/v9";
+import getConfig from "../util/getConfig.js";
+import LoadCommands from "../util/loadCommands.js";
 
 const rl = readline.createInterface({
   input: process.stdin,

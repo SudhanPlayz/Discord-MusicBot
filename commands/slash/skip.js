@@ -1,4 +1,4 @@
-const SlashCommand = require("../../lib/SlashCommand");
+import SlashCommand from "../../lib/SlashCommand.js";
 
 const command = new SlashCommand()
   .setName("skip")
@@ -38,4 +38,4 @@ const command = new SlashCommand()
     interaction.reply({ embeds: [client.Embed("✅ | **Skipped!**")] });
   });
 
-module.exports = command;
+export default command;

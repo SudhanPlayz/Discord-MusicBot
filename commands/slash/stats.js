@@ -1,7 +1,7 @@
-const SlashCommand = require("../../lib/SlashCommand");
-const moment = require("moment");
-require("moment-duration-format");
-const { MessageEmbed } = require("discord.js");
+import SlashCommand from "../../lib/SlashCommand.js";
+import moment from "moment";
+import "moment-duration-format";
+import { MessageEmbed } from "discord.js";
 
 const command = new SlashCommand()
   .setName("stats")
@@ -69,4 +69,4 @@ const command = new SlashCommand()
     return interaction.reply({ embeds: [embed] });
   });
 
-module.exports = command;
+export default command;

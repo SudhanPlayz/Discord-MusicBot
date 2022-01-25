@@ -1,7 +1,7 @@
-const { REST } = require("@discordjs/rest");
-const { Routes } = require("discord-api-types/v9");
-const getConfig = require("../util/getConfig");
-const LoadCommands = require("../util/loadCommands");
+import { REST } from "@discordjs/rest";
+import { Routes } from "discord-api-types/v9";
+import getConfig from "../util/getConfig.js";
+import LoadCommands from "../util/loadCommands.js";
 
 (async () => {
   const config = await getConfig();

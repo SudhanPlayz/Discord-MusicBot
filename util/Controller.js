@@ -1,10 +1,10 @@
-const { MessageEmbed } = require("discord.js");
+import { MessageEmbed } from "discord.js";
 /**
  *
  * @param {import("../lib/DiscordMusicBot")} client
  * @param {import("discord.js").ButtonInteraction} interaction
  */
-module.exports = async (client, interaction) => {
+ export default async (client, interaction) => {
   let guild = client.guilds.cache.get(interaction.customId.split(":")[1]);
   let property = interaction.customId.split(":")[2];
   let player = client.manager.get(guild.id);

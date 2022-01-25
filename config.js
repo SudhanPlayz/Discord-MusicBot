@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   token: process.env.token || "", //Bot's Token
   clientId: process.env.clientId || "", //ID of the bot
   clientSecret: process.env.clientSecret || "", //Client Secret of the bot
