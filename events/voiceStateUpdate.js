@@ -74,9 +74,6 @@ module.exports = async (client, oldState, newState) => {
             .Embed()
             // say that the queue has been resumed
             .setTitle(`▶️ | Resumed!`, client.config.iconURL)
-            .setDescription(
-              `[${player.queue.current.title}](${player.queue.current.uri})`
-            )
             .setFooter({ text: `The current song has been resumed.` });
           await client.channels.cache
             .get(player.textChannel)
@@ -109,9 +106,9 @@ module.exports = async (client, oldState, newState) => {
             .setAuthor({
               name: "📤 | Disconnected!",
             })
-            .setDescription(
-              `I was alone for 3 minutes and went to get a coffee.`
-            ); // coffee is always better than a tea.
+          .setFooter({
+              text: `I was alone, so I disconnected myself and get a cup of coffee.`,
+            });
           client.channels.cache
             .get(player.textChannel)
             .send({ embeds: [DisconnectedEmbed] });
