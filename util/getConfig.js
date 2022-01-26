@@ -3,7 +3,7 @@ export default () => {
     try {
       const config = await import("../dev-config.js");
       res(config.default);
-    } catch{
+    } catch {
       try {
         const config = await import("../config.js");
         res(config.default);

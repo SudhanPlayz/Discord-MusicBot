@@ -29,7 +29,7 @@ class Server extends EventEmitter {
       files.forEach(async (file) => {
         this.app.use(
           "/api/" + file.split(".")[0],
-          await import("./"+join("routes", file)).then(file => file.default)
+          await import("./" + join("routes", file)).then((file) => file.default)
         );
       });
     });
