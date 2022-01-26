@@ -1,6 +1,6 @@
 /**
  *
- * @param {import("../lib/DiscordMusicBot")} client
+ * @param {import("../lib/DiscordMusicBot").default} client
  * @param {*} data
  */
 export default (client, data) => {

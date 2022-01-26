@@ -24,12 +24,12 @@ class Server extends EventEmitter {
     this.app = express();
 
     //Stuff
-    fs.readdir(join(__dirname("."), "routes"), (err, files) => {
+    fs.readdir(join(__dirname("."), "api", "routes"), (err, files) => {
       if (err) return console.log(err);
       files.forEach(async (file) => {
         this.app.use(
           "/api/" + file.split(".")[0],
-          await import(join(__dirname("."), "routes") + "/" + file)
+          await import("./"+join("routes", file)).then(file => file.default)
         );
       });
     });

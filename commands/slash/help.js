@@ -1,6 +1,6 @@
 import SlashCommand from "../../lib/SlashCommand.js";
 import { MessageEmbed } from "discord.js";
-import LoadCommands from "../../util/loadCommands";
+import LoadCommands from "../../util/loadCommands.js";
 
 const command = new SlashCommand()
   .setName("help")
