@@ -1,6 +1,6 @@
 import { MessageEmbed } from "discord.js";
 import SlashCommand from "../../lib/SlashCommand.js";
-const prettyMilliseconds = require("pretty-ms");
+import prettyMilliseconds from "pretty-ms";
 
 const command = new SlashCommand()
   .setName("queue")

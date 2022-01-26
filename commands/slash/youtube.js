@@ -1,6 +1,6 @@
 import SlashCommand from "../../lib/SlashCommand.js";
 import { MessageEmbed } from "discord.js";
-const fetch = require("node-fetch");
+import fetch from "node-fetch";
 
 const command = new SlashCommand()
   .setName("youtube")

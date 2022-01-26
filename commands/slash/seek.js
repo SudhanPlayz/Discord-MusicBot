@@ -1,6 +1,6 @@
 import SlashCommand from "../../lib/SlashCommand.js";
 import { MessageEmbed } from "discord.js";
-const ms = require("ms");
+import ms from "ms";
 
 const command = new SlashCommand()
   .setName("seek")

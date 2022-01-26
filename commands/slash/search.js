@@ -1,9 +1,9 @@
 import SlashCommand from "../../lib/SlashCommand.js";
-const {
+import {
   MessageEmbed,
   MessageActionRow,
   MessageSelectMenu,
-} = require("discord.js");
+} from "discord.js";
 
 const command = new SlashCommand()
   .setName("search")

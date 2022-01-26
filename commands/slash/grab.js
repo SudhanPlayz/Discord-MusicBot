@@ -1,6 +1,6 @@
 import SlashCommand from "../../lib/SlashCommand.js";
 import { MessageEmbed } from "discord.js";
-const prettyMilliseconds = require("pretty-ms");
+import prettyMilliseconds from "pretty-ms";
 
 const command = new SlashCommand()
   .setName("grab")
