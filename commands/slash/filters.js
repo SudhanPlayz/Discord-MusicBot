@@ -100,4 +100,4 @@ const command = new SlashCommand()
     return interaction.reply({ embeds: [thing] });
   });
 
-export default command
+export default command;

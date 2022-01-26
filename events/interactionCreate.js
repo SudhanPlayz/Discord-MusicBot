@@ -5,7 +5,7 @@ import Controller from "../util/Controller.js";
  * @param {import("../lib/DiscordMusicBot")} client
  * @param {import("discord.js").Interaction}interaction
  */
- export default (client, interaction) => {
+export default (client, interaction) => {
   if (interaction.isCommand()) {
     let command = client.slashCommands.find(
       (x) => x.name == interaction.commandName

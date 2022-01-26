@@ -41,4 +41,4 @@ const command = new SlashCommand()
     });
   });
 
-export default command;;
+export default command;

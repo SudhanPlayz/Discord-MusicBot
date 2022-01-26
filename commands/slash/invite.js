@@ -13,5 +13,5 @@ const command = new SlashCommand()
       );
     return interaction.reply({ embeds: [embed] });
   });
-  
-export default command
+
+export default command;
