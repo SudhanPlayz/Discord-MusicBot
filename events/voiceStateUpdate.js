@@ -106,9 +106,9 @@ export default async (client, oldState, newState) => {
             .setAuthor({
               name: "📤 | Disconnected!",
             })
-            .setDescription(
-              `I was alone, so I disconnected myself and get a cup of coffee.`
-            ); // coffee is always better than a tea.
+          .setFooter({
+              text: `I was alone, so I disconnected myself and get a cup of coffee.`,
+            });
           client.channels.cache
             .get(player.textChannel)
             .send({ embeds: [DisconnectedEmbed] });
