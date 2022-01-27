@@ -46,13 +46,34 @@ module.exports = async (client, oldState, newState) => {
   );
 
   switch (stateChange.type) {
+    case "LEAVE":
+      if (client.config.alwaysplay === false && !player.twentyFourSeven) {
+        if (
+          stateChange.members.size === 0 &&
+          !player.paused &&
+          player.playing
+        ) {
+          player.pause(true);
+
+          let emb = client
+            .Embed()
+            .setTitle(`⏸️ | Paused!`, client.config.iconURL)
+            .setFooter({
+              text: `The current song has been paused because theres no one in the voice channel.`,
+            });
+          await client.channels.cache
+            .get(player.textChannel)
+            .send({ embeds: [emb] });
+        }
+      }
+      break;
     case "JOIN":
       if (client.config.alwaysplay === false) {
         if (stateChange.members.size === 1 && player.paused) {
           let emb = client
             .Embed()
             // say that the queue has been resumed
-            .setTitle(`Resumed!`, client.config.iconURL)
+            .setTitle(`▶️ | Resumed!`, client.config.iconURL)
             .setDescription(
               `[${player.queue.current.title}](${player.queue.current.uri})`
             )
@@ -69,29 +90,33 @@ module.exports = async (client, oldState, newState) => {
         }
       }
       break;
-    case "LEAVE":
-      if (client.config.alwaysplay === false) {
+  }
+
+  if (!player.twentyFourSeven) {
+    // if nobody left the channel in question, return.
+    if (stateChange.members.size === 1 && player.paused) return;
+
+    // otherwise, check how many people are in the channel now
+    if (stateChange.members.size === 0 && player.paused && !player.playing)
+      setTimeout(() => {
         if (
           stateChange.members.size === 0 &&
-          !player.paused &&
-          player.playing
+          player.paused &&
+          !player.playing
         ) {
-          player.pause(true);
-
-          let emb = client
+          let DisconnectedEmbed = client
             .Embed()
-            .setAuthor({ text: `Paused!`, iconURL: client.config.iconURL })
+            .setAuthor({
+              name: "📤 | Disconnected!",
+            })
             .setDescription(
-              `[${player.queue.current.title}](${player.queue.current.uri})`
-            )
-            .setFooter({
-              text: `The current song has been paused because theres no one in the voice channel.`,
-            });
-          await client.channels.cache
+              `I was alone for 3 minutes and went to get a coffee.`
+            ); // coffee is always better than a tea.
+          client.channels.cache
             .get(player.textChannel)
-            .send({ embeds: [emb] });
+            .send({ embeds: [DisconnectedEmbed] });
+          player.destroy(); // leave
         }
-      }
-      break;
+      }, client.config.disconnectTime); // config time
   }
 };

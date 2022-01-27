@@ -34,7 +34,7 @@
   "homepage": "https://github.com/SudhanPlayz/Discord-MusicBot#readme",
   "dependencies": {
     "@discordjs/builders": "^0.11.0",
-    "@discordjs/rest": "^0.1.0-canary.0",
+    "@discordjs/rest": "^0.3.0",
     "axios": "^0.25.0",
     "better-erela.js-apple": "^0.1.0",
     "better-erela.js-spotify": "^1.1.3",
