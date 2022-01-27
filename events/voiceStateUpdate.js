@@ -49,22 +49,24 @@ module.exports = async (client, oldState, newState) => {
     case "JOIN":
       if (client.config.alwaysplay === false) {
         if (stateChange.members.size === 1 && player.paused) {
-          let emb = client
+          let playerResumed = client
             .Embed()
             // say that the queue has been resumed
             .setTitle(`Resumed!`, client.config.iconURL)
-            .setDescription(
-              `[${player.queue.current.title}](${player.queue.current.uri})`
-            )
             .setFooter({ text: `The current song has been resumed.` });
           await client.channels.cache
             .get(player.textChannel)
-            .send({ embeds: [emb] });
+            .send({ embeds: [playerResumed] });
+
+          //!BUG Updated nowplaying message doesn't show buttons
           // update the now playing message and bring it to the front
-          let msg2 = await client.channels.cache
+          let playerPlaying = await client.channels.cache
             .get(player.textChannel)
-            .send({ embeds: [player.nowPlayingMessage.embeds[0]] });
-          player.setNowplayingMessage(msg2);
+            .send({
+              embeds: [player.nowPlayingMessage.embeds[0]],
+              components: [client.createController(player.options.guild)],
+            });
+          player.setNowplayingMessage(playerPlaying);
           player.pause(false);
         }
       }
@@ -78,18 +80,15 @@ module.exports = async (client, oldState, newState) => {
         ) {
           player.pause(true);
 
-          let emb = client
+          let playerPaused = client
             .Embed()
-            .setAuthor({ text: `Paused!`, iconURL: client.config.iconURL })
-            .setDescription(
-              `[${player.queue.current.title}](${player.queue.current.uri})`
-            )
+            .setTitle(`Paused!`, client.config.iconURL)
             .setFooter({
               text: `The current song has been paused because theres no one in the voice channel.`,
             });
           await client.channels.cache
             .get(player.textChannel)
-            .send({ embeds: [emb] });
+            .send({ embeds: [playerPaused] });
         }
       }
       break;
