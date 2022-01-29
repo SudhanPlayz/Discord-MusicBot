@@ -43,7 +43,7 @@ const command = new SlashCommand()
       .setTitle(`${client.user.username} Information`)
       .setColor(client.config.embedColor)
       .setDescription(
-        `\`\`\`yml\nName: ${client.user.username}#${client.user.discriminator} [${client.user.id}]\nAPI Latency: ${client.ws.ping}\nRuntime: ${runtime}\`\`\``
+        `\`\`\`yml\nName: ${client.user.username}#${client.user.discriminator} [${client.user.id}]\nAPI Latency: ${client.ws.ping}ms\nRuntime: ${runtime}\`\`\``
       )
       .setFields([
         {
