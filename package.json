@@ -48,7 +48,7 @@
     "erela.js-filters": "^1.2.6",
     "express": "^4.17.1",
     "git-last-commit": "^1.0.1",
-    "jsoning": "^0.12.22",
+    "jsoning": "^0.13.0",
     "moment": "^2.29.1",
     "moment-duration-format": "^2.3.2",
     "node-fetch": "2.6.6",
