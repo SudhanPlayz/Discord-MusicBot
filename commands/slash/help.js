@@ -12,8 +12,15 @@ const command = new SlashCommand()
     });
     // from commands remove the ones that hae no description
     const filteredCommands = commands.filter((cmd) => cmd.description);
+
+    // get commit hash and date
+    const commit = require("child_process")
+      .execSync("git rev-parse --short HEAD")
+      .toString()
+      .trim();
+
     // create the embed
-    const embed = new MessageEmbed()
+    const helpEmbed = new MessageEmbed()
       .setAuthor({
         name: `Commands of ${client.user.username}`,
         iconURL: client.config.iconURL,
@@ -29,12 +36,11 @@ const command = new SlashCommand()
           "\n\n" +
           `Discord Music Bot Version: v${
             require("../../package.json").version
-          }` +
+          }; Build ${commit}` +
           "\n" +
-          `[✨ Support Server](${client.config.supportServer}) | [Github](https://github.com/SudhanPlayz/Discord-MusicBot/) | [Invite Me](https://discord.com/oauth2/authorize?client_id=${client.config.clientId}&permissions=${client.config.permissions}&scope=bot%20applications.commands)`
+          `[✨ Support Server](${client.config.supportServer}) | [Issues](${client.config.Issues}) | [Github](https://github.com/SudhanPlayz/Discord-MusicBot/) | [Invite Me](https://discord.com/oauth2/authorize?client_id=${client.config.clientId}&permissions=${client.config.permissions}&scope=bot%20applications.commands)`
       );
-
-    return interaction.reply({ embeds: [embed] });
+    return interaction.reply({ embeds: [helpEmbed], ephemeral: true });
   });
 
 module.exports = command;

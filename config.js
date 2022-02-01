@@ -7,6 +7,7 @@ module.exports = {
   serverDeafen: true, //If you want bot to stay deafened
   defaultVolume: 100, //Sets the default volume of the bot, You can change this number anywhere from 1 to 100
   supportServer: "https://discord.gg/sbySMS7m3v", //Support Server Link
+  Issues: "https://github.com/SudhanPlayz/Discord-MusicBot/issues", //Bug Report Link
   permissions: 826839002433, //Bot Inviting Permissions
   disconnectTime: 30000, //How long should the bot wait before disconnecting from the voice channel. in miliseconds. set to 1 for instant disconnect.
   alwaysplay: true, // when set to true music will always play no matter if theres no one in voice channel.
