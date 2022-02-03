@@ -39,7 +39,13 @@ const command = new SlashCommand()
       .duration(os.uptime() * 1000)
       .format("d[ Days]・h[ Hrs]・m[ Mins]・s[ Secs]");
 
-    const embed = new MessageEmbed()
+    // get commit hash and date
+    const commit = require("child_process")
+      .execSync("git rev-parse HEAD")
+      .toString()
+      .trim();
+
+    const statsEmbed = new MessageEmbed()
       .setTitle(`${client.user.username} Information`)
       .setColor(client.config.embedColor)
       .setDescription(
@@ -61,7 +67,7 @@ const command = new SlashCommand()
             client.guilds.cache.size
           } \nNodeJS: ${nodeVersion}\nDiscordMusicBot: v${
             require("../../package.json").version
-          }\`\`\``,
+          } \`\`\``,
           inline: true,
         },
         {
@@ -69,38 +75,9 @@ const command = new SlashCommand()
           value: `\`\`\`yml\nOS: ${osver}\nUptime: ${sysuptime}\n\`\`\``,
           inline: false,
         },
-      ]);
-
-    // .setFields([
-    //   {
-    //     name: "**Bot Statistic**",
-    //     value: `📶 Ping • \`${
-    //       client.ws.ping
-    //     }ms\n\`:file_cabinet: Memory • \`${(
-    //       process.memoryUsage().heapUsed /
-    //       1024 /
-    //       1024
-    //     ).toFixed(2)}MB\`\n\n🕒 Uptime • \`${botuptime}\`\n👨‍💻 Guilds • \`${
-    //       client.guilds.cache.size
-    //     }\``,
-    //     inline: true,
-    //   },
-    //   {
-    //     name: "**Lavalink Statistic**",
-    //     value: `🖥 CPU • \`${
-    //       client.manager.nodes
-    //         .values()
-    //         .next()
-    //         .value.stats.cpu.lavalinkLoad.toFixed(2) * 100
-    // }%\`\n:file_cabinet: Memory • \`${lavaram}MB / ${lavamemalocated}MB\`\n\n🕒 Uptime • \`${lavauptime}\`\n🎵 Players • \`${
-    //   client.manager.nodes.values().next().value.stats.playingPlayers
-    // } / ${
-    //   client.manager.nodes.values().next().value.stats.players
-    // } playing\``,
-    //     inline: true,
-    //   },
-    // ])
-    return interaction.reply({ embeds: [embed] });
+      ])
+      .setFooter({ text: `Build ${commit}` });
+    return interaction.reply({ embeds: [statsEmbed], ephemeral: false });
   });
 
 module.exports = command;

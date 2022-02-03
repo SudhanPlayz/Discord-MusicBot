@@ -22,9 +22,11 @@ const command = new SlashCommand()
     }
     let query = options.getString("query", true);
     let player = client.createPlayer(interaction.channel, channel);
-    if (player.state != "CONNECTED") {
+    ///console.log(player.state);
+    if (player.state !== "CONNECTED") {
       player.connect();
     }
+
     // TODO: auto join stage channel.
 
     await interaction.reply({

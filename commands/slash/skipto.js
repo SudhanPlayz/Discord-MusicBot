@@ -17,19 +17,19 @@ const command = new SlashCommand()
 
     let player = client.manager.players.get(interaction.guild.id);
     if (!player) {
-      const QueueEmbed = new MessageEmbed()
+      const queueEmbed = new MessageEmbed()
         .setColor(client.config.embedColor)
         .setDescription("❌ | There is no music playing in this guild!");
-      return interaction.reply({ embeds: [QueueEmbed], ephemeral: true });
+      return interaction.reply({ embeds: [queueEmbed], ephemeral: true });
     }
 
     if (!interaction.member.voice.channel) {
-      const JoinEmbed = new MessageEmbed()
+      const joinEmbed = new MessageEmbed()
         .setColor(client.config.embedColor)
         .setDescription(
           "❌ | You must be in a voice channel to use this command!"
         );
-      return interaction.reply({ embeds: [JoinEmbed], ephemeral: true });
+      return interaction.reply({ embeds: [joinEmbed], ephemeral: true });
     }
 
     if (
@@ -38,12 +38,12 @@ const command = new SlashCommand()
         interaction.member.voice.channel
       )
     ) {
-      const SameEmbed = new MessageEmbed()
+      const sameEmbed = new MessageEmbed()
         .setColor(client.config.embedColor)
         .setDescription(
           "❌ | You must be in the same voice channel as the bot to use this command!"
         );
-      return interaction.reply({ embeds: [SameEmbed], ephemeral: true });
+      return interaction.reply({ embeds: [sameEmbed], ephemeral: true });
     }
 
     await interaction.deferReply();

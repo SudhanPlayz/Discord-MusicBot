@@ -21,24 +21,24 @@ module.exports = async (client, interaction) => {
     return;
   }
   if (!interaction.member.voice.channel) {
-    const JoinEmbed = new MessageEmbed()
+    const joinEmbed = new MessageEmbed()
       .setColor(client.config.embedColor)
       .setDescription(
         "❌ | **You must be in a voice channel to use this command!**"
       );
-    return interaction.reply({ embeds: [JoinEmbed], ephemeral: true });
+    return interaction.reply({ embeds: [joinEmbed], ephemeral: true });
   }
 
   if (
     interaction.guild.me.voice.channel &&
     !interaction.guild.me.voice.channel.equals(interaction.member.voice.channel)
   ) {
-    const SameEmbed = new MessageEmbed()
+    const sameEmbed = new MessageEmbed()
       .setColor(client.config.embedColor)
       .setDescription(
         "❌ | **You must be in the same voice channel as me to use this command!**"
       );
-    return interaction.reply({ embeds: [SameEmbed], ephemeral: true });
+    return interaction.reply({ embeds: [sameEmbed], ephemeral: true });
   }
   if (property === "LowVolume") {
     player.setVolume(player.volume - 10);
@@ -68,7 +68,6 @@ module.exports = async (client, interaction) => {
       }, 5000);
       return;
     }
-    console.log("This is a test of the test lamo hiiii");
     const currentSong = player.queue.current;
     player.play(player.queue.previous);
     if (currentSong) player.queue.unshift(currentSong);
