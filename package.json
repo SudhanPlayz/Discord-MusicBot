@@ -47,7 +47,6 @@
     "erela.js-facebook": "^1.0.4",
     "erela.js-filters": "^1.2.6",
     "express": "^4.17.1",
-    "git-last-commit": "^1.0.1",
     "jsoning": "^0.13.0",
     "lodash": "^4.17.21",
     "moment": "^2.29.1",

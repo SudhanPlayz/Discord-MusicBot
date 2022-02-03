@@ -40,10 +40,16 @@ const command = new SlashCommand()
       .format("d[ Days]・h[ Hrs]・m[ Mins]・s[ Secs]");
 
     // get commit hash and date
-    const commit = require("child_process")
-      .execSync("git rev-parse HEAD")
-      .toString()
-      .trim();
+    let gitHash = "unknown";
+    try {
+      gitHash = require("child_process")
+        .execSync("git rev-parse HEAD")
+        .toString()
+        .trim();
+    } catch (e) {
+      // do nothing
+      gitHash = "unknown";
+    }
 
     const statsEmbed = new MessageEmbed()
       .setTitle(`${client.user.username} Information`)
@@ -76,7 +82,7 @@ const command = new SlashCommand()
           inline: false,
         },
       ])
-      .setFooter({ text: `Build ${commit}` });
+      .setFooter({ text: `Build: ${gitHash}` });
     return interaction.reply({ embeds: [statsEmbed], ephemeral: false });
   });
 

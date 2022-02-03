@@ -13,11 +13,17 @@ const command = new SlashCommand()
     // from commands remove the ones that hae no description
     const filteredCommands = commands.filter((cmd) => cmd.description);
 
-    // get commit hash and date
-    const commit = require("child_process")
-      .execSync("git rev-parse --short HEAD")
-      .toString()
-      .trim();
+    // if git exists, then get commit hash
+    let gitHash = "";
+    try {
+      gitHash = require("child_process")
+        .execSync("git rev-parse --short HEAD")
+        .toString()
+        .trim();
+    } catch (e) {
+      // do nothing
+      gitHash = "unknown";
+    }
 
     // create the embed
     const helpEmbed = new MessageEmbed()
@@ -36,7 +42,7 @@ const command = new SlashCommand()
           "\n\n" +
           `Discord Music Bot Version: v${
             require("../../package.json").version
-          }; Build ${commit}` +
+          }; Build: ${gitHash}` +
           "\n" +
           `[✨ Support Server](${client.config.supportServer}) | [Issues](${client.config.Issues}) | [Github](https://github.com/SudhanPlayz/Discord-MusicBot/) | [Invite Me](https://discord.com/oauth2/authorize?client_id=${client.config.clientId}&permissions=${client.config.permissions}&scope=bot%20applications.commands)`
       );
