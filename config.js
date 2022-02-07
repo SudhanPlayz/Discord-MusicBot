@@ -9,15 +9,15 @@ module.exports = {
   supportServer: "https://discord.gg/sbySMS7m3v", //Support Server Link
   Issues: "https://github.com/SudhanPlayz/Discord-MusicBot/issues", //Bug Report Link
   permissions: 826839002433, //Bot Inviting Permissions
-  disconnectTime: 30000, //How long should the bot wait before disconnecting from the voice channel. in miliseconds. set to 1 for instant disconnect.
+  disconnectTime: 999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999, //How long should the bot wait before disconnecting from the voice channel. in miliseconds. set to 1 for instant disconnect.
   alwaysplay: true, // when set to true music will always play no matter if theres no one in voice channel.
   // Lavalink server; optional public lavalink -> https://lavalink-list.darrennathanael.com/
   nodes: [
     {
       identifier: "Main",
-      host: "",
-      port: 80,
-      password: "",
+      host: "fin1.vertexnodes.com",
+      port: 25506,
+      password: "kittenisamazing",
       retryAmount: 5, //- Optional
       retryDelay: 1000, //- Optional
       //secure: true //- Optional | Default: false
