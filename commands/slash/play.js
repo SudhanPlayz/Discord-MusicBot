@@ -1,4 +1,5 @@
 // const { Manager } = require("erela.js/structures/Manager");
+const { VoiceState } = require("discord.js");
 const SlashCommand = require("../../lib/SlashCommand");
 
 const command = new SlashCommand()
@@ -22,12 +23,25 @@ const command = new SlashCommand()
     }
     let query = options.getString("query", true);
     let player = client.createPlayer(interaction.channel, channel);
-    ///console.log(player.state);
+    // console.log(player);
+    // console.log("fuck")
+    // console.log(player.state);
     if (player.state !== "CONNECTED") {
       player.connect();
     }
-
-    // TODO: auto join stage channel.
+    // console.log(player);
+    // if the channel is a stage channel then request to speak
+    if (channel.type == "GUILD_STAGE_VOICE") {
+      setTimeout(() => {
+        if (interaction.guild.me.voice.suppress == true) {
+          try {
+            interaction.guild.me.voice.setSuppressed(false);
+          } catch (e) {
+            interaction.guild.me.voice.setRequestToSpeak(true);
+          }
+        }
+      }, 2000); // set timeout are here, because bot sometimes takes time before reconising it's a stage.
+    }
 
     await interaction.reply({
       embeds: [client.Embed(":mag_right: **Searching...**")],

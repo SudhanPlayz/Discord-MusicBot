@@ -16,6 +16,13 @@ const command = new SlashCommand()
       return interaction.reply({ embeds: [queueEmbed], ephemeral: true });
     }
 
+    if (!player.playing) {
+      const queueEmbed = new MessageEmbed()
+        .setColor(client.config.embedColor)
+        .setDescription("There's nothing playing.");
+      return interaction.reply({ embeds: [queueEmbed], ephemeral: true });
+    }
+
     if (!interaction.member.voice.channel) {
       const joinEmbed = new MessageEmbed()
         .setColor(client.config.embedColor)
