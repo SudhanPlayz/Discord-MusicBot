@@ -398,7 +398,7 @@ module.exports = {
               );
             return interaction.send(SongAddedEmbed);
 
-           case "PLAYLIST_LOADED":
+          case "PLAYLIST_LOADED":
             player.queue.add(res.tracks);
             await player.play();
             let SongAdded = new MessageEmbed();

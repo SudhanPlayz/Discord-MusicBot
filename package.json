@@ -15,7 +15,7 @@
     "url": "git+https://github.com/SudhanPlayz/Discord-MusicBot.git"
   },
   "engines": {
-    "node": "16.x"
+    "node": ">=14.x"
   },
   "keywords": [
     "discord",
@@ -40,6 +40,7 @@
     "erela.js-deezer": "^1.0.7",
     "erela.js-facebook": "^1.0.4",
     "express": "^4.17.1",
+    "express-rate-limit": "^6.2.0",
     "express-session": "^1.17.1",
     "jsoning": "^0.12.0",
     "lavasfy": "2.3.0",
