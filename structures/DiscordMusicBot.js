@@ -116,6 +116,10 @@ class DiscordMusicBot extends Client {
       {
         clientID: this.botconfig.Spotify.ClientID,
         clientSecret: this.botconfig.Spotify.ClientSecret,
+        playlistPageLoadLimit: 3,
+        filterAudioOnlyResult: true,
+        autoResolve: true,
+        useSpotifyMetadata: true,
       },
       [
         {
@@ -129,7 +133,11 @@ class DiscordMusicBot extends Client {
     );
 
     this.Manager = new Manager({
-      plugins: [new deezer(), new apple(), new facebook()],
+      plugins: [
+        new deezer(),
+        new apple(),
+        new facebook(),
+      ],
       nodes: [
         {
           identifier: this.botconfig.Lavalink.id,

@@ -2,7 +2,6 @@ const { static, Router } = require("express");
 const api = Router();
 const fs = require("fs");
 const { join } = require("path");
-const rateLimit = require("express-rate-limit");
 
 const RoutesPath = join(__dirname, "Routes");
 
@@ -47,14 +46,6 @@ passport.use(
   )
 );
 
-const limiter = rateLimit({
-  windowMs: 5 * 60 * 1000,
-  max: 10000, // Limit each IP to 10000 requests per `window` (here, per 5 minutes)
-  standardHeaders: false,
-  legacyHeaders: true,
-});
-
-api.use(limiter);
 api.use(
   session({
     secret: config.CookieSecret,
