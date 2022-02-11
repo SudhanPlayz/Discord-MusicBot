@@ -116,10 +116,7 @@ class DiscordMusicBot extends Client {
       {
         clientID: this.botconfig.Spotify.ClientID,
         clientSecret: this.botconfig.Spotify.ClientSecret,
-        playlistPageLoadLimit: 3,
-        filterAudioOnlyResult: true,
-        autoResolve: true,
-        useSpotifyMetadata: true,
+        playlistPageLoadLimit: 1,
       },
       [
         {
