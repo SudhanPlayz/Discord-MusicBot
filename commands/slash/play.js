@@ -1,5 +1,4 @@
 // const { Manager } = require("erela.js/structures/Manager");
-const { VoiceState } = require("discord.js");
 const SlashCommand = require("../../lib/SlashCommand");
 
 const command = new SlashCommand()
@@ -23,9 +22,14 @@ const command = new SlashCommand()
     }
     let query = options.getString("query", true);
     let player = client.createPlayer(interaction.channel, channel);
-    // console.log(player);
-    // console.log("fuck")
-    // console.log(player.state);
+    if (!interaction.member.voice.channel) {
+      const joinEmbed = new MessageEmbed()
+        .setColor(client.config.embedColor)
+        .setDescription(
+          "❌ | **You must be in a voice channel to use this command.**"
+        );
+      return interaction.reply({ embeds: [joinEmbed], ephemeral: true });
+    }
     if (player.state !== "CONNECTED") {
       player.connect();
     }
@@ -76,7 +80,7 @@ const command = new SlashCommand()
       player.queue.add(res.tracks[0]);
       if (!player.playing && !player.paused && !player.queue.size)
         player.play();
-      let embed = client
+      let addQueueEmbed = client
         .Embed()
         .setAuthor({ name: "Added to queue", iconURL: client.config.iconURL })
         //.setAuthor("Added to queue", client.config.iconURL) Deprecated soon
@@ -95,13 +99,21 @@ const command = new SlashCommand()
           true
         );
       try {
-        embed.setThumbnail(res.tracks[0].displayThumbnail("maxresdefault"));
+        addQueueEmbed.setThumbnail(
+          res.tracks[0].displayThumbnail("maxresdefault")
+        );
       } catch (err) {
-        embed.setThumbnail(res.tracks[0].thumbnail);
+        addQueueEmbed.setThumbnail(res.tracks[0].thumbnail);
       }
       if (player.queue.totalSize > 1)
-        embed.addField("Position in queue", `${player.queue.size - 0}`, true);
-      return interaction.editReply({ embeds: [embed] }).catch(this.warn);
+        addQueueEmbed.addField(
+          "Position in queue",
+          `${player.queue.size - 0}`,
+          true
+        );
+      return interaction
+        .editReply({ embeds: [addQueueEmbed] })
+        .catch(this.warn);
     }
 
     if (res.loadType === "PLAYLIST_LOADED") {
@@ -112,7 +124,7 @@ const command = new SlashCommand()
         player.queue.totalSize === res.tracks.length
       )
         player.play();
-      let embed = client
+      let playlistEmbed = client
         .Embed()
         .setAuthor({
           name: "Playlist added to queue",
@@ -129,7 +141,9 @@ const command = new SlashCommand()
           })}\``,
           false
         );
-      return interaction.editReply({ embeds: [embed] }).catch(this.warn);
+      return interaction
+        .editReply({ embeds: [playlistEmbed] })
+        .catch(this.warn);
     }
   });
 

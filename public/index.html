@@ -4,8 +4,12 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Discord Music Bot</title>
-    <link rel="shortcut icon" href="/logo.gif" type="image/gif" />
+    <title>Model Buses</title>
+    <link
+      rel="shortcut icon"
+      href="https://cdn.darrennathanael.com/icons/spinning_disk.gif"
+      type="image/gif"
+    />
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -64,13 +68,13 @@
             "
           >
             <img
-              src="/logo.gif"
-              alt="Music Bot Logo"
+              src="https://cdn.darrennathanael.com/icons/spinning_disk.gif"
+              alt="Logo"
               width="30"
               height="30"
               class="d-inline-block align-text-top"
             />
-            Discord Music Bot
+            Model Buses
           </a>
           <button
             class="navbar-toggler"
@@ -95,8 +99,17 @@
               <a class="nav-link" href="#features" style="color: white"
                 >Features</a
               >
-              <a class="nav-link" href="#commands" style="color: white"
-                >Commands</a
+              <a
+                class="nav-link"
+                href="https://github.com/SudhanPlayz/Discord-MusicBot"
+                style="color: white"
+                >Source code</a
+              >
+              <a
+                class="nav-link"
+                href="https://git.darrennathanael.com/DarrenOfficial/DiscordMusic"
+                style="color: white"
+                >My Code</a
               >
             </div>
             <a href="/dashboard" class="btn" type="button" style="color: white">
@@ -127,10 +140,11 @@
           class="text-center"
           style="position: relative; top: 50%; transform: translateY(-50%)"
         >
-          <h1>Discord Music Bot</h1>
+          <h1>Model Buses</h1>
           <p>
-            An advanced discord music bot, supports Spotify, SoundCloud, YouTube
-            with Shuffling, Volume Control and Web Dashboard!
+            An open-source Discord bot that supports playing music from YouTube,
+            Spotify, Deezer and many more!<br />
+            It even has buttons controls!
           </p>
         </div>
       </div>
@@ -150,14 +164,15 @@
             <div class="col-md-6 col-lg-4">
               <div class="single-service">
                 <div class="part-1">
-                  <i class="fab fa-spotify"></i> <i class="fab fa-youtube"></i>
-                  <i class="fab fa-soundcloud"></i>
-                  <h3 class="title">Spotify, Sound Cloud, YouTube Support</h3>
+                  <i class="fas fa-play"></i>
+                  <h3 class="title">
+                    Spotify, SoundCloud, AppleMusic, Deezer, YouTube Support
+                  </h3>
                 </div>
                 <div class="part-2">
                   <p class="description">
-                    Use your spotify playlist, youtube videos, youtube playlists
-                    and much more using this bot
+                    Use your spotify playlist, youtube, soundcloud playlist,
+                    twitch stream, or any other http sources!
                   </p>
                 </div>
               </div>
@@ -165,12 +180,15 @@
             <div class="col-md-6 col-lg-4">
               <div class="single-service">
                 <div class="part-1">
-                  <i class="fas fa-music"></i>
+                  <i class="fas fa-mountain"></i>
                   <h3 class="title">Lag free music</h3>
                 </div>
                 <div class="part-2">
                   <p class="description">
-                    Bot never lags while playing a song in a voice channel
+                    This bot uses lavalink for playback to ensure that there's
+                    no lag! even in peak hours!<br />
+                    Unlike other bot, this bot has volume contro1 and filters
+                    for free!
                   </p>
                 </div>
               </div>
@@ -179,12 +197,13 @@
               <div class="single-service">
                 <div class="part-1">
                   <i class="fas fa-sliders-h"></i>
-                  <h3 class="title">Server Settings</h3>
+                  <h3 class="title">Advance Control</h3>
                 </div>
                 <div class="part-2">
                   <p class="description">
-                    Control your song looping song or queue, You can even change
-                    server prefix and server dj role
+                    Pause, Resume, Skip, Previus and Volume control from a
+                    buttons that are easy to use!<br />
+                    <i>Soon you can do it all from the dashboard control!</i>
                   </p>
                 </div>
               </div>
@@ -194,7 +213,7 @@
       </div>
       <!-- End Features -->
 
-      <!-- Commands -->
+      <!-- Commands
       <div class="commands" id="commands">
         <div class="container">
           <h2 class="title text-center">Commands</h2>
@@ -284,8 +303,8 @@
           </table>
         </div>
       </div>
-      <!-- End Commands -->
-      <!-- Footer -->
+      End Commands -->
+      <!-- Footer
       <div class="footer">
         <div class="container">
           <div class="row">
@@ -307,7 +326,7 @@
           </div>
         </div>
       </div>
-      <!-- End Footer -->
+    End Footer -->
     </section>
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
@@ -333,7 +352,7 @@
     }
 
     body {
-      background: linear-gradient(to right, #8a2387, #e94057, #f27121);
+      background: linear-gradient(to right, #738dd0, #314476);
       color: #fff;
       font-family: "Euclid Circular B Medium", Poppins;
     }
@@ -387,7 +406,7 @@
     }
 
     .title {
-      background: linear-gradient(to right, #8a2387, #e94057, #f27121);
+      background: #314270;
       color: transparent;
       -webkit-background-clip: text;
       background-clip: text;
@@ -550,6 +569,10 @@ border: 1px solid rgba( 255, 255, 255, 0.18 );">Dashboard</a>`);
 </tr>
 `);
         });
+      });
+      // load config.js and replace title with the bot name
+      $.get("/api/title", (data) => {
+        $("#title").text(data.name);
       });
     });
   </script>

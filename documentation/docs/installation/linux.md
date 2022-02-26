@@ -24,7 +24,7 @@ follow [those](https://github.com/nodesource/distributions) instructions
 
 ### Configuration
 
-- run `git clone https://github.com/SudhanPlayz/Discord-MusicBot.git`
+- run `git clone -b v5 https://github.com/SudhanPlayz/Discord-MusicBot.git`
 - go into the folder with `cd Discord-MusicBot`
 - edit the config.js with the tokens from earlier
 
@@ -32,7 +32,7 @@ follow [those](https://github.com/nodesource/distributions) instructions
 
 use [public lavalink](https://lavalink-list.darrennathanael.com)
 
-or [host your own](https://code.darrennathanael.com/how-to-lavalink)
+or [host your own](darrennathanael.com/post/how-to-lavalink/)
 
 ### Final steps
 

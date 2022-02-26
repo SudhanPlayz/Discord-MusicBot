@@ -34,7 +34,7 @@ module.exports = async (client, interaction) => {
       await interaction.reply({
         embeds: [
           client.ErrorEmbed(
-            "I don't have permission to connect to the voice channel!"
+            "I don't have enough permission to join your voice channel!"
           ),
         ],
       });

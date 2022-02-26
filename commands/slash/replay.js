@@ -9,9 +9,7 @@ const command = new SlashCommand()
     if (!player) {
       const QueueEmbed = new MessageEmbed()
         .setColor(client.config.embedColor)
-        .setDescription(
-          "There's nothing playing in the queue"
-        );
+        .setDescription("There's nothing playing in the queue");
       return interaction.reply({ embeds: [QueueEmbed], ephemeral: true });
     }
 
@@ -47,9 +45,7 @@ const command = new SlashCommand()
       embeds: [
         new MessageEmbed()
           .setColor(client.config.embedColor)
-          .setDescription(
-            `Replay [${song.title}](${song.uri})`
-          ),
+          .setDescription(`Replay [${song.title}](${song.uri})`),
       ],
     });
   });

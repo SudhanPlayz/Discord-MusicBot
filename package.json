@@ -36,8 +36,11 @@
     "music",
     "discord-music"
   ],
-  "author": "SudhanPlayz",
-  "license": "LICENSE.md",
+  "authors": [
+    "SudhanPlayz",
+    "DarrenOfficial"
+  ],
+  "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/SudhanPlayz/Discord-MusicBot/issues"
   },

@@ -10,6 +10,14 @@ const command = new SlashCommand()
       return interaction.reply({
         embeds: [client.ErrorEmbed("**Lavalink node not connected**")],
       });
+    if (!interaction.member.voice.channel) {
+      const joinEmbed = new MessageEmbed()
+        .setColor(client.config.embedColor)
+        .setDescription(
+          "❌ | **You must be in a voice channel to use this command.**"
+        );
+      return interaction.reply({ embeds: [joinEmbed], ephemeral: true });
+    }
 
     let player = client.manager.players.get(interaction.guild.id);
     if (!player) {

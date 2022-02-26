@@ -44,8 +44,9 @@ const command = new SlashCommand()
             require("../../package.json").version
           }; Build: ${gitHash}` +
           "\n" +
-          `[✨ Support Server](${client.config.supportServer}) | [Issues](${client.config.Issues}) | [Github](https://github.com/SudhanPlayz/Discord-MusicBot/) | [Invite Me](https://discord.com/oauth2/authorize?client_id=${client.config.clientId}&permissions=${client.config.permissions}&scope=bot%20applications.commands)`
+          `[✨ Support Server](${client.config.supportServer}) | [Issues](${client.config.Issues}) | [Source](https://git.darrennathanael.com/DarrenOfficial/DiscordMusic/) | [Invite Me](https://discord.com/oauth2/authorize?client_id=${client.config.clientId}&permissions=${client.config.permissions}&scope=bot%20applications.commands)`
       );
+    // Do not change the Source code link.
     return interaction.reply({ embeds: [helpEmbed], ephemeral: true });
   });
 

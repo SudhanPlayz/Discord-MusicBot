@@ -55,12 +55,12 @@ const command = new SlashCommand()
       .setTitle(`${client.user.username} Information`)
       .setColor(client.config.embedColor)
       .setDescription(
-        `\`\`\`yml\nName: ${client.user.username}#${client.user.discriminator} [${client.user.id}]\nAPI Latency: ${client.ws.ping}ms\nRuntime: ${runtime}\`\`\``
+        `\`\`\`yml\nName: ${client.user.username}#${client.user.discriminator} [${client.user.id}]\nAPI: ${client.ws.ping}ms\nRuntime: ${runtime}\`\`\``
       )
       .setFields([
         {
-          name: "Lavalink stats",
-          value: `\`\`\`yml\nUptime: ${lavauptime}\nRAM: ${lavaram} / ${lavamemalocated} MB\nPlaying: ${
+          name: `Lavalink stats`,
+          value: `\`\`\`yml\nUptime: ${lavauptime}\nRAM: ${lavaram} MB\nPlaying: ${
             client.manager.nodes.values().next().value.stats.playingPlayers
           } out of ${
             client.manager.nodes.values().next().value.stats.players
