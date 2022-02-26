@@ -32,7 +32,7 @@ follow [those](https://github.com/nodesource/distributions) instructions
 
 use [public lavalink](https://lavalink-list.darrennathanael.com)
 
-or [host your own](darrennathanael.com/post/how-to-lavalink/)
+or [host your own](https://darrennathanael.com/post/how-to-lavalink/)
 
 ### Final steps
 
