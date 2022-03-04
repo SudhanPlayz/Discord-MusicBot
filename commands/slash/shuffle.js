@@ -37,18 +37,18 @@ const command = new SlashCommand()
     }
 
     if (!player.queue || !player.queue.length || player.queue.length === 0) {
-      const AddEmbed = new MessageEmbed()
+      const addEmbed = new MessageEmbed()
         .setColor(client.config.embedColor)
         .setDescription("❌ | **There are no songs in the queue.**");
-      return interaction.reply({ embeds: [AddEmbed], ephemeral: true });
+      return interaction.reply({ embeds: [addEmbed], ephemeral: true });
     }
 
     //  if the queue is not empty, shuffle the entire queue
     player.queue.shuffle();
-    const ShuffleEmbed = new MessageEmbed()
+    const shuffleEmbed = new MessageEmbed()
       .setColor(client.config.embedColor)
       .setDescription("🔀 | **Successfully shuffled the queue.**");
-    return interaction.reply({ embeds: [ShuffleEmbed] });
+    return interaction.reply({ embeds: [shuffleEmbed] });
   });
 
 module.exports = command;
