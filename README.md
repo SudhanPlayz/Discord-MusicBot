@@ -29,7 +29,6 @@ Soon
 
 ## 🚀 | Deploy
 
-[![Run on Repl.it](https://repl.it/badge/github/modelbuses/DiscordMusic)](https://repl.it/github/ModelBuses/DiscordMusic)
 [![Deploy to heroku](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/SudhanPlayz/Discord-MusicBot/tree/v5)
 [![Open in Gitpod](https://camo.githubusercontent.com/76e60919474807718793857d8eb615e7a50b18b04050577e5a35c19421f260a3/68747470733a2f2f676974706f642e696f2f627574746f6e2f6f70656e2d696e2d676974706f642e737667)](https://gitpod.io/#https://github.com/SudhanPlayz/Discord-MusicBot/tree/v5)
 
