@@ -32,7 +32,7 @@ module.exports = async (client, oldState, newState) => {
   // move check first as it changes type
   if (stateChange.type === "MOVE") {
     if (oldState.channel.id === player.voiceChannel) stateChange.type = "LEAVE";
-    if (newState.channel.id === player.voiceChannel) stateChange.type = "JOIN";
+    if (newState.channel.id === player.voiceChannel && !newState.member.user.bot) stateChange.type = "JOIN";
   }
   // double triggered on purpose for MOVE events
   if (stateChange.type === "JOIN") stateChange.channel = newState.channel;
@@ -77,6 +77,14 @@ module.exports = async (client, oldState, newState) => {
           .setDescription(`The player has been paused because everybody left`);
         await client.channels.cache.get(player.textChannel).send(emb);
       }
+          if (stateChange.members.size > 0 && player.paused) {
+              player.destroy(true);
+  
+          let emb = new MessageEmbed()
+          .setAuthor(`Disconnected!`, client.botconfig.IconURL)
+          .setColor(client.botconfig.EmbedColor)
+          .setDescription(`The player has been paused because the bot has been kicked out of the voice channel`);
+        await client.channels.cache.get(player.textChannel).send(emb);      }
       break;
   }
 };
