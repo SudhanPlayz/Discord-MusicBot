@@ -527,7 +527,7 @@
           data.ClientID
         }&permissions=${data.Permissions}&scope=${data.Scopes.join(
           "%20"
-        )}&redirect_uri=${data.Website}${data.CallbackURL}&response_type=code`;
+        )}&redirect_url=${data.Website}${data.CallbackURL}&response_type=code`;
 
         $("#hero").append(`
             <a href="/dashboard" class="btn" type="button" style="background: rgba( 255, 255, 255, 0.35 );
