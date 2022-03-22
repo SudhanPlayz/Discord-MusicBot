@@ -4,7 +4,7 @@ const prettyMilliseconds = require("pretty-ms");
 
 module.exports = {
   name: "play",
-  description: "Play your favorite songs",
+  description: "відтворює ваші пісні",
   usage: "[song]",
   permissions: {
     channel: ["VIEW_CHANNEL", "SEND_MESSAGES", "EMBED_LINKS"],
@@ -22,7 +22,7 @@ module.exports = {
     if (!message.member.voice.channel)
       return client.sendTime(
         message.channel,
-        "❌ | **You must be in a voice channel to play something!**"
+        "❌ | **Щоб використовувати цю команду, ви повинні бути в тому ж голосовому каналі, що й я!**"
       );
     if (
       message.guild.me.voice.channel &&
@@ -30,7 +30,7 @@ module.exports = {
     )
       return client.sendTime(
         message.channel,
-        ":x: | **You must be in the same voice channel as me to use this command!**"
+        ":x: | **Щоб використовувати цю команду, ви повинні бути в тому ж голосовому каналі, що й я!**"
       );
     let SearchString = args.join(" ");
     if (!SearchString)
@@ -39,11 +39,11 @@ module.exports = {
         `**Usage - **\`${GuildDB.prefix}play [song]\``
       );
     let CheckNode = client.Manager.nodes.get(client.botconfig.Lavalink.id);
-    let Searching = await message.channel.send(":mag_right: Searching...");
+    let Searching = await message.channel.send(":mag_right: Пошук...");
     if (!CheckNode || !CheckNode.connected) {
       return client.sendTime(
         message.channel,
-        "❌ | **Lavalink node not connected**"
+        "❌ | **Вузол Лавалінку не підключенно**"
       );
     }
     const player = client.Manager.create({
@@ -61,7 +61,7 @@ module.exports = {
     if (!player)
       return client.sendTime(
         message.channel,
-        "❌ | **Nothing is playing right now...**"
+        "❌ | **Зараз нічого не грає...**"
       );
 
     if (player.state != "CONNECTED") await player.connect();
@@ -88,7 +88,7 @@ module.exports = {
             message.author.displayAvatarURL()
           );
           SongAddedEmbed.addField(
-            "Enqueued",
+            "У черзі",
             `\`${Searched.tracks.length}\` songs`,
             false
           );
@@ -105,14 +105,14 @@ module.exports = {
             `[${Searched.tracks[0].info.title}](${Searched.tracks[0].info.uri})`
           );
           SongAddedEmbed.addField(
-            "Author",
+            "Автор",
             Searched.tracks[0].info.author,
             true
           );
           //SongAddedEmbed.addField("Duration", `\`${prettyMilliseconds(Searched.tracks[0].length, { colonNotation: true })}\``, true);
           if (player.queue.totalSize > 1)
             SongAddedEmbed.addField(
-              "Position in queue",
+              "позиція в черзі",
               `${player.queue.size - 0}`,
               true
             );
@@ -120,7 +120,7 @@ module.exports = {
         } else {
           return client.sendTime(
             message.channel,
-            "**No matches found for - **" + SearchString
+            "**Немає збігів для - **" + SearchString
           );
         }
       } else {
@@ -128,13 +128,13 @@ module.exports = {
         if (!player)
           return client.sendTime(
             message.channel,
-            "❌ | **Nothing is playing right now...**"
+            "❌ | **Зараз нічого не грає...**"
           );
 
         if (Searched.loadType === "NO_MATCHES")
           return client.sendTime(
             message.channel,
-            "**No matches found for - **" + SearchString
+            "**Немає збігів для - **" + SearchString
           );
         else if (Searched.loadType == "PLAYLIST_LOADED") {
           player.queue.add(Searched.tracks);
@@ -153,12 +153,12 @@ module.exports = {
             `[${Searched.playlist.name}](${SearchString})`
           );
           SongAddedEmbed.addField(
-            "Enqueued",
+            "У черзі",
             `\`${Searched.tracks.length}\` songs`,
             false
           );
           SongAddedEmbed.addField(
-            "Playlist duration",
+            "Тривалість плейлиста",
             `\`${prettyMilliseconds(Searched.playlist.duration, {
               colonNotation: true,
             })}\``,
@@ -177,7 +177,7 @@ module.exports = {
           );
           SongAddedEmbed.addField("Author", Searched.tracks[0].author, true);
           SongAddedEmbed.addField(
-            "Duration",
+            "Тривалість",
             `\`${prettyMilliseconds(Searched.tracks[0].duration, {
               colonNotation: true,
             })}\``,
@@ -196,7 +196,7 @@ module.exports = {
       console.log(e);
       return client.sendTime(
         message.channel,
-        "**No matches found for - **" + SearchString
+        "**Немає збігів для - **" + SearchString
       );
     }
   },
@@ -208,7 +208,7 @@ module.exports = {
         value: "song",
         type: 3,
         required: true,
-        description: "Play music in the voice channel",
+        description: "Грає музику у голосовому каналі",
       },
     ],
     /**
@@ -226,7 +226,7 @@ module.exports = {
       if (!member.voice.channel)
         return client.sendTime(
           interaction,
-          "❌ | **You must be in a voice channel to use this command.**"
+          "❌ | **Ви повині бути в голосовому чаті щоб викростати цю команду**"
         );
       if (
         guild.me.voice.channel &&
