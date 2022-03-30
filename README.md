@@ -12,7 +12,7 @@
 
 1. Download and configure v5 in a seperate folder.
 2. Kick your bot out of your server.
-3. Reinvite the Bot with the right scopes. [Example Invite URL (Change CLIENT_ID)](https://discord.com/oauth2/authorize?client_id=CLIENT_ID&permissions=826839002433&scope=bot%20applications.commands)
+3. Reinvite the Bot with the right scopes. [Example Invite URL (Change CLIENT_ID)](https://discord.com/oauth2/authorize?client_id=CLIENT_ID&permissions=277083450689&scope=bot%20applications.commands)
 4. Run `npm run deploy` or `yarn deploy` to initialize the slash commands. _You can do this on your pc locally_
 
 ## 📝 | Tutorial
