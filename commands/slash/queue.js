@@ -83,7 +83,7 @@ const command = new SlashCommand()
         (t, i) => `\` ${++i} \` [${t.title}](${t.uri}) [${t.requester}]`
       );
 
-      const chunk = load.chunk(mapping, 5);
+      const chunk = load.chunk(mapping, 10);
       const pages = chunk.map((s) => s.join("\n"));
       let page = interaction.options.getNumber("page");
       if (!page) page = 0;
@@ -91,7 +91,7 @@ const command = new SlashCommand()
       if (page > pages.length) page = 0;
       if (page < 0) page = 0;
 
-      if (player.queue.size < 5 || player.queue.totalSize < 5) {
+      if (player.queue.size < 11 || player.queue.totalSize < 11) {
         let song = player.queue.current;
         const embedTwo = new MessageEmbed()
           .setColor(client.config.embedColor)
