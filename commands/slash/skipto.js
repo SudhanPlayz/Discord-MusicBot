@@ -50,21 +50,34 @@ const command = new SlashCommand()
 
     const position = Number(args);
 
-    if (!position || position < 0 || position > player.queue.size) {
+    try {
+      if (!position || position < 0 || position > player.queue.size) {
+        let thing = new MessageEmbed()
+          .setColor(client.config.embedColor)
+          .setDescription("❌ | Invalid position!");
+        return interaction.editReply({ embeds: [thing] });
+      }
+
+      player.queue.remove(0, position - 1);
+      player.stop();
+
       let thing = new MessageEmbed()
         .setColor(client.config.embedColor)
-        .setDescription("❌ | Invalid position!");
+        .setDescription("✅ | Skipped to position " + position);
+
       return interaction.editReply({ embeds: [thing] });
+    } catch {
+      if (position === 1) {
+        player.stop();
+      }
+      return interaction.editReply({
+        embeds: [
+          new MessageEmbed()
+            .setColor(client.config.embedColor)
+            .setDescription("✅ | Skipped to position " + position),
+        ],
+      });
     }
-
-    player.queue.remove(0, position - 1);
-    player.stop();
-
-    let thing = new MessageEmbed()
-      .setColor(client.config.embedColor)
-      .setDescription("✅ | Skipped to position " + position);
-
-    return interaction.editReply({ embeds: [thing] });
   });
 
 module.exports = command;
