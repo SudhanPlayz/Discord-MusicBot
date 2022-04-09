@@ -45,7 +45,7 @@
     "lavasfy": "2.3.0",
     "lodash": "^4.17.21",
     "lyrics-finder": "^21.7.0",
-    "moment": "^2.29.1",
+    "moment": "^2.29.2",
     "moment-duration-format": "^2.3.2",
     "mongoose": "^5.12.3",
     "node-fetch": "^2.6.1",
