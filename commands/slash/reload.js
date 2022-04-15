@@ -51,7 +51,9 @@ const command = new SlashCommand()
           embeds: [
             new MessageEmbed()
               .setColor(client.config.embedColor)
-              .setDescription(`Sucessfully Reloaded \`${totalCmds}\` Commands`),
+              .setDescription(`Sucessfully Reloaded \`${totalCmds}\` Commands!`)
+              .setFooter(`${client.user.username} was reloaded by ${message.author}`)
+              .setTimestamp();
           ],
         });
       } catch (err) {
@@ -71,7 +73,7 @@ const command = new SlashCommand()
         embeds: [
           new MessageEmbed()
             .setColor(client.config.embedColor)
-            .setDescription("You do not have enough permissions to use this command!"),
+            .setDescription("You are not authorized to use this command!"),
         ],
       });
     }
