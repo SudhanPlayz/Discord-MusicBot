@@ -1,4 +1,4 @@
-const { MessageEmbed, Message } = require("discord.js");
+const { MessageEmbed, message } = require("discord.js");
 const SlashCommand = require("../../lib/SlashCommand");
 const fs = require("fs");
 const path = require("path");
@@ -52,9 +52,9 @@ const command = new SlashCommand()
             new MessageEmbed()
               .setColor(client.config.embedColor)
               .setDescription(`Sucessfully Reloaded \`${totalCmds}\` Commands!`)
-              .setFooter(`${client.user.username} was reloaded by ${message.author}`)
-              .setTimestamp();
-          ],
+              .setFooter({text: `${client.user.username} was reloaded by ${interaction.user.username}`})
+              .setTimestamp(),
+          ], ephemeral: true
         });
       } catch (err) {
         console.log(err);
@@ -65,7 +65,7 @@ const command = new SlashCommand()
               .setDescription(
                 "An error has occured. For more details please check console."
               ),
-          ],
+          ], ephemeral: true
         });
       }
     } else {
@@ -74,7 +74,7 @@ const command = new SlashCommand()
           new MessageEmbed()
             .setColor(client.config.embedColor)
             .setDescription("You are not authorized to use this command!"),
-        ],
+        ], ephemeral: true
       });
     }
   });
