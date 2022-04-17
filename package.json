@@ -6,21 +6,9 @@
   "scripts": {
     "start": "node index",
     "rm-logs": "rm logs.log",
-    "autosetnew": "yarn install:all && yarn deploy && yarn start",
-    "autoset": "yarn install:all && yarn start",
-    "install:all": "yarn install && yarn install:dashboard && yarn build:dashboard",
-    "install:dashboard": "cd dashboard && yarn install && cd ..",
-    "start:dashboard": "cd dashboard && yarn start && cd ..",
-    "build": "yarn build:clean && yarn build:dashboard",
-    "build:clean": "rm -rf dashboard/build",
-    "build:dashboard": "cd dashboard && yarn build && cd ..",
-    "ship": "rm -rf node_modules/ && cd dashboard && rm -rf node_modules/ && cd ..",
-    "format": "prettier --write .",
     "lint": "prettier --check .",
     "deploy": "node deploy/global",
-    "guild": "node deploy/guild",
-    "build:docs": "cd documentation && mkdocs build -d public",
-    "serve:docs": "cd documentation && mkdocs serve"
+    "guild": "node deploy/guild"
   },
   "repository": {
     "type": "git",
