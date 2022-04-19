@@ -42,7 +42,7 @@ or [host your own](https://darrennathanael.com/post/how-to-lavalink/)
 
 <img src='../../../assets/win_vscode_terminal.png'>
 
-or by pressing `Ctrl + ``
+or by pressing "Ctrl + `"
 
 - Once done, type `npm run start` or `node index.js`
 
