@@ -1,4 +1,5 @@
 module.exports = {
+  cmdPerPage: 10, //Number of commands per page of help command
   adminId: "UserId", // Admin of the bot
   token: process.env.token || "", //Bot's Token
   clientId: process.env.clientId || "", //ID of the bot
