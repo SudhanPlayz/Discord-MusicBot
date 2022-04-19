@@ -5,7 +5,7 @@
 - [Discord Application](#create-a-discord-application)
 - [Lavalink server](#lavalink)
 - [NodeJS & NPM](#install-nodejs-npm)
-- [Git](https://phoenixnap.com/kb/how-to-install-git-windows)
+- [Git](https://git-scm.com/download/windows)
 
 ### Create a Discord Application
 
@@ -16,7 +16,7 @@
 
 ### Install nodejs & npm
 
-follow [these](https://github.com/nodesource/distributions) instructions
+follow [these](https://nodejs.org/en/download/) instructions
 
 ## Installation
 
@@ -27,8 +27,7 @@ follow [these](https://github.com/nodesource/distributions) instructions
 ## Configuration
 
 - Git clone the repository by opening command prompt or powershell and doing `git clone -b v5 https://github.com/SudhanPlayz/Discord-MusicBot`
-- Open your IDE (recommended is VSCode) and open the repository, the folder name is `Discord-MusicBot`
-- Configure the config.js there!
+- Open your text editor and configure config.js there! 
 
 ### lavalink
 
@@ -42,6 +41,8 @@ or [host your own](https://darrennathanael.com/post/how-to-lavalink/)
 - Open your terminal in vscode
 
 <img src='../../../assets/win_vscode_terminal.png'>
+
+or by pressing `Ctrl + ``
 
 - Once done, type `npm run start` or `node index.js`
 
