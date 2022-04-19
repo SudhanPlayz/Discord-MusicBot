@@ -37,13 +37,8 @@ or [host your own](https://darrennathanael.com/post/how-to-lavalink/)
 
 ## Final steps
 
+- Open your preferred terminal (command prompt or powershell) and change the directory to your Music bot folder. 
 - Deploy your slash commands by doing `npm run deploy` to deploy globally or `npm run guild` if you want to deploy on a specific guild.
-- Open your terminal in vscode
-
-<img src='../../../assets/win_vscode_terminal.png'>
-
-or by pressing "Ctrl + `"
-
 - Once done, type `npm run start` or `node index.js`
 
 Now your bot is running!
