@@ -1,19 +1,24 @@
 const SlashCommand = require("../../lib/SlashCommand");
-const { MessageEmbed } = require("discord.js");
+const { Client, Interaction, MessageActionRow, MessageButton, MessageEmbed } = require("discord.js");
 const LoadCommands = require("../../util/loadCommands");
+const { filter } = require("lodash");
 
 const command = new SlashCommand()
-  .setName("help")
-  .setDescription("Shows help commands")
-  .setRun(async (client, interaction) => {
-    // map the commands name and description to the embed
-    const commands = await LoadCommands().then((cmds) => {
-      return [].concat(cmds.slash).concat(cmds.context);
-    });
-    // from commands remove the ones that hae no description
-    const filteredCommands = commands.filter((cmd) => cmd.description);
+.setName("help")
+.setDescription("Shows this list")
+.setRun(async (client, interaction) => {
+	await interaction.deferReply().catch((_) => {});
+	// map the commands name and description to the embed
+	const commands = await LoadCommands().then((cmds) => {
+		return [].concat(cmds.slash)/*.concat(cmds.context)*/;
+	});
+	// from commands remove the ones that have "null" in the description
+	const filteredCommands = commands.filter((cmd) => cmd.description != "null");
+	//console.log(filteredCommands);
+	const totalCmds = filteredCommands.length;
+	let maxPages = Math.ceil(totalCmds / client.config.cmdPerPage);
 
-    // if git exists, then get commit hash
+	// if git exists, then get commit hash
     let gitHash = "";
     try {
       gitHash = require("child_process")
@@ -24,30 +29,75 @@ const command = new SlashCommand()
       // do nothing
       gitHash = "unknown";
     }
+	
+	// default Page No.
+	let pageNo = 0;
+	
+	const helpEmbed = new MessageEmbed()
+	.setColor(client.config.embedColor)
+	.setAuthor({
+		name: `Commands of ${client.user.username}`,
+		iconURL: client.config.iconURL,
+	})
+	.setTimestamp()
+	.setFooter({text: `Page ${pageNo + 1} / ${maxPages}`});
+	
+	// initial temporary array 
+	var tempArray = filteredCommands.slice(pageNo * client.config.cmdPerPage, (pageNo * client.config.cmdPerPage) + client.config.cmdPerPage);
+	
+	tempArray.forEach(cmd => {
+		helpEmbed.addField(cmd.name, cmd.description)
+	});
+	helpEmbed.addField("Credits", `Discord Music Bot Version: v${
+		require("../../package.json").version
+	  }; Build: ${gitHash}` +
+	  "\n" +
+	  `[✨ Support Server](${client.config.supportServer}) | [Issues](${client.config.Issues}) | [Source](https://git.darrennathanael.com/DarrenOfficial/DiscordMusic/) | [Invite Me](https://discord.com/oauth2/authorize?client_id=${client.config.clientId}&permissions=${client.config.permissions}&scope=bot%20applications.commands)`);
 
-    // create the embed
-    const helpEmbed = new MessageEmbed()
-      .setAuthor({
-        name: `Commands of ${client.user.username}`,
-        iconURL: client.config.iconURL,
-        url: client.config.website,
-      })
-      .setColor(client.config.embedColor)
-      .setDescription(
-        filteredCommands
-          .map((cmd) => {
-            return `\`/${cmd.name}\` - ${cmd.description}`;
-          })
-          .join("\n") +
-          "\n\n" +
-          `Discord Music Bot Version: v${
-            require("../../package.json").version
-          }; Build: ${gitHash}` +
-          "\n" +
-          `[✨ Support Server](${client.config.supportServer}) | [Issues](${client.config.Issues}) | [Source](https://git.darrennathanael.com/DarrenOfficial/DiscordMusic/) | [Invite Me](https://discord.com/oauth2/authorize?client_id=${client.config.clientId}&permissions=${client.config.permissions}&scope=bot%20applications.commands)`
-      );
-    // Do not change the Source code link.
-    return interaction.reply({ embeds: [helpEmbed], ephemeral: true });
-  });
-
-module.exports = command;
+	
+	// Construction of the buttons for the embed
+	const getButtons = (pageNo) => {
+		return new MessageActionRow().addComponents(
+			new MessageButton()
+			.setCustomId("help_cmd_but_2_app")
+			.setEmoji("◀️")
+			.setStyle("PRIMARY")
+			.setDisabled(pageNo == 0),
+			new MessageButton()
+			.setCustomId("help_cmd_but_1_app")
+			.setEmoji("▶️")
+			.setStyle("PRIMARY")
+			.setDisabled(pageNo == (maxPages - 1)),
+			);
+		};
+		
+		const tempMsg = await interaction.editReply({ embeds: [helpEmbed], components: [getButtons(pageNo)], fetchReply: true });
+		const collector = tempMsg.createMessageComponentCollector({ time: 600000, componentType: "BUTTON" });
+		
+		collector.on("collect", async (iter) => {
+			if (iter.customId === "help_cmd_but_1_app") {
+				pageNo++;
+			} else if (iter.customId === "help_cmd_but_2_app") {
+				pageNo--;
+			}
+			
+			helpEmbed.fields = [];
+			
+			var tempArray = filteredCommands.slice(pageNo * client.config.cmdPerPage, (pageNo * client.config.cmdPerPage) + client.config.cmdPerPage);
+			
+			tempArray.forEach(cmd => {
+				//console.log(cmd);
+				helpEmbed.addField(cmd.name, cmd.description)
+				.setFooter({text: `Page ${pageNo + 1} / ${maxPages}`});
+			});
+			helpEmbed.addField("Credits", `Discord Music Bot Version: v${
+				require("../../package.json").version
+			  }; Build: ${gitHash}` +
+			  "\n" +
+			  `[✨ Support Server](${client.config.supportServer}) | [Issues](${client.config.Issues}) | [Source](https://git.darrennathanael.com/DarrenOfficial/DiscordMusic/) | [Invite Me](https://discord.com/oauth2/authorize?client_id=${client.config.clientId}&permissions=${client.config.permissions}&scope=bot%20applications.commands)`);
+			await iter.update({ embeds: [helpEmbed], components: [getButtons(pageNo)], fetchReply: true });
+		});
+		
+	});
+	
+	module.exports = command;
