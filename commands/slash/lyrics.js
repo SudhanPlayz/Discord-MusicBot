@@ -34,8 +34,9 @@ const command = new SlashCommand()
     
     // get the lyrics 
     let lyrics = await fetch(url).then((res) => res.json());
-	if(lyrics.lyrics.length > 4096){
-		var text = lyrics.lyrics.substring(0, 4090) + '...';
+	  let text = lyrics.lyrics;
+	if(text.length > 4096){
+		text = text.substring(0, 4090) + '...';
 	}
 
     // if the status is ok then send the embed
