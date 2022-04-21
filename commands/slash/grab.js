@@ -46,6 +46,8 @@ const command = new SlashCommand()
       .setDescription(
         `**Saved [${player.queue.current.title}](${player.queue.current.uri}) to your DM**`
       )
+      .setFooter(`You have saved the song ${player.queue.current.title} by ${player.queue.current.author} to your DMs!`)
+      .setTimestamp()
       .addFields(
         {
           name: "Track Duration",
@@ -73,7 +75,7 @@ const command = new SlashCommand()
         new MessageEmbed()
           .setColor(client.config.embedColor)
           .setDescription(
-            "Please check your **DM**. If you don't receive any message from me please make sure your **DM** is open"
+            "Please check your **DMs**. If you have not recieved any message from me please make sure your **DMs** are open"
           ),
       ],
       ephemeral: true,
