@@ -1,4 +1,5 @@
 module.exports = {
+  errMsg: "Oops! Something went wrong, but it's not your fault!"
   cmdPerPage: 10, //Number of commands per page of help command
   adminId: "UserId", // Admin of the bot
   token: process.env.token || "", //Bot's Token
