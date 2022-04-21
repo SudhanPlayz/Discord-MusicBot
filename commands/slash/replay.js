@@ -18,34 +18,26 @@ const command = new SlashCommand()
         .setColor(client.config.embedColor)
         .setDescription(
           "You have to join voice channel first before you can use this command"
+          ":x: **You have to a join voice channel before you can use this command**"
         );
       return interaction.reply({ embeds: [JoinEmbed], ephemeral: true });
     }
-
-    if (
-      interaction.guild.me.voice.channel &&
-      !interaction.guild.me.voice.channel.equals(
-        interaction.member.voice.channel
-      )
-    ) {
+@@ -31,7 +31,7 @@ const command = new SlashCommand()
       const SameEmbed = new MessageEmbed()
         .setColor(client.config.embedColor)
         .setDescription(
           "You must be in the same voice channel as me first before you can use this command"
+          ":x: **You must be in the same voice channel as me to use this command**"
         );
       return interaction.reply({ embeds: [SameEmbed], ephemeral: true });
     }
-
-    await interaction.deferReply();
-
-    player.seek(0);
-
-    let song = player.queue.current;
+@@ -44,8 +44,9 @@ const command = new SlashCommand()
     return interaction.editReply({
       embeds: [
         new MessageEmbed()
+          .setTitle(`Replaying: [${song.title}](${song.uri})`)
           .setColor(client.config.embedColor)
-          .setDescription(`Replay [${song.title}](${song.uri})`),
+          .setDescription(`**Replay Requested By ${interaction.user.username}**`),
       ],
     });
   });
