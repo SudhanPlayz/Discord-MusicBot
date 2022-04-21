@@ -46,6 +46,8 @@ const command = new SlashCommand()
       .setDescription(
         `**Saved [${player.queue.current.title}](${player.queue.current.uri}) to your DM**`
       )
+       .setFooter(`You have saved the song ${player.queue.current.title} by ${player.queue.current.author} to your DMs!`)
+       .setTimestamp()
       .addFields(
         {
           name: "Track Duration",
