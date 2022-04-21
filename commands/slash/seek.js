@@ -77,7 +77,7 @@ const command = new SlashCommand()
       let thing = new MessageEmbed()
         .setColor(client.config.embedColor)
         .setDescription(
-          `Cannot seek current playing track. This may happened because seek duration has exceeded track duration`
+          `Cannot seek through the current playing track. This may happen because seek duration has exceeded the track duration`
         );
       return interaction.editReply({ embeds: [thing] });
     }
