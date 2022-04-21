@@ -59,7 +59,7 @@ const command = new SlashCommand()
       )
       .setFields([
         {
-          name: `Lavalink stats`,
+          name: `Lavalink Stats`,
           value: `\`\`\`yml\nUptime: ${lavauptime}\nRAM: ${lavaram} MB\nPlaying: ${
             client.manager.nodes.values().next().value.stats.playingPlayers
           } out of ${
@@ -68,7 +68,7 @@ const command = new SlashCommand()
           inline: true,
         },
         {
-          name: "Bot stats",
+          name: "General Stats",
           value: `\`\`\`yml\nGuilds: ${
             client.guilds.cache.size
           } \nNodeJS: ${nodeVersion}\nDiscordMusicBot: v${
@@ -77,7 +77,7 @@ const command = new SlashCommand()
           inline: true,
         },
         {
-          name: "System stats",
+          name: "System Stats",
           value: `\`\`\`yml\nOS: ${osver}\nUptime: ${sysuptime}\n\`\`\``,
           inline: false,
         },
