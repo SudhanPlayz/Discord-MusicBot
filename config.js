@@ -1,4 +1,5 @@
 module.exports = {
+  errMsg: "Oops! Something went wrong!",
   cmdPerPage: 10, //Number of commands per page of help command
   adminId: "UserId", // Admin of the bot
   token: process.env.token || "", //Bot's Token
@@ -14,6 +15,17 @@ module.exports = {
   disconnectTime: 30000, //How long should the bot wait before disconnecting from the voice channel. in miliseconds. set to 1 for instant disconnect.
   alwaysplay: true, // when set to true music will always play no matter if theres no one in voice channel.
   debug: false, //Debug mode
+  JoinEmbed:     "❌ | **You must be in a voice channel to use this command.**", //ONLY EDIT IF YOU KNOW WHAT YOU ARE DOING!
+  SameEmbed:     "❌ | **You must be in the same voice channel as me to use this command!**", //ONLY EDIT IF YOU KNOW WHAT YOU ARE DOING!
+  QueueEmbed:    "❌ | **There is no music playing in this guild!**", //ONLY EDIT IF YOU KNOW WHAT YOU ARE DOING!
+  QueueEmbed2:   "❌ | **There's nothing playing.**", //ONLY EDIT IF YOU KNOW WHAT YOU ARE DOING!
+  QueueEmbed3:   "❌ | **Nothing is playing right now...**", //ONLY EDIT IF YOU KNOW WHAT YOU ARE DOING!
+  PreviousEmbed: "❌ | **There is no previous song in the queue.**", //ONLY EDIT IF YOU KNOW WHAT YOU ARE DOING!
+  AddEmbed:      "❌ | **There are no songs in the queue.**", //ONLY EDIT IF YOU KNOW WHAT YOU ARE DOING!
+  ShuffleEmbed:  "🔀 | **Successfully shuffled the queue.**", //ONLY EDIT IF YOU KNOW WHAT YOU ARE DOING!
+  SeekEmbed:     "❌ | **Cannot seek through the current playing track. This may happen because seek duration has exceeded the track duration**", //ONLY EDIT IF YOU KNOW WHAT YOU ARE DOING!
+  ClearEmbed:    "✅ | **Cleared the queue!**", //ONLY EDIT IF YOU KNOW WHAT YOU ARE DOING!
+  
   // Lavalink server; optional public lavalink -> https://lavalink-list.darrennathanael.com/
   // The default one should work fine.
   nodes: [
