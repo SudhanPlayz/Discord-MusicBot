@@ -44,14 +44,14 @@ const command = new SlashCommand()
     }
 
     if (!player) {
-				player = client.manager.create({
-					guild: interaction.guild.id,
-					voiceChannel: interaction.member.voice.channel.id,
-					textChannel: interaction.channel.id,
-					selfDeafen: client.config.selfDeafen,
-					volume: client.config.defaultVolume,
-				});
-		}
+	player = client.manager.create({
+		guild: interaction.guild.id,
+		voiceChannel: interaction.member.voice.channel.id,
+		textChannel: interaction.channel.id,
+		selfDeafen: client.config.selfDeafen,
+		volume: client.config.defaultVolume,
+	});
+    }
 
     if (player.state !== "CONNECTED") {
       player.connect();
