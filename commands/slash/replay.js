@@ -44,8 +44,9 @@ const command = new SlashCommand()
     return interaction.editReply({
       embeds: [
         new MessageEmbed()
+          .setTitle(`Replaying: [${song.title}](${song.uri})`)
           .setColor(client.config.embedColor)
-          .setDescription(`Replay [${song.title}](${song.uri})`),
+          .setDescription(`**Replay Requested By ${interaction.user.username}**`),
       ],
     });
   });
