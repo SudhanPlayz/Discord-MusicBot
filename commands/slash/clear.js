@@ -39,7 +39,7 @@ const command = new SlashCommand()
     if (!player.queue || !player.queue.length || player.queue.length === 0) {
       let cembed = new MessageEmbed()
         .setColor(client.config.embedColor)
-        .setDescription("❌ | **Invalid, Not enough track to be cleared.**");
+        .setDescription("❌ | **Invalid arguments, the queue does not any tracks to clear.**");
 
       return interaction.reply({ embeds: [cembed], ephemeral: true });
     }
