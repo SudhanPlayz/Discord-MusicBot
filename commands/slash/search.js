@@ -123,7 +123,7 @@ const command = new SlashCommand()
           new MessageEmbed()
             .setColor(client.config.embedColor)
             .setDescription(
-              `Here are searched result I found for \`${result}\`. Please select track within \`30 seconds\``
+              `Here are the results I found for \`${result}\`. Please select a track you would like to play within \`30 seconds\``
             ),
         ],
         components: [menus],
@@ -167,7 +167,7 @@ const command = new SlashCommand()
             embeds: [
               new MessageEmbed()
                 .setDescription(
-                  `No track selected. You took too long to select a track.`
+                  `Time limit exceeded. A track wasn't picked.`
                 )
                 .setColor(client.config.embedColor),
             ],
