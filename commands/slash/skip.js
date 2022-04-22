@@ -9,15 +9,13 @@ const command = new SlashCommand()
     let player = client.manager.players.get(interaction.guild.id);
     if (!player)
       return interaction.reply({
-        embeds: [client.ErrorEmbed("There's nothing to skipped!")],
+        embeds: [client.ErrorEmbed("There's nothing to be skipped!")],
       });
 
     if (!interaction.member.voice.channel) {
       const joinEmbed = new MessageEmbed()
         .setColor(client.config.embedColor)
-        .setDescription(
-          "❌ | **You must be in a voice channel to use this command!**"
-        );
+        .setDescription(client.config.JoinEmbed);
       return interaction.reply({ embeds: [joinEmbed], ephemeral: true });
     }
 
@@ -29,9 +27,7 @@ const command = new SlashCommand()
     ) {
       const sameEmbed = new MessageEmbed()
         .setColor(client.config.embedColor)
-        .setDescription(
-          "❌ | **You must be in the same voice channel as me to use this command!**"
-        );
+        .setDescription(client.config.SameEmbed);
       return interaction.reply({ embeds: [sameEmbed], ephemeral: true });
     }
     player.stop();
