@@ -11,14 +11,14 @@ const command = new SlashCommand()
     if (!player) {
       const queueEmbed = new MessageEmbed()
         .setColor(client.config.embedColor)
-        .setDescription("There's nothing playing in the queue");
+        .setDescription(client.config.QueueEmbed);
       return interaction.reply({ embeds: [queueEmbed], ephemeral: true });
     }
 
     if (!player.playing) {
       const queueEmbed = new MessageEmbed()
         .setColor(client.config.embedColor)
-        .setDescription("There's nothing playing.");
+        .setDescription(client.config.QueueEmbed2);
       return interaction.reply({ embeds: [queueEmbed], ephemeral: true });
     }
 
