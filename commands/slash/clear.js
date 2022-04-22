@@ -9,7 +9,7 @@ const command = new SlashCommand()
     if (!player) {
       const queueEmbed = new MessageEmbed()
         .setColor(client.config.embedColor)
-        .setDescription(client.config.QueueEmbed1);
+        .setDescription(client.config.QueueEmbed3);
       return interaction.reply({ embeds: [queueEmbed], ephemeral: true });
     }
 
