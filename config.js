@@ -28,7 +28,8 @@ module.exports = {
   ClearEmbed:    "✅ | **Cleared the queue!**", //ONLY EDIT IF YOU KNOW WHAT YOU ARE DOING!
   PausedEmbed:   "❌ | **Current playing track is already paused!**",
   ResumedEmbed:  "❌ | **Current track is already resumed**",
-  ResEmbed:      "⏯ | **Resumed!**"
+  ResEmbed:      "⏯ | **Resumed!**", 
+  SongErrEmbed:  "An error occured while searching for the song"
   
   // Lavalink server; optional public lavalink -> https://lavalink-list.darrennathanael.com/
   // The default one should work fine.
