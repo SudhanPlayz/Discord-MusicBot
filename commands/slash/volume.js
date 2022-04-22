@@ -17,16 +17,14 @@ const command = new SlashCommand()
     if (!player) {
       const queueEmbed = new MessageEmbed()
         .setColor(client.config.embedColor)
-        .setDescription("❌ | **There's nothing playing in the queue**");
+        .setDescription(client.config.QueueEmbed4);
       return interaction.reply({ embeds: [queueEmbed], ephemeral: true });
     }
 
     if (!interaction.member.voice.channel) {
       const joinEmbed = new MessageEmbed()
         .setColor(client.config.embedColor)
-        .setDescription(
-          "❌ | **You must be in a voice channel to use this command.**"
-        );
+        .setDescription(client.config.JoinEmbed);
       return interaction.reply({ embeds: [joinEmbed], ephemeral: true });
     }
 
@@ -38,9 +36,7 @@ const command = new SlashCommand()
     ) {
       const sameEmbed = new MessageEmbed()
         .setColor(client.config.embedColor)
-        .setDescription(
-          "❌ | **You must be in the same voice channel as me to use this command!**"
-        );
+        .setDescription(client.config.SameEmbed);
       return interaction.reply({ embeds: [sameEmbed], ephemeral: true });
     }
 
