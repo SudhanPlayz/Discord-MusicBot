@@ -25,7 +25,7 @@ const command = new SlashCommand()
     if (!player) {
       const queueEmbed = new MessageEmbed()
         .setColor(client.config.embedColor)
-        .setDescription(":x: | **There's nothing playing**");
+        .setDescription("client.config.QueueEmbed2);
       return interaction.reply({ embeds: [queueEmbed], ephemeral: true });
     }
 
