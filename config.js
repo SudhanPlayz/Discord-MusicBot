@@ -25,8 +25,8 @@ module.exports = {
   AddEmbed:      "❌ | **There are no songs in the queue.**", //ONLY EDIT IF YOU KNOW WHAT YOU ARE DOING!
   ShuffleEmbed:  "🔀 | **Successfully shuffled the queue.**", //ONLY EDIT IF YOU KNOW WHAT YOU ARE DOING!
   SeekEmbed:     "❌ | **Cannot seek through the current playing track. This may happen because seek duration has exceeded the track duration**", //ONLY EDIT IF YOU KNOW WHAT YOU ARE DOING!
-  ClearEmbed:    "✅ | **Cleared the queue!**" //ONLY EDIT IF YOU KNOW WHAT YOU ARE DOING!
-  
+  ClearEmbed:    "✅ | **Cleared the queue!**", //ONLY EDIT IF YOU KNOW WHAT YOU ARE DOING!
+  PausedEmbed:   "❌ | **Current playing track is already paused!**"
   
   // Lavalink server; optional public lavalink -> https://lavalink-list.darrennathanael.com/
   // The default one should work fine.
