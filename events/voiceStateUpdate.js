@@ -23,9 +23,9 @@ module.exports = async (client, oldState, newState) => {
   if (oldState.channel !== null && newState.channel !== null)
     stateChange.type = "MOVE";
   if (oldState.channel === null && newState.channel === null) return; // you never know, right
-  if (newState.serverMute == true && oldState.serverMute == false)
+  if (newState.serverMute == true && oldState.serverMute == false && newState.id === client.config.clientId)
     return player.pause(true);
-  if (newState.serverMute == false && oldState.serverMute == true)
+  if (newState.serverMute == false && oldState.serverMute == true && newState.id === client.config.clientId)
     return player.pause(false);
   // move check first as it changes type
   if (stateChange.type === "MOVE") {
