@@ -92,7 +92,7 @@ const command = new SlashCommand()
         .addField(
           "Duration",
           res.tracks[0].isStream
-            ? `\`LIVE\``
+            ? `\`🔴 | LIVE\``
             : `\`${client.ms(res.tracks[0].duration, {
                 colonNotation: true,
               })}\``,
