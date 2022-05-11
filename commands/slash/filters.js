@@ -61,34 +61,34 @@ const command = new SlashCommand()
     let thing = new MessageEmbed().setColor(client.config.embedColor);
 
     if (args == "nightcore") {
-      thing.setDescription("✅ | Nightcore filter is now active!");
+      thing.setDescription("✅ | Nightcore filter has been activated!");
       player.nightcore = true;
     } else if (args == "bassboost") {
-      thing.setDescription("✅ | BassBoost filter is now on!");
+      thing.setDescription("✅ | BassBoost filter has been activated!");
       player.bassboost = true;
     } else if (args == "vaporwave") {
-      thing.setDescription("✅ | Vaporwave filter is now on!");
+      thing.setDescription("✅ | Vaporwave filter has been activated!");
       player.vaporwave = true;
     } else if (args == "pop") {
-      thing.setDescription("✅ | Pop filter is now on!");
+      thing.setDescription("✅ | Pop filter has been activated!");
       player.pop = true;
     } else if (args == "soft") {
-      thing.setDescription("✅ | Soft filter is now on!");
+      thing.setDescription("✅ | Soft filter has been activated!");
       player.soft = true;
     } else if (args == "treblebass") {
-      thing.setDescription("✅ | Treblebass filter is now on!");
+      thing.setDescription("✅ | Treblebass filter has been activated!");
       player.treblebass = true;
     } else if (args == "eightD") {
-      thing.setDescription("✅ | Eight Dimension filter is now on!");
+      thing.setDescription("✅ | Eight Dimension filter has been activated!");
       player.eightD = true;
     } else if (args == "karaoke") {
-      thing.setDescription("✅ | Karaoke filter is now on!");
+      thing.setDescription("✅ | Karaoke filter has been activated!");
       player.karaoke = true;
     } else if (args == "vibrato") {
-      thing.setDescription("✅ | Vibrato filter is now on!");
+      thing.setDescription("✅ | Vibrato filter has been activated!");
       player.vibrato = true;
     } else if (args == "tremolo") {
-      thing.setDescription("✅ | Tremolo filter is now on!");
+      thing.setDescription("✅ | Tremolo filter has been activated");
       player.tremolo = true;
     } else if (args == "off") {
       thing.setDescription("✅ | EQ has been cleared!");
