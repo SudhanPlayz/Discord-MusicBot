@@ -41,6 +41,7 @@ const command = new SlashCommand()
       const embed = client.Embed(`✅ | **24/7 mode is now on.**`);
       return interaction.reply({ embeds: [embed] });
     }
+      if(err) console.log(err) && client.errorEmbed("An error has occurred, please vist console for more information!")
   });
 module.exports = command;
 // check above message, it is a little bit confusing. and erros are not handled. probably should be fixed.
