@@ -34,14 +34,13 @@ const command = new SlashCommand()
       });
     } else if (player.twentyFourSeven) {
       player.twentyFourSeven = false;
-      const embed = client.Embed(`✅ | **24/7 mode is now off.**`);
+      const embed = client.Embed(`✅ | **24/7 mode has been deactivated!**`);
       return interaction.reply({ embeds: [embed] });
     } else {
       player.twentyFourSeven = true;
-      const embed = client.Embed(`✅ | **24/7 mode is now on.**`);
+      const embed = client.Embed(`✅ | **24/7 mode has been activated!.**`);
       return interaction.reply({ embeds: [embed] });
     }
-      if(err) console.log(err) && client.errorEmbed("An error has occurred, please vist console for more information!")
   });
 module.exports = command;
 // check above message, it is a little bit confusing. and erros are not handled. probably should be fixed.
