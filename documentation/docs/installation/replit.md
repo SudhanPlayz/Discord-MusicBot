@@ -13,9 +13,11 @@
 
 ## Installation
 
-Click [![Run on Repl.it](https://repl.it/github/ModelBuses/DiscordMusic)](https://repl.it/github/SudhanPlayz/Discord-MusicBot)
+Click [![Run on Repl.it](https://repl.it/badge/github/ModelBuses/DiscordMusic)](https://repl.it/github/SudhanPlayz/Discord-MusicBot)
 
 Then let it load the project, It may take 1 - 5 min.
+
+After that, in shell, run `git checkout v5`
 
 Then you'll need to edit the `config.js` and fill in the [Lavalink](https://github.com/freyacodes/Lavalink), Token, ClientSecret, ClientId.
 
