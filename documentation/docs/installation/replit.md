@@ -33,3 +33,7 @@ Once done you can restart your bot, then invite it using this url template. http
 - CLIENT_ID needs to be replaced with your bot Id
 - Permission calculator: [learn more](https://finitereality.github.io/permissions-calculator)
 - You can use #generateInvite instead: [learn more](https://discord.js.org/#/docs/main/main/class/Client?scrollTo=generateInvite)
+
+
+**SIDE NOTES**:
+- If you're running the version 4 of the bot, please kick it and reinvite using the invite link stated in [final](#final)
