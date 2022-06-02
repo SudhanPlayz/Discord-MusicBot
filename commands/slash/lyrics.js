@@ -26,7 +26,7 @@ const command = new SlashCommand()
 	
 	if (!args && !player)
 	return interaction.editReply({
-		embeds: [client.ErrorEmbed("❌ | **There's nothing playing**")],
+		embeds: [client.Embed("❌ | **There's nothing playing**")],
 	});
 	
 	// if no input, search for the current song. if no song console.log("No song input");
