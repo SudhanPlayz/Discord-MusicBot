@@ -8,7 +8,7 @@ const command = new SlashCommand()
     let player = client.manager.players.get(interaction.guild.id);
     if (!player) {
       return interaction.reply({
-        embeds: [client.ErrorEmbed("❌ | **Nothing is playing right now...**")],
+        embeds: [client.ErrorEmbed("**Nothing is playing right now...**")],
       });
     }
     if (!interaction.member.voice.channel) {
