@@ -4,6 +4,7 @@ const {
   MessageActionRow,
   MessageSelectMenu,
 } = require("discord.js");
+const prettyMilliseconds = require("pretty-ms");
 
 const command = new SlashCommand()
   .setName("search")
@@ -105,6 +106,11 @@ const command = new SlashCommand()
         resultFromSearch.push({
           label: `${track.title}`,
           value: `${track.uri}`,
+	  description: track.isStream
+            ? `LIVE`
+            : `${prettyMilliseconds(track.duration, {
+                secondsDecimalDigits: 0,
+              })} - ${track.author}`,
         });
       });
 
