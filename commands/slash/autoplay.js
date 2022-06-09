@@ -56,6 +56,7 @@ const command = new SlashCommand()
         if (a && !psba.includes(a)) psba.push(a);
       }
       if (r) player.queue.add(r);
+      while (psba.length > 100) psba.shift();
       player.set("autoplayed", psba);
 
       let embed = new MessageEmbed()
