@@ -5,35 +5,30 @@ const command = new SlashCommand()
   .setName("replay")
   .setDescription("Replay current playing track")
   .setRun(async (client, interaction, options) => {
-    let player = client.manager.players.get(interaction.guild.id);
+    let channel = await client.getChannel(client, interaction);
+    if (!channel) return;
+
+    let player;
+    if (client.manager)
+      player = client.manager.players.get(interaction.guild.id);
+    else
+      return interaction.reply({
+        embeds: [
+          new MessageEmbed()
+            .setColor("RED")
+            .setDescription("Lavalink node is not connected"),
+        ],
+      });
+
     if (!player) {
-      const QueueEmbed = new MessageEmbed()
-        .setColor(client.config.embedColor)
-        .setDescription("There's nothing playing in the queue");
-      return interaction.reply({ embeds: [QueueEmbed], ephemeral: true });
-    }
-
-    if (!interaction.member.voice.channel) {
-      const JoinEmbed = new MessageEmbed()
-        .setColor(client.config.embedColor)
-        .setDescription(
-          "You have to join voice channel first before you can use this command"
-        );
-      return interaction.reply({ embeds: [JoinEmbed], ephemeral: true });
-    }
-
-    if (
-      interaction.guild.me.voice.channel &&
-      !interaction.guild.me.voice.channel.equals(
-        interaction.member.voice.channel
-      )
-    ) {
-      const SameEmbed = new MessageEmbed()
-        .setColor(client.config.embedColor)
-        .setDescription(
-          "You must be in the same voice channel as me first before you can use this command"
-        );
-      return interaction.reply({ embeds: [SameEmbed], ephemeral: true });
+      return interaction.reply({
+        embeds: [
+          new MessageEmbed()
+            .setColor("RED")
+            .setDescription("I'm not playing anything."),
+        ],
+        ephemeral: true,
+      });
     }
 
     await interaction.deferReply();

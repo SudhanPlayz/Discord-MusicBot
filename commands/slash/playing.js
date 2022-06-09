@@ -3,29 +3,50 @@ const SlashCommand = require("../../lib/SlashCommand");
 const prettyMilliseconds = require("pretty-ms");
 
 const command = new SlashCommand()
-  .setName("nowplaying")
+  .setName("playing")
   .setDescription("Shows the current song playing in the voice channel.")
   .setRun(async (client, interaction, options) => {
-    const player = interaction.client.manager.players.get(interaction.guild.id);
+    let channel = await client.getChannel(client, interaction);
+    if (!channel) return;
+
+    let player;
+    if (client.manager)
+      player = client.manager.players.get(interaction.guild.id);
+    else
+      return interaction.reply({
+        embeds: [
+          new MessageEmbed()
+            .setColor("RED")
+            .setDescription("Lavalink node is not connected"),
+        ],
+      });
 
     if (!player) {
-      const queueEmbed = new MessageEmbed()
-        .setColor(client.config.embedColor)
-        .setDescription("There's nothing playing in the queue");
-      return interaction.reply({ embeds: [queueEmbed], ephemeral: true });
+      return interaction.reply({
+        embeds: [
+          new MessageEmbed()
+            .setColor("RED")
+            .setDescription("The bot isn't in a channel."),
+        ],
+        ephemeral: true,
+      });
     }
 
     if (!player.playing) {
-      const queueEmbed = new MessageEmbed()
-        .setColor(client.config.embedColor)
-        .setDescription("There's nothing playing.");
-      return interaction.reply({ embeds: [queueEmbed], ephemeral: true });
+      return interaction.reply({
+        embeds: [
+          new MessageEmbed()
+            .setColor("RED")
+            .setDescription("There's nothing playing."),
+        ],
+        ephemeral: true,
+      });
     }
 
     const song = player.queue.current;
     const embed = new MessageEmbed()
       .setColor(client.config.embedColor)
-      .setTitle("Now playing ♪")
+      .setAuthor({ name: "Now Playing", iconURL: client.config.iconURL })
       // show who requested the song via setField, also show the duration of the song
       .setFields([
         {
@@ -33,7 +54,7 @@ const command = new SlashCommand()
           value: `<@${song.requester.id}>`,
           inline: true,
         },
-        // show duration if live show live
+        // show duration, if live show live
         {
           name: "Duration",
           value: song.isStream

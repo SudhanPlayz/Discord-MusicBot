@@ -52,9 +52,12 @@ const command = new SlashCommand()
             new MessageEmbed()
               .setColor(client.config.embedColor)
               .setDescription(`Sucessfully Reloaded \`${totalCmds}\` Commands!`)
-              .setFooter({text: `${client.user.username} was reloaded by ${interaction.user.username}`})
+              .setFooter({
+                text: `${client.user.username} was reloaded by ${interaction.user.username}`,
+              })
               .setTimestamp(),
-          ], ephemeral: true
+          ],
+          ephemeral: true,
         });
       } catch (err) {
         console.log(err);
@@ -65,7 +68,8 @@ const command = new SlashCommand()
               .setDescription(
                 "An error has occured. For more details please check console."
               ),
-          ], ephemeral: true
+          ],
+          ephemeral: true,
         });
       }
     } else {
@@ -74,7 +78,8 @@ const command = new SlashCommand()
           new MessageEmbed()
             .setColor(client.config.embedColor)
             .setDescription("You are not authorized to use this command!"),
-        ], ephemeral: true
+        ],
+        ephemeral: true,
       });
     }
   });

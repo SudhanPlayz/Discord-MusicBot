@@ -2,8 +2,8 @@ const SlashCommand = require("../../lib/SlashCommand");
 const { MessageEmbed } = require("discord.js");
 
 const command = new SlashCommand()
-  .setName("shuffle")
-  .setDescription("Randomizes the queue")
+  .setName("loopq")
+  .setDescription("Loop the current song queue")
   .setRun(async (client, interaction, options) => {
     let channel = await client.getChannel(client, interaction);
     if (!channel) return;
@@ -31,24 +31,16 @@ const command = new SlashCommand()
       });
     }
 
-    if (!player.queue || !player.queue.length || player.queue.length === 0) {
-      return interaction.reply({
-        embeds: [
-          new MessageEmbed()
-            .setColor("RED")
-            .setDescription("There are not enough songs in the queue."),
-        ],
-        ephemeral: true,
-      });
-    }
+    if (player.setQueueRepeat(!player.queueRepeat));
+    const queueRepeat = player.queueRepeat ? "enabled" : "disabled";
 
-    //  if the queue is not empty, shuffle the entire queue
-    player.queue.shuffle();
-    return interaction.reply({
+    interaction.reply({
       embeds: [
         new MessageEmbed()
           .setColor(client.config.embedColor)
-          .setDescription("🔀 | **Successfully shuffled the queue.**"),
+          .setDescription(
+            `:thumbsup: | **Loop queue is now \`${queueRepeat}\`**`
+          ),
       ],
     });
   });

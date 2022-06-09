@@ -11,45 +11,43 @@ const command = new SlashCommand()
       .setRequired(false)
   )
   .setRun(async (client, interaction) => {
-    const category = interaction.options.getNumber("options");
+    let channel = await client.getChannel(client, interaction);
+    if (!channel) return;
 
-    let player = client.manager.players.get(interaction.guild.id);
+    let player;
+    if (client.manager)
+      player = client.manager.players.get(interaction.guild.id);
+    else
+      return interaction.reply({
+        embeds: [
+          new MessageEmbed()
+            .setColor("RED")
+            .setDescription("Lavalink node is not connected"),
+        ],
+      });
+
     if (!player) {
-      const queueEmbed = new MessageEmbed()
-        .setColor(client.config.embedColor)
-        .setDescription("❌ | **There's nothing playing in the queue**");
-      return interaction.reply({ embeds: [queueEmbed], ephemeral: true });
-    }
-
-    if (!interaction.member.voice.channel) {
-      const joinEmbed = new MessageEmbed()
-        .setColor(client.config.embedColor)
-        .setDescription(
-          "❌ | **You must be in a voice channel to use this command.**"
-        );
-      return interaction.reply({ embeds: [joinEmbed], ephemeral: true });
-    }
-
-    if (
-      interaction.guild.me.voice.channel &&
-      !interaction.guild.me.voice.channel.equals(
-        interaction.member.voice.channel
-      )
-    ) {
-      const sameEmbed = new MessageEmbed()
-        .setColor(client.config.embedColor)
-        .setDescription(
-          "❌ | **You must be in the same voice channel as me to use this command!**"
-        );
-      return interaction.reply({ embeds: [sameEmbed], ephemeral: true });
+      return interaction.reply({
+        embeds: [
+          new MessageEmbed()
+            .setColor("RED")
+            .setDescription("There is no music playing."),
+        ],
+        ephemeral: true,
+      });
     }
 
     let vol = interaction.options.getNumber("amount");
     if (!vol || vol < 1 || vol > 125) {
-      const NumberEmbed = new MessageEmbed()
-        .setColor(client.config.embedColor)
-        .setDescription(`:loud_sound: | **Current volume ${player.volume}**`);
-      return interaction.reply({ embeds: [NumberEmbed] });
+      return interaction.reply({
+        embeds: [
+          new MessageEmbed()
+            .setColor(client.config.embedColor)
+            .setDescription(
+              `:loud_sound: | Current volume **${player.volume}**`
+            ),
+        ],
+      });
     }
 
     player.setVolume(vol);

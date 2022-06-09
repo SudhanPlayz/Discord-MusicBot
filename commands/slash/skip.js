@@ -1,4 +1,5 @@
 const SlashCommand = require("../../lib/SlashCommand");
+const { MessageEmbed } = require("discord.js");
 
 const command = new SlashCommand()
   .setName("skip")
@@ -6,36 +7,40 @@ const command = new SlashCommand()
   .setRun(async (client, interaction, options) => {
     let channel = await client.getChannel(client, interaction);
     if (!channel) return;
-    let player = client.manager.players.get(interaction.guild.id);
-    if (!player)
+
+    let player;
+    if (client.manager)
+      player = client.manager.players.get(interaction.guild.id);
+    else
       return interaction.reply({
-        embeds: [client.ErrorEmbed("There's nothing to skipped!")],
+        embeds: [
+          new MessageEmbed()
+            .setColor("RED")
+            .setDescription("Lavalink node is not connected"),
+        ],
       });
 
-    if (!interaction.member.voice.channel) {
-      const joinEmbed = new MessageEmbed()
-        .setColor(client.config.embedColor)
-        .setDescription(
-          "❌ | **You must be in a voice channel to use this command!**"
-        );
-      return interaction.reply({ embeds: [joinEmbed], ephemeral: true });
+    if (!player) {
+      return interaction.reply({
+        embeds: [
+          new MessageEmbed()
+            .setColor("RED")
+            .setDescription("There is nothing to skip."),
+        ],
+        ephemeral: true,
+      });
     }
 
-    if (
-      interaction.guild.me.voice.channel &&
-      !interaction.guild.me.voice.channel.equals(
-        interaction.member.voice.channel
-      )
-    ) {
-      const sameEmbed = new MessageEmbed()
-        .setColor(client.config.embedColor)
-        .setDescription(
-          "❌ | **You must be in the same voice channel as me to use this command!**"
-        );
-      return interaction.reply({ embeds: [sameEmbed], ephemeral: true });
-    }
+    player.queue.previous = player.queue.current;
     player.stop();
-    interaction.reply({ embeds: [client.Embed("✅ | **Skipped!**")] });
+
+    interaction.reply({
+      embeds: [
+        new MessageEmbed()
+          .setColor(client.config.embedColor)
+          .setDescription("✅ | **Skipped!**"),
+      ],
+    });
   });
 
 module.exports = command;
