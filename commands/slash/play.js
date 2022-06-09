@@ -77,11 +77,11 @@ const command = new SlashCommand()
     }
 
     if (res.loadType === "TRACK_LOADED" || res.loadType === "SEARCH_RESULT") {
-        const r = res.tracks[0];
-        if (player.get("autoplay")) {
+      const r = res.tracks[0];
+      if (player.get("autoplay")) {
         const psba = player.get("autoplayed") || [];
         if (r) {
-          if (!psba.includes(r?.identifier)) {
+          if (!psba.includes(r.identifier)) {
             psba.push(r.identifier);
           }
         }
@@ -131,7 +131,7 @@ const command = new SlashCommand()
       if (player.get("autoplay")) {
         const psba = player.get("autoplayed") || [];
         for (const r of res.tracks) {
-          if (r && !psba.includes(r?.identifier)) {
+          if (r && !psba.includes(r.identifier)) {
             psba.push(r.identifier);
           }
         }
