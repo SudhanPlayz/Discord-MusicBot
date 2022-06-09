@@ -42,7 +42,7 @@ const command = new SlashCommand()
 
     const autoplay = player.get("autoplay");
 
-    if (autoplay === false) {
+    if (autoplay !== true) {
       const identifier = player.queue.current.identifier;
 
       player.set("autoplay", true);
@@ -50,7 +50,14 @@ const command = new SlashCommand()
       player.set("identifier", identifier);
       const search = `https://www.youtube.com/watch?v=${identifier}&list=RD${identifier}`;
       res = await player.search(search, interaction.user);
-      player.queue.add(res.tracks[1]);
+      const psba = player.get("autoplayed") || [];
+      const r = res.tracks[1];
+      for (const a of [identifier, r?.identifier]) {
+        if (a && !psba.includes(a)) psba.push(a);
+      }
+      if (r) player.queue.add(r);
+      while (psba.length > 100) psba.shift();
+      player.set("autoplayed", psba);
 
       let embed = new MessageEmbed()
         .setColor(client.config.embedColor)
