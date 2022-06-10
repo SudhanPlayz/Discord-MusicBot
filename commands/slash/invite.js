@@ -17,3 +17,5 @@ const command = new SlashCommand()
         ]
     });
 });
+
+module.exports = command;
