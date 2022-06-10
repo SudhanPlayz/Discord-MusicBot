@@ -8,7 +8,11 @@
     "rm-logs": "rm logs.log",
     "lint": "prettier --check .",
     "deploy": "node deploy/global",
-    "guild": "node deploy/guild"
+    "guild": "node deploy/guild",
+    "ddev": "cd dashboard && npm run dev",
+    "dbuild": "cd dashboard && npm run build && npm run export",
+    "dstart": "cd dashboard && npm run start",
+    "postinstall": "cd dashboard && curl --compressed -o- -L https://yarnpkg.com/install.sh | bash && yarn"
   },
   "repository": {
     "type": "git",

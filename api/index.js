@@ -33,19 +33,9 @@ class Server extends EventEmitter {
         );
       });
     });
-    fs.readdir(join(__dirname, "home"), (err, files) => {
-      if (err) return console.log(err);
-      files.forEach((file) => {
-        this.app.use(
-          "/" + file.split(".")[0],
-          require(join(__dirname, "home") + "/" + file)
-        );
-      });
-    });
+    
     this.app.use(express.static(join(__dirname, "..", "public")));
-    // this.app.use((req, res) => {
-    //   res.sendFile(join(__dirname, "..", "dashboard", "build", "index.html"));
-    // });
+    this.app.use(express.static(join(__dirname, "..", "dashboard", "out")));
   }
 
   listen() {
