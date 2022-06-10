@@ -2,9 +2,11 @@ const SlashCommand = require("../../lib/SlashCommand");
 const { MessageEmbed } = require("discord.js");
 
 const command = new SlashCommand()
-  .setName("previous")
-  .setDescription("Go back to the previous song.")
-  .setRun(async (client, interaction) => {
+  .setName("leave")
+  .setDescription(
+    "Stops whatever the bot is playing and leaves the voice channel\n(This command will clear the queue)"
+  )
+  .setRun(async (client, interaction, options) => {
     let channel = await client.getChannel(client, interaction);
     if (!channel) return;
 
@@ -25,36 +27,21 @@ const command = new SlashCommand()
         embeds: [
           new MessageEmbed()
             .setColor("RED")
-            .setDescription("There are no previous songs for this session."),
+            .setDescription("I'm not in a channel."),
         ],
         ephemeral: true,
       });
     }
 
-    let previousSong = player.queue.previous;
+    player.destroy();
 
-    if (!previousSong)
-      return interaction.reply({
-        embeds: [
-          new MessageEmbed()
-            .setColor("RED")
-            .setDescription("There is no previous song in the queue."),
-        ],
-      });
-
-    const currentSong = player.queue.current;
-    player.play(previousSong);
     interaction.reply({
       embeds: [
         new MessageEmbed()
           .setColor(client.config.embedColor)
-          .setDescription(
-            `⏮ | Previous song: **${previousSong.title}**`
-          ),
+          .setDescription(`:wave: | **Bye Bye!**`),
       ],
     });
-
-    previousSong = currentSong;
   });
 
 module.exports = command;

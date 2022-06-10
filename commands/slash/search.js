@@ -1,10 +1,10 @@
 const SlashCommand = require("../../lib/SlashCommand");
+const prettyMilliseconds = require("pretty-ms");
 const {
   MessageEmbed,
   MessageActionRow,
   MessageSelectMenu,
 } = require("discord.js");
-const prettyMilliseconds = require("pretty-ms");
 
 const command = new SlashCommand()
   .setName("search")
@@ -15,51 +15,29 @@ const command = new SlashCommand()
       .setDescription("The song to search for")
       .setRequired(true)
   )
-
   .setRun(async (client, interaction, options) => {
-    const result = interaction.options.getString("query");
-    let player = client.manager.get(interaction.guild.id);
+    let channel = await client.getChannel(client, interaction);
+    if (!channel) return;
 
-    if (!interaction.member.voice.channel) {
-      const joinEmbed = new MessageEmbed()
-        .setColor(client.config.embedColor)
-        .setDescription(
-          "❌ | **You need to join voice channel first before you can use this command.**"
-        );
-      return interaction.reply({ embeds: [joinEmbed], ephemeral: true });
-    }
-
-    if (
-      interaction.guild.me.voice.channel &&
-      !interaction.guild.me.voice.channel.equals(
-        interaction.member.voice.channel
-      )
-    ) {
-      const sameEmbed = new MessageEmbed()
-        .setColor(client.config.embedColor)
-        .setDescription(
-          "❌ | **You must be in the same voice channel as me.**"
-        );
-
-      return interaction.reply({ embeds: [sameEmbed], ephemeral: true });
-    }
-
-    if (!player) {
-	player = client.manager.create({
-		guild: interaction.guild.id,
-		voiceChannel: interaction.member.voice.channel.id,
-		textChannel: interaction.channel.id,
-		selfDeafen: client.config.selfDeafen,
-		volume: client.config.defaultVolume,
-	});
-    }
+    let player;
+    if (client.manager)
+      player = client.createPlayer(interaction.channel, channel);
+    else
+      return interaction.reply({
+        embeds: [
+          new MessageEmbed()
+            .setColor("RED")
+            .setDescription("Lavalink node is not connected"),
+        ],
+      });
+    await interaction.deferReply().catch((_) => {});
 
     if (player.state !== "CONNECTED") {
       player.connect();
     }
 
+    const search = interaction.options.getString("query");
     let res;
-    const search = result;
 
     try {
       res = await player.search(search, interaction.user);
@@ -68,7 +46,7 @@ const command = new SlashCommand()
           embeds: [
             new MessageEmbed()
               .setDescription("An error occured while searching for the song")
-              .setColor(client.config.embedColor),
+              .setColor("RED"),
           ],
           ephemeral: true,
         });
@@ -80,8 +58,7 @@ const command = new SlashCommand()
             .setAuthor({
               name: "An error occured while searching for the song",
             })
-            //.setAuthor("An error occured while searching for the song")
-            .setColor(client.config.embedColor),
+            .setColor("RED"),
         ],
         ephemeral: true,
       });
@@ -92,7 +69,7 @@ const command = new SlashCommand()
         embeds: [
           new MessageEmbed()
             .setDescription(`No results found for \`${search}\``)
-            .setColor(client.config.embedColor),
+            .setColor("RED"),
         ],
         ephemeral: true,
       });
@@ -106,7 +83,7 @@ const command = new SlashCommand()
         resultFromSearch.push({
           label: `${track.title}`,
           value: `${track.uri}`,
-	  description: track.isStream
+          description: track.isStream
             ? `LIVE`
             : `${prettyMilliseconds(track.duration, {
                 secondsDecimalDigits: 0,
@@ -116,21 +93,17 @@ const command = new SlashCommand()
 
       const menus = new MessageActionRow().addComponents(
         new MessageSelectMenu()
-          .setMinValues(1)
-          .setMaxValues(1)
           .setCustomId("select")
           .setPlaceholder("Select a song")
           .addOptions(resultFromSearch)
       );
-
-      await interaction.deferReply();
 
       let choosenTracks = await interaction.editReply({
         embeds: [
           new MessageEmbed()
             .setColor(client.config.embedColor)
             .setDescription(
-              `Here are searched result I found for \`${result}\`. Please select track within \`30 seconds\``
+              `Here are some of the results I found for \`${search}\`. Please select track within \`30 seconds\``
             ),
         ],
         components: [menus],
@@ -151,28 +124,32 @@ const command = new SlashCommand()
             uriFromCollector,
             interaction.user
           );
-          if (player?.queue) {
-            const r = trackForPlay.tracks[0];
-            if (player.get("autoplay")) {
-            const psba = player.get("autoplayed") || [];
-              if (r) {
-                if (!psba.includes(r.identifier)) {
-                  psba.push(r.identifier);
-                }
-              }
-              while (psba.length > 100) psba.shift();
-              player.set("autoplayed", psba);
-            }
-            player.queue.add(r);
-          }
+          player?.queue?.add(trackForPlay.tracks[0]);
           if (!player?.playing && !player?.paused && !player?.queue?.size)
             player?.play();
           i.editReply({
             content: null,
             embeds: [
               new MessageEmbed()
+                .setAuthor({
+                  name: "Added to queue",
+                  iconURL: client.config.iconURL,
+                })
+                .setURL(res.tracks[0].uri)
+                .setThumbnail(res.tracks[0].displayThumbnail("maxresdefault"))
                 .setDescription(
-                  `Added [${trackForPlay?.tracks[0]?.title}](${trackForPlay?.tracks[0].uri}) [${trackForPlay?.tracks[0]?.requester}]`
+                  `[${trackForPlay?.tracks[0]?.title}](${trackForPlay?.tracks[0].uri})` ||
+                    "No Title"
+                )
+                .addField("Added by", `<@${interaction.user.id}>`, true)
+                .addField(
+                  "Duration",
+                  res.tracks[0].isStream
+                    ? `\`LIVE\``
+                    : `\`${client.ms(res.tracks[0].duration, {
+                        colonNotation: true,
+                      })}\``,
+                  true
                 )
                 .setColor(client.config.embedColor),
             ],

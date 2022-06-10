@@ -2,9 +2,9 @@ const SlashCommand = require("../../lib/SlashCommand");
 const { MessageEmbed } = require("discord.js");
 
 const command = new SlashCommand()
-  .setName("previous")
-  .setDescription("Go back to the previous song.")
-  .setRun(async (client, interaction) => {
+  .setName("loopq")
+  .setDescription("Loop the current song queue")
+  .setRun(async (client, interaction, options) => {
     let channel = await client.getChannel(client, interaction);
     if (!channel) return;
 
@@ -25,36 +25,24 @@ const command = new SlashCommand()
         embeds: [
           new MessageEmbed()
             .setColor("RED")
-            .setDescription("There are no previous songs for this session."),
+            .setDescription("There is no music playing."),
         ],
         ephemeral: true,
       });
     }
 
-    let previousSong = player.queue.previous;
+    if (player.setQueueRepeat(!player.queueRepeat));
+    const queueRepeat = player.queueRepeat ? "enabled" : "disabled";
 
-    if (!previousSong)
-      return interaction.reply({
-        embeds: [
-          new MessageEmbed()
-            .setColor("RED")
-            .setDescription("There is no previous song in the queue."),
-        ],
-      });
-
-    const currentSong = player.queue.current;
-    player.play(previousSong);
     interaction.reply({
       embeds: [
         new MessageEmbed()
           .setColor(client.config.embedColor)
           .setDescription(
-            `⏮ | Previous song: **${previousSong.title}**`
+            `:thumbsup: | **Loop queue is now \`${queueRepeat}\`**`
           ),
       ],
     });
-
-    previousSong = currentSong;
   });
 
 module.exports = command;
