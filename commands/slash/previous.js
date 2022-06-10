@@ -49,7 +49,7 @@ const command = new SlashCommand()
         new MessageEmbed()
           .setColor(client.config.embedColor)
           .setDescription(
-            `⏮ | Previous song: **${previousSong.title}**\nRequested By: **${previousSong.requester.username}**`
+            `⏮ | Previous song: **${previousSong.title}**`
           ),
       ],
     });
