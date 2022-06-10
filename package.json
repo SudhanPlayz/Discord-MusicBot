@@ -63,7 +63,7 @@
     "moment-duration-format": "^2.3.2",
     "node-fetch": "2.6.6",
     "os": "^0.1.2",
-    "pretty-ms": "^7.0.1",
+    "pretty-ms": "^8.0.0",
     "systeminformation": "^5.9.12",
     "winston": "^3.3.3"
   },
