@@ -1,3 +1,4 @@
+const colors = require("colors");
 const { MessageEmbed } = require("discord.js");
 const SlashCommand = require("../../lib/SlashCommand");
 
