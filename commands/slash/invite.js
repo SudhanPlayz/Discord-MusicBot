@@ -13,7 +13,7 @@ const command = new SlashCommand()
             .addComponents(new MessageButton()
             .setLabel("Invite me")
             .setStyle("LINK")
-            .setURL(`https://discord.com/oauth2/authorize?client_id=${client.config.clientId}&permissions=${client.config.permissions}&scope=${client.config.scopes.toString().replace(',', '%20')}`))
+            .setURL(`https://discord.com/oauth2/authorize?client_id=${client.config.clientId}&permissions=${client.config.permissions}&scope=${client.config.scopes.toString().replace(/,/g, '%20')}`))
         ]
     });
 });
