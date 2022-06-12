@@ -17,7 +17,7 @@ const command = new SlashCommand()
       embeds: [
         new MessageEmbed()
           .setColor(client.config.embedColor)
-          .setDescription(":mag_right: **Searching...**"),
+          .setDescription("🔎 **Searching...**"),
       ],
     });
 
@@ -47,17 +47,13 @@ const command = new SlashCommand()
     // Lavalink api for lyrics
     let url = `https://api.darrennathanael.com/lyrics?song=${search}`;
 
-    let lyrics = await fetch(url).then((res) => res.json());
-    // If the status is not ok return
-    if (lyrics.response !== 200) {
-      return interaction.editReply({
-        embeds: [
-          new MessageEmbed()
-            .setColor("RED")
-            .setDescription(`No lyrics found for ${search}!`),
-        ],
-      });
-    }
+    let lyrics = await fetch(url).then((res) => { return res.json(); }).catch((err) => { return err.name; });
+	if(!lyrics || lyrics.response !== 200 || lyrics === 'FetchError') {
+		return interaction.editReply({ embeds: [new MessageEmbed()
+			.setColor("RED")
+			.setDescription(`❌ | No lyrics found for ${search}!\nMake sure you typed in your search correctly.`)
+		]})
+	}
 
     let text = lyrics.lyrics;
     let lyricsEmbed = new MessageEmbed()
