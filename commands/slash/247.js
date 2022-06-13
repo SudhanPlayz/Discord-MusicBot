@@ -4,7 +4,7 @@ const SlashCommand = require("../../lib/SlashCommand");
 
 const command = new SlashCommand()
   .setName("247")
-  .setDescription("toggles 24/7")
+  .setDescription("Prevents the bot from ever disconnecting from a VC (toggle)")
   .setRun(async (client, interaction, options) => {
     let channel = await client.getChannel(client, interaction);
     if (!channel) return;
@@ -37,14 +37,14 @@ const command = new SlashCommand()
     );
     const twentyFourSeven = player.get("twentyFourSeven");
 
-    if (!player.twentyFourSeven || player.twentyFourSeven === false) {
+    if (!twentyFourSeven || twentyFourSeven === false) {
       player.set("twentyFourSeven", true);
     } else {
       player.set("twentyFourSeven", false);
     }
 
     twentyFourSevenEmbed.setDescription(
-      `✅ | **24/7 mode is \`${!player.twentyFourSeven ? "ON" : "OFF"}**\``
+      `✅ | **24/7 mode is \`${!twentyFourSeven ? "ON" : "OFF"}\`**`
     );
     client.warn(
       `Player: ${player.options.guild} | [${colors.blue(
@@ -58,6 +58,8 @@ const command = new SlashCommand()
       }`
     );
 
+    if (!player.playing && player.queue.totalSize === 0) player.destroy();
+
     return interaction.reply({ embeds: [twentyFourSevenEmbed] });
   });
 module.exports = command;
@@ -66,3 +68,4 @@ module.exports = command;
 // the above message meaning error, if it cant find it or take too long the bot crashed
 // play commanddddd, if timeout or takes 1000 years to find song it crashed
 // OKIE, leave the comment here for idk
+// Comment very useful, 247 good :+1:
