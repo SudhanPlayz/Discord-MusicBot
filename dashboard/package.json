@@ -10,6 +10,10 @@
     "export": "next export"
   },
   "dependencies": {
+    "@emotion/react": "^11.9.3",
+    "@emotion/styled": "^11.9.3",
+    "@mui/icons-material": "^5.8.4",
+    "@mui/material": "^5.8.4",
     "@nextui-org/react": "1.0.0-beta.9",
     "next": "12.1.6",
     "react": "18.1.0",
