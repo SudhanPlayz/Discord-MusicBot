@@ -2,11 +2,11 @@ const DiscordMusicBot = require("./lib/DiscordMusicBot");
 const { exec } = require("child_process");
 
 if (process.env.REPL_ID) {
-	console.log("Replit system detected, initiating special `unhandledRejection` event listener | index.js:19")
+	console.log("Replit system detected, initiating special `unhandledRejection` event listener.")
 	process.on('unhandledRejection', (reason, promise) => {
 		promise.catch((err) => {
 			if (err.status === 429) { 
-				console.log("something went wrong while logging in, resetting..."); 
+				console.log("something went wrong whilst trying to connect to discord gateway, resetting..."); 
 				exec("kill 1"); 
 			}
 		});

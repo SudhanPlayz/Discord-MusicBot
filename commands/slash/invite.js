@@ -1,16 +1,30 @@
-const { MessageEmbed } = require("discord.js");
+const { MessageActionRow, MessageButton, MessageEmbed } = require("discord.js");
 const SlashCommand = require("../../lib/SlashCommand");
 
 const command = new SlashCommand()
   .setName("invite")
   .setDescription("Invite me to your server")
   .setRun(async (client, interaction, options) => {
-    const embed = new MessageEmbed()
-      .setColor(client.config.embedColor)
-      .setTitle(`Invite me to your server`)
-      .setDescription(
-        `You can invite me to your server by clicking [here](https://discord.com/oauth2/authorize?client_id=${client.config.clientId}&permissions=${client.config.permissions}&scope=bot%20applications.commands)`
-      );
-    return interaction.reply({ embeds: [embed] });
+    return interaction.reply({
+      embeds: [
+        new MessageEmbed()
+          .setColor(client.config.embedColor)
+          .setTitle(`Invite me to your server!`),
+      ],
+      components: [
+        new MessageActionRow().addComponents(
+          new MessageButton()
+            .setLabel("Invite me")
+            .setStyle("LINK")
+            .setURL(
+              `https://discord.com/oauth2/authorize?client_id=${
+                client.config.clientId
+              }&permissions=${
+                client.config.permissions
+              }&scope=${client.config.scopes.toString().replace(/,/g, "%20")}`
+            )
+        ),
+      ],
+    });
   });
 module.exports = command;

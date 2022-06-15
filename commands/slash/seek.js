@@ -11,75 +11,63 @@ const command = new SlashCommand()
       .setDescription("Seek to time you want. Ex 2m | 10s | 53s")
       .setRequired(true)
   )
-
   .setRun(async (client, interaction, options) => {
-    const args = interaction.options.getString("time");
+    let channel = await client.getChannel(client, interaction);
+    if (!channel) return;
 
-    let player = client.manager.players.get(interaction.guild.id);
+    let player;
+    if (client.manager)
+      player = client.manager.players.get(interaction.guild.id);
+    else
+      return interaction.reply({
+        embeds: [
+          new MessageEmbed()
+            .setColor("RED")
+            .setDescription("Lavalink node is not connected"),
+        ],
+      });
+
     if (!player) {
-      const queueEmbed = new MessageEmbed()
-        .setColor(client.config.embedColor)
-        .setDescription("❌ | **There's nothing playing in the queue**");
-      return interaction.reply({ embeds: [queueEmbed], ephemeral: true });
+      return interaction.reply({
+        embeds: [
+          new MessageEmbed()
+            .setColor("RED")
+            .setDescription("There is no music playing."),
+        ],
+        ephemeral: true,
+      });
     }
 
-    if (!interaction.member.voice.channel) {
-      const joinEmbed = new MessageEmbed()
-        .setColor(client.config.embedColor)
-        .setDescription(
-          "❌ | **You must be in a voice channel to use this command.**"
-        );
-      return interaction.reply({ embeds: [joinEmbed], ephemeral: true });
-    }
-
-    if (
-      interaction.guild.me.voice.channel &&
-      !interaction.guild.me.voice.channel.equals(
-        interaction.member.voice.channel
-      )
-    ) {
-      const sameEmbed = new MessageEmbed()
-        .setColor(client.config.embedColor)
-        .setDescription(
-          "❌ | **You must be in the same voice channel as me to use this command!**"
-        );
-      return interaction.reply({ embeds: [sameEmbed], ephemeral: true });
-    }
     await interaction.deferReply();
 
+    const args = interaction.options.getString("time");
     const time = ms(args);
     const position = player.position;
     const duration = player.queue.current.duration;
 
     if (time <= duration) {
-      if (time > position) {
-        player.seek(time);
-        let thing = new MessageEmbed()
-          .setColor(client.config.embedColor)
-          .setDescription(
-            `⏩ | **${player.queue.current.title}** has been seeked to **${ms(
-              time
-            )}**`
-          );
-        return interaction.editReply({ embeds: [thing] });
-      } else {
-        player.seek(time);
-        let thing = new MessageEmbed()
-          .setColor(client.config.embedColor)
-          .setDescription(
-            `⏩ | **${player.queue.current.title}** has been seeked to **${ms(
-              time
-            )}**`
-          );
-        return interaction.editReply({ embeds: [thing] });
-      }
+      player.seek(time);
+      return interaction.editReply({
+        embeds: [
+          new MessageEmbed()
+            .setColor(client.config.embedColor)
+            .setDescription(
+              `⏩ | **${player.queue.current.title}** has been ${
+                time < position ? "rewound" : "seeked"
+              } to **${ms(time)}**`
+            ),
+        ],
+      });
     } else {
-      let thing = new MessageEmbed()
-        .setColor(client.config.embedColor)
-        .setDescription(
-          `Cannot seek current playing track. This may happened because seek duration has exceeded track duration`
-        );
-      return interaction.editReply({ embeds: [thing] });
+      return interaction.editReply({
+        embeds: [
+          new MessageEmbed()
+            .setColor(client.config.embedColor)
+            .setDescription(
+              `Cannot seek current playing track. This may happened because seek duration has exceeded track duration`
+            ),
+        ],
+      });
     }
   });
 

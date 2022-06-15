@@ -10,52 +10,47 @@ const command = new SlashCommand()
       .setDescription("the preset to add")
       .setRequired(true)
       .addChoices(
-        { name: "Nightcore", value: "nightcore"},
-        { name: "BassBoost", value: "bassboost"},
-        { name: "Vaporwave", value: "vaporwave"},
-        { name: "Pop", value: "pop"},
-        { name: "Soft", value: "soft"},
-        { name: "Treblebass", value: "treblebass"},
-        { name: "Eight Dimension", value: "eightD"},
-        { name: "Karaoke", value: "karaoke"},
-        { name: "Vibrato", value: "vibrato"},
-        { name: "Tremolo", value: "tremolo"},
-        { name: "Reset", value: "off"},)
+        { name: "Nightcore", value: "nightcore" },
+        { name: "BassBoost", value: "bassboost" },
+        { name: "Vaporwave", value: "vaporwave" },
+        { name: "Pop", value: "pop" },
+        { name: "Soft", value: "soft" },
+        { name: "Treblebass", value: "treblebass" },
+        { name: "Eight Dimension", value: "eightD" },
+        { name: "Karaoke", value: "karaoke" },
+        { name: "Vibrato", value: "vibrato" },
+        { name: "Tremolo", value: "tremolo" },
+        { name: "Reset", value: "off" }
+      )
   )
 
   .setRun(async (client, interaction, options) => {
     const args = interaction.options.getString("preset");
 
-    let player = client.manager.players.get(interaction.guild.id);
+    let channel = await client.getChannel(client, interaction);
+    if (!channel) return;
+
+    let player;
+    if (client.manager)
+      player = client.manager.players.get(interaction.guild.id);
+    else
+      return interaction.reply({
+        embeds: [
+          new MessageEmbed()
+            .setColor("RED")
+            .setDescription("Lavalink node is not connected"),
+        ],
+      });
 
     if (!player) {
-      const queueEmbed = new MessageEmbed()
-        .setColor(client.config.embedColor)
-        .setDescription("❌ | There is no music playing in this guild!");
-      return interaction.reply({ embeds: [queueEmbed], ephemeral: true });
-    }
-
-    if (!interaction.member.voice.channel) {
-      const joinEmbed = new MessageEmbed()
-        .setColor(client.config.embedColor)
-        .setDescription(
-          "❌ | You must be in a voice channel to use this command!"
-        );
-      return interaction.reply({ embeds: [joinEmbed], ephemeral: true });
-    }
-
-    if (
-      interaction.guild.me.voice.channel &&
-      !interaction.guild.me.voice.channel.equals(
-        interaction.member.voice.channel
-      )
-    ) {
-      const sameEmbed = new MessageEmbed()
-        .setColor(client.config.embedColor)
-        .setDescription(
-          "❌ | You must be in the same voice channel as the bot to use this command!"
-        );
-      return interaction.reply({ embeds: [sameEmbed], ephemeral: true });
+      return interaction.reply({
+        embeds: [
+          new MessageEmbed()
+            .setColor("RED")
+            .setDescription("There's no music playing."),
+        ],
+        ephemeral: true,
+      });
     }
 
     // create a new embed
