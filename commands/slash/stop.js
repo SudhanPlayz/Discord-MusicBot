@@ -33,12 +33,7 @@ const command = new SlashCommand()
 
     player.stop();
     player.queue.clear();
-
-    let clearembed = new MessageEmbed()
-      .setColor(client.config.embedColor)
-      .setDescription(`✅ | **Stopped the player!**`);
-
-    return interaction.reply({ embeds: [clearembed] });
+    return;
   });
 
 module.exports = command;
