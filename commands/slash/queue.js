@@ -47,11 +47,14 @@ const command = new SlashCommand()
       let song = player.queue.current;
       const embed = new MessageEmbed()
         .setColor(client.config.embedColor)
-        .setDescription(`**♪ | Now playing:** [${song.title}](${song.uri})`)
+        .setDescription(
+          `**♪ | Now playing:** [${song.title}](${song.uri})` || "No Title") 
         .addFields(
           {
             name: "Duration",
-            value: `\`${pms(player.position, { colonNotation: true })} / ${pms(
+            value: song.isStream
+            ? `\`LIVE\``
+            : `\`${pms(player.position, { colonNotation: true })} / ${pms(
               player.queue.current.duration,
               { colonNotation: true }
             )}\``,
