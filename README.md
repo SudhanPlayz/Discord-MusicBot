@@ -46,3 +46,4 @@ Contributions are always welcomed :D Make sure to follow [Contributing.md](/CONT
 - [Express](https://expressjs.com/)
 - [Next JS](https://nextjs.org/)
 - [Next UI](https://nextui.org)
+- [Material UI Icons](https://mui.com/material-ui/material-icons/)

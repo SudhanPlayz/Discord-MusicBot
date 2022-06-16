@@ -1,11 +1,12 @@
 import Head from "next/head";
+import {
+    RocketLaunchRounded,
+    PersonRounded,
+    DnsRounded,
+    AudiotrackRounded
+} from "@mui/icons-material"
 import Content from "../components/content";
-/*
-import AudiotrackRounded from "../svgs/AudioTrackRounded.svg";
-import DnsRounded from "../svgs/DnsRounded.svg";
-import PersonRounded from "../svgs/PersonRounded.svg";
-import RocketLaunchRounded from "../svgs/RocketLaunchRounded.svg";
-*/
+
 const Dashboard = (_props: any) => {
     return (<Content>
         <Head>
@@ -30,9 +31,9 @@ const Dashboard = (_props: any) => {
                     <h4>Commands Ran</h4>
                     <h3>0</h3>
                 </div>
-                {/*<RocketLaunchRounded style={{
+                <RocketLaunchRounded fontSize="large" style={{
                     marginLeft: '10px',
-                }} />*/}
+                }} />
             </div>
 
             <div style={{
@@ -49,9 +50,9 @@ const Dashboard = (_props: any) => {
                     <h4>Users</h4>
                     <h3>0</h3>
                 </div>
-                {/*<PersonRounded style={{
+                <PersonRounded fontSize="large" style={{
                     marginLeft: '30px',
-                }} />*/}
+                }} />
             </div>
 
             <div style={{
@@ -68,9 +69,9 @@ const Dashboard = (_props: any) => {
                     <h4>Servers</h4>
                     <h3>0</h3>
                 </div>
-                {/*<DnsRounded style={{
+                <DnsRounded fontSize="large" style={{
                     marginLeft: '30px',
-                }} />*/}
+                }} />
             </div>
 
             <div style={{
@@ -84,12 +85,12 @@ const Dashboard = (_props: any) => {
                 justifyContent: 'center',
             }}>
                 <div>
-                    <h4>Servers</h4>
+                    <h4>Songs Played</h4>
                     <h3>0</h3>
                 </div>
-                {/*<AudiotrackRounded style={{
+                <AudiotrackRounded fontSize="large" style={{
                     marginLeft: '30px',
-                }} />*/}
+                }} />
             </div>
         </div>
     </Content>)
