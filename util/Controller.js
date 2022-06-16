@@ -101,9 +101,7 @@ module.exports = async (client, interaction) => {
     const trackRepeat = player.trackRepeat ? "enabled" : "disabled";
       interaction.reply({
         embeds: [
-          client.Embed(
-            "🔂 | **Loop has been \`${trackRepeat}\`**"
-          ),
+          client.Embed(`🔂 | **Loop has been \`${trackRepeat}\`**`),
         ],
       });
       setTimeout(() => {
