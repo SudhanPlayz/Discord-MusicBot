@@ -35,7 +35,23 @@ class Server extends EventEmitter {
     });
     
     this.app.use(express.static(join(__dirname, "..", "public")));
-    this.app.use(express.static(join(__dirname, "..", "dashboard", "out")));
+
+    //Static Routes
+    let dist = express.static(join(__dirname, "..", "dashboard", "out"))
+
+    this.app.use(dist);
+    this.app.get("/login", (_req, res) => {
+      res.sendFile(join(dist, "login.html"));  
+    });
+    this.app.get("/logout", (_req, res) => {
+      res.sendFile(join(dist, "logout.html"));  
+    });
+    this.app.get("/dashboard", (_req, res) => {
+      res.sendFile(join(dist, "dashboard.html"));  
+    });
+    this.app.get("/servers", (_req, res) => {
+      res.sendFile(join(dist, "servers.html"));  
+    });
   }
 
   listen() {
