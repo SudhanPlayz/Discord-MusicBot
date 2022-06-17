@@ -63,7 +63,10 @@ module.exports = async (client, oldState, newState) => {
 
           let playerPlaying = await client.channels.cache
             .get(player.textChannel)
-            .send({ embeds: [player.nowPlayingMessage.embeds[0]] });
+            .send({
+              embeds: [player.nowPlayingMessage.embeds[0]],
+              components: [client.createController(player.options.guild)],
+            });
           player.setNowplayingMessage(playerPlaying);
         }
       }
