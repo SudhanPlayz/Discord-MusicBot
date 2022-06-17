@@ -40,13 +40,14 @@ module.exports = async (client, interaction) => {
       );
     return interaction.reply({ embeds: [sameEmbed], ephemeral: true });
   }
-  if (property === "Stop") {
-    player.stop();
-    player.queue.clear();
+  if (property === "LowVolume") {
+    player.setVolume(player.volume - 10);
     interaction.reply({
       embeds: [
         client.Embed(
-          "⏹️ | **Successfully stopped the player**"
+          "🔉 | **Successfully lowered server volume to** `" +
+            player.volume +
+            "%`"
         ),
       ],
     });
@@ -96,17 +97,34 @@ module.exports = async (client, interaction) => {
     return interaction.deferUpdate();
   }
 
-  if (property === "Loop") {
-    if (player.setTrackRepeat(!player.trackRepeat));
-    const trackRepeat = player.trackRepeat ? "enabled" : "disabled";
+  if (property === "HighVolume") {
+    // increase volume by 10% else if volume at 200% do nothing
+    if (player.volume < 125) {
+      player.setVolume(player.volume + 5);
       interaction.reply({
         embeds: [
-          client.Embed(`🔂 | **Loop has been \`${trackRepeat}\`**`),
+          client.Embed(
+            "🔊 | **Successfully increased server volume to** `" +
+              player.volume +
+              "%`"
+          ),
         ],
       });
       setTimeout(() => {
         interaction.deleteReply();
       }, 5000);
+    } else {
+      interaction.reply({
+        embeds: [
+          client.Embed(
+            "👍 | **Volume is at maximum** `" + player.volume + "%`"
+          ),
+        ],
+      });
+      setTimeout(() => {
+        interaction.deleteReply();
+      }, 5000);
+    }
     return;
   }
 
