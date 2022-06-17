@@ -49,25 +49,22 @@ module.exports = async (client, oldState, newState) => {
     case "JOIN":
       if (client.config.alwaysplay === false) {
         if (stateChange.members.size === 1 && player.paused) {
-          let playerResumed = client
-            .Embed()
-            // say that the queue has been resumed
+          player.pause(false);
+
+          let playerResumed = new MessageEmbed()
+            .setColor(client.config.embedColor)
             .setTitle(`Resumed!`, client.config.iconURL)
             .setFooter({ text: `The current song has been resumed.` });
-          await client.channels.cache
+
+          let resumeMessage = await client.channels.cache
             .get(player.textChannel)
             .send({ embeds: [playerResumed] });
+          player.setResumeMessage(resumeMessage);
 
-          //!BUG Updated nowplaying message doesn't show buttons
-          // update the now playing message and bring it to the front
           let playerPlaying = await client.channels.cache
             .get(player.textChannel)
-            .send({
-              embeds: [player.nowPlayingMessage.embeds[0]],
-              components: [client.createController(player.options.guild)],
-            });
+            .send({ embeds: [player.nowPlayingMessage.embeds[0]] });
           player.setNowplayingMessage(playerPlaying);
-          player.pause(false);
         }
       }
       break;
@@ -80,15 +77,17 @@ module.exports = async (client, oldState, newState) => {
         ) {
           player.pause(true);
 
-          let playerPaused = client
-            .Embed()
+          let playerPaused = new MessageEmbed()
+            .setColor(client.config.embedColor)
             .setTitle(`Paused!`, client.config.iconURL)
             .setFooter({
               text: `The current song has been paused because theres no one in the voice channel.`,
             });
-          await client.channels.cache
+
+          let pausedMessage = await client.channels.cache
             .get(player.textChannel)
             .send({ embeds: [playerPaused] });
+          player.setPausedMessage(pausedMessage);
         }
       }
       break;
