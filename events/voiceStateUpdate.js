@@ -1,3 +1,5 @@
+const { MessageEmbed } = require('discord.js');
+
 /**
  *
  * @param {import("../lib/DiscordMusicBot")} client
@@ -54,20 +56,14 @@ module.exports = async (client, oldState, newState) => {
           let playerResumed = new MessageEmbed()
             .setColor(client.config.embedColor)
             .setTitle(`Resumed!`, client.config.iconURL)
+            .setDescription(`Playing  [${player.queue.current.title}](${player.queue.current.uri})`)
             .setFooter({ text: `The current song has been resumed.` });
-
-          let resumeMessage = await client.channels.cache
+					
+					let resumeMessage = await client.channels.cache
             .get(player.textChannel)
-            .send({ embeds: [playerResumed] });
+            .send({ embeds: [playerResumed] })
+            .then(setTimeout(() => { resumeMessage.delete() }, 5000));
           player.setResumeMessage(resumeMessage);
-
-          let playerPlaying = await client.channels.cache
-            .get(player.textChannel)
-            .send({
-              embeds: [player.nowPlayingMessage.embeds[0]],
-              components: [client.createController(player.options.guild)],
-            });
-          player.setNowplayingMessage(playerPlaying);
         }
       }
       break;
@@ -83,9 +79,7 @@ module.exports = async (client, oldState, newState) => {
           let playerPaused = new MessageEmbed()
             .setColor(client.config.embedColor)
             .setTitle(`Paused!`, client.config.iconURL)
-            .setFooter({
-              text: `The current song has been paused because theres no one in the voice channel.`,
-            });
+            .setFooter({ text: `The current song has been paused because theres no one in the voice channel.` });
 
           let pausedMessage = await client.channels.cache
             .get(player.textChannel)
