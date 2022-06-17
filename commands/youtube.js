@@ -78,7 +78,7 @@ __**[Join YouTube Together](https://discord.com/invite/${Invite.code})**__
         );
 
       let Invite = await member.voice.channel.activityInvite(
-        "755600276941176913"
+        "880218394199220334"
       ); //Made using discordjs-activity package
       let embed = new MessageEmbed()
         .setAuthor(
