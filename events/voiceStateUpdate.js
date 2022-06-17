@@ -62,7 +62,7 @@ module.exports = async (client, oldState, newState) => {
           let resumeMessage = await client.channels.cache
             .get(player.textChannel)
             .send({ embeds: [playerResumed] })
-            .then(setTimeout(() => { if (resumeMessage) resumeMessage.delete() }, 5000));
+            .then(setTimeout(() => { if (resumeMessage && !resumeMessage.deleted) resumeMessage.delete() }, 5000));
           player.setResumeMessage(resumeMessage);
         }
       }
