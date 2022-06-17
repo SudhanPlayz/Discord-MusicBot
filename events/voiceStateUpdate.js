@@ -58,8 +58,8 @@ module.exports = async (client, oldState, newState) => {
             .setTitle(`Resumed!`, client.config.iconURL)
             .setDescription(`Playing  [${player.queue.current.title}](${player.queue.current.uri})`)
             .setFooter({ text: `The current song has been resumed.` });
-					
-					let resumeMessage = await client.channels.cache
+				
+          let resumeMessage = await client.channels.cache
             .get(player.textChannel)
             .send({ embeds: [playerResumed] })
             .then(setTimeout(() => { resumeMessage.delete() }, 5000));
