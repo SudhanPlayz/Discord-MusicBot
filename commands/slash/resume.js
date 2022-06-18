@@ -3,7 +3,7 @@ const { MessageEmbed } = require("discord.js");
 
 const command = new SlashCommand()
   .setName("resume")
-  .setDescription("Resume current track")
+  .setDescription("Resume the current track")
   .setRun(async (client, interaction, options) => {
     let channel = await client.getChannel(client, interaction);
     if (!channel) return;
@@ -25,7 +25,7 @@ const command = new SlashCommand()
         embeds: [
           new MessageEmbed()
             .setColor("RED")
-            .setDescription("There is no song playing right now."),
+            .setDescription("You must be in a voice channel to use this command!"),
         ],
         ephemeral: true,
       });
@@ -36,7 +36,7 @@ const command = new SlashCommand()
         embeds: [
           new MessageEmbed()
             .setColor("RED")
-            .setDescription("Current track is already resumed"),
+            .setDescription("The current track is already resumed"),
         ],
         ephemeral: true,
       });
