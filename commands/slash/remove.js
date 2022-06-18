@@ -47,7 +47,7 @@ const command = new SlashCommand()
       let thing = new MessageEmbed()
         .setColor(client.config.embedColor)
         .setDescription(
-          `Current queue has only **${player.queue.size}** track`
+          `The current queue has only **${player.queue.size}** tracks`
         );
       return interaction.editReply({ embeds: [thing] });
     }
@@ -58,7 +58,7 @@ const command = new SlashCommand()
     const number = position + 1;
     let thing = new MessageEmbed()
       .setColor(client.config.embedColor)
-      .setDescription(`Removed track number **${number}** from queue`);
+      .setDescription(`Removed track number **${number}** from the queue`);
     return interaction.editReply({ embeds: [thing] });
   });
 
