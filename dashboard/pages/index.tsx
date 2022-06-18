@@ -39,7 +39,7 @@ const Home = (_props: any) => {
               marginTop: '1rem'
           }}>Login
             </Button>
-            <Button color="primary" flat onClick={()=> router.push('/login')} style={{
+            <Button color="primary" flat onClick={()=> window.open('https://github.com/SudhanPlayz/Discord-MusicBot')} style={{
               marginTop: '1rem',
               marginLeft: '20px'
             }}>Github
