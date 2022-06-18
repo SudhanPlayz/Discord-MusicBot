@@ -64,7 +64,7 @@ const command = new SlashCommand()
       embeds: [
         new MessageEmbed()
           .setColor(client.config.embedColor)
-          .setDescription(":white_check_mark: | **Moved track**"),
+          .setDescription(":white_check_mark: | **Successfully moved the track**"),
       ],
     });
   });
