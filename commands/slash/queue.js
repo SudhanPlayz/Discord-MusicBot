@@ -51,10 +51,12 @@ const command = new SlashCommand()
         .addFields(
           {
             name: "Duration",
-            value: `\`${pms(player.position, { colonNotation: true })} / ${pms(
-              player.queue.current.duration,
-              { colonNotation: true }
-            )}\``,
+            value: song.isStream
+              ? `\`LIVE\``
+              : `\`${pms(player.position, { colonNotation: true })} / ${pms(
+                player.queue.current.duration,
+                { colonNotation: true }
+              )}\``,
             inline: true,
           },
           {
@@ -74,6 +76,16 @@ const command = new SlashCommand()
         embeds: [embed],
       });
     } else {
+      let queueDuration = player.queue.duration.valueOf()
+      if (player.queue.current.isStream) {
+        queueDuration -= player.queue.current.duration
+      }
+      for (let i = 0; i < player.queue.length; i++) {
+        if (player.queue[i].isStream) {
+          queueDuration -= player.queue[i].duration
+        }
+      }
+
       const mapping = player.queue.map(
         (t, i) => `\` ${++i} \` [${t.title}](${t.uri}) [${t.requester}]`
       );
@@ -96,16 +108,17 @@ const command = new SlashCommand()
           .addFields(
             {
               name: "Track Duration",
-              value: `\`${pms(player.position, {
-                colonNotation: true,
-              })} / ${pms(player.queue.current.duration, {
-                colonNotation: true,
-              })}\``,
+              value: song.isStream
+                ? `\`LIVE\``
+                : `\`${pms(player.position, { colonNotation: true })} / ${pms(
+                  player.queue.current.duration,
+                  { colonNotation: true }
+                )}\``,
               inline: true,
             },
             {
               name: "Total Tracks Duration",
-              value: `\`${pms(player.queue.duration, {
+              value: `\`${pms(queueDuration, {
                 colonNotation: true,
               })}\``,
               inline: true,
@@ -136,16 +149,17 @@ const command = new SlashCommand()
           .addFields(
             {
               name: "Track Duration",
-              value: `\`${pms(player.position, {
-                colonNotation: true,
-              })} / ${pms(player.queue.current.duration, {
-                colonNotation: true,
-              })}\``,
+              value: song.isStream
+                ? `\`LIVE\``
+                : `\`${pms(player.position, { colonNotation: true })} / ${pms(
+                  player.queue.current.duration,
+                  { colonNotation: true }
+                )}\``,
               inline: true,
             },
             {
               name: "Total Tracks Duration",
-              value: `\`${pms(player.queue.duration, {
+              value: `\`${pms(queueDuration, {
                 colonNotation: true,
               })}\``,
               inline: true,
@@ -207,16 +221,17 @@ const command = new SlashCommand()
               .addFields(
                 {
                   name: "Track Duration",
-                  value: `\`${pms(player.position, {
-                    colonNotation: true,
-                  })} / ${pms(player.queue.current.duration, {
-                    colonNotation: true,
-                  })}\``,
+                  value: song.isStream
+                    ? `\`LIVE\``
+                    : `\`${pms(player.position, { colonNotation: true })} / ${pms(
+                      player.queue.current.duration,
+                      { colonNotation: true }
+                    )}\``,
                   inline: true,
                 },
                 {
                   name: "Total Tracks Duration",
-                  value: `\`${pms(player.queue.duration, {
+                  value: `\`${pms(queueDuration, {
                     colonNotation: true,
                   })}\``,
                   inline: true,
@@ -250,16 +265,17 @@ const command = new SlashCommand()
               .addFields(
                 {
                   name: "Track Duration",
-                  value: `\`${pms(player.position, {
-                    colonNotation: true,
-                  })} / ${pms(player.queue.current.duration, {
-                    colonNotation: true,
-                  })}\``,
+                  value: song.isStream
+                    ? `\`LIVE\``
+                    : `\`${pms(player.position, { colonNotation: true })} / ${pms(
+                      player.queue.current.duration,
+                      { colonNotation: true }
+                    )}\``,
                   inline: true,
                 },
                 {
                   name: "Total Tracks Duration",
-                  value: `\`${pms(player.queue.duration, {
+                  value: `\`${pms(queueDuration, {
                     colonNotation: true,
                   })}\``,
                   inline: true,
