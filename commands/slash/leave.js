@@ -39,7 +39,7 @@ const command = new SlashCommand()
       embeds: [
         new MessageEmbed()
           .setColor(client.config.embedColor)
-          .setDescription(`:wave: | **Bye Bye!**`),
+          .setDescription(`:wave: | **Disconnected!**`),
       ],
     });
   });
