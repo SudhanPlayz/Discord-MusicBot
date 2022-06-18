@@ -35,11 +35,11 @@ const command = new SlashCommand()
     const save = new MessageEmbed()
       .setColor(client.config.embedColor)
       .setAuthor({
-        name: "Saved track",
+        name: "Track Saved",
         iconURL: `${interaction.user.displayAvatarURL({ dynamic: true })}`,
       })
       .setDescription(
-        `**Saved [${player.queue.current.title}](${player.queue.current.uri}) to your DM**`
+        `**Saved [${player.queue.current.title}](${player.queue.current.uri}) to your DMs**`
       )
       .addFields(
         {
@@ -68,7 +68,7 @@ const command = new SlashCommand()
         new MessageEmbed()
           .setColor(client.config.embedColor)
           .setDescription(
-            "Please check your **DMs**. If you didn't receive any message from me please make sure your **DMs** are open"
+            "Please check your **DMs**. If you haven't received any message from me please make sure your **DMs** are open"
           ),
       ],
       ephemeral: true,
