@@ -44,7 +44,7 @@ const command = new SlashCommand()
           new MessageEmbed()
             .setColor(client.config.embedColor)
             .setDescription(
-              `:loud_sound: | Current volume **${player.volume}**`
+              `:loud_sound: | The current volume is **${player.volume}**`
             ),
         ],
       });
@@ -56,7 +56,7 @@ const command = new SlashCommand()
         new MessageEmbed()
           .setColor(client.config.embedColor)
           .setDescription(
-            `:loud_sound: | Successfully set volume to **${player.volume}**`
+            `:loud_sound: | Successfully set the volume to **${player.volume}**`
           ),
       ],
     });
