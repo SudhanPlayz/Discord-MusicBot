@@ -7,7 +7,7 @@ const command = new SlashCommand()
   .addNumberOption((option) =>
     option
       .setName("number")
-      .setDescription("The number of tracks to skipto")
+      .setDescription("The number of tracks to skip to")
       .setRequired(true)
   )
 
