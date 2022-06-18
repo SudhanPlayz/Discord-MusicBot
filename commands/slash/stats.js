@@ -17,11 +17,11 @@ const command = new SlashCommand()
     // get the uptime in a human readable format
     const runtime = moment
       .duration(client.uptime)
-      .format("d[ Days]・h[ Hrs]・m[ Mins]・s[ Secs]");
+      .format("d[ days]・h[ hours]・m[ minutes]・s[ seconds]");
     // show lavalink uptime in a nice format
     const lavauptime = moment
       .duration(client.manager.nodes.values().next().value.stats.uptime)
-      .format(" D[d], H[h], m[m]");
+      .format("d[ days]・h[ hours]・m[ minutes]・s[ seconds]");
     // show lavalink memory usage in a nice format
     const lavaram = (
       client.manager.nodes.values().next().value.stats.memory.used /
@@ -37,7 +37,7 @@ const command = new SlashCommand()
     // show system uptime
     var sysuptime = moment
       .duration(os.uptime() * 1000)
-      .format("d[ Days]・h[ Hrs]・m[ Mins]・s[ Secs]");
+      .format("d[ days]・h[ hours]・m[ minutes]・s[ seconds]");
 
     // get commit hash and date
     let gitHash = "unknown";
@@ -59,7 +59,7 @@ const command = new SlashCommand()
       )
       .setFields([
         {
-          name: `Lavalink stats`,
+          name: ":paperclip: Lavalink Statistics",
           value: `\`\`\`yml\nUptime: ${lavauptime}\nRAM: ${lavaram} MB\nPlaying: ${
             client.manager.nodes.values().next().value.stats.playingPlayers
           } out of ${
@@ -68,7 +68,7 @@ const command = new SlashCommand()
           inline: true,
         },
         {
-          name: "Bot stats",
+          name: ":bar_chart: General Statistics",
           value: `\`\`\`yml\nGuilds: ${
             client.guilds.cache.size
           } \nNodeJS: ${nodeVersion}\nDiscordMusicBot: v${
@@ -77,7 +77,7 @@ const command = new SlashCommand()
           inline: true,
         },
         {
-          name: "System stats",
+          name: ":gear: System Statistics",
           value: `\`\`\`yml\nOS: ${osver}\nUptime: ${sysuptime}\n\`\`\``,
           inline: false,
         },
