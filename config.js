@@ -12,7 +12,7 @@ module.exports = {
   Issues: "https://github.com/SudhanPlayz/Discord-MusicBot/issues", //Bug Report Link
   permissions: 277083450689, //Bot Inviting Permissions
   disconnectTime: 30000, //How long should the bot wait before disconnecting from the voice channel. in miliseconds. set to 1 for instant disconnect.
-  alwaysplay: true, // when set to true music will always play no matter if theres no one in voice channel.
+  alwaysplay: false, // when set to true music will always play no matter if theres no one in voice channel.
   debug: false, //Debug mode
   // Lavalink server; optional public lavalink -> https://lavalink-list.darrennathanael.com/
   // The default one should work fine.
