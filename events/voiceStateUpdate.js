@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { MessageEmbed } = require("discord.js");
 
 /**
  *
@@ -25,9 +25,17 @@ module.exports = async (client, oldState, newState) => {
   if (oldState.channel !== null && newState.channel !== null)
     stateChange.type = "MOVE";
   if (oldState.channel === null && newState.channel === null) return; // you never know, right
-  if (newState.serverMute == true && oldState.serverMute == false && newState.id === client.config.clientId)
+  if (
+    newState.serverMute == true &&
+    oldState.serverMute == false &&
+    newState.id === client.config.clientId
+  )
     return player.pause(true);
-  if (newState.serverMute == false && oldState.serverMute == true && newState.id === client.config.clientId)
+  if (
+    newState.serverMute == false &&
+    oldState.serverMute == true &&
+    newState.id === client.config.clientId
+  )
     return player.pause(false);
   // move check first as it changes type
   if (stateChange.type === "MOVE") {
@@ -49,31 +57,31 @@ module.exports = async (client, oldState, newState) => {
 
   switch (stateChange.type) {
     case "JOIN":
-		if (client.config.alwaysplay === false) {
-			if (stateChange.members.size === 1 && player.paused) {
-				player.pause(false);
-				let playerResumed = new MessageEmbed()
-				.setColor(client.config.embedColor)
-				.setTitle(`Resumed!`, client.config.iconURL)
-				.setDescription(
-					`Playing  [${player.queue.current.title}](${player.queue.current.uri})`
-					)
-					.setFooter({ text: `The current song has been resumed.` });
-					
+      if (client.config.alwaysplay === false) {
+        if (stateChange.members.size === 1 && player.paused) {
+          player.pause(false);
+          let playerResumed = new MessageEmbed()
+            .setColor(client.config.embedColor)
+            .setTitle(`Resumed!`, client.config.iconURL)
+            .setDescription(
+              `Playing  [${player.queue.current.title}](${player.queue.current.uri})`
+            )
+            .setFooter({ text: `The current song has been resumed.` });
+
           let resumeMessage = await client.channels.cache
             .get(player.textChannel)
             .send({ embeds: [playerResumed] });
-			player.setResumeMessage(client, resumeMessage);
-			
-			setTimeout(() => {
-				if (!client.isMessageDeleted(resumeMessage)) {
-					resumeMessage.delete();
-					client.markMessageAsDeleted(resumeMessage);
-				}
-			}, 5000);
+          player.setResumeMessage(client, resumeMessage);
+
+          setTimeout(() => {
+            if (!client.isMessageDeleted(resumeMessage)) {
+              resumeMessage.delete();
+              client.markMessageAsDeleted(resumeMessage);
+            }
+          }, 5000);
         }
-	}
-	break;
+      }
+      break;
     case "LEAVE":
       if (client.config.alwaysplay === false) {
         if (
