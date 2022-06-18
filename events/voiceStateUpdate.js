@@ -1,3 +1,5 @@
+const { MessageEmbed } = require("discord.js");
+
 /**
  *
  * @param {import("../lib/DiscordMusicBot")} client
@@ -23,9 +25,17 @@ module.exports = async (client, oldState, newState) => {
   if (oldState.channel !== null && newState.channel !== null)
     stateChange.type = "MOVE";
   if (oldState.channel === null && newState.channel === null) return; // you never know, right
-  if (newState.serverMute == true && oldState.serverMute == false && newState.id === client.config.clientId)
+  if (
+    newState.serverMute == true &&
+    oldState.serverMute == false &&
+    newState.id === client.config.clientId
+  )
     return player.pause(true);
-  if (newState.serverMute == false && oldState.serverMute == true && newState.id === client.config.clientId)
+  if (
+    newState.serverMute == false &&
+    oldState.serverMute == true &&
+    newState.id === client.config.clientId
+  )
     return player.pause(false);
   // move check first as it changes type
   if (stateChange.type === "MOVE") {
@@ -49,25 +59,26 @@ module.exports = async (client, oldState, newState) => {
     case "JOIN":
       if (client.config.alwaysplay === false) {
         if (stateChange.members.size === 1 && player.paused) {
-          let playerResumed = client
-            .Embed()
-            // say that the queue has been resumed
+          player.pause(false);
+          let playerResumed = new MessageEmbed()
+            .setColor(client.config.embedColor)
             .setTitle(`Resumed!`, client.config.iconURL)
+            .setDescription(
+              `Playing  [${player.queue.current.title}](${player.queue.current.uri})`
+            )
             .setFooter({ text: `The current song has been resumed.` });
-          await client.channels.cache
+
+          let resumeMessage = await client.channels.cache
             .get(player.textChannel)
             .send({ embeds: [playerResumed] });
+          player.setResumeMessage(client, resumeMessage);
 
-          //!BUG Updated nowplaying message doesn't show buttons
-          // update the now playing message and bring it to the front
-          let playerPlaying = await client.channels.cache
-            .get(player.textChannel)
-            .send({
-              embeds: [player.nowPlayingMessage.embeds[0]],
-              components: [client.createController(player.options.guild)],
-            });
-          player.setNowplayingMessage(playerPlaying);
-          player.pause(false);
+          setTimeout(() => {
+            if (!client.isMessageDeleted(resumeMessage)) {
+              resumeMessage.delete();
+              client.markMessageAsDeleted(resumeMessage);
+            }
+          }, 5000);
         }
       }
       break;
@@ -80,15 +91,17 @@ module.exports = async (client, oldState, newState) => {
         ) {
           player.pause(true);
 
-          let playerPaused = client
-            .Embed()
+          let playerPaused = new MessageEmbed()
+            .setColor(client.config.embedColor)
             .setTitle(`Paused!`, client.config.iconURL)
             .setFooter({
               text: `The current song has been paused because theres no one in the voice channel.`,
             });
-          await client.channels.cache
+
+          let pausedMessage = await client.channels.cache
             .get(player.textChannel)
             .send({ embeds: [playerPaused] });
+          player.setPausedMessage(client, pausedMessage);
         }
       }
       break;
