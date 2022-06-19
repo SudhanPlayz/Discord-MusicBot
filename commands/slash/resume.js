@@ -25,7 +25,7 @@ const command = new SlashCommand()
         embeds: [
           new MessageEmbed()
             .setColor("RED")
-            .setDescription("You must be in a voice channel to use this command!"),
+            .setDescription("Please join a voice channel and run this command again"),
         ],
         ephemeral: true,
       });
