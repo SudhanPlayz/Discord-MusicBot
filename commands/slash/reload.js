@@ -77,7 +77,7 @@ const command = new SlashCommand()
         embeds: [
           new MessageEmbed()
             .setColor(client.config.embedColor)
-            .setTitle("**You are not authorized to use this command!**"),
+            .setDescription("**You are not authorized to use this command!**"),
         ],
         ephemeral: true,
       });
