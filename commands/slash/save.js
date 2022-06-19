@@ -38,9 +38,8 @@ const command = new SlashCommand()
         name: "Saved track",
         iconURL: `${interaction.user.displayAvatarURL({ dynamic: true })}`,
       })
-      .setDescription(
-        `**Saved [${player.queue.current.title}](${player.queue.current.uri}) to your DM**`
-      )
+      .setDescription(`**Saved [${player.queue.current.title}](${player.queue.current.uri}) to your DM**`)
+      .setThumbnail(`https://img.youtube.com/vi/${player.queue.current.identifier}/mqdefault.jpg`)
       .addFields(
         {
           name: "Track Duration",
