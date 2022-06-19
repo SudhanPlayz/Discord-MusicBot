@@ -80,17 +80,17 @@ module.exports = {
         );
 
         let em = new MessageEmbed()
-          .setAuthor(
-            "Search Results of " + SearchString,
-            client.botconfig.IconURL
-          )
+          .setAuthor({
+            name: "Search Results of " + SearchString,
+            iconURL: client.botconfig.IconURL,
+          })
           .setColor(client.botconfig.EmbedColor)
           .setDescription(MappedSongs.join("\n\n"));
         return em;
       });
 
       if (!Pages.length || Pages.length === 1)
-        return message.channel.send(Pages[0]);
+        return message.channel.send({ embeds: [Pages[0]] });
       else client.Pagination(message, Pages);
 
       let w = (a) => new Promise((r) => setInterval(r, a));
@@ -131,7 +131,10 @@ module.exports = {
       if (!player.playing && !player.paused && !player.queue.size)
         player.play();
       let SongAddedEmbed = new MessageEmbed();
-      SongAddedEmbed.setAuthor(`Added to queue`, client.botconfig.IconURL);
+      SongAddedEmbed.setAuthor({
+        name: `Added to queue`,
+        iconURL: client.botconfig.IconURL,
+      });
       SongAddedEmbed.setThumbnail(Song.displayThumbnail());
       SongAddedEmbed.setColor(client.botconfig.EmbedColor);
       SongAddedEmbed.setDescription(`[${Song.title}](${Song.uri})`);
@@ -149,7 +152,7 @@ module.exports = {
           `${player.queue.size - 0}`,
           true
         );
-      message.channel.send(SongAddedEmbed);
+      message.channel.send({ embeds: [SongAddedEmbed] });
     }
   },
 
@@ -317,10 +320,10 @@ module.exports = {
                 `${results}\n\n\t**Type the number of the song you want to play!**\n`
               )
               .setColor(client.botconfig.EmbedColor)
-              .setAuthor(
-                `Search results for ${search}`,
-                client.botconfig.IconURL
-              );
+              .setAuthor({
+                name: `Search results for ${search}`,
+                iconURL: client.botconfig.IconURL,
+              });
             interaction.send(resultss);
             try {
               collected = await awaitchannel.awaitMessages(filter, {
@@ -354,10 +357,10 @@ module.exports = {
               player.play();
             } else {
               let SongAddedEmbed = new MessageEmbed();
-              SongAddedEmbed.setAuthor(
-                `Added to queue`,
-                client.botconfig.IconURL
-              );
+              SongAddedEmbed.setAuthor({
+                name: `Added to queue`,
+                iconURL: client.botconfig.IconURL,
+              });
               SongAddedEmbed.setThumbnail(track.displayThumbnail());
               SongAddedEmbed.setColor(client.botconfig.EmbedColor);
               SongAddedEmbed.setDescription(`[${track.title}](${track.uri})`);
@@ -375,7 +378,7 @@ module.exports = {
                   `${player.queue.size - 0}`,
                   true
                 );
-              awaitchannel.send(SongAddedEmbed);
+              awaitchannel.send({ embeds: [SongAddedEmbed] });
             }
         }
       }

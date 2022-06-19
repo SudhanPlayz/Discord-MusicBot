@@ -28,7 +28,10 @@ module.exports = {
 
     if (!player.queue || !player.queue.length || player.queue === 0) {
       let QueueEmbed = new MessageEmbed()
-        .setAuthor("Currently playing", client.botconfig.IconURL)
+        .setAuthor({
+          name: "Currently playing",
+          iconURL: client.botconfig.IconURL,
+        })
         .setColor(client.botconfig.EmbedColor)
         .setDescription(
           `[${player.queue.current.title}](${player.queue.current.uri})`
@@ -49,7 +52,7 @@ module.exports = {
           })}]\``
         )
         .setThumbnail(player.queue.current.displayThumbnail());
-      return message.channel.send(QueueEmbed);
+      return message.channel.send({ embeds: [QueueEmbed] });
     }
 
     let Songs = player.queue.map((t, index) => {
@@ -71,7 +74,7 @@ module.exports = {
       ).join("\n");
 
       let Embed = new MessageEmbed()
-        .setAuthor("Queue", client.botconfig.IconURL)
+        .setAuthor({ name: "Queue", iconURL: client.botconfig.IconURL })
         .setColor(client.botconfig.EmbedColor)
         .setDescription(
           `**Currently Playing:** \n[${player.queue.current.title}](${player.queue.current.uri}) \n\n**Up Next:** \n${SongsDescription}\n\n`
@@ -105,7 +108,7 @@ module.exports = {
     });
 
     if (!Pages.length || Pages.length === 1)
-      return message.channel.send(Pages[0]);
+      return message.channel.send({ embeds: [Pages[0]] });
     else client.Pagination(message, Pages);
   },
   SlashCommand: {
@@ -137,7 +140,10 @@ module.exports = {
 
       if (!player.queue || !player.queue.length || player.queue === 0) {
         let QueueEmbed = new MessageEmbed()
-          .setAuthor("Currently playing", client.botconfig.IconURL)
+          .setAuthor({
+            name: "Currently playing",
+            iconURL: client.botconfig.IconURL,
+          })
           .setColor(client.botconfig.EmbedColor)
           .setDescription(
             `[${player.queue.current.title}](${player.queue.current.uri})`
@@ -179,7 +185,7 @@ module.exports = {
         ).join("\n");
 
         let Embed = new MessageEmbed()
-          .setAuthor("Queue", client.botconfig.IconURL)
+          .setAuthor({ name: "Queue", iconURL: client.botconfig.IconURL })
           .setColor(client.botconfig.EmbedColor)
           .setDescription(
             `**Currently Playing:** \n[${player.queue.current.title}](${player.queue.current.uri}) \n\n**Up Next:** \n${SongsDescription}\n\n`

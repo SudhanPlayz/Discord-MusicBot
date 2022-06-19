@@ -133,11 +133,7 @@ class DiscordMusicBot extends Client {
     );
 
     this.Manager = new Manager({
-      plugins: [
-        new deezer(),
-        new apple(),
-        new facebook(),
-      ],
+      plugins: [new deezer(), new apple(), new facebook()],
       nodes: [
         {
           identifier: this.botconfig.Lavalink.id,
@@ -163,7 +159,7 @@ class DiscordMusicBot extends Client {
       .on("trackStart", async (player, track) => {
         this.SongsPlayed++;
         let TrackStartedEmbed = new MessageEmbed()
-          .setAuthor(`Now playing ♪`, this.botconfig.IconURL)
+          .setAuthor({ name: `Now playing ♪`, iconURL: this.botconfig.IconURL })
           .setThumbnail(player.queue.current.displayThumbnail())
           .setDescription(`[${track.title}](${track.uri})`)
           .addField("Requested by", `${track.requester}`, true)
@@ -178,15 +174,20 @@ class DiscordMusicBot extends Client {
         //.setFooter("Started playing at");
         let NowPlaying = await client.channels.cache
           .get(player.textChannel)
-          .send(TrackStartedEmbed);
+          .send({ embeds: [TrackStartedEmbed] });
         player.setNowplayingMessage(NowPlaying);
       })
       .on("queueEnd", (player) => {
         let QueueEmbed = new MessageEmbed()
-          .setAuthor("The queue has ended", this.botconfig.IconURL)
+          .setAuthor({
+            name: "The queue has ended",
+            iconURL: this.botconfig.IconURL,
+          })
           .setColor(this.botconfig.EmbedColor)
           .setTimestamp();
-        client.channels.cache.get(player.textChannel).send(QueueEmbed);
+        client.channels.cache
+          .get(player.textChannel)
+          .send({ embeds: [QueueEmbed] });
         if (!this.botconfig["24/7"]) player.destroy();
       });
   }
@@ -241,11 +242,11 @@ class DiscordMusicBot extends Client {
       .setTitle("An error occured")
       .setColor("RED")
       .setDescription(Error)
-      .setFooter(
-        "If you think this as a bug, please report it in the support server!"
-      );
+      .setFooter({
+        text: "If you think this as a bug, please report it in the support server!",
+      });
 
-    Channel.send(embed);
+    Channel.send({ embeds: [embed] });
   }
 
   sendTime(Channel, Error) {
@@ -253,7 +254,7 @@ class DiscordMusicBot extends Client {
       .setColor(this.botconfig.EmbedColor)
       .setDescription(Error);
 
-    Channel.send(embed);
+    Channel.send({ embeds: [embed] });
   }
 
   build() {
