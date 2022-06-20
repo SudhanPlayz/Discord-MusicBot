@@ -18,7 +18,7 @@ module.exports = {
    */
   run: async (client, message, args, { GuildDB }) => {
     let Config = new MessageEmbed()
-      .setAuthor("Server Config", client.botconfig.IconURL)
+      .setAuthor({ name: "Server Config", iconURL: client.botconfig.IconURL })
       .setColor(client.botconfig.EmbedColor)
       .addField("Prefix", GuildDB.prefix, true)
       .addField("DJ Role", GuildDB.DJ ? `<@&${GuildDB.DJ}>` : "Not Set", true)

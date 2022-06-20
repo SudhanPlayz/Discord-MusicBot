@@ -45,7 +45,10 @@ module.exports = {
 
     let Pages = SplitedLyrics.map((ly) => {
       let em = new MessageEmbed()
-        .setAuthor(`Lyrics for: ${SongTitle}`, client.botconfig.IconURL)
+        .setAuthor({
+          name: `Lyrics for: ${SongTitle}`,
+          iconURL: client.botconfig.IconURL,
+        })
         .setColor(client.botconfig.EmbedColor)
         .setDescription(ly.join("\n"));
 
@@ -56,7 +59,7 @@ module.exports = {
     });
 
     if (!Pages.length || Pages.length === 1)
-      return message.channel.send(Pages[0]);
+      return message.channel.send({ embeds: [Pages[0]] });
     else return client.Pagination(message, Pages);
   },
 
@@ -102,7 +105,10 @@ module.exports = {
 
       let Pages = SplitedLyrics.map((ly) => {
         let em = new MessageEmbed()
-          .setAuthor(`Lyrics for: ${SongTitle}`, client.botconfig.IconURL)
+          .setAuthor({
+            name: `Lyrics for: ${SongTitle}`,
+            iconURL: client.botconfig.IconURL,
+          })
           .setColor(client.botconfig.EmbedColor)
           .setDescription(ly.join("\n"));
 

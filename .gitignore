@@ -111,3 +111,5 @@ dist
 dev-config.js
 a.js
 guild.json
+
+botconfig.js

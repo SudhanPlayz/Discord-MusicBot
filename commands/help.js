@@ -25,21 +25,23 @@ module.exports = {
     );
 
     let Embed = new MessageEmbed()
-      .setAuthor(
-        `Commands of ${client.user.username}`,
-        client.botconfig.IconURL
-      )
+      .setAuthor({
+        name: `Commands of ${client.user.username}`,
+        iconURL: client.botconfig.IconURL,
+      })
       .setColor(client.botconfig.EmbedColor)
-      .setFooter(
-        `To get info of each command type ${
+      .setFooter({
+        text: `To get info of each command type ${
           GuildDB ? GuildDB.prefix : client.botconfig.DefaultPrefix
-        }help [Command] | Have a nice day!`
-      ).setDescription(`${Commands.join("\n")}
+        }help [Command] | Have a nice day!`,
+      }).setDescription(`${Commands.join("\n")}
   
   Discord Music Bot Version: v${require("../package.json").version}
   [✨ Support Server](${
     client.botconfig.SupportServer
-  }) | [GitHub](https://github.com/SudhanPlayz/Discord-MusicBot) | [Dashboard](${client.botconfig.Website}) | By [SudhanPlayz](https://github.com/SudhanPlayz)`);
+  }) | [GitHub](https://github.com/SudhanPlayz/Discord-MusicBot) | [Dashboard](${
+      client.botconfig.Website
+    }) | By [SudhanPlayz](https://github.com/SudhanPlayz)`);
     if (!args[0]) message.channel.send(Embed);
     else {
       let cmd =
@@ -52,7 +54,10 @@ module.exports = {
         );
 
       let embed = new MessageEmbed()
-        .setAuthor(`Command: ${cmd.name}`, client.botconfig.IconURL)
+        .setAuthor({
+          name: `Command: ${cmd.name}`,
+          iconURL: client.botconfig.IconURL,
+        })
         .setDescription(cmd.description)
         .setColor("GREEN")
         //.addField("Name", cmd.name, true)
@@ -72,13 +77,13 @@ module.exports = {
             cmd.permissions.channel.join(", "),
           true
         )
-        .setFooter(
-          `Prefix - ${
+        .setFooter({
+          text: `Prefix - ${
             GuildDB ? GuildDB.prefix : client.botconfig.DefaultPrefix
-          }`
-        );
+          }`,
+        });
 
-      message.channel.send(embed);
+      message.channel.send({ embeds: [embed] });
     }
   },
 
@@ -109,21 +114,23 @@ module.exports = {
       );
 
       let Embed = new MessageEmbed()
-        .setAuthor(
-          `Commands of ${client.user.username}`,
-          client.botconfig.IconURL
-        )
+        .setAuthor({
+          name: `Commands of ${client.user.username}`,
+          iconURL: client.botconfig.IconURL,
+        })
         .setColor(client.botconfig.EmbedColor)
-        .setFooter(
-          `To get info of each command type ${
+        .setFooter({
+          text: `To get info of each command type ${
             GuildDB ? GuildDB.prefix : client.botconfig.DefaultPrefix
-          }help [Command] | Have a nice day!`
-        ).setDescription(`${Commands.join("\n")}
+          }help [Command] | Have a nice day!`,
+        }).setDescription(`${Commands.join("\n")}
   
   Discord Music Bot Version: v${require("../package.json").version}
   [✨ Support Server](${
     client.botconfig.SupportServer
-  }) | [GitHub](https://github.com/SudhanPlayz/Discord-MusicBot) | [Dashboard](${client.botconfig.Website}) | By [SudhanPlayz](https://github.com/SudhanPlayz)`);
+  }) | [GitHub](https://github.com/SudhanPlayz/Discord-MusicBot) | [Dashboard](${
+        client.botconfig.Website
+      }) | By [SudhanPlayz](https://github.com/SudhanPlayz)`);
       if (!args) return interaction.send(Embed);
       else {
         let cmd =
@@ -138,7 +145,10 @@ module.exports = {
           );
 
         let embed = new MessageEmbed()
-          .setAuthor(`Command: ${cmd.name}`, client.botconfig.IconURL)
+          .setAuthor({
+            name: `Command: ${cmd.name}`,
+            iconURL: client.botconfig.IconURL,
+          })
           .setDescription(cmd.description)
           .setColor("GREEN")
           //.addField("Name", cmd.name, true)
@@ -158,11 +168,11 @@ module.exports = {
               cmd.permissions.channel.join(", "),
             true
           )
-          .setFooter(
-            `Prefix - ${
+          .setFooter({
+            text: `Prefix - ${
               GuildDB ? GuildDB.prefix : client.botconfig.DefaultPrefix
-            }`
-          );
+            }`,
+          });
 
         interaction.send(embed);
       }
