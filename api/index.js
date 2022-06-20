@@ -98,6 +98,7 @@ class Server extends EventEmitter {
       "/api/callback",
       passport.authenticate("discord", {
         failureRedirect: "/",
+        session: true
       }),
       function (req, res) {
         res.redirect("/dashboard");
