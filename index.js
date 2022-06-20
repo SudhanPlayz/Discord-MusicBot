@@ -1,3 +1,4 @@
+require("dotenv").config();
 const DiscordMusicBot = require("./structures/DiscordMusicBot");
 const { exec } = require("child_process");
 const client = new DiscordMusicBot();
@@ -10,6 +11,7 @@ if (process.env.REPL_ID) {
 		});
 	}); 
 }
+
 
 client.build();
 
