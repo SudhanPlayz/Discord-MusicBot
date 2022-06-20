@@ -2,8 +2,19 @@ import { AudiotrackRounded, SettingsRounded, YouTube } from '@mui/icons-material
 import { Container, Text, Button, Card, Link } from '@nextui-org/react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
+import { getData, IData } from '../utils/data'
+
 const Home = (_props: any) => {
   const router = useRouter()
+  const [ data, setData ] = useState<IData | null>(null)
+
+  useEffect(() => {
+    getData().then((data) => {
+      setData(data)
+    })
+  }, [])
+
   return (
     <Container>
       <Head>
@@ -11,7 +22,7 @@ const Home = (_props: any) => {
       </Head>
       <Container css={{display: 'flex', alignItems: 'center', background: '$gray50', position: 'fixed', padding: '20px', minWidth: '100%', left: '0', top: '0', zIndex: '$5'}}>
         <Link css={{fontSize: '$xl', fontWeight: '$semibold'}} href='#'>
-          Discord Music Bot
+          {data?data.name:"Discord Music Bot"}
         </Link>
         <Link color='text' css={{fontSize: '$lg', fontWeight: '$medium', marginLeft: '20px'}} href='#'>
           Home

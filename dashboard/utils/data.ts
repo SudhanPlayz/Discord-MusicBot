@@ -7,6 +7,7 @@ export interface IData {
     name: string;
     version: string;
     commands: ICommand[]
+    inviteURL: string;
 }
 
 export const getData: () => Promise<IData> = () => {
