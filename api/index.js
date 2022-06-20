@@ -69,6 +69,8 @@ class Server extends EventEmitter {
 
     // Session and Passport
     this.app.use(session({
+      resave: true,
+      saveUninitialized: true,
       secret: client.config.cookieSecret,
       cookie: {
         secure: client.config.website.startsWith("https://"),
