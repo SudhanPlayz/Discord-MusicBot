@@ -1,7 +1,11 @@
 import { Card, Text } from "@nextui-org/react";
+import { ReactNode } from "react";
 
-// I'm not that familiar with TypeScript, so you should probably add the interface parts, but allow it to accept React Components.
-export default function StatCard(props){
+export default function StatCard(props: {
+    title: string;
+    amount: number;
+    icon: ReactNode;
+  }){
     return(
         <Card variant="flat" isHoverable css={{margin: '10px', width: '200px', padding: '15px'}}>
           <Card.Body css={{ display: 'flex', padding: '0', alignItems: 'center', flexDirection: 'row'}}>
