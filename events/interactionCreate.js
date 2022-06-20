@@ -14,6 +14,7 @@ module.exports = (client, interaction) => {
       return interaction.reply(
         "Sorry the command you used doesn't have any run function"
       );
+    client.commandsRan++;
     command.run(client, interaction, interaction.options);
     return;
   }
@@ -26,6 +27,7 @@ module.exports = (client, interaction) => {
       return interaction.reply(
         "Sorry the command you used doesn't have any run function"
       );
+    client.commandsRan++;
     command.run(client, interaction, interaction.options);
     return;
   }

@@ -55,7 +55,7 @@
     "erela.js-filters": "^1.2.6",
     "express": "^4.17.1",
     "express-rate-limit": "^6.2.0",
-    "express-session": "^1.17.2",
+    "express-session": "^1.17.3",
     "express-ws": "^5.0.2",
     "js-yaml": "^4.1.0",
     "jsoning": "^0.13.0",
@@ -64,6 +64,8 @@
     "moment-duration-format": "^2.3.2",
     "node-fetch": "2.6.6",
     "os": "^0.1.2",
+    "passport": "^0.6.0",
+    "passport-discord": "^0.1.4",
     "pretty-ms": "^7.0.1",
     "systeminformation": "^5.9.12",
     "winston": "^3.3.3"
