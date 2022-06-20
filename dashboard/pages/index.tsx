@@ -10,9 +10,7 @@ const Home = (_props: any) => {
   const [ data, setData ] = useState<IData | null>(null)
 
   useEffect(() => {
-    getData().then((data) => {
-      setData(data)
-    })
+    getData().then(setData)
   }, [])
 
   return (

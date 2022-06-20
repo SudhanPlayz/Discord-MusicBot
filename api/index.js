@@ -7,6 +7,7 @@ const DiscordStrategy = require("passport-discord").Strategy;
 const passport = require("passport");
 const getConfig = require("../util/getConfig");
 const DiscordMusicBot = require("../lib/DiscordMusicBot");
+const Auth = require("./middlewares/auth");
 
 class Server extends EventEmitter {
   /**
@@ -45,14 +46,17 @@ class Server extends EventEmitter {
     this.app.use(dist);
     this.app.get("/login", (_req, res) => {
       res.sendFile(join(dist, "login.html"));
+      res.redirect("/api/callback")
     });
-    this.app.get("/logout", (_req, res) => {
+    this.app.get("/logout", (req, res) => {
       res.sendFile(join(dist, "logout.html"));
+      if (req.user) req.logout();
+      res.redirect("/")
     });
-    this.app.get("/dashboard", (_req, res) => {
+    this.app.get("/dashboard", Auth, (_req, res) => {
       res.sendFile(join(dist, "dashboard.html"));
     });
-    this.app.get("/servers", (_req, res) => {
+    this.app.get("/servers", Auth, (_req, res) => {
       res.sendFile(join(dist, "servers.html"));
     });
 
