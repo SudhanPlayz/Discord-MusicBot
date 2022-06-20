@@ -35,6 +35,7 @@
     "cpu-stat": "^2.0.1",
     "discord.js": "^12.5.3",
     "discordjs-activity": "1.4.1",
+    "dotenv": "^16.0.1",
     "erela.js": "^2.3.2",
     "erela.js-apple": "^1.2.2",
     "erela.js-deezer": "^1.0.7",
