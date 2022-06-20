@@ -15,7 +15,7 @@ module.exports = {
   alwaysplay: false, // when set to true music will always play no matter if theres no one in voice channel.
   debug: false, //Debug mode
   cookieSecret: "CodingWithSudhan is epic",//Cookie Secret
-  website: "http://localhost:4200",
+  website: "http://localhost:4200",//without the / at the end
   // Lavalink server; optional public lavalink -> https://lavalink-list.darrennathanael.com/
   // The default one should work fine.
   nodes: [

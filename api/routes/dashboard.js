@@ -1,8 +1,7 @@
-import client from "../..";
-import Auth from "../middlewares/auth";
-
 const { Router } = require("express");
 const api = Router();
+const client = require("../../");
+const Auth = require("../middlewares/auth");
 
 api.get("/", Auth, (req, res) => {
     let data = {
@@ -14,4 +13,4 @@ api.get("/", Auth, (req, res) => {
     res.json(data);
 })
 
-export default api;
+module.exports = api

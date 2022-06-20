@@ -9,6 +9,14 @@ const getConfig = require("../util/getConfig");
 const DiscordMusicBot = require("../lib/DiscordMusicBot");
 const Auth = require("./middlewares/auth");
 
+passport.serializeUser(function (user, done) {
+  done(null, user);
+});
+
+passport.deserializeUser(function (obj, done) {
+  done(null, obj);
+});
+
 class Server extends EventEmitter {
   /**
    * Create server ;-;
@@ -41,17 +49,16 @@ class Server extends EventEmitter {
     this.app.use(express.static(join(__dirname, "..", "public")));
 
     //Static Routes
-    let dist = express.static(join(__dirname, "..", "dashboard", "out"))
+    let dist = join(__dirname, "..", "dashboard", "out")
 
-    this.app.use(dist);
+    this.app.use(express.static(dist));
     this.app.get("/login", (_req, res) => {
       res.sendFile(join(dist, "login.html"));
       res.redirect("/api/callback")
     });
     this.app.get("/logout", (req, res) => {
-      res.sendFile(join(dist, "logout.html"));
       if (req.user) req.logout();
-      res.redirect("/")
+      res.sendFile(join(dist, "logout.html"));
     });
     this.app.get("/dashboard", Auth, (_req, res) => {
       res.sendFile(join(dist, "dashboard.html"));
@@ -61,6 +68,16 @@ class Server extends EventEmitter {
     });
 
     // Session and Passport
+    this.app.use(session({
+      secret: client.config.cookieSecret,
+      cookie: {
+        secure: client.config.website.startsWith("https://"),
+        sameSite: true,
+      }
+    }));
+    this.app.use(passport.initialize());
+    this.app.use(passport.session());
+
     passport.use(
       new DiscordStrategy(
         {
@@ -77,18 +94,7 @@ class Server extends EventEmitter {
       )
     );
 
-    api.use(
-      session({
-        secret: client.config.cookieSecret,
-        resave: false,
-        saveUninitialized: false,
-      })
-    );
-
-    api.use(passport.initialize());
-    api.use(passport.session());
-
-    api.get(
+    this.app.get(
       "/api/callback",
       passport.authenticate("discord", {
         failureRedirect: "/",
@@ -97,14 +103,6 @@ class Server extends EventEmitter {
         res.redirect("/dashboard");
       }
     );
-
-    passport.serializeUser(function (user, done) {
-      done(null, user);
-    });
-
-    passport.deserializeUser(function (obj, done) {
-      done(null, obj);
-    });
   }
 
   listen() {
