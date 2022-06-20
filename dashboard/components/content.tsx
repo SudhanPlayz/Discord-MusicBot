@@ -9,7 +9,7 @@ export default function Content(props: PropsWithChildren){
     }}>
         <Navbar/>
         <div style={{
-            marginLeft: '10px'
+            marginTop: '30px'
         }}>
             {props.children}
         </div>
