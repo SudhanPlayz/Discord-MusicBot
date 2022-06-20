@@ -5,16 +5,17 @@ const package = require("../../package.json");
 const client = require("../../")
 
 api.get("/", (req, res) => {
-  res.json({
+  let data = {
     name: package.name,
     version: package.version,
-    commands: client.commands.map(cmd => {
+    commands: client.slashCommands.map(cmd => {
       return {
         name: cmd.name,
         description: cmd.description
       }
     })
-  });
+  }
+  res.json(data)
 });
 
 module.exports = api;

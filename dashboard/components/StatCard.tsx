@@ -3,7 +3,7 @@ import { ReactNode } from "react";
 
 export default function StatCard(props: {
     title: string;
-    amount: number;
+    amount: number | string;
     icon: ReactNode;
   }){
     return(
