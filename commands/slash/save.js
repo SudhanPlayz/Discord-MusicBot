@@ -32,35 +32,7 @@ const command = new SlashCommand()
       });
     }
 
-    const save = new MessageEmbed()
-      .setColor(client.config.embedColor)
-      .setAuthor({
-        name: "Saved track",
-        iconURL: `${interaction.user.displayAvatarURL({ dynamic: true })}`,
-      })
-      .setDescription(`**Saved [${player.queue.current.title}](${player.queue.current.uri}) to your DM**`)
-      .setThumbnail(`https://img.youtube.com/vi/${player.queue.current.identifier}/mqdefault.jpg`)
-      .addFields(
-        {
-          name: "Track Duration",
-          value: `\`${prettyMilliseconds(player.queue.current.duration, {
-            colonNotation: true,
-          })}\``,
-          inline: true,
-        },
-        {
-          name: "Track Author",
-          value: `\`${player.queue.current.author}\``,
-          inline: true,
-        },
-        {
-          name: "Requested Guild",
-          value: `\`${interaction.guild}\``,
-          inline: true,
-        }
-      );
-
-    interaction.user.send({ embeds: [save] });
+    
 
     return interaction.reply({
       embeds: [
