@@ -21,6 +21,7 @@ After that, in shell, run `git checkout v5`
 
 Then you'll need to edit the `config.js` and fill in the [Lavalink](https://github.com/freyacodes/Lavalink), Token, ClientSecret, ClientId.
 
+Lastly, run `bash ./kickstartReplit.sh` in shell
 > If you want to host lavalink on replit you can check out this [repo](https://github.com/DarrenOfficial/lavalink-replit)
 
 ## Deploying slash commands
