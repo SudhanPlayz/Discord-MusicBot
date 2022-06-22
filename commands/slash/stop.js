@@ -2,10 +2,9 @@ const SlashCommand = require("../../lib/SlashCommand");
 const { MessageEmbed } = require("discord.js");
 
 const command = new SlashCommand()
-  .setName("leave")
-  .setDescription(
-    "Stops whatever the bot is playing and leaves the voice channel\n(This command will clear the queue)"
-  )
+  .setName("stop")
+  .setDescription("Stops whatever the bot is playing and leaves the voice channel\n(This command will clear the queue)")
+
   .setRun(async (client, interaction, options) => {
     let channel = await client.getChannel(client, interaction);
     if (!channel) return;
@@ -33,7 +32,12 @@ const command = new SlashCommand()
       });
     }
 
-    player.destroy();
+    if (player.twentyFourSeven) {
+      player.queue.clear();
+      player.stop();
+    } else {
+      player.destroy();
+    }
 
     interaction.reply({
       embeds: [
