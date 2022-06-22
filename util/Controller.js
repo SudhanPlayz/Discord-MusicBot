@@ -44,6 +44,7 @@ module.exports = async (client, interaction) => {
   if (property === "Stop") {
     player.queue.clear();
     player.stop();
+    player.set("autoQueue", false);
     client.warn(`Player: ${player.options.guild} | Successfully stopped the player`);
     const msg = await interaction.channel.send({
       embeds: [
