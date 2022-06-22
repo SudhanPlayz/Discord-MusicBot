@@ -10,7 +10,7 @@ module.exports = async (client, interaction) => {
   let player = client.manager.get(guild.id);
 
   if (!player) {
-    interaction.reply({
+    await interaction.reply({
       embeds: [
         client.Embed("❌ | **There is no player to control in this server.**"),
       ],
@@ -22,49 +22,55 @@ module.exports = async (client, interaction) => {
   }
   if (!interaction.member.voice.channel) {
     const joinEmbed = new MessageEmbed()
-      .setColor(client.config.embedColor)
-      .setDescription(
-        "❌ | **You must be in a voice channel to use this command!**"
-      );
+        .setColor(client.config.embedColor)
+        .setDescription(
+            "❌ | **You must be in a voice channel to use this action!**"
+        );
     return interaction.reply({ embeds: [joinEmbed], ephemeral: true });
   }
 
   if (
-    interaction.guild.me.voice.channel &&
-    !interaction.guild.me.voice.channel.equals(interaction.member.voice.channel)
+      interaction.guild.me.voice.channel &&
+      !interaction.guild.me.voice.channel.equals(interaction.member.voice.channel)
   ) {
     const sameEmbed = new MessageEmbed()
-      .setColor(client.config.embedColor)
-      .setDescription(
-        "❌ | **You must be in the same voice channel as me to use this command!**"
-      );
-    return interaction.reply({ embeds: [sameEmbed], ephemeral: true });
+        .setColor(client.config.embedColor)
+        .setDescription(
+            "❌ | **You must be in the same voice channel as me to use this action!**"
+        );
+    return await interaction.reply({ embeds: [sameEmbed], ephemeral: true });
   }
-  if (property === "LowVolume") {
-    player.setVolume(player.volume - 10);
-    interaction.reply({
+
+  if (property === "Stop") {
+    player.queue.clear();
+    player.stop();
+    client.warn(`Player: ${player.options.guild} | Successfully stopped the player`);
+    const msg = await interaction.channel.send({
       embeds: [
         client.Embed(
-          "🔉 | **Successfully lowered server volume to** `" +
-            player.volume +
-            "%`"
+            "⏹️ | **Successfully stopped the player**"
         ),
       ],
     });
     setTimeout(() => {
-      interaction.deleteReply();
+      msg.delete();
     }, 5000);
+
+    interaction.update({
+      components: [client.createController(player.options.guild, player)],
+    });
+
     return;
   }
 
   // if theres no previous song, return an error.
   if (property === "Replay") {
     if (!player.queue.previous) {
-      interaction.reply({
+      const msg = await interaction.channel.send({
         embeds: [client.Embed("❌ | **There is no previous song to replay.**")],
       });
       setTimeout(() => {
-        interaction.deleteReply();
+        msg.delete();
       }, 5000);
       return;
     }
@@ -75,20 +81,29 @@ module.exports = async (client, interaction) => {
   }
 
   if (property === "PlayAndPause") {
-    if (player.paused) player.pause(false);
-    else player.pause(true);
-    interaction.reply({
-      embeds: [
-        client.Embed(
-          player.paused
-            ? ":white_check_mark: | **Paused**"
-            : ":white_check_mark: | **Resumed**"
-        ),
-      ],
-    });
-    setTimeout(() => {
-      interaction.deleteReply();
-    }, 5000);
+    if (!player || (!player.playing && player.queue.totalSize === 0)) {
+      const msg = await interaction.channel.send({
+        embeds: [
+          new MessageEmbed()
+              .setColor("RED")
+              .setDescription("There is no song playing right now."),
+        ],
+      });
+      setTimeout(() => {
+        msg.delete();
+      }, 5000);
+
+    } else {
+
+      if (player.paused) player.pause(false);
+      else player.pause(true);
+      client.warn(`Player: ${player.options.guild} | Successfully ${player.paused? "paused":"resumed"} the player`);
+
+      interaction.update({
+        components: [client.createController(player.options.guild, player)],
+      });
+    }
+
     return;
   }
 
@@ -97,34 +112,20 @@ module.exports = async (client, interaction) => {
     return interaction.deferUpdate();
   }
 
-  if (property === "HighVolume") {
-    // increase volume by 10% else if volume at 200% do nothing
-    if (player.volume < 125) {
-      player.setVolume(player.volume + 5);
-      interaction.reply({
-        embeds: [
-          client.Embed(
-            "🔊 | **Successfully increased server volume to** `" +
-              player.volume +
-              "%`"
-          ),
-        ],
-      });
-      setTimeout(() => {
-        interaction.deleteReply();
-      }, 5000);
+  if (property === "Loop") {
+    if (player.trackRepeat) {
+      player.setTrackRepeat(false);
+      player.setQueueRepeat(true);
+    } else if (player.queueRepeat) {
+      player.setQueueRepeat(false);
     } else {
-      interaction.reply({
-        embeds: [
-          client.Embed(
-            "👍 | **Volume is at maximum** `" + player.volume + "%`"
-          ),
-        ],
-      });
-      setTimeout(() => {
-        interaction.deleteReply();
-      }, 5000);
+      player.setTrackRepeat(true);
     }
+    client.warn(`Player: ${player.options.guild} | Successfully toggled loop the player`);
+
+    interaction.update({
+      components: [client.createController(player.options.guild, player)],
+    });
     return;
   }
 
