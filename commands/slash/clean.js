@@ -31,8 +31,10 @@ const command = new SlashCommand()
                         !deletedMessages.some(deletedMsg => deletedMsg == msg);
                     });
                     if (messages.size > 0) {
-                        client.log(`Deleting [${messages.size}] messages older than 14 days.`)
-                        messages.deleteAll();
+                        client.log(`Deleting [${ messages.size }] messages older than 14 days.`)
+                        for (const msg of messages) {
+                            await msg.delete();
+                        }
                     }
 
                     await interaction.editReply({ embeds: [client.Embed(`:white_check_mark: | Deleted ${ botMessages.length } bot messages`)] });
