@@ -31,19 +31,25 @@ const command = new SlashCommand()
       });
     }
 
-    let previousSong = player.queue.previous;
+    const previousSong = player.queue.previous;
+    const currentSong = player.queue.current;
+    const nextSong = player.queue[0]
 
-    if (!previousSong)
+    if (!previousSong
+      || previousSong === currentSong
+      || previousSong === nextSong) {
       return interaction.reply({
         embeds: [
           new MessageEmbed()
             .setColor("RED")
             .setDescription("There is no previous song in the queue."),
         ],
-      });
+      })}
 
-    const currentSong = player.queue.current;
-    player.play(previousSong);
+    if (previousSong !== currentSong && previousSong !== nextSong) {
+      player.queue.splice(0, 0, currentSong)
+      player.play(previousSong);
+    }
     interaction.reply({
       embeds: [
         new MessageEmbed()
@@ -53,8 +59,6 @@ const command = new SlashCommand()
           ),
       ],
     });
-
-    previousSong = currentSong;
   });
 
 module.exports = command;

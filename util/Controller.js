@@ -45,7 +45,7 @@ module.exports = async (client, interaction) => {
     player.queue.clear();
     player.stop();
     client.warn(`Player: ${player.options.guild} | Successfully stopped the player`);
-    const msg = await interaction.channel.send({
+    await interaction.reply({
       embeds: [
         client.Embed(
             "⏹️ | **Successfully stopped the player**"
@@ -53,7 +53,7 @@ module.exports = async (client, interaction) => {
       ],
     });
     setTimeout(() => {
-      msg.delete();
+      interaction.deleteReply();
     }, 5000);
 
     interaction.update({
@@ -65,24 +65,35 @@ module.exports = async (client, interaction) => {
 
   // if theres no previous song, return an error.
   if (property === "Replay") {
-    if (!player.queue.previous) {
-      const msg = await interaction.channel.send({
-        embeds: [client.Embed("❌ | **There is no previous song to replay.**")],
+    const previousSong = player.queue.previous;
+    const currentSong = player.queue.current;
+    const nextSong = player.queue[0]
+
+    if (!previousSong
+      || previousSong === currentSong
+      || previousSong === nextSong) {
+      await interaction.reply({
+        embeds: [
+          new MessageEmbed()
+          .setColor("RED")
+          .setDescription("There is no previous song in the queue."),
+        ],
       });
       setTimeout(() => {
-        msg.delete();
+        interaction.deleteReply();
       }, 5000);
       return;
     }
-    const currentSong = player.queue.current;
-    player.play(player.queue.previous);
-    if (currentSong) player.queue.unshift(currentSong);
-    return;
+    if (previousSong !== currentSong && previousSong !== nextSong) {
+      player.queue.splice(0, 0, currentSong)
+      player.play(previousSong);
+      return;
+    }
   }
 
   if (property === "PlayAndPause") {
     if (!player || (!player.playing && player.queue.totalSize === 0)) {
-      const msg = await interaction.channel.send({
+      await interaction.reply({
         embeds: [
           new MessageEmbed()
               .setColor("RED")
@@ -90,7 +101,7 @@ module.exports = async (client, interaction) => {
         ],
       });
       setTimeout(() => {
-        msg.delete();
+        interaction.deleteReply();
       }, 5000);
 
     } else {
