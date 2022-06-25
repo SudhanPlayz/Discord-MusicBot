@@ -45,7 +45,7 @@ module.exports = async (client, interaction) => {
     player.queue.clear();
     player.stop();
     client.warn(`Player: ${player.options.guild} | Successfully stopped the player`);
-    await interaction.reply({
+    const msg = await interaction.channel.send({
       embeds: [
         client.Embed(
             "⏹️ | **Successfully stopped the player**"
@@ -53,14 +53,14 @@ module.exports = async (client, interaction) => {
       ],
     });
     setTimeout(() => {
-      interaction.deleteReply();
+      msg.delete();
     }, 5000);
 
     interaction.update({
       components: [client.createController(player.options.guild, player)],
     });
 
-    return;
+    return interaction.deferUpdate();
   }
 
   // if theres no previous song, return an error.
@@ -72,7 +72,7 @@ module.exports = async (client, interaction) => {
     if (!previousSong
       || previousSong === currentSong
       || previousSong === nextSong) {
-      await interaction.reply({
+      const msg = await interaction.channel.send({
         embeds: [
           new MessageEmbed()
           .setColor("RED")
@@ -80,20 +80,20 @@ module.exports = async (client, interaction) => {
         ],
       });
       setTimeout(() => {
-        interaction.deleteReply();
+        msg.delete();
       }, 5000);
-      return;
+      return interaction.deferUpdate();
     }
     if (previousSong !== currentSong && previousSong !== nextSong) {
       player.queue.splice(0, 0, currentSong)
       player.play(previousSong);
-      return;
+      return interaction.deferUpdate();
     }
   }
 
   if (property === "PlayAndPause") {
     if (!player || (!player.playing && player.queue.totalSize === 0)) {
-      await interaction.reply({
+      const msg = await interaction.channel.send({
         embeds: [
           new MessageEmbed()
               .setColor("RED")
@@ -101,7 +101,7 @@ module.exports = async (client, interaction) => {
         ],
       });
       setTimeout(() => {
-        interaction.deleteReply();
+        msg.delete();
       }, 5000);
 
     } else {
@@ -115,7 +115,7 @@ module.exports = async (client, interaction) => {
       });
     }
 
-    return;
+    return interaction.deferUpdate();
   }
 
   if (property === "Next") {
