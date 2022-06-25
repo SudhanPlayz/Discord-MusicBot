@@ -60,7 +60,7 @@ module.exports = async (client, interaction) => {
       components: [client.createController(player.options.guild, player)],
     });
 
-    return interaction.deferUpdate();
+    return;
   }
 
   // if theres no previous song, return an error.
