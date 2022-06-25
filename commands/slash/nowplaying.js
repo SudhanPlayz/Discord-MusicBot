@@ -3,8 +3,8 @@ const SlashCommand = require("../../lib/SlashCommand");
 const prettyMilliseconds = require("pretty-ms");
 
 const command = new SlashCommand()
-  .setName("playing")
-  .setDescription("Shows the current song playing in the voice channel.")
+  .setName("nowplaying")
+  .setDescription("Shows the song currently playing in the voice channel.")
   .setRun(async (client, interaction, options) => {
     let channel = await client.getChannel(client, interaction);
     if (!channel) return;
