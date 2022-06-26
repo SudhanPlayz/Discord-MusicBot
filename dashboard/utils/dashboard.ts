@@ -1,4 +1,4 @@
-export interface IDashboard{
+export interface IDashboard {
     commandsRan: number;
     users: number;
     servers: number;

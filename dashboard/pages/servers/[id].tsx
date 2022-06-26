@@ -1,7 +1,7 @@
 import Head from "next/head";
 import Content from "../../components/content";
 
-export default function Server(_props: any){
+export default function Server(_props: any) {
     let server = {
         name: "Amongus",
         id: "137984839",
@@ -21,9 +21,9 @@ export default function Server(_props: any){
     return (
         <Content>
             <Head>
-                <title>{server.name}</title>
+                <title>{ server.name }</title>
             </Head>
-            <h1>{server.name}</h1>
+            <h1>{ server.name }</h1>
         </Content>
     );
 }
