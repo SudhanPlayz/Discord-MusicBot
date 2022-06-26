@@ -1,6 +1,6 @@
 {
   "name": "discord-musicbot",
-  "version": "4.1.4",
+  "version": "4.2.0",
   "description": "Very simple discord music bot with the discord.js with Song Name playing. It can able to play music with the song name",
   "main": "index.js",
   "scripts": {
@@ -33,7 +33,7 @@
   "dependencies": {
     "colors": "^1.4.0",
     "cpu-stat": "^2.0.1",
-    "discord.js": "^12.5.3",
+    "discord.js": "^13.8.0",
     "discordjs-activity": "1.4.1",
     "dotenv": "^16.0.1",
     "erela.js": "^2.3.2",
