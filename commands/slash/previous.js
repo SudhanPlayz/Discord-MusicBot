@@ -6,12 +6,14 @@ const command = new SlashCommand()
   .setDescription("Go back to the previous song.")
   .setRun(async (client, interaction) => {
     let channel = await client.getChannel(client, interaction);
-    if (!channel) return;
+    if (!channel) {
+      return;
+    }
 
     let player;
-    if (client.manager)
+    if (client.manager) {
       player = client.manager.players.get(interaction.guild.id);
-    else
+    } else {
       return interaction.reply({
         embeds: [
           new MessageEmbed()
@@ -19,6 +21,7 @@ const command = new SlashCommand()
             .setDescription("Lavalink node is not connected"),
         ],
       });
+    }
 
     if (!player) {
       return interaction.reply({
@@ -55,7 +58,7 @@ const command = new SlashCommand()
         new MessageEmbed()
           .setColor(client.config.embedColor)
           .setDescription(
-            `⏮ | Previous song: **${previousSong.title}**`
+            `⏮ | Previous song: **${ previousSong.title }**`,
           ),
       ],
     });

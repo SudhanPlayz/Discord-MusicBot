@@ -22,33 +22,33 @@ module.exports = async (client, interaction) => {
   }
   if (!interaction.member.voice.channel) {
     const joinEmbed = new MessageEmbed()
-        .setColor(client.config.embedColor)
-        .setDescription(
-            "❌ | **You must be in a voice channel to use this action!**"
-        );
+      .setColor(client.config.embedColor)
+      .setDescription(
+        "❌ | **You must be in a voice channel to use this action!**",
+      );
     return interaction.reply({ embeds: [joinEmbed], ephemeral: true });
   }
 
   if (
-      interaction.guild.me.voice.channel &&
-      !interaction.guild.me.voice.channel.equals(interaction.member.voice.channel)
+    interaction.guild.me.voice.channel &&
+    !interaction.guild.me.voice.channel.equals(interaction.member.voice.channel)
   ) {
     const sameEmbed = new MessageEmbed()
-        .setColor(client.config.embedColor)
-        .setDescription(
-            "❌ | **You must be in the same voice channel as me to use this action!**"
-        );
+      .setColor(client.config.embedColor)
+      .setDescription(
+        "❌ | **You must be in the same voice channel as me to use this action!**",
+      );
     return await interaction.reply({ embeds: [sameEmbed], ephemeral: true });
   }
 
   if (property === "Stop") {
     player.queue.clear();
     player.stop();
-    client.warn(`Player: ${player.options.guild} | Successfully stopped the player`);
+    client.warn(`Player: ${ player.options.guild } | Successfully stopped the player`);
     const msg = await interaction.channel.send({
       embeds: [
         client.Embed(
-            "⏹️ | **Successfully stopped the player**"
+          "⏹️ | **Successfully stopped the player**",
         ),
       ],
     });
@@ -96,8 +96,8 @@ module.exports = async (client, interaction) => {
       const msg = await interaction.channel.send({
         embeds: [
           new MessageEmbed()
-              .setColor("RED")
-              .setDescription("There is no song playing right now."),
+            .setColor("RED")
+            .setDescription("There is no song playing right now."),
         ],
       });
       setTimeout(() => {
@@ -106,9 +106,12 @@ module.exports = async (client, interaction) => {
 
     } else {
 
-      if (player.paused) player.pause(false);
-      else player.pause(true);
-      client.warn(`Player: ${player.options.guild} | Successfully ${player.paused? "paused":"resumed"} the player`);
+      if (player.paused) {
+        player.pause(false);
+      } else {
+        player.pause(true);
+      }
+      client.warn(`Player: ${ player.options.guild } | Successfully ${ player.paused? "paused" : "resumed" } the player`);
 
       interaction.update({
         components: [client.createController(player.options.guild, player)],
@@ -132,7 +135,7 @@ module.exports = async (client, interaction) => {
     } else {
       player.setTrackRepeat(true);
     }
-    client.warn(`Player: ${player.options.guild} | Successfully toggled loop the player`);
+    client.warn(`Player: ${ player.options.guild } | Successfully toggled loop the player`);
 
     interaction.update({
       components: [client.createController(player.options.guild, player)],
