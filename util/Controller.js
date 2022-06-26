@@ -59,7 +59,6 @@ module.exports = async (client, interaction) => {
     interaction.update({
       components: [client.createController(player.options.guild, player)],
     });
-
     return;
   }
 
@@ -103,7 +102,7 @@ module.exports = async (client, interaction) => {
       setTimeout(() => {
         msg.delete();
       }, 5000);
-return interaction.deferUpdate();
+      return interaction.deferUpdate();
     } else {
 
       if (player.paused) {
@@ -113,11 +112,10 @@ return interaction.deferUpdate();
       }
       client.warn(`Player: ${ player.options.guild } | Successfully ${ player.paused? "paused" : "resumed" } the player`);
 
-     return interaction.update({
+      return interaction.update({
         components: [client.createController(player.options.guild, player)],
       });
     }
-
   }
 
   if (property === "Next") {
