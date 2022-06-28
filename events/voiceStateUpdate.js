@@ -51,22 +51,17 @@ module.exports = async (client, oldState, newState) => {
     case "JOIN":
       if (stateChange.members.size === 1 && player.paused) {
         let emb = new MessageEmbed()
-          .setAuthor({
-            name: `Resuming paused queue`,
-            iconURL: client.botconfig.IconURL,
-          })
+          .setAuthor(`Resuming paused queue`, client.botconfig.IconURL)
           .setColor(client.botconfig.EmbedColor)
           .setDescription(
             `Resuming playback because all of you left me with music to play all alone`
           );
-        await client.channels.cache
-          .get(player.textChannel)
-          .send({ embeds: [emb] });
+        await client.channels.cache.get(player.textChannel).send(emb);
 
         // update the now playing message and bring it to the front
         let msg2 = await client.channels.cache
           .get(player.textChannel)
-          .send({ embeds: [player.nowPlayingMessage.embeds[0]] });
+          .send(player.nowPlayingMessage.embeds[0]);
         player.setNowplayingMessage(msg2);
 
         player.pause(false);
@@ -77,12 +72,10 @@ module.exports = async (client, oldState, newState) => {
         player.pause(true);
 
         let emb = new MessageEmbed()
-          .setAuthor({ name: `Paused!`, iconURL: client.botconfig.IconURL })
+          .setAuthor(`Paused!`, client.botconfig.IconURL)
           .setColor(client.botconfig.EmbedColor)
           .setDescription(`The player has been paused because everybody left`);
-        await client.channels.cache
-          .get(player.textChannel)
-          .send({ embeds: [emb] });
+        await client.channels.cache.get(player.textChannel).send(emb);
       }
       break;
   }

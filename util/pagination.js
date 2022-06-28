@@ -10,10 +10,10 @@ module.exports = async (
 
   let page = 0;
   const curPage = await msg.channel.send(
-    pages[page].setFooter({
-      text: `Page ${page + 1}/${pages.length} `,
-      iconURL: msg.author.displayAvatarURL({ dynamic: true }),
-    })
+    pages[page].setFooter(
+      `Page ${page + 1}/${pages.length} `,
+      msg.author.displayAvatarURL({ dynamic: true })
+    )
   );
   for (const emoji of emojiList) await curPage.react(emoji);
   const reactionCollector = curPage.createReactionCollector(
@@ -34,10 +34,10 @@ module.exports = async (
         break;
     }
     curPage.edit(
-      pages[page].setFooter({
-        text: `Page ${page + 1}/${pages.length} `,
-        iconURL: msg.author.displayAvatarURL({ dynamic: true }),
-      })
+      pages[page].setFooter(
+        `Page ${page + 1}/${pages.length} `,
+        msg.author.displayAvatarURL({ dynamic: true })
+      )
     );
   });
   reactionCollector.on("end", () => {

@@ -1,2 +1,2 @@
 run = "node index.js"
-language = "Nix" 
+language = "NodeJS"

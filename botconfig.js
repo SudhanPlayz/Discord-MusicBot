@@ -25,13 +25,14 @@ module.exports = {
     name: "Music", // The message shown
     type: "LISTENING", // PLAYING, WATCHING, LISTENING, STREAMING
   },
-  // You need a lavalink server for this bot to work!!!!
-  // Lavalink server; public lavalink -> https://lavalink-list.darrennathanael.com/; create one yourself -> https://darrennathanael.com/post/how-to-lavalink
+
+   // Lavalink server; public lavalink -> https://lavalink-list.darrennathanael.com/; create one yourself -> https://darrennathanael.com/post/how-to-lavalink/
+  // The default one should work fine, altho if you have issue with it, you can create your own or use another public lavalink.
   Lavalink: {
     id: "Main", //- Used for indentifier. You can set this to whatever you want.
-    host: "", //- The host name or IP of the lavalink server.
+    host: "lavalink.darrenofficial.com", //- The host name or IP of the lavalink server.
     port: 80, // The port that lavalink is listening to. This must be a number!
-    pass: "", //- The password of the lavalink server.
+    pass: "hisudhan", //- The password of the lavalink server.
     secure: false, // Set this to true if the lavalink uses SSL. if not set it to false.
     retryAmount: 200, //- The amount of times to retry connecting to the node if connection got dropped.
     retryDelay: 40, //- Delay between reconnect attempts if connection is lost.

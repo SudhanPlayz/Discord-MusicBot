@@ -43,44 +43,42 @@ module.exports = {
         ":x: | **You must be in the same voice channel as me to use this command!**"
       );
     message.author
-      .send({
-        embeds: [
-          new MessageEmbed()
-            .setAuthor({
-              name: `Song saved`,
-              iconURL: client.user.displayAvatarURL({
-                dynamic: true,
-              }),
+      .send(
+        new MessageEmbed()
+          .setAuthor(
+            `Song saved`,
+            client.user.displayAvatarURL({
+              dynamic: true,
             })
-            .setThumbnail(
-              `https://img.youtube.com/vi/${player.queue.current.identifier}/mqdefault.jpg`
-            )
-            .setURL(player.queue.current.uri)
-            .setColor(client.botconfig.EmbedColor)
-            .setTitle(`**${player.queue.current.title}**`)
-            .addField(
-              `⌛ Duration: `,
-              `\`${prettyMilliseconds(player.queue.current.duration, {
-                colonNotation: true,
-              })}\``,
-              true
-            )
-            .addField(`🎵 Author: `, `\`${player.queue.current.author}\``, true)
-            .addField(
-              `▶ Play it:`,
-              `\`${
-                GuildDB ? GuildDB.prefix : client.botconfig.DefaultPrefix
-              }play ${player.queue.current.uri}\``
-            )
-            .addField(`🔎 Saved in:`, `<#${message.channel.id}>`)
-            .setFooter({
-              text: `Requested by: ${player.queue.current.requester.tag}`,
-              iconURL: player.queue.current.requester.displayAvatarURL({
-                dynamic: true,
-              }),
-            }),
-        ],
-      })
+          )
+          .setThumbnail(
+            `https://img.youtube.com/vi/${player.queue.current.identifier}/mqdefault.jpg`
+          )
+          .setURL(player.queue.current.uri)
+          .setColor(client.botconfig.EmbedColor)
+          .setTitle(`**${player.queue.current.title}**`)
+          .addField(
+            `⌛ Duration: `,
+            `\`${prettyMilliseconds(player.queue.current.duration, {
+              colonNotation: true,
+            })}\``,
+            true
+          )
+          .addField(`🎵 Author: `, `\`${player.queue.current.author}\``, true)
+          .addField(
+            `▶ Play it:`,
+            `\`${
+              GuildDB ? GuildDB.prefix : client.botconfig.DefaultPrefix
+            }play ${player.queue.current.uri}\``
+          )
+          .addField(`🔎 Saved in:`, `<#${message.channel.id}>`)
+          .setFooter(
+            `Requested by: ${player.queue.current.requester.tag}`,
+            player.queue.current.requester.displayAvatarURL({
+              dynamic: true,
+            })
+          )
+      )
       .catch((e) => {
         return message.channel.send("**:x: Your DMs are disabled**");
       });
@@ -125,10 +123,7 @@ module.exports = {
         );
       try {
         let embed = new MessageEmbed()
-          .setAuthor({
-            name: `Song saved: `,
-            iconURL: `client.user.displayAvatarURL()`,
-          })
+          .setAuthor(`Song saved: `, client.user.displayAvatarURL())
           .setThumbnail(
             `https://img.youtube.com/vi/${player.queue.current.identifier}/mqdefault.jpg`
           )
@@ -151,13 +146,13 @@ module.exports = {
             }play ${player.queue.current.uri}\``
           )
           .addField(`🔎 Saved in:`, `<#${interaction.channel_id}>`)
-          .setFooter({
-            text: `Requested by: ${player.queue.current.requester.tag}`,
-            iconURL: player.queue.current.requester.displayAvatarURL({
+          .setFooter(
+            `Requested by: ${player.queue.current.requester.tag}`,
+            player.queue.current.requester.displayAvatarURL({
               dynamic: true,
-            }),
-          });
-        user.send({ embeds: [embed] });
+            })
+          );
+        user.send(embed);
       } catch (e) {
         return client.sendTime(interaction, "**:x: Your DMs are disabled**");
       }
