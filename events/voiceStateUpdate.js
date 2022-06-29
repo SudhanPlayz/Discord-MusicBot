@@ -69,14 +69,13 @@ module.exports = async (client, oldState, newState) => {
 	}
 	
 	// filter current users based on being a bot
-	stateChange.members = stateChange.channel.members.filter(
-		(member) => !member.user.bot,
-	);
+	player.prevMembers = player.members
+	player.members = stateChange.channel.members.filter(member => !member.user.bot).size;
 	
 	switch (stateChange.type) {
 		case "JOIN":
 			if (client.config.alwaysplay === false) {
-				if (stateChange.members.size === 1 && player.paused) {
+				if (player.members === 1 && player.paused && player.prevMembers != player.members) {
 					player.pause(false);
 					let playerResumed = new MessageEmbed()
 						.setColor(client.config.embedColor)
@@ -103,7 +102,7 @@ module.exports = async (client, oldState, newState) => {
 		case "LEAVE":
 			if (client.config.alwaysplay === false) {
 				if (
-					stateChange.members.size === 0 &&
+					player.members === 0 &&
 					!player.paused &&
 					player.playing
 				) {
