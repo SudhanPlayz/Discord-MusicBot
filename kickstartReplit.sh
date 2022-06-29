@@ -1,7 +1,5 @@
-# Because node:event error :p
 echo Kickstarting replit
-echo Started installing nodejs 16
-npm init -y && npm i --save-dev node@16 && npm config set prefix=$(pwd)/node_modules/node && export PATH=$(pwd)/node_modules/node/bin:$PATH
-npm rebuild
+echo Please make sure to fill your botconfig.js before running this script
 npm i
 npm run deploy
+node index.js
