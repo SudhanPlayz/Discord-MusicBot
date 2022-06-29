@@ -83,10 +83,10 @@ module.exports = {
             player.queue.totalSize === Searched.tracks.length
           )
             player.play();
-          SongAddedEmbed.setAuthor({
-            name: `Playlist added to queue`,
-            iconURL: message.author.displayAvatarURL(),
-          });
+          SongAddedEmbed.setAuthor(
+            `Playlist added to queue`,
+            message.author.displayAvatarURL()
+          );
           SongAddedEmbed.addField(
             "Enqueued",
             `\`${Searched.tracks.length}\` songs`,
@@ -100,10 +100,7 @@ module.exports = {
           );
           if (!player.playing && !player.paused && !player.queue.size)
             player.play();
-          SongAddedEmbed.setAuthor({
-            name: `Added to queue`,
-            iconURL: client.botconfig.IconURL,
-          });
+          SongAddedEmbed.setAuthor(`Added to queue`, client.botconfig.IconURL);
           SongAddedEmbed.setDescription(
             `[${Searched.tracks[0].info.title}](${Searched.tracks[0].info.uri})`
           );
@@ -147,10 +144,10 @@ module.exports = {
             player.queue.totalSize === Searched.tracks.length
           )
             player.play();
-          SongAddedEmbed.setAuthor({
-            name: `Playlist added to queue`,
-            iconURL: client.botconfig.IconURL,
-          });
+          SongAddedEmbed.setAuthor(
+            `Playlist added to queue`,
+            client.botconfig.IconURL
+          );
           // SongAddedEmbed.setThumbnail(Searched.tracks[0].displayThumbnail());
           SongAddedEmbed.setDescription(
             `[${Searched.playlist.name}](${SearchString})`
@@ -172,10 +169,7 @@ module.exports = {
           player.queue.add(Searched.tracks[0]);
           if (!player.playing && !player.paused && !player.queue.size)
             player.play();
-          SongAddedEmbed.setAuthor({
-            name: `Added to queue`,
-            iconURL: client.botconfig.IconURL,
-          });
+          SongAddedEmbed.setAuthor(`Added to queue`, client.botconfig.IconURL);
 
           // SongAddedEmbed.setThumbnail(Searched.tracks[0].displayThumbnail());
           SongAddedEmbed.setDescription(
@@ -285,10 +279,10 @@ module.exports = {
             if (!player.playing && !player.paused && !player.queue.length)
               player.play();
             let SongAddedEmbed = new MessageEmbed();
-            SongAddedEmbed.setAuthor({
-              name: `Added to queue`,
-              iconURL: client.botconfig.IconURL,
-            });
+            SongAddedEmbed.setAuthor(
+              `Added to queue`,
+              client.botconfig.IconURL
+            );
             SongAddedEmbed.setColor(client.botconfig.EmbedColor);
             SongAddedEmbed.setDescription(
               `[${Searched.tracks[0].info.title}](${Searched.tracks[0].info.uri})`
@@ -311,10 +305,7 @@ module.exports = {
             if (!player.playing && !player.paused && !player.queue.length)
               player.play();
             let SongAdded = new MessageEmbed();
-            SongAdded.setAuthor({
-              name: `Added to queue`,
-              iconURL: client.botconfig.IconURL,
-            });
+            SongAdded.setAuthor(`Added to queue`, client.botconfig.IconURL);
             SongAdded.setColor(client.botconfig.EmbedColor);
             SongAdded.setDescription(
               `[${Searched.tracks[0].info.title}](${Searched.tracks[0].info.uri})`
@@ -340,10 +331,10 @@ module.exports = {
             )
               player.play();
             let Playlist = new MessageEmbed();
-            Playlist.setAuthor({
-              name: `Playlist added to queue`,
-              iconURL: client.botconfig.IconURL,
-            });
+            Playlist.setAuthor(
+              `Playlist added to queue`,
+              client.botconfig.IconURL
+            );
             Playlist.setDescription(
               `[${Searched.playlistInfo.name}](${interaction.data.options[0].value})`
             );
@@ -382,10 +373,10 @@ module.exports = {
             if (!player.playing && !player.paused && !player.queue.length)
               player.play();
             let SongAddedEmbed = new MessageEmbed();
-            SongAddedEmbed.setAuthor({
-              name: `Added to queue`,
-              iconURL: client.botconfig.IconURL,
-            });
+            SongAddedEmbed.setAuthor(
+              `Added to queue`,
+              client.botconfig.IconURL
+            );
             //SongAddedEmbed.setThumbnail(res.tracks[0].displayThumbnail());
             SongAddedEmbed.setColor(client.botconfig.EmbedColor);
             SongAddedEmbed.setDescription(
@@ -407,14 +398,14 @@ module.exports = {
               );
             return interaction.send(SongAddedEmbed);
 
-          case "PLAYLIST_LOADED":
+           case "PLAYLIST_LOADED":
             player.queue.add(res.tracks);
             await player.play();
             let SongAdded = new MessageEmbed();
-            SongAdded.setAuthor({
-              name: `Playlist added to queue`,
-              iconURL: client.botconfig.IconURL,
-            });
+            SongAdded.setAuthor(
+              `Playlist added to queue`,
+              client.botconfig.IconURL
+            );
             //SongAdded.setThumbnail(res.tracks[0].displayThumbnail());
             SongAdded.setDescription(
               `[${res.playlist.name}](${interaction.data.options[0].value})`
@@ -438,10 +429,10 @@ module.exports = {
 
             if (!player.playing && !player.paused && !player.queue.length) {
               let SongAddedEmbed = new MessageEmbed();
-              SongAddedEmbed.setAuthor({
-                name: `Added to queue`,
-                iconURL: client.botconfig.IconURL,
-              });
+              SongAddedEmbed.setAuthor(
+                `Added to queue`,
+                client.botconfig.IconURL
+              );
               SongAddedEmbed.setThumbnail(track.displayThumbnail());
               SongAddedEmbed.setColor(client.botconfig.EmbedColor);
               SongAddedEmbed.setDescription(`[${track.title}](${track.uri})`);
@@ -463,10 +454,10 @@ module.exports = {
               return interaction.send(SongAddedEmbed);
             } else {
               let SongAddedEmbed = new MessageEmbed();
-              SongAddedEmbed.setAuthor({
-                name: `Added to queue`,
-                iconURL: client.botconfig.IconURL,
-              });
+              SongAddedEmbed.setAuthor(
+                `Added to queue`,
+                client.botconfig.IconURL
+              );
               SongAddedEmbed.setThumbnail(track.displayThumbnail());
               SongAddedEmbed.setColor(client.botconfig.EmbedColor);
               SongAddedEmbed.setDescription(`[${track.title}](${track.uri})`);

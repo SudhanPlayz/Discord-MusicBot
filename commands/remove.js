@@ -53,7 +53,7 @@ module.exports = {
       );
     if (args[0] > player.queue.length)
       rm.setDescription(`The queue has only ${player.queue.length} songs!`);
-    await message.channel.send({ embeds: [rm] });
+    await message.channel.send(rm);
     player.queue.remove(Number(args[0]) - 1);
   },
 

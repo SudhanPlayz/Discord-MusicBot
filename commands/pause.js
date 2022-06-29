@@ -44,10 +44,10 @@ module.exports = {
       );
     player.pause(true);
     let embed = new MessageEmbed()
-      .setAuthor({ name: `Paused!`, iconURL: client.botconfig.IconURL })
+      .setAuthor(`Paused!`, client.botconfig.IconURL)
       .setColor(client.botconfig.EmbedColor)
       .setDescription(`Type \`${GuildDB.prefix}resume\` to continue playing!`);
-    await message.channel.send({ embeds: [embed] });
+    await message.channel.send(embed);
     await message.react("✅");
   },
 

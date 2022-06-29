@@ -18,10 +18,10 @@ module.exports = {
    */
   run: async (client, message, args, { GuildDB }) => {
     let embed = new MessageEmbed()
-      .setAuthor({
-        name: "Invite " + client.user.tag + " to your server!",
-        iconURL: client.user.displayAvatarURL(),
-      })
+      .setAuthor(
+        "Invite " + client.user.tag + " to your server!",
+        client.user.displayAvatarURL()
+      )
       .setColor("BLUE")
       .setDescription(
         `You can invite me by clicking [here](https://discord.com/oauth2/authorize?client_id=${
@@ -32,7 +32,7 @@ module.exports = {
           client.botconfig.Website
         }${client.botconfig.CallbackURL}&response_type=code)`
       );
-    message.channel.send({ embeds: [embed] });
+    message.channel.send(embed);
   },
   SlashCommand: {
     /**
@@ -44,10 +44,10 @@ module.exports = {
      */
     run: async (client, interaction, args, { GuildDB }) => {
       let embed = new MessageEmbed()
-        .setAuthor({
-          name: "Invite " + client.user.tag + " to your server!",
-          iconURL: client.user.displayAvatarURL(),
-        })
+        .setAuthor(
+          "Invite " + client.user.tag + " to your server!",
+          client.user.displayAvatarURL()
+        )
         .setColor("BLUE")
         .setDescription(
           `You can invite me by clicking [here](https://discord.com/oauth2/authorize?client_id=${

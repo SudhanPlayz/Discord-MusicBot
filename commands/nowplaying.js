@@ -27,10 +27,7 @@ module.exports = {
 
     let song = player.queue.current;
     let QueueEmbed = new MessageEmbed()
-      .setAuthor({
-        name: "Currently playing",
-        iconURL: client.botconfig.IconURL,
-      })
+      .setAuthor("Currently playing", client.botconfig.IconURL)
       .setColor(client.botconfig.EmbedColor)
       .setDescription(`[${song.title}](${song.uri})`)
       .addField("Requested by", `${song.requester}`, true)
@@ -46,7 +43,7 @@ module.exports = {
         })}\``
       )
       .setThumbnail(player.queue.current.displayThumbnail());
-    return message.channel.send({ embeds: [QueueEmbed] });
+    return message.channel.send(QueueEmbed);
   },
 
   SlashCommand: {
@@ -67,10 +64,7 @@ module.exports = {
 
       let song = player.queue.current;
       let QueueEmbed = new MessageEmbed()
-        .setAuthor({
-          name: "Currently playing",
-          iconURL: client.botconfig.IconURL,
-        })
+        .setAuthor("Currently playing", client.botconfig.IconURL)
         .setColor(client.botconfig.EmbedColor)
         .setDescription(`[${song.title}](${song.uri})`)
         .addField("Requested by", `${song.requester}`, true)
