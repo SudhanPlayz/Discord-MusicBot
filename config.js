@@ -15,12 +15,12 @@ module.exports = {
 	alwaysplay: false, // when set to true music will always play no matter if theres no one in voice channel.
 	debug: false, //Debug mode
 	cookieSecret: "CodingWithSudhan is epic",//Cookie Secret
-	website: "http://localhost:" + (this.port || "4200"), //without the / at the end
+	website: "http://localhost:" + this.port, //without the / at the end
 	// You need a lavalink server for this bot to work!!!!
 	// Lavalink server; public lavalink -> https://lavalink-list.darrennathanael.com/; create one yourself -> https://darrennathanael.com/post/how-to-lavalink
 	nodes: [
 		{
-			identifier: this.host || "Main Node", //- Used for identifier in stats commands.
+			identifier: this.host, //- Used for identifier in stats commands.
 			host: "your.lavalink.host", //- The host name or IP of the lavalink server.
 			port: 80, // The port that lavalink is listening to. This must be a number!
 			password: "your.lavalink.password", //- The password of the lavalink server.
