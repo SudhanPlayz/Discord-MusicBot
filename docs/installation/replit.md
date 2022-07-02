@@ -21,11 +21,11 @@
 
 1. Open your shell. Git clone the v5 branch using the command `rm -rf .cache && git clone -b v5 https://github.com/sudhanplayz/discord-musicbot .`
 
-If you're wondering why there's `rm -rf .cache`, it's to remove the `.cache` folder and to make the directory clean for the second command
+> If you're wondering why there's `rm -rf .cache`, it's to remove the `.cache` folder and to make the directory clean for the second command
 
-1. Fill your config.js. For lavalink, go to [this link](https://lavalink-list.darrennathanael.com)
+4. Fill your config.js. For lavalink, go to [this link](https://lavalink-list.darrennathanael.com)
 
-1. Now,all your files are created. You can now run `bash ./kickstartReplit.sh` in either console or shell
+5. Now,all your files are created. You can now run `bash ./kickstartReplit.sh` in either console or shell
 
 Wait for the installation and then your bot is now running! The next time you run your bot,you just need to type `node index.js` in your shell!
 
