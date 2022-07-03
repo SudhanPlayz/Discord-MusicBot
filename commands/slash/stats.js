@@ -2,12 +2,18 @@ const SlashCommand = require("../../lib/SlashCommand");
 const moment = require("moment");
 require("moment-duration-format");
 const { MessageEmbed } = require("discord.js");
-const os = require("os");
+const os = require("os"); 
+const osu = require('node-os-utils');
+require('loadavg-windows');
+const cpu = osu.cpu;
+const usage = (cpu.loadavgTime() / 2) * 5+"%";
 
 const command = new SlashCommand()
 	.setName("stats")
 	.setDescription("Get information about the bot")
 	.setRun(async (client, interaction) => {
+		//get CPU info
+		const cpu = os.cpus()[0];
 		// get OS info
 		const osver = os.platform() + " " + os.release();
 		
@@ -81,6 +87,12 @@ const command = new SlashCommand()
 					value: `\`\`\`yml\nOS: ${ osver }\nUptime: ${ sysuptime }\n\`\`\``,
 					inline: false,
 				},
+ 				{
+              				name: "CPU stats",
+             				value: `\`\`\`yml\nModel: ${ cpu?.model }\nSpeed: ${ cpu?.speed && os.cpus().length > 1
+              				? cpu?.speed * os.cpus().length : cpu?.speed } MHz\nUsage: ${ usage }\`\`\``,
+                                        inline: false,
+           			 },
 			])
 			.setFooter({ text: `Build: ${ gitHash }` });
 		return interaction.reply({ embeds: [statsEmbed], ephemeral: false });
