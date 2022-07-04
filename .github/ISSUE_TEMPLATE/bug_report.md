@@ -9,28 +9,28 @@ assignees: ""
 <!-- Use Discord for questions: https://discord.gg/sbySMS7m3v -->
 
 **Please describe the problem you are having in as much detail as possible:**
+<!-- Video / Image of the steps to repreduce the bugs/issue are encouraged. -->
 
-**Include a reproducible code sample here, if possible:**
+### Essentials:
+<!-- Must fill! if not the issue will be closed. -->
 
-```js
-// Place your code here
-```
-
-**Further details:**
-
-- discord.js version:
+- Bot Version:
+- Commit Hash:
 - Node.js version:
 - Operating system:
-- Priority this issue should have – please be realistic and elaborate if possible:
 
-**Relevant client options:**
+#### Additional system info
+- Is it virtualized? (Docker or ...) :
+- What CPU is it running on (X86 or ARM or...):
+- Additional details that might help us figure out the problem:
+
+### Relevant client options:
 
 - partials: none
 - gateway intents: none
 - other: none
 
-<!--
-Remove the comment and fill out the commit hash if this applies to you:
-(While it's not a requirement to test your issue on the master branch, it would make fixing the problem a lot easier for us, so please do so if possible.)
 
+<!--
+You can get commit hash by running "git rev-parse --short HEAD"
 -->
