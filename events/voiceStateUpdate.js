@@ -74,7 +74,7 @@ module.exports = async (client, oldState, newState) => {
 	
 	switch (stateChange.type) {
 		case "JOIN":
-			if (client.config.alwaysplay === false) {
+			if (player.get("autoPause") === true) {
 				if (player.members === 1 && player.paused && player.prevMembers != player.members) {
 					player.pause(false);
 					let playerResumed = new MessageEmbed()
@@ -100,7 +100,7 @@ module.exports = async (client, oldState, newState) => {
 			}
 			break;
 		case "LEAVE":
-			if (client.config.alwaysplay === false) {
+			if (player.get("autoPause") === true) {
 				if (
 					player.members === 0 &&
 					!player.paused &&
