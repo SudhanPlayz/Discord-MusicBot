@@ -44,7 +44,11 @@ const command = new SlashCommand()
 		} else {
 			player.set("autoQueue", false);
 		}
-		embed.setDescription(`Auto Queue is \`${ !autoQueue? "ON" : "OFF" }\``);
+		embed
+		  .setDescription(`**Auto Queue is** \`${!autoQueue ? "ON" : "OFF"}\``)
+		  .setFooter({
+		    text: `Related music will ${!autoQueue ? "now be automatically" : "no longer be"} added to the queue.`
+      });
 		client.warn(
 			`Player: ${ player.options.guild } | [${ colors.blue(
 				"AUTOQUEUE",

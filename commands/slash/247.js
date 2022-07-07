@@ -45,10 +45,11 @@ const command = new SlashCommand()
 		} else {
 			player.set("twentyFourSeven", false);
 		}
-		
-		twentyFourSevenEmbed.setDescription(
-			`✅ | **24/7 mode is \`${ !twentyFourSeven? "ON" : "OFF" }\`**`,
-		);
+		twentyFourSevenEmbed
+		  .setDescription(`**24/7 mode is** \`${!twentyFourSeven ? "ON" : "OFF"}\``)
+		  .setFooter({
+		    text: `The bot will ${!twentyFourSeven ? "now" : "no longer"} stay connected to the voice channel 24/7.`
+      });
 		client.warn(
 			`Player: ${ player.options.guild } | [${ colors.blue(
 				"24/7",
