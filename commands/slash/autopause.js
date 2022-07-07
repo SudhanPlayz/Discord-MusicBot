@@ -44,8 +44,8 @@ const command = new SlashCommand()
     embed
 			.setDescription(`**Auto Pause is** \`${!autoPause ? "ON" : "OFF"}\``)
 			.setFooter({
-              text: `The player will ${!autoPause ? "now be automatically" : "no longer be"} paused when everyone leaves the voice channel.`,
-            });
+			  text: `The player will ${!autoPause ? "now be automatically" : "no longer be"} paused when everyone leaves the voice channel.`
+			});
     client.warn(
       `Player: ${player.options.guild} | [${colors.blue(
         "AUTOPAUSE"
