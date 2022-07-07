@@ -19,7 +19,7 @@
 
 1. Delete all the files in the blank repl you created
 
-1. Open your shell. Git clone the v5 branch using the command `rm -rf .cache && git clone -b v5 https://github.com/sudhanplayz/discord-musicbot .`
+1. Open your shell. Git clone the v5 branch using the command `rm -rf .cache && git clone -b v5 https://github.com/sudhanplayz/discord-musicbot`
 
 > If you're wondering why there's `rm -rf .cache`, it's to remove the `.cache` folder and to make the directory clean for the second command
 
