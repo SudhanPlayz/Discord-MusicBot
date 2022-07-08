@@ -109,3 +109,4 @@ dev-config.js
 db.json
 yarn.lock
 package-lock.json
+.idea/

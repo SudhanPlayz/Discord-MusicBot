@@ -1,97 +1,39 @@
 import Head from "next/head";
-import {
-    RocketLaunchRounded,
-    PersonRounded,
-    DnsRounded,
-    AudiotrackRounded
-} from "@mui/icons-material"
+import {AudiotrackRounded, DnsRounded, PersonRounded, RocketLaunchRounded} from "@mui/icons-material"
 import Content from "../components/content";
+import StatCard from "../components/StatCard";
+import {useEffect, useState} from "react";
+import {getDashboard, IDashboard} from "../utils/dashboard";
 
 const Dashboard = (_props: any) => {
+    const [data, setData] = useState<IDashboard | null>(null)
+
+    useEffect(() => {
+        getDashboard().then(setData)
+    })
+
     return (<Content>
         <Head>
-            <title>Dashboard</title>
+            <title>Dashboard | Discord Music Bot</title>
         </Head>
 
         <h1>Dashboard</h1>
-        <div style={{
+        <div style={ {
             display: 'flex',
-        }}>
-            <div style={{
-                display: 'flex',
-                width: '200px',
-                background: '#1b1b1b',
-                padding: '10px',
-                margin: '10px',
-                borderRadius: '5px',
-                alignItems: 'center',
-                justifyContent: 'center',
-            }}>
-                <div>
-                    <h4>Commands Ran</h4>
-                    <h3>0</h3>
-                </div>
-                <RocketLaunchRounded fontSize="large" style={{
-                    marginLeft: '10px',
-                }} />
-            </div>
+        } }>
+            <StatCard title='Commands Ran' amount={ data ? data.commandsRan : "Loading" } icon={
+                <RocketLaunchRounded fontSize="large"/> }
+            />
+            <StatCard title='Users' amount={ data ? data.users : "Loading" } icon={
+                <PersonRounded fontSize="large"/> }
+            />
+            <StatCard title='Servers' amount={ data ? data.servers : "Loading" } icon={
+                <DnsRounded fontSize="large"/> }
+            />
 
-            <div style={{
-                display: 'flex',
-                width: '200px',
-                background: '#1b1b1b',
-                padding: '10px',
-                margin: '10px',
-                borderRadius: '5px',
-                alignItems: 'center',
-                justifyContent: 'center',
-            }}>
-                <div>
-                    <h4>Users</h4>
-                    <h3>0</h3>
-                </div>
-                <PersonRounded fontSize="large" style={{
-                    marginLeft: '30px',
-                }} />
-            </div>
-
-            <div style={{
-                display: 'flex',
-                width: '200px',
-                background: '#1b1b1b',
-                padding: '10px',
-                margin: '10px',
-                borderRadius: '5px',
-                alignItems: 'center',
-                justifyContent: 'center',
-            }}>
-                <div>
-                    <h4>Servers</h4>
-                    <h3>0</h3>
-                </div>
-                <DnsRounded fontSize="large" style={{
-                    marginLeft: '30px',
-                }} />
-            </div>
-
-            <div style={{
-                display: 'flex',
-                width: '200px',
-                background: '#1b1b1b',
-                padding: '10px',
-                margin: '10px',
-                borderRadius: '5px',
-                alignItems: 'center',
-                justifyContent: 'center',
-            }}>
-                <div>
-                    <h4>Songs Played</h4>
-                    <h3>0</h3>
-                </div>
-                <AudiotrackRounded fontSize="large" style={{
-                    marginLeft: '30px',
-                }} />
-            </div>
+            <StatCard title='Songs Played' amount={ data ? data.songsPlayed : "Loading" } icon={
+                <AudiotrackRounded fontSize="large"/> }
+            />
         </div>
     </Content>)
 }
