@@ -28,9 +28,6 @@ class Server extends EventEmitter {
 			.then((conf) => {
 				this.config = conf;
 				this.listen();
-			})
-			.catch((err) => {
-				throw Error(err);
 			});
 		
 		this.app = express();
