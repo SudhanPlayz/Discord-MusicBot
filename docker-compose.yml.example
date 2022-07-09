@@ -11,7 +11,7 @@ services:
     depends_on:
       - lavalink
     volumes:
-      - ./config.js:/usr/src/app/config.js:ro
+      - ./botconfig.js:/usr/src/app/botconfig.js:ro
 
   lavalink:
     image: fredboat/lavalink:dev
