@@ -11,7 +11,7 @@ services:
     depends_on:
       - lavalink
     volumes:
-      - ./botconfig.js:/usr/src/app/botconfig.js:ro
+      - ./config.js:/usr/src/app/config.js:ro
 
   lavalink:
     image: fredboat/lavalink:dev
@@ -21,7 +21,7 @@ services:
     networks:
       - lavalink-net
     volumes:
-      - ./application.yml:/opt/Lavalink/application.yml:ro
+      - ./docker/application.yml:/opt/Lavalink/application.yml:ro
 
 networks:
   lavalink-net:
