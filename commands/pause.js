@@ -35,7 +35,7 @@ module.exports = {
     )
       return client.sendTime(
         message.channel,
-        ":x: | **You must be in the same voice channel as me to use this command!**"
+        "❌ | **You must be in the same voice channel as me to use this command!**"
       );
     if (player.paused)
       return client.sendTime(
@@ -74,7 +74,7 @@ module.exports = {
       )
         return client.sendTime(
           interaction,
-          ":x: | **You must be in the same voice channel as me to use this command!**"
+          "❌ | **You must be in the same voice channel as me to use this command!**"
         );
 
       let player = await client.Manager.get(interaction.guild_id);

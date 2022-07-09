@@ -41,7 +41,7 @@ module.exports = {
     )
       return client.sendTime(
         message.channel,
-        ":x: | **You must be in the same voice channel as me to use this command!**"
+        "❌ | **You must be in the same voice channel as me to use this command!**"
       );
 
     try {
@@ -103,7 +103,7 @@ module.exports = {
       )
         return client.sendTime(
           interaction,
-          `:x: | **You must be in the same voice channel as me to use this command!**`
+          `❌ | **You must be in the same voice channel as me to use this command!**`
         );
       let CheckNode = client.Manager.nodes.get(client.botconfig.Lavalink.id);
       if (!CheckNode || !CheckNode.connected) {

@@ -31,7 +31,7 @@ module.exports = {
     )
       return client.sendTime(
         message.channel,
-        ":x: | **You must be in the same voice channel as me to use this command!**"
+        "❌ | **You must be in the same voice channel as me to use this command!**"
       );
 
     let SearchString = args.join(" ");
@@ -186,7 +186,7 @@ module.exports = {
       )
         return client.sendTime(
           interaction,
-          ":x: | **You must be in the same voice channel as me to use this command!**"
+          "❌ | **You must be in the same voice channel as me to use this command!**"
         );
       let CheckNode = client.Manager.nodes.get(client.botconfig.Lavalink.id);
       if (!CheckNode || !CheckNode.connected) {
@@ -216,14 +216,14 @@ module.exports = {
             if (!player.queue.current) player.destroy();
             return client.sendError(
               interaction,
-              `:x: | **There was an error while searching**`
+              `❌ | **There was an error while searching**`
             );
 
           case "NO_MATCHES":
             if (!player.queue.current) player.destroy();
             return client.sendTime(
               interaction,
-              ":x: | **No results were found**"
+              "❌ | **No results were found**"
             );
           case "TRACK_LOADED":
             player.queue.add(TrackUtils.build(Searched.tracks[0], member.user));
@@ -261,7 +261,7 @@ module.exports = {
         } catch (err) {
           return client.sendTime(
             interaction,
-            `:x: | **There was an error while searching:** ${err.message}`
+            `❌ | **There was an error while searching:** ${err.message}`
           );
         }
         switch (res.loadType) {
@@ -269,7 +269,7 @@ module.exports = {
             if (!player.queue.current) player.destroy();
             return client.sendTime(
               interaction,
-              ":x: | **No results were found**"
+              "❌ | **No results were found**"
             );
           case "TRACK_LOADED":
             player.queue.add(res.tracks[0]);

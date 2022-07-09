@@ -40,7 +40,7 @@ module.exports = {
     )
       return client.sendTime(
         message.channel,
-        ":x: | **You must be in the same voice channel as me to use this command!**"
+        "❌ | **You must be in the same voice channel as me to use this command!**"
       );
     message.author
       .send(
@@ -80,7 +80,7 @@ module.exports = {
           )
       )
       .catch((e) => {
-        return message.channel.send("**:x: Your DMs are disabled**");
+        return message.channel.send("**❌ Your DMs are disabled**");
       });
 
     client.sendTime(message.channel, "✅ | **Check your DMs!**");
@@ -119,7 +119,7 @@ module.exports = {
       )
         return client.sendTime(
           interaction,
-          ":x: | **You must be in the same voice channel as me to use this command!**"
+          "❌ | **You must be in the same voice channel as me to use this command!**"
         );
       try {
         let embed = new MessageEmbed()
@@ -154,7 +154,7 @@ module.exports = {
           );
         user.send(embed);
       } catch (e) {
-        return client.sendTime(interaction, "**:x: Your DMs are disabled**");
+        return client.sendTime(interaction, "**❌ Your DMs are disabled**");
       }
 
       client.sendTime(interaction, "✅ | **Check your DMs!**");

@@ -40,7 +40,7 @@ module.exports = {
     )
       return client.sendTime(
         message.channel,
-        ":x: | **You must be in the same voice channel as me to use this command!**"
+        "❌ | **You must be in the same voice channel as me to use this command!**"
       );
     player.queue.clear();
     await client.sendTime(message.channel, "✅ | **Cleared the queue!**");
@@ -68,7 +68,7 @@ module.exports = {
       )
         return client.sendTime(
           interaction,
-          ":x: | **You must be in the same voice channel as me to use this command!**"
+          "❌ | **You must be in the same voice channel as me to use this command!**"
         );
       let player = await client.Manager.get(interaction.guild_id);
       if (!player)

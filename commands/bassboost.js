@@ -40,14 +40,14 @@ module.exports = {
     )
       return client.sendTime(
         message.channel,
-        ":x: | **You must be in the same voice channel as me to use this command!**"
+        "❌ | **You must be in the same voice channel as me to use this command!**"
       );
 
     if (!args[0])
       return client.sendTime(
         message.channel,
         "**Please provide a bassboost level. \nAvailable Levels:** `none`, `low`, `medium`, `high`"
-      ); //if the user do not provide args [arguments]
+      );
 
     let level = "none";
     if (args.length && args[0].toLowerCase() in levels)
@@ -110,13 +110,13 @@ module.exports = {
       )
         return client.sendTime(
           interaction,
-          ":x: | **You must be in the same voice channel as me to use this command!**"
+          "❌ | **You must be in the same voice channel as me to use this command!**"
         );
       if (!args)
         return client.sendTime(
           interaction,
           "**Please provide a bassboost level. \nAvailable Levels:** `none`, `low`, `medium`, `high`"
-        ); //if the user do not provide args [arguments]
+        );
 
       let level = "none";
       if (args.length && args[0].value in levels) level = args[0].value;

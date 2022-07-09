@@ -35,7 +35,7 @@ module.exports = {
     )
       return client.sendTime(
         message.channel,
-        ":x: | **You must be in the same voice channel as me to use this command!**"
+        "❌ | **You must be in the same voice channel as me to use this command!**"
       );
     if (!player.queue.current.isSeekable)
       return client.sendTime(
@@ -73,7 +73,7 @@ module.exports = {
                     let player = await client.Manager.get(interaction.guild_id);
                     
                     if (!member.voice.channel) return client.sendTime(interaction, "❌ | **You must be in a voice channel to use this command.**");
-                    if (guild.me.voice.channel && !guild.me.voice.channel.equals(member.voice.channel)) return client.sendTime(interaction, ":x: | **You must be in the same voice channel as me to use this command!**");
+                    if (guild.me.voice.channel && !guild.me.voice.channel.equals(member.voice.channel)) return client.sendTime(interaction, "❌ | **You must be in the same voice channel as me to use this command!**");
                     if (!player) return client.sendTime(interaction, "❌ | **Nothing is playing right now...**");
                     if (!player.queue.current.isSeekable) return client.sendTime(interaction, "❌ | **I'm not able to seek this song!**");
                     let SeekTo = client.ParseHumanTime(interaction.data.options[0].value);
