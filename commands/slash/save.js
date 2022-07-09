@@ -35,7 +35,7 @@ const command = new SlashCommand()
 			});
 		}
 		
-		const save = new MessageEmbed()
+		const sendtoDmEmbed = new MessageEmbed()
 			.setColor(client.config.embedColor)
 			.setAuthor({
 				name: "Saved track",
@@ -64,7 +64,7 @@ const command = new SlashCommand()
 				},
 			);
 		
-		interaction.user.send({ embeds: [save] });
+		interaction.user.send({ embeds: [sendtoDmEmbed] });
 		
 		return interaction.reply({
 			embeds: [

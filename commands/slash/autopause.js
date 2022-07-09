@@ -32,7 +32,7 @@ const command = new SlashCommand()
       });
     }
 
-    let embed = new MessageEmbed().setColor(client.config.embedColor);
+    let autoPauseEmbed = new MessageEmbed().setColor(client.config.embedColor);
     const autoPause = player.get("autoPause");
     player.set("requester", interaction.guild.me);
 
@@ -41,7 +41,7 @@ const command = new SlashCommand()
     } else {
       player.set("autoPause", false);
     }
-    embed
+    autoPauseEmbed
 			.setDescription(`**Auto Pause is** \`${!autoPause ? "ON" : "OFF"}\``)
 			.setFooter({
 			  text: `The player will ${!autoPause ? "now be automatically" : "no longer be"} paused when everyone leaves the voice channel.`
@@ -56,7 +56,7 @@ const command = new SlashCommand()
       }`
     );
 
-    return interaction.reply({ embeds: [embed] });
+    return interaction.reply({ embeds: [autoPauseEmbed] });
   });
 
 module.exports = command;

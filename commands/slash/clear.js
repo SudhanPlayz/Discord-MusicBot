@@ -44,11 +44,11 @@ const command = new SlashCommand()
 		
 		player.queue.clear();
 		
-		let clearembed = new MessageEmbed()
+		let clearEmbed = new MessageEmbed()
 			.setColor(client.config.embedColor)
 			.setDescription(`✅ | **Cleared the queue!**`);
 		
-		return interaction.reply({ embeds: [clearembed] });
+		return interaction.reply({ embeds: [clearEmbed] });
 	});
 
 module.exports = command;
