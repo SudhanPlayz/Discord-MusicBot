@@ -15,17 +15,18 @@
 
 > We have changed the way v5 is installed, we now use and utilise the nix environment.
 
-1. In replit, create a blank repl
+1. In replit, [create a blank repl](https://replit.com/@replit/Blank-Repl) 
 
-1. Delete all the files in the blank repl you created
-
-1. Open your shell. Git clone the v5 branch using the command `rm -rf .cache && git clone -b v5 https://github.com/sudhanplayz/discord-musicbot .`
+1. Open your shell. Git clone the v5 branch using the command 
+```
+rm .replit replit.nix README.md; rm -rf .cache && git clone -b v5 https://github.com/sudhanplayz/discord-musicbot .
+```
 
 > If you're wondering why there's `rm -rf .cache`, it's to remove the `.cache` folder and to make the directory clean for the second command
 
-4. Fill your config.js. For lavalink, go to [this link](https://lavalink-list.darrennathanael.com)
+3. Fill your config.js. For lavalink, go to [this link](https://lavalink-list.darrennathanael.com)
 
-5. Now,all your files are created. You can now run `bash ./kickstartReplit.sh` in either console or shell
+4. Now,all your files are created. You can now run `bash ./kickstartReplit.sh` in either console or shell
 
 Wait for the installation and then your bot is now running! The next time you run your bot,you just need to type `node index.js` in your shell!
 
@@ -39,7 +40,7 @@ Once done you can restart your bot, then invite it using this url template. `htt
 
 ## Deploying slash commands
 
-This should already be done in step 5 on installation but if you don't have the `applications.commands` scope, You can deploy slash commands using `npm run deploy`
+This should already be done in step 4 on installation but if you don't have the `applications.commands` scope, You can deploy slash commands using `npm run deploy`
 
 **SIDE NOTES**:
 - If you're running the version 4 of the bot, please kick it and reinvite using the invite link stated in [final](#final)
