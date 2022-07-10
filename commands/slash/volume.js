@@ -41,13 +41,38 @@ const command = new SlashCommand()
 		}
 		
 		let vol = interaction.options.getNumber("amount");
-		if (!vol || vol < 1 || vol > 125) {
+		let volumeErrorEmbed = new MessageEmbed().setColor("RED");
+		const maxVolume = client.config.maxVolume;
+
+		if (!vol) {
 			return interaction.reply({
 				embeds: [
 					new MessageEmbed()
 						.setColor(client.config.embedColor)
 						.setDescription(
 							`:loud_sound: | Current volume **${ player.volume }**`,
+						),
+				],
+			});
+		}
+
+		if (vol > maxVolume) {
+			return interaction.reply({
+				embeds: [
+					volumeErrorEmbed
+						.setDescription(
+							`**Volume cannot exceed ${ maxVolume }%**`,
+						),
+				],
+			});
+		}
+
+		if (vol < 1) {
+			return interaction.reply({
+				embeds: [
+					volumeErrorEmbed
+						.setDescription(
+							`**Volume cannot be less than 1%**`,
 						),
 				],
 			});

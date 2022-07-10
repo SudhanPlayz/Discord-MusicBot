@@ -104,9 +104,12 @@ dist
 # TernJS port file
 .tern-port
 
+# IDE folders
+.idea/
+.history/
+
 # Etc
 dev-config.js
 db.json
 yarn.lock
 package-lock.json
-.idea/
