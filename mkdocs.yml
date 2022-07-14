@@ -7,7 +7,8 @@ site_description: >-
 
 repo_name: sudhanplayz/discord-musicbot
 repo_url: https://github.com/sudhanplayz/discord-musicbot
-edit_uri: https://github.com/sudhanplayz/discord-musicbot/blob/v5/documentation/docs
+edit_uri: https://github.com/sudhanplayz/discord-musicbot/blob/wiki/
+
 
 theme:
   name: "material"
@@ -54,4 +55,10 @@ extra:
       link: "https://github.com/SudhanPlayz"
   generator: false
 
-copyright: Copyright &copy; 2020 - 2021 Sudhan
+copyright: Copyright &copy; 2020 Sudhan
+
+
+plugins:
+  - search
+  - minify:
+      minify_html: true
