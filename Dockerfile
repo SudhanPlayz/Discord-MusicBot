@@ -1,4 +1,4 @@
-FROM node:18-alpine
+FROM node:16-alpine
 
 WORKDIR /usr/src/app
 
@@ -8,6 +8,6 @@ RUN npm install
 
 COPY . .
 
-CMD [ "npm", "run", "deploy" ]
+RUN npm run deploy
 
 CMD [ "node", "index.js" ]
