@@ -38,6 +38,7 @@ const command = new SlashCommand()
 		if (player.twentyFourSeven) {
 			player.queue.clear();
 			player.stop();
+			player.set("autoQueue", false);
 		} else {
 			player.destroy();
 		}

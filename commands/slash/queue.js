@@ -49,7 +49,7 @@ const command = new SlashCommand()
 		
 		if (!player.queue.size || player.queue.size === 0) {
 			let song = player.queue.current;
-			const embed = new MessageEmbed()
+			const queueEmbed = new MessageEmbed()
 				.setColor(client.config.embedColor)
 				.setDescription(`**♪ | Now playing:** [${ song.title }](${ song.uri })`)
 				.addFields(
@@ -77,7 +77,7 @@ const command = new SlashCommand()
 				);
 			
 			await interaction.editReply({
-				embeds: [embed],
+				embeds: [queueEmbed],
 			});
 		} else {
 			let queueDuration = player.queue.duration.valueOf()

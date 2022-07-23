@@ -35,7 +35,7 @@ const command = new SlashCommand()
 			});
 		}
 		
-		let embed = new MessageEmbed().setColor(client.config.embedColor);
+		let autoQueueEmbed = new MessageEmbed().setColor(client.config.embedColor);
 		const autoQueue = player.get("autoQueue");
 		player.set("requester", interaction.guild.me);
 		
@@ -44,7 +44,7 @@ const command = new SlashCommand()
 		} else {
 			player.set("autoQueue", false);
 		}
-		embed
+		autoQueueEmbed
 		  .setDescription(`**Auto Queue is** \`${!autoQueue ? "ON" : "OFF"}\``)
 		  .setFooter({
 		    text: `Related music will ${!autoQueue ? "now be automatically" : "no longer be"} added to the queue.`
@@ -59,7 +59,7 @@ const command = new SlashCommand()
 			}`,
 		);
 		
-		return interaction.reply({ embeds: [embed] });
+		return interaction.reply({ embeds: [autoQueueEmbed] });
 	});
 
 module.exports = command;

@@ -59,10 +59,10 @@ const command = new SlashCommand()
 		player.queue.remove(position);
 		
 		const number = position + 1;
-		let thing = new MessageEmbed()
+		let removeEmbed = new MessageEmbed()
 			.setColor(client.config.embedColor)
 			.setDescription(`Removed track number **${ number }** from queue`);
-		return interaction.editReply({ embeds: [thing] });
+		return interaction.editReply({ embeds: [removeEmbed] });
 	});
 
 module.exports = command;

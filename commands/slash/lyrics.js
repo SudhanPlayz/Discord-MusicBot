@@ -46,7 +46,6 @@ const command = new SlashCommand()
 		}
 		
 		let search = args? args : player.queue.current.title;
-		// Lavalink api for lyrics
 		let url = `https://api.darrennathanael.com/lyrics?song=${ search }`;
 		
 		let lyrics = await fetch(url)
