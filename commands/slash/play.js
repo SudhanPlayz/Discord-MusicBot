@@ -47,12 +47,13 @@ const command = new SlashCommand()
 			}, 2000); //recognizing it's a stage channel?
 		}
 		
-		await interaction.reply({
+		const ret = await interaction.reply({
 			embeds: [
 				new MessageEmbed()
 					.setColor(client.config.embedColor)
 					.setDescription(":mag_right: **Searching...**"),
 			],
+			fetchReply: true,
 		});
 		
 		let query = options.getString("query", true);
@@ -67,7 +68,7 @@ const command = new SlashCommand()
 			if (!player.queue.current) {
 				player.destroy();
 			}
-			return interaction
+			await interaction
 				.editReply({
 					embeds: [
 						new MessageEmbed()
@@ -82,7 +83,7 @@ const command = new SlashCommand()
 			if (!player.queue.current) {
 				player.destroy();
 			}
-			return interaction
+			await interaction
 				.editReply({
 					embeds: [
 						new MessageEmbed()
@@ -136,7 +137,7 @@ const command = new SlashCommand()
 				player.queue.previous = player.queue.current;
 			}
 			
-			return interaction
+			await interaction
 				.editReply({ embeds: [addQueueEmbed] })
 				.catch(this.warn);
 		}
@@ -167,10 +168,13 @@ const command = new SlashCommand()
 					false,
 				);
 			
-			return interaction
+			await interaction
 				.editReply({ embeds: [playlistEmbed] })
 				.catch(this.warn);
 		}
+		
+		if (ret) setTimeout(() => ret.delete().catch(this.warn), 20000);
+		return ret;
 	});
 
 module.exports = command;
