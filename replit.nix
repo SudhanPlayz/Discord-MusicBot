@@ -1,6 +1,6 @@
 { pkgs }: {
 	deps = [
 		pkgs.wget
-    		pkgs.nodejs_16x
+    		pkgs.nodejs-16_x
 	];
 }
