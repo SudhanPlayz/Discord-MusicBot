@@ -69,21 +69,6 @@ module.exports = async (client, interaction) => {
 		const currentSong = player.queue.current;
 		const nextSong = player.queue[0]
 
-		if (!previousSong
-			|| previousSong === currentSong
-			|| previousSong === nextSong) {
-			const msg = await interaction.channel.send({
-				embeds: [
-					new MessageEmbed()
-					.setColor("RED")
-					.setDescription("There is no previous song in the queue."),
-				],
-			});
-			setTimeout(() => {
-				msg.delete();
-			}, 5000);
-			return interaction.deferUpdate();
-		}
 		if (previousSong !== currentSong && previousSong !== nextSong) {
 			player.queue.splice(0, 0, currentSong)
 			player.play(previousSong);
@@ -120,7 +105,26 @@ module.exports = async (client, interaction) => {
 	}
 
 	if (property === "Next") {
-		player.stop();
+		if((player.queue.totalSize === 0 || !player.queue.totalSize) || 
+		   	(player.trackRepeat || player.queueRepeat)) {
+				const msg = await interaction.channel.send({
+					embeds: [
+					  new MessageEmbed()
+					    .setColor(client.config.embedColor)
+					    .setAuthor({
+					      name: "The queue has ended!",
+					      iconURL: client.config.iconURL,
+					    })
+					    .setFooter({ text: "Queue ended at" })
+					    .setTimestamp(),
+					],
+				      });
+				      setTimeout(() => {
+					msg.delete();
+				      }, 6000);
+		      		player.destroy();
+		      		player.setNowplayingMessage(client, null);
+			} else player.stop();
 		return interaction.deferUpdate();
 	}
 
@@ -133,7 +137,7 @@ module.exports = async (client, interaction) => {
 		} else {
 			player.setTrackRepeat(true);
 		}
-		client.warn(`Player: ${ player.options.guild } | Successfully toggled loop the player`);
+		client.warn(`Player: ${player.options.guild} | Successfully toggled loop ${player.trackRepeat ? "on" : player.queueRepeat ? "queue on" : "off"} the player`);
 
 		interaction.update({
 			components: [client.createController(player.options.guild, player)],
