@@ -104,7 +104,7 @@ module.exports = async (client, oldState, newState) => {
 				if (
 					player.members === 0 &&
 					!player.paused &&
-					player.playing
+					player.playing || (player.trackRepeat || player.queueRepeat)
 				) {
 					player.pause(true);
 					
