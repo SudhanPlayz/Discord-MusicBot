@@ -23,9 +23,9 @@ module.exports = {
 	nodes: [
 		{
 			identifier: "Main Node", //- Used for indentifier in stats commands.
-			host: "116.202.85.52", //- The host name or IP of the lavalink server.
-			port: 25726, // The port that lavalink is listening to. This must be a number!
-			password: "animex3", //- The password of the lavalink server.
+			host: "", //- The host name or IP of the lavalink server.
+			port: 80, // The port that lavalink is listening to. This must be a number!
+			password: "", //- The password of the lavalink server.
 			retryAmount: 200, //- The amount of times to retry connecting to the node if connection got dropped.
 			retryDelay: 40, //- Delay between reconnect attempts if connection is lost.
 			secure: false, //- Can be either true or false. Only use true if ssl is enabled!
