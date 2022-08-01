@@ -1,2 +1,2 @@
 run = "bash ./kickstartReplit.sh"
-language = "Nix"
+language = "Bash"
