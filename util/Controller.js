@@ -120,7 +120,11 @@ module.exports = async (client, interaction) => {
 	}
 
 	if (property === "Next") {
-		player.stop();
+		if((player.queue.totalSize === 0 || !player.queue.totalSize) || 
+		   	(player.trackRepeat || player.queueRepeat)) {
+		      		player.destroy();
+		      		player.setNowplayingMessage(client, null);
+			} else player.stop();
 		return interaction.deferUpdate();
 	}
 
@@ -133,7 +137,7 @@ module.exports = async (client, interaction) => {
 		} else {
 			player.setTrackRepeat(true);
 		}
-		client.warn(`Player: ${ player.options.guild } | Successfully toggled loop the player`);
+		client.warn(`Player: ${player.options.guild} | Successfully toggled loop ${player.trackRepeat ? "on" : player.queueRepeat ? "queue on" : "off"} the player`);
 
 		interaction.update({
 			components: [client.createController(player.options.guild, player)],
