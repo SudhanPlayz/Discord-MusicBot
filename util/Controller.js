@@ -122,6 +122,21 @@ module.exports = async (client, interaction) => {
 	if (property === "Next") {
 		if((player.queue.totalSize === 0 || !player.queue.totalSize) || 
 		   	(player.trackRepeat || player.queueRepeat)) {
+				const msg = await interaction.channel.send({
+					embeds: [
+					  new MessageEmbed()
+					    .setColor(client.config.embedColor)
+					    .setAuthor({
+					      name: "The queue has ended!",
+					      iconURL: client.config.iconURL,
+					    })
+					    .setFooter({ text: "Queue ended at" })
+					    .setTimestamp(),
+					],
+				      });
+				      setTimeout(() => {
+					msg.delete();
+				      }, 6000);
 		      		player.destroy();
 		      		player.setNowplayingMessage(client, null);
 			} else player.stop();
