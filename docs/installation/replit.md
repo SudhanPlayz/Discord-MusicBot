@@ -15,20 +15,18 @@
 
 > We have changed the way v5 is installed, we now use and utilise the nix environment.
 
-1. In replit, [create a blank repl](https://replit.com/@replit/Blank-Repl) 
+First of all, click this button
+[![Run on Repl.it](https://repl.it/badge/github/SudhanPlayz/Discord-MusicBot)](https://repl.it/github/SudhanPlayz/Discord-MusicBot)
 
-1. Open your shell. Git clone the v5 branch using the command 
-```
-rm .replit replit.nix README.md; rm -rf .cache && git clone -b v5 https://github.com/sudhanplayz/discord-musicbot .
-```
+Once finished cloning, ignore the errors, the default master branch dont use nix so its inevitable
 
-> If you're wondering why there's `rm -rf .cache`, it's to remove the `.cache` folder and to make the directory clean for the second command
+1. Go to Commands => Version Control, in the branch dropdown, select `v5`. Wait until it's done and the version control buttons are clickable again.
 
-3. Fill your config.js. For lavalink, go to [this link](https://lavalink-list.darrennathanael.com)
+1. Fill your config.js. For lavalink, go to [this link](https://lavalink-list.darrennathanael.com)
 
-4. Now,all your files are created. You can now run `bash ./kickstartReplit.sh` in either console or shell
+1. Now,all your files are created. You can now run `bash ./kickstartReplit.sh` in shell
 
-Wait for the installation and then your bot is now running! The next time you run your bot,you just need to type `node index.js` in your shell!
+1. Once the installation of `kickstartReplit.sh` is done, you can now click the run button or type `node index.js` in your console
 
 ## Final
 
@@ -40,7 +38,10 @@ Once done you can restart your bot, then invite it using this url template. `htt
 
 ## Deploying slash commands
 
-This should already be done in step 4 on installation but if you don't have the `applications.commands` scope, You can deploy slash commands using `npm run deploy`
+If you chose `y` on step 3 of the installation process then it will already be deployed. If it's still not please deploy slash commands using `npm run deploy`, you can run it on the shell. 
+Do remember to give your bot applications.commands scope!
+
+
 
 **SIDE NOTES**:
 - If you're running the version 4 of the bot, please kick it and reinvite using the invite link stated in [final](#final)
