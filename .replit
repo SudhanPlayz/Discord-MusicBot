@@ -1,7 +1,3 @@
-
-run = "bash ./kickstartReplit.sh"
-language = "Nix"
-
 run = "node index.js" 
 language = "Bash"
 
