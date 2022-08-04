@@ -11,5 +11,21 @@ export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || pr
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
 nvm install 16
 npm i
+
 node index.js
 fi
+
+
+echo Do you want me to deploy slash commands for you? y/n
+
+read slashanswer
+
+if [ "$slashanswer" == "y" ]; then
+  echo Deploying slash commands
+  npm run deploy
+fi
+
+node index.js
+
+
+
