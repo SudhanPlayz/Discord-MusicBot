@@ -108,17 +108,22 @@ const command = new SlashCommand()
 					`[${ res.tracks[0].title }](${ res.tracks[0].uri })` || "No Title",
 				)
 				.setURL(res.tracks[0].uri)
-				// !TODO: Changes addField to a nondepricated value thing.
-				.addField("Added by", `<@${ interaction.user.id }>`, true)
-				.addField(
-					"Duration",
-					res.tracks[0].isStream
-						? `\`LIVE\``
-						: `\`${ client.ms(res.tracks[0].duration, {
-							colonNotation: true,
-							secondsDecimalDigits: 0,
-						}) }\``,
-					true,
+				.addFields(
+					{
+						name: "Added by",
+						value: `<@${interaction.user.id}>`,
+						inline: true
+					},
+					{
+						name: "Duration",
+						value: res.tracks[0].isStream
+						   ? `\`LIVE :red_circle: \``
+						   : `\`${client.ms(res.tracks[0].duration, {
+						      colonNotation: true,
+						      secondsDecimalDigits: 0,
+							})}\``,
+						 inline: true
+					}
 				);
 			
 			try {
@@ -130,11 +135,11 @@ const command = new SlashCommand()
 			}
 			
 			if (player.queue.totalSize > 1) {
-				addQueueEmbed.addField(
-					"Position in queue",
-					`${ player.queue.size }`,
-					true,
-				);
+				addQueueEmbed.addFields({
+					name: "Position in queue",
+					value: `${player.queue.size}`,
+					inline: true
+			      });
 			} else {
 				player.queue.previous = player.queue.current;
 			}
@@ -163,11 +168,17 @@ const command = new SlashCommand()
 				})
 				.setThumbnail(res.tracks[0].thumbnail)
 				.setDescription(`[${ res.playlist.name }](${ query })`)
-				.addField("Enqueued", `\`${ res.tracks.length }\` songs`, false)
-				.addField(
-					"Playlist duration",
-					`\`${ client.ms(res.playlist.duration, { colonNotation: true, secondsDecimalDigits: 0 }) }\``,
-					false,
+				.addFields(
+					{
+						name: "Enqueued",
+						value: `\`${res.tracks.length}\` songs`,
+						inline: true,
+					},
+					{
+						name: "Playlist duration",
+						value: `\`${client.ms(res.playlist.duration, { colonNotation: true, secondsDecimalDigits: 0 })}\``,
+						inline: true,
+					}
 				);
 			
 			await interaction
