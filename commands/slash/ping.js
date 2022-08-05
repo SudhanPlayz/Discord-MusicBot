@@ -45,15 +45,17 @@ const command = new SlashCommand()
 			embeds: [
 				new MessageEmbed()
 					.setTitle("🏓 | Pong!")
-					.addField(
-						"API Latency",
-						`\`\`\`yml\n${ apiState } | ${ apiPing }ms\`\`\``,
-						true,
-					)
-					.addField(
-						"Bot Latency",
-						`\`\`\`yml\n${ botState } | ${ botPing }ms\`\`\``,
-						true,
+					.addFields(
+						{
+							name : "API Latency",
+							value: `\`\`\`yml\n${ apiState } | ${ apiPing }ms\`\`\``,
+							inline: true
+						},
+						{
+							name: "Bot Latency",
+							value: `\`\`\`yml\n${ botState } | ${ botPing }ms\`\`\``,
+							inline: true
+						}
 					)
 					.setColor(client.config.embedColor)
 					.setFooter({
