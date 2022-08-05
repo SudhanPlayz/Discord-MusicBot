@@ -44,7 +44,7 @@ const command = new SlashCommand()
 						interaction.guild.me.voice.setRequestToSpeak(true);
 					}
 				}
-			}, 2000); //recognizing it's a stage channel?
+			}, 2000); // Need this because discord api is buggy asf, and without this the bot will not request to speak on a stage - Darren
 		}
 		
 		const ret = await interaction.reply({
@@ -108,6 +108,7 @@ const command = new SlashCommand()
 					`[${ res.tracks[0].title }](${ res.tracks[0].uri })` || "No Title",
 				)
 				.setURL(res.tracks[0].uri)
+				// !TODO: Changes addField to a nondepricated value thing.
 				.addField("Added by", `<@${ interaction.user.id }>`, true)
 				.addField(
 					"Duration",
@@ -115,6 +116,7 @@ const command = new SlashCommand()
 						? `\`LIVE\``
 						: `\`${ client.ms(res.tracks[0].duration, {
 							colonNotation: true,
+							secondsDecimalDigits: 0,
 						}) }\``,
 					true,
 				);
@@ -164,7 +166,7 @@ const command = new SlashCommand()
 				.addField("Enqueued", `\`${ res.tracks.length }\` songs`, false)
 				.addField(
 					"Playlist duration",
-					`\`${ client.ms(res.playlist.duration, { colonNotation: true }) }\``,
+					`\`${ client.ms(res.playlist.duration, { colonNotation: true, secondsDecimalDigits: 0 }) }\``,
 					false,
 				);
 			
