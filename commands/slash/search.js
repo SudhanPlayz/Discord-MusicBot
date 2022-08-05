@@ -148,15 +148,21 @@ const command = new SlashCommand()
 									`[${ trackForPlay?.tracks[0]?.title }](${ trackForPlay?.tracks[0].uri })` ||
 									"No Title",
 								)
-								.addField("Added by", `<@${ interaction.user.id }>`, true)
-								.addField(
-									"Duration",
-									res.tracks[0].isStream
-										? `\`LIVE\``
-										: `\`${ client.ms(res.tracks[0].duration, {
-											colonNotation: true,
-										}) }\``,
-									true,
+								.addFields(
+								 	{
+								    		name: "Added by",
+										value: `<@${interaction.user.id}>`,
+										inline: true
+								  	},
+								  	{
+										 name: "Duration",
+										 value: res.tracks[0].isStream
+										      ? `\`LIVE :red_circle:\``
+										      : `\`${client.ms(res.tracks[0].duration, {
+											  colonNotation: true,
+											})}\``,
+										 inline: true
+								  	}
 								)
 								.setColor(client.config.embedColor),
 						],
