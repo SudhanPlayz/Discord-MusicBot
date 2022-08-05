@@ -1,9 +1,5 @@
-# Warning
-This docs is for the v5 version of the discord bot, please note if you are using v4 you'll need to follow https://github.com/sudhanPlayz/discord-MusicBot/wiki instead.
-# Welcome to Discord-MusicBot
+# Welcome to Discord-MusicBot Official Docs!
 
-An advanced discord music bot, supports Spotify, Soundcloud, YouTube with Shuffling, Volume Control and Web Dashboard with Slash Commands support!
-
-## What does this docs contains?
-
-This docs contains how to install on servers, frequently asked questions and how to solve common problems.
+# TODO! DO NOT MERGE TO LIVE WIKI BRANCH!!!
+[v4 Docs](https://alinktoinstallation){ .md-button }
+[v5 Docs](https://alinktoinstallation){ .md-button }

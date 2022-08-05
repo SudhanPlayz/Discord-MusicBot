@@ -1,5 +1,5 @@
 site_name: Discord MusicBot
-site_url: https://musicbot.sudhan.tech
+site_url: https://musicbot.darrenofficial.com
 site_author: SudhanPlayz
 site_description: >-
   An advanced discord music bot, supports Spotify, Soundcloud, YouTube with Shuffling, Volume Control
@@ -32,8 +32,8 @@ theme:
     primary: "deep purple"
     accent: "indigo"
   font:
-    text: "Roboto"
-    code: "Fira Mono"
+    text: "Red Hat Text"
+    code: "Roboto Mono"
 
 markdown_extensions:
   - admonition
@@ -55,8 +55,9 @@ extra:
       link: "https://github.com/SudhanPlayz"
   generator: false
 
-copyright: Copyright &copy; 2020 Sudhan
-
+copyright: >
+  Copyright &copy; Sudhan
+  Copyright &copy; <a href="https://darrennathanael.com">Darren Nathanael</a>
 
 plugins:
   - search
