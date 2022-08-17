@@ -117,7 +117,7 @@ const command = new SlashCommand()
           {
             name: "Duration",
             value: res.tracks[0].isStream
-              ? `\`LIVE :red_circle: \``
+              ? `\`LIVE 🔴 \``
               : `\`${client.ms(res.tracks[0].duration, {
                   colonNotation: true,
                   secondsDecimalDigits: 0,
