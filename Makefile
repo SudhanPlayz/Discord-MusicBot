@@ -24,7 +24,7 @@ release-docker: # Release to dockerHub
 	set -ex
 	npm install
 	docker build -t darrenofficial/dmusicbot:v4 .
-	@echo -e "\n\n💫 All Good. Now do: docker push darrenofficial/dmusicbot:v4
+	@echo -e "\n\n💫 All Good. Now do: docker push darrenofficial/dmusicbot:v4"
 
 .PHONY: help
 help:
