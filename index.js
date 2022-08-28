@@ -5,7 +5,7 @@ const client = new DiscordMusicBot();
 
 if (process.env.REPL_ID) {
   console.log(
-    "Replit system detected, initiating special `unhandledRejection` event listener"
+    "MTAxMzUzNTkwMjI1MDg0ODMyNw.G0792K._5QmQKH0gD9hLPFcoLEg4axdRBG0ECAf0u5T_A"
   );
   process.on("unhandledRejection", (reason, promise) => {
     promise.catch((err) => {
