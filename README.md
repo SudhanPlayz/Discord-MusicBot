@@ -20,6 +20,61 @@
 ## 📝 | Tutorial
 
 Soon
+## 🐳 | Docker Compose Tutorial
+1. Clone this repo and switch to v5 branch
+```
+git clone https://github.com/SudhanPlayz/Discord-MusicBot.git
+git checkout v5
+```
+2. Edit Dockerfile to use v16.16.0 node 
+```
+nano Dockerfile
+
+########################
+
+FROM node:16.16.0-alpine
+
+WORKDIR /usr/src/app
+
+COPY package*.json ./
+
+RUN npm install
+
+COPY . .
+
+RUN npm run deploy
+
+CMD [ "node", "index.js" ]
+```
+3. Build your Dockerfile
+```
+docker build <path to bot directory> 
+```
+4. Fill config.js with your tokens and in the lavalink setings set the host as ``music-lavalink`` and the password as ``bonsoirDocker``
+```
+	nodes: [
+	  {
+		identifier: "Main Node", //- Used for indentifier in stats commands.
+		host: "music-lavalink", //- The host name or IP of the lavalink server.
+		port: 2333, // The port that lavalink is listening to. This must be a number!
+		password: "bonsoirDocker", //- The password of the lavalink server.
+		retryAmount: 200, //- The amount of times to retry connecting to the node if connection got dropped.
+		retryDelay: 40, //- Delay between reconnect attempts if connection is lost.
+		secure: false, //- Can be either true or false. Only use true if ssl is enabled!
+	  },
+	],
+```
+5. (Optional) If you want to use dashboard you need to edit the ``docker-compose.yml`` file to expose the port you set for the API and Dashboard
+```
+services:
+  discord-musicbot:
+    build: .
+    ports:
+      - "3000:3000"
+```
+6. Run ``docker compose up -d`` and you have it running 
+
+        
 
 ## 📝 | [Support Server](https://discord.gg/sbySMS7m3v)
 
