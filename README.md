@@ -50,7 +50,7 @@ CMD [ "node", "index.js" ]
 ```
 docker build <path to bot directory> 
 ```
-4. Fill config.js with your tokens and in the lavalink setings set the host as ``music-lavalink`` and the password as ``bonsoirDocker``
+4. Fill config.js with your tokens and in the lavalink settings set the host as ``music-lavalink`` and the password as ``bonsoirDocker``
 ```
 	nodes: [
 	  {
@@ -64,7 +64,7 @@ docker build <path to bot directory>
 	  },
 	],
 ```
-5. (Optional) If you want to use dashboard you need to edit the ``docker-compose.yml`` file to expose the port you set for the API and Dashboard
+5. (Optional) If you want to use dashboard, you need to edit the ``docker-compose.yml`` file to expose the port you set for the API and Dashboard
 ```
 services:
   discord-musicbot:
