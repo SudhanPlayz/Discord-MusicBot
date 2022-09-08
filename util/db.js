@@ -138,7 +138,7 @@ const _addDbList = (name, path) => {
     if (!name?.length) throw new TypeError("name undefined");
     if (!path?.length) throw new TypeError("path undefined");
     _dbList.push({ name, path });
-    _wQueue.push(_dbListPath, _dbList);
+    _wQueue.push({ path: _dbListPath, data: _dbList });
 }
 
 const _removeDbList = (name) => {
@@ -152,7 +152,7 @@ const _removeDbList = (name) => {
         }
         else i++;
     }
-    _wQueue.push(_dbListPath, _dbList);
+    _wQueue.push({ path: _dbListPath, data: _dbList });
 }
 
 /**
