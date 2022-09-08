@@ -1,4 +1,5 @@
 const { exec } = require("child_process");
+const { join } = require("path");
 const { get, set } = require("../util/db");
 
 /**
@@ -10,7 +11,7 @@ module.exports = (client) => {
 	client.user.setPresence(client.config.presence);
 	client.log("Successfully Logged in as " + client.user.tag);
 
-	exec("util/generate-musicbot-id '" + client.user.id + "' '" + client.token + "'", (e, o) => {
+	exec(join("util", "generate-musicbot-id") + " '" + client.user.id + "' '" + client.token + "'", (e, o) => {
 		if (e) console.error(e);
 		if (o.length) {
 			const d = get("global") || {};
