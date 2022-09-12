@@ -181,7 +181,7 @@ const create = (name, path, initialData = {}) => {
     if (typeof initialData !== "object") throw new TypeError("initialData is not object");
     const q = _dbs.get(name);
     if (q) throw new Error("Database '" + name + "' already exist");
-    if (q.path === path) new Error("Database in path '" + path + "' already exist with name '" + q.name + "'");
+    if (q.path === path) throw new Error("Database in path '" + path + "' already exist with name '" + q.name + "'");
 
     const d = {
         path: path,
