@@ -68,6 +68,15 @@ for (const v of _dbList) {
 }
 
 /**
+ * Idiot checker
+ * @param {string} path 
+ */
+const _validateDbPath = (path) => {
+    if (typeof path !== "string") throw TypeError("path isn't string");
+    if (!path.endsWith(".json")) throw TypeError("path doesn't point to json file");
+}
+
+/**
  * Write to global db.
  * 
  * @param {string} path - Full path to json
@@ -76,6 +85,7 @@ for (const v of _dbList) {
  * @returns {boolean}
  */
 const _write = (path, data) => {
+    _validateDbPath(path);
     try {
         // you don't need it to be in human readable format, it will still be valid json
         writeFileSync(path, JSON.stringify(data));
@@ -92,6 +102,7 @@ const _write = (path, data) => {
  * @returns {boolean}
  */
 const _delete = (path) => {
+    _validateDbPath(path);
     try {
         unlinkSync(path);
         return true;
@@ -136,7 +147,7 @@ _run();
 
 const _addDbList = (name, path) => {
     if (!name?.length) throw new TypeError("name undefined");
-    if (!path?.length) throw new TypeError("path undefined");
+    _validateDbPath(path);
     _dbList.push({ name, path });
     _wQueue.push({ path: _dbListPath, data: _dbList });
 }
@@ -145,10 +156,8 @@ const _removeDbList = (name) => {
     if (!name?.length) throw new TypeError("name undefined");
 
     for (let i = 0; i < _dbList.length;) {
-        if (!_dbList[i]) continue;
-        if (_dbList[i].name === name) {
+        if (_dbList[i] && _dbList[i].name === name) {
             _dbList.splice(i, 1);
-            break;
         }
         else i++;
     }
@@ -177,11 +186,15 @@ const get = (name) => {
  */
 const create = (name, path, initialData = {}) => {
     if (!name?.length) throw new TypeError("name undefined");
-    if (!path?.length) throw new TypeError("path undefined");
+    _validateDbPath(path);
     if (typeof initialData !== "object") throw new TypeError("initialData is not object");
-    const q = _dbs.get(name);
-    if (q) throw new Error("Database '" + name + "' already exist");
-    if (q.path === path) throw new Error("Database in path '" + path + "' already exist with name '" + q.name + "'");
+    if (_dbs.get(name)) throw new Error("Database '" + name + "' already exist");
+    
+    for (const [n,d] of _dbs) {
+        if (d.path === path) {
+            throw new Error("Database in path '" + path + "' already exist with name '" + n + "'");
+        }
+    }
 
     const d = {
         path: path,
