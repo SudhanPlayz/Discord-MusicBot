@@ -22,7 +22,7 @@ const { readdirSync, mkdirSync } = require("fs");
 const { join } = require("path");
 const { get, set, create, remove } = require("./db");
 
-const _guildDbDir = ".guild_dbs";
+const _guildDbDir = join(__dirname,"..",".guild_dbs");
 
 try {
     readdirSync(_guildDbDir);

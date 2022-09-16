@@ -2,6 +2,8 @@
  * This only implement global database.
  * Bugs are expected, contact Shasha on discord or fix it yourself.
  * TODO: Implement guild database, store each guild data on its own json file.
+ * 
+ * CAUTION: Beware on providing path, all path to json file must be absolute path!!!
  */
 
 "use strict";
@@ -29,12 +31,12 @@ try {
 /**
  * @typedef {object} DbList
  * @property {string} name - Database name
- * @property {path} path - Full path to json
+ * @property {path} path - Absolute path to json
  */
 
 /**
  * @typedef {object} DbData
- * @property {string} path - Full path to json
+ * @property {string} path - Absolute path to json
  * @property {object} data - Json to write
  */
 
@@ -79,7 +81,7 @@ const _validateDbPath = (path) => {
 /**
  * Write to global db.
  * 
- * @param {string} path - Full path to json
+ * @param {string} path - Absolute path to json
  * @param {object} data - Json to write
  * 
  * @returns {boolean}
@@ -98,7 +100,7 @@ const _write = (path, data) => {
 
 /**
  * Delete database of path
- * @param {string} path - Delete path
+ * @param {string} path - Absolute path to delete
  * @returns {boolean}
  */
 const _delete = (path) => {
@@ -179,7 +181,7 @@ const get = (name) => {
 /**
  * Create new database with name
  * @param {string} name - Database name
- * @param {string} path - Path to json file
+ * @param {string} path - Absolute path to json file
  * @param {object} initialData - Initial value
  * 
  * @returns {boolean}
