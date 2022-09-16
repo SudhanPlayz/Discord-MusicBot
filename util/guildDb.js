@@ -1,3 +1,21 @@
+/**
+ * ============================ MODULE SAFETY USE ============================
+ * 
+ * Function should only be `getter` and `setter` for each guild data:
+ * 
+ * getter: Call _getOrCreateGuildDb() and return a specific property value if
+ *         exist (not undefined or null), else return a default value.
+ * 
+ * setter: Call _getOrCreateGuildDb() and modify a specific property of the
+ *         returned value and call set() to save.
+ * 
+ * For space management we only need one function to delete the json file
+ * based on database name, the deleteGuildDatabase().
+ * 
+ * We don't need a public createGuildDatabase function as the `getter` and
+ * `setter` should create it if it doesn't exist.
+ */
+
 "use strict";
 
 const { readdirSync, mkdirSync } = require("fs");
@@ -48,6 +66,15 @@ const _deleteGuildDb = (guild_id) => {
 }
 
 /**
+ * Wipe and delete all guild's data
+ * @param {string} guild_id 
+ * @returns {boolean}
+ */
+const deleteGuildDatabase = (guild_id) => {
+    return _deleteGuildDb(guild_id);
+}
+
+/**
  * Set guild dj-only mode
  * @param {string} guild_id 
  * @param {boolean} djOnly 
@@ -75,5 +102,6 @@ const getDjOnly = (guild_id) => {
 module.exports = {
     setDjOnly,
     getDjOnly,
+    deleteGuildDatabase,
     // new export here
 }
