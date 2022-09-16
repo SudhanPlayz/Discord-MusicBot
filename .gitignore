@@ -1,3 +1,8 @@
+# Actual ignored paths for this repo
+db.json
+dbList.json
+.guild_dbs/
+
 # Logs
 logs
 *.log
