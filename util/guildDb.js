@@ -49,7 +49,7 @@ const _getOrCreateGuildDb = (guild_id) => {
     try {
         d = get(dbName);
     } catch (e) {
-        if (r.message.startsWith("No database with name ")) {
+        if (e.message.startsWith("No database with name ")) {
             create(dbName,_getGuildDbPath(guild_id));
             d = {};
         } else {
