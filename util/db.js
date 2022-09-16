@@ -239,7 +239,7 @@ const remove = (name) => {
 
     _dQueue.push(d.path);
     _removeDbList(name);
-    return !!_dbs.delete(name);
+    return _dbs.delete(name);
 }
 
 module.exports = {

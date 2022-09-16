@@ -5,18 +5,14 @@ const { join } = require("path");
 const { get, set, create, remove } = require("./db");
 
 const _guildDbDir = ".guild_dbs";
-let _guildDbDirExist = false;
 
 try {
     readdirSync(_guildDbDir);
-    _guildDbDirExist = true;
     } catch (e) {
     try {
         mkdirSync(_guildDbDir);
-        _guildDbDirExist = true;
     } catch (e) {
-        console.error("[ERROR] Can't create guild database folder, module will not work.");
-        _guildDbDirExist = false;
+        console.error("[ERROR] Can't create guild database folder, module might won't work properly.");
     }
 }
 
@@ -24,7 +20,7 @@ const _getGuildDbName = (guild_id) => {
     return "guild-"+guild_id;
 }
 
-const _createGuildDbPath = (guild_id) => {
+const _getGuildDbPath = (guild_id) => {
     return join(_guildDbDir, _getGuildDbName(guild_id)+".json");
 }
 
@@ -36,7 +32,7 @@ const _getOrCreateGuildDb = (guild_id) => {
         d = get(dbName);
     } catch (e) {
         if (r.message.startsWith("No database with name ")) {
-            create(dbName,_createGuildDbPath(guild_id));
+            create(dbName,_getGuildDbPath(guild_id));
             d = {};
         } else {
             console.error("[ERROR] Unexpected error:");
@@ -44,6 +40,11 @@ const _getOrCreateGuildDb = (guild_id) => {
         }
     }
     return d;
+}
+
+const _deleteGuildDb = (guild_id) => {
+    const dbName = _getGuildDbName(guild_id);
+    return remove(dbName);
 }
 
 /**
@@ -71,8 +72,8 @@ const getDjOnly = (guild_id) => {
 
 
 
-module.exports = _guildDbDirExist ? {
+module.exports = {
     setDjOnly,
     getDjOnly,
     // new export here
-} : {}
+}
