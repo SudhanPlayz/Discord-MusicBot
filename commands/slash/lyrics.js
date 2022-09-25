@@ -46,7 +46,7 @@ const command = new SlashCommand()
 		}
 		
 		let search = args? args : player.queue.current.title;
-		let url = `https://api.darrennathanael.com/lyrics?song=${ search }`;
+		let url = `https://api.popcat.xyz/lyrics?song=${ search }`;
 		
 		let lyrics = await fetch(url)
 			.then((res) => {
@@ -70,9 +70,8 @@ const command = new SlashCommand()
 		let text = lyrics.lyrics;
 		let lyricsEmbed = new MessageEmbed()
 			.setColor(client.config.embedColor)
-			.setTitle(`${ lyrics.full_title }`)
-			.setURL(lyrics.url)
-			.setThumbnail(lyrics.thumbnail)
+			.setTitle(`${ lyrics.title }`)
+			.setThumbnail(lyrics.image)
 			.setDescription(text);
 		
 		if (text.length > 4096) {
