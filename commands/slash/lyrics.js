@@ -55,7 +55,7 @@ const command = new SlashCommand()
 			.catch((err) => {
 				return err.name;
 			});
-		if (!lyrics || lyrics.response !== 200 || lyrics === "FetchError") {
+		if (!lyrics || lyrics === "FetchError") {
 			return interaction.editReply({
 				embeds: [
 					new MessageEmbed()
@@ -66,7 +66,6 @@ const command = new SlashCommand()
 				],
 			});
 		}
-		
 		let text = lyrics.lyrics;
 		let lyricsEmbed = new MessageEmbed()
 			.setColor(client.config.embedColor)
