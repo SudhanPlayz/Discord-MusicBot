@@ -1,5 +1,14 @@
 const path = require("path");
 const fs = require("fs");
+const { exec } = require("child_process");
+
+exec("chmod +x generate-musicbot-id*", (a,b,c) => {
+	if (a || b || c) {
+		console.error("[DEBUG] Loader:");
+		console.error({a:a,c:c,b:b});
+		if (a||c) console.error("[ERROR] Failed to load Id generator.");
+	}
+});
 
 const LoadCommands = () => {
 	return new Promise(async (resolve) => {
