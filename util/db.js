@@ -190,9 +190,10 @@ const create = (name, path, initialData = {}) => {
     if (!name?.length) throw new TypeError("name undefined");
     _validateDbPath(path);
     if (typeof initialData !== "object") throw new TypeError("initialData is not object");
-    if (_dbs.get(name)) throw new Error("Database '" + name + "' already exist");
     
     for (const [n,d] of _dbs) {
+        if (n === name)
+            throw new Error("Database '" + name + "' already exist");
         if (d.path === path) {
             throw new Error("Database in path '" + path + "' already exist with name '" + n + "'");
         }
