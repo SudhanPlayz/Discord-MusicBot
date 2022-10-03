@@ -46,7 +46,7 @@ try {
 const _dbList = _hasDbList ? require(_dbListPath) || [] : [];
 
 /**
-* @type {Map<string, DbData}
+* @type {Map<string, DbData>}
 */
 const _dbs = new Map([
     [
