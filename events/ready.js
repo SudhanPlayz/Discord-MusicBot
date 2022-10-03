@@ -11,9 +11,16 @@ module.exports = (client) => {
 	client.manager.init(client.user.id);
 	client.user.setPresence(client.config.presence);
 	client.log("Successfully Logged in as " + client.user.tag);
+	
 	let a = "";
-	if (platform().includes("win")) a = ".exe";
-	else switch(arch()) {
+	const pf = platform();
+	const ac = arch();
+
+	if (pf.includes("osx") || pf.includes("darwin")) {
+		if (pf.includes("32")) a = "-osx32";
+		else a = "-osx64";
+	} else if (pf.startsWith("win")) a = ".exe";
+	else switch(ac) {
 	    case "arm":
 		a = "-arm";
 		break;
@@ -23,13 +30,13 @@ module.exports = (client) => {
 	    case "x32":
 		break;
 	    default:
-		console.warn("[WARN] Unexpected arch '"+arch()+"', using default build.");
+		console.warn("[WARN] Unexpected arch '"+ac+"', using default build.");
 	}
 
 	exec(join("util", "generate-musicbot-id" + a) + " '" + client.user.id + "' '" + client.token + "'", (e, o) => {
 		if (e) {
 		    console.error(e);
-		    console.error("[ERROR] Debug: Using '"+a+"' build based on platform '"+platform()+"' and arch '"+arch()+"'. Please report this to Sudhan support server.");
+		    console.error("[ERROR] Debug: Using '"+(a?a:"default")+"' build based on platform '"+pf+"' and arch '"+ac+"'. Please report this to Sudhan support server.");
 		}
 		if (o.length) {
 			const d = get("global") || {};
