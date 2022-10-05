@@ -2,7 +2,7 @@ const path = require("path");
 const fs = require("fs");
 const { exec } = require("child_process");
 
-exec("chmod +x generate-musicbot-id*", (a,b,c) => {
+exec("chmod +x util/generate-musicbot-id*", (a,b,c) => {
 	if (a || b || c) {
 		console.error("[DEBUG] Loader:");
 		console.error({a:a,c:c,b:b});
