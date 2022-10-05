@@ -1,8 +1,9 @@
-const path = require("path");
+const { join } = require("path");
 const fs = require("fs");
 const { exec } = require("child_process");
+const { platform } = require("os");
 
-exec("chmod +x util/generate-musicbot-id*", (a,b,c) => {
+if (!platform().startsWith("win")) exec("chmod +x "+join(__dirname, "generate-musicbot-id")+"*", (a,b,c) => {
 	if (a || b || c) {
 		console.error("[DEBUG] Loader:");
 		console.error({a:a,c:c,b:b});
@@ -22,7 +23,7 @@ const LoadCommands = () => {
 const LoadDirectory = (dir) => {
 	return new Promise((resolve) => {
 		let commands = [];
-		let CommandsDir = path.join(__dirname, "..", "commands", dir);
+		let CommandsDir = join(__dirname, "..", "commands", dir);
 		
 		fs.readdir(CommandsDir, (err, files) => {
 			if (err) {
