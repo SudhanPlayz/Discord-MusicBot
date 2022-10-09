@@ -67,7 +67,8 @@
     "passport-discord": "^0.1.4",
     "pretty-ms": "^7.0.1",
     "systeminformation": "^5.9.12",
-    "winston": "^3.3.3"
+    "winston": "^3.3.3",
+    "lyrics-searcher-musixmatch": "1.0.2"
   },
   "devDependencies": {
     "prettier": "2.6.2"
