@@ -1,4 +1,3 @@
-86% penyimpanan digunakan … Anda dapat mengosongkan ruang penyimpanan atau mendapatkan penyimpanan ekstra untuk Drive, Gmail, dan Google Foto.
 const SlashCommand = require("../../lib/SlashCommand");
 const { MessageActionRow, MessageButton, MessageEmbed } = require("discord.js");
 const fetch = require("node-fetch");
