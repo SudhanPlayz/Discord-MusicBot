@@ -1,10 +1,11 @@
 const SlashCommand = require("../../lib/SlashCommand");
-const { MessageEmbed } = require("discord.js");
+const { MessageActionRow, MessageButton, MessageEmbed } = require("discord.js");
 const fetch = require("node-fetch");
+const api = require('lyrics-searcher-musixmatch').default
 
 const command = new SlashCommand()
 	.setName("lyrics")
-	.setDescription("Prints the lyrics of a song")
+	.setDescription("Get the lyrics of a song")
 	// get user input
 	.addStringOption((option) =>
 		option
@@ -46,41 +47,92 @@ const command = new SlashCommand()
 		}
 		
 		let search = args? args : player.queue.current.title;
-		let url = `https://api.popcat.xyz/lyrics?song=${ search }`;
+        api(search).then((lyrics) => {
+		let text = lyrics.lyrics
+		const button = new MessageActionRow()
+			.addComponents(
+				new MessageButton()
+					.setCustomId('tipsbutton')
+					.setLabel('Tips')
+					.setEmoji(`📌`)
+					.setStyle('SECONDARY'),
+				new MessageButton()
+					.setLabel('Source')
+					.setURL(lyrics.info.track.shareUrl)
+					.setStyle('LINK'),
+			);
 		
-		let lyrics = await fetch(url)
-			.then((res) => {
-				return res.json();
-			})
-			.catch((err) => {
-				return err.name;
-			});
-		if (!lyrics || lyrics === "FetchError") {
-			return interaction.editReply({
-				embeds: [
-					new MessageEmbed()
-						.setColor("RED")
-						.setDescription(
-							`❌ | No lyrics found for ${ search }!\nMake sure you typed in your search correctly.`,
-						),
-				],
-			});
-		}
-		let text = lyrics.lyrics;
 		let lyricsEmbed = new MessageEmbed()
-			.setColor(client.config.embedColor)
-			.setTitle(`${ lyrics.title }`)
-			.setThumbnail(lyrics.image)
-			.setDescription(text);
+					.setColor(client.config.embedColor)
+					.setTitle(`${ lyrics.info.track.name }`)
+					.setURL(lyrics.info.track.shareUrl)
+					.setThumbnail(lyrics.info.track.albumCoverart350x350)
+                    .setFooter({ text: 'Lyrics provided by MusixMatch.', iconURL: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Musixmatch_logo_icon_only.svg/480px-Musixmatch_logo_icon_only.svg.png' })
+					.setDescription(text);
 		
 		if (text.length > 4096) {
-			text = text.substring(0, 4090) + "[...]";
-			lyricsEmbed
-				.setDescription(text)
-				.setFooter({ text: "Truncated, the lyrics were too long." });
-		}
+				text = text.substring(0, 4050) + "\n\n[...]";
+				lyricsEmbed
+					.setDescription(text + `\nTruncated, the lyrics were too long.`)
+			}
+
+		return interaction.editReply({ 
+				embeds: [lyricsEmbed],
+				components: [button],
+			
+			});
 		
-		return interaction.editReply({ embeds: [lyricsEmbed] });
-	});
+		}) 
+		.catch((err) => {	
+		if (err.message == `No lyrics found!`) {
+			const button = new MessageActionRow()
+			.addComponents(
+				new MessageButton()
+				    .setEmoji(`📌`)
+				    .setCustomId('tipsbutton')
+					.setLabel('Tips')
+					.setStyle('SECONDARY'),
+			);	
+
+		return interaction.editReply({
+			embeds: [
+				new MessageEmbed()
+					.setColor("RED")
+					.setDescription(
+						`❌ | No lyrics found for ${ search }!\nMake sure you typed in your search correctly.`,
+					),
+			],
+			components: [button],
+		});
+	} else {
+		return interaction.editReply({
+			embeds: [
+				new MessageEmbed()
+					.setColor("RED")
+					.setDescription(
+						`❌ | Unknown error has been detected, please check your console.`,
+					),
+			],
+		});
+	};
+});
+
+const collector = interaction.channel.createMessageComponentCollector({time: 24 * 3600 });
+
+collector.on('collect', async i => {
+	if (i.customId === 'tipsbutton') {
+		await i.deferUpdate();
+		await i.followUp({ 			
+		embeds: [
+			new MessageEmbed()
+			    .setTitle(`Lyrics Tips`)
+			    .setColor(client.config.embedColor)
+				.setDescription(
+					`Here is some tips to get your song lyrics correctly \n\n1. Try to add Artist name in front of the song name.\n2. Try to put the song name in the lyrics search box manually using your keyboard.\n3. Avoid using non english language when searching song lyrics, except the song itself doesnt use english language.`,
+				),
+		], ephemeral: true, components: [] });
+	    };
+    });
+});
 
 module.exports = command;
