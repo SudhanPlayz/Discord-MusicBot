@@ -1,12 +1,10 @@
 const SlashCommand = require("../../lib/SlashCommand");
 const { MessageActionRow, MessageButton, MessageEmbed } = require("discord.js");
-const fetch = require("node-fetch");
 const api = require('lyrics-searcher-musixmatch').default
 
 const command = new SlashCommand()
 	.setName("lyrics")
 	.setDescription("Get the lyrics of a song")
-	// get user input
 	.addStringOption((option) =>
 		option
 			.setName("song")
@@ -117,7 +115,7 @@ const command = new SlashCommand()
 	};
 });
 
-const collector = interaction.channel.createMessageComponentCollector({time: 24 * 3600 });
+const collector = interaction.channel.createMessageComponentCollector({time: 1000 * 3600 });
 
 collector.on('collect', async i => {
 	if (i.customId === 'tipsbutton') {
