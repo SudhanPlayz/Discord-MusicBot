@@ -33,6 +33,15 @@ const command = new SlashCommand()
 				ephemeral: true,
 			});
 		}
+        
+        if (player.queue[0] == undefined) {
+		return interaction.reply({
+			embeds: [
+				new MessageEmbed()
+					.setColor("RED")
+					.setDescription(`There is nothing after [${ song.title }](${ song.uri }) in the queue.`),
+			],
+		})}
 		
 		player.queue.previous = player.queue.current;
 		player.stop();
