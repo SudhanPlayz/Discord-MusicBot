@@ -68,7 +68,19 @@ module.exports = async (client, interaction) => {
 		const previousSong = player.queue.previous;
 		const currentSong = player.queue.current;
 		const nextSong = player.queue[0]
-
+        if (!player.queue.previous ||
+            player.queue.previous === player.queue.current ||
+            player.queue.previous === player.queue[0]) {
+            
+           return interaction.reply({
+                        ephemeral: true,
+			embeds: [
+				new MessageEmbed()
+					.setColor("RED")
+					.setDescription(`There is no previous song played.`),
+			],
+		});
+    }
 		if (previousSong !== currentSong && previousSong !== nextSong) {
 			player.queue.splice(0, 0, currentSong)
 			player.play(previousSong);
@@ -79,6 +91,7 @@ module.exports = async (client, interaction) => {
 	if (property === "PlayAndPause") {
 		if (!player || (!player.playing && player.queue.totalSize === 0)) {
 			const msg = await interaction.channel.send({
+                               ephemeral: true,
 				embeds: [
 					new MessageEmbed()
 						.setColor("RED")
@@ -105,28 +118,18 @@ module.exports = async (client, interaction) => {
 	}
 
 	if (property === "Next") {
-		if((player.queue.totalSize === 0 || !player.queue.totalSize) || 
-		   	(player.trackRepeat || player.queueRepeat)) {
-				const msg = await interaction.channel.send({
-					embeds: [
-					  new MessageEmbed()
-					    .setColor(client.config.embedColor)
-					    .setAuthor({
-					      name: "The queue has ended!",
-					      iconURL: client.config.iconURL,
-					    })
-					    .setFooter({ text: "Queue ended at" })
-					    .setTimestamp(),
-					],
-				      });
-				      setTimeout(() => {
-					msg.delete();
-				      }, 6000);
-		      		player.destroy();
-		      		player.setNowplayingMessage(client, null);
-			} else player.stop();
-		return interaction.deferUpdate();
-	}
+     const song = player.queue.current;
+	 if (player.queue[0] == undefined) {
+		return interaction.reply({
+                        ephemeral: true,
+			embeds: [
+				new MessageEmbed()
+					.setColor("RED")
+					.setDescription(`There is nothing after [${ song.title }](${ song.uri }) in the queue.`),
+			],
+		})} else player.stop();
+		return interaction.deferUpdate
+    }
 
 	if (property === "Loop") {
 		if (player.trackRepeat) {
