@@ -124,6 +124,12 @@ module.exports = {
           );
         }
       } else {
+              if(SearchString.indexOf("&list=")!=-1){
+                    var cutpoint = SearchString.search("&list=");
+                    SearchString = SearchString.substring(0,cutpoint)
+                }else {
+                    SearchString;
+                }
         let Searched = await player.search(SearchString, message.author);
         if (!player)
           return client.sendTime(
