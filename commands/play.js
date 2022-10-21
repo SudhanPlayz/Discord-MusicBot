@@ -124,6 +124,31 @@ module.exports = {
           );
         }
       } else {
+           if(SearchString.indexOf("?list=")!=-1){
+                    if(SearchString.indexOf("youtu.be")!=-1) {
+                        var cutpoint = SearchString.indexOf("?list=");
+                        SearchString = SearchString.substring(17,cutpoint)
+                        var originallink = "https://www.youtube.com/watch?v="+ SearchString.toString();
+                        SearchString=originallink;
+                        console.log(SearchString);
+                    }
+                   
+
+                   
+    
+                } else if (SearchString.indexOf("&list=") !=-1){
+                   
+                    if(SearchString.indexOf("&list=")!=-1){
+                        var cutpoint = SearchString.search("&list=");
+                        SearchString = SearchString.substring(0,cutpoint)
+                    }else {
+                        SearchString;
+                    }
+                
+
+                }else {
+                    SearchString;
+                }
         let Searched = await player.search(SearchString, message.author);
         if (!player)
           return client.sendTime(
