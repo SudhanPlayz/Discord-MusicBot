@@ -5,7 +5,7 @@ const Controller = require("../util/Controller");
  * @param {import("../lib/DiscordMusicBot")} client
  * @param {import("discord.js").Interaction}interaction
  */
-module.exports = (client, interaction) => {
+module.exports = async(client, interaction) => {
 
 if (interaction.isAutocomplete()) {
 	switch (interaction.commandName) {
