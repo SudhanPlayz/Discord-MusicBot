@@ -26,14 +26,6 @@
     "clientId": {
       "description": "The Discord Bot ClientID",
       "required": "true"
-    },
-    "clientSecret": {
-      "description": "The Discord Bot ClientSecret",
-      "required": "true"
-    },
-    "website": {
-      "description": "URL of your webserver (Example: https://domain.xyz). Change this if you want to use the web-dashboard.",
-      "value": "http://localhost"
     }
   }
 }
