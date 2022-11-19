@@ -67,12 +67,13 @@ module.exports = async (client, oldState, newState) => {
 	if (!stateChange.channel || stateChange.channel.id !== player.voiceChannel) {
 		return;
 	}
-	
+        player.prevMembers = player.members
+        player.members = stateChange.channel.members.filter(member => !member.user.bot).size;
 	switch (stateChange.type) {
 		case "JOIN":
 			if (player.get("autoPause") === true) {
-                                var members = stateChange.channel.members.filter(member => !member.user.bot).size
-				if (members === 1 && player.paused) {
+                         var members = stateChange.channel.members.filter(member => !member.user.bot).size
+		            if (members === 1 && player.paused && members !== player.prevMembers){
 					player.pause(false);
 					let playerResumed = new MessageEmbed()
 						.setColor(client.config.embedColor)
@@ -96,13 +97,11 @@ module.exports = async (client, oldState, newState) => {
 				}
 			}
 			break;
-		case "LEAVE":
+                case "LEAVE":
 			if (player.get("autoPause") === true) {
-                                var members = stateChange.channel.members.filter(member => !member.user.bot).size
-				if (members === 0 && !player.paused && player.playing
-				) {
-					player.pause(true);
-					
+                         var members = stateChange.channel.members.filter(member => !member.user.bot).size
+			    if (members === 0 && !player.paused && player.playing){
+                                        player.pause(true);
 					let playerPaused = new MessageEmbed()
 						.setColor(client.config.embedColor)
 						.setTitle(`Paused!`, client.config.iconURL)

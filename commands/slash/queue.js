@@ -1,5 +1,6 @@
 const SlashCommand = require("../../lib/SlashCommand");
 const { MessageEmbed, MessageButton, MessageActionRow } = require("discord.js");
+const escapeMarkdown = require('discord.js').Util.escapeMarkdown;
 const load = require("lodash");
 const pms = require("pretty-ms");
 
@@ -46,12 +47,16 @@ const command = new SlashCommand()
 		
 		await interaction.deferReply().catch(() => {
 		});
+        
 		
 		if (!player.queue.size || player.queue.size === 0) {
-			let song = player.queue.current;
+            let song = player.queue.current;
+            var title = escapeMarkdown(song.title)
+            var title = title.replace(/\]/g,"")
+            var title = title.replace(/\[/g,"")
 			const queueEmbed = new MessageEmbed()
 				.setColor(client.config.embedColor)
-				.setDescription(`**♪ | Now playing:** [${ song.title }](${ song.uri })`)
+				.setDescription(`**♪ | Now playing:** [${ title }](${ song.uri })`)
 				.addFields(
 					{
 						name: "Duration",
@@ -111,11 +116,14 @@ const command = new SlashCommand()
 			}
 			
 			if (player.queue.size < 11 || player.queue.totalSize < 11) {
-				let song = player.queue.current;
+                let song = player.queue.current;
+                var title = escapeMarkdown(song.title)
+                var title = title.replace(/\]/g,"")
+                var title = title.replace(/\[/g,"")
 				const embedTwo = new MessageEmbed()
 					.setColor(client.config.embedColor)
 					.setDescription(
-						`**♪ | Now playing:** [${ song.title }](${ song.uri }) [${ player.queue.current.requester }]\n\n**Queued Tracks**\n${ pages[page] }`,
+						`**♪ | Now playing:** [${ title }](${ song.uri }) [${ player.queue.current.requester }]\n\n**Queued Tracks**\n${ pages[page] }`,
 					)
 					.addFields(
 						{
@@ -154,10 +162,13 @@ const command = new SlashCommand()
 					});
 			} else {
 				let song = player.queue.current;
+                var title = escapeMarkdown(song.title)
+                var title = title.replace(/\]/g,"")
+                var title = title.replace(/\[/g,"")
 				const embedThree = new MessageEmbed()
 					.setColor(client.config.embedColor)
 					.setDescription(
-						`**♪ | Now playing:** [${ song.title }](${ song.uri }) [${ player.queue.current.requester }]\n\n**Queued Tracks**\n${ pages[page] }`,
+						`**♪ | Now playing:** [${ title }](${ song.uri }) [${ player.queue.current.requester }]\n\n**Queued Tracks**\n${ pages[page] }`,
 					)
 					.addFields(
 						{
@@ -230,11 +241,14 @@ const command = new SlashCommand()
 						await button.deferUpdate().catch(() => {
 						});
 						page = page + 1 < pages.length? ++page : 0;
-						
+                        let song = player.queue.current;
+                        var title = escapeMarkdown(song.title)
+                        var title = title.replace(/\]/g,"")
+                        var title = title.replace(/\[/g,"")
 						const embedFour = new MessageEmbed()
 							.setColor(client.config.embedColor)
 							.setDescription(
-								`**♪ | Now playing:** [${ song.title }](${ song.uri }) [${ player.queue.current.requester }]\n\n**Queued Tracks**\n${ pages[page] }`,
+								`**♪ | Now playing:** [${ title }](${ song.uri }) [${ player.queue.current.requester }]\n\n**Queued Tracks**\n${ pages[page] }`,
 							)
 							.addFields(
 								{
@@ -275,11 +289,14 @@ const command = new SlashCommand()
 						await button.deferUpdate().catch(() => {
 						});
 						page = page > 0? --page : pages.length - 1;
-						
+                        let song = player.queue.current;
+                        var title = escapeMarkdown(song.title)
+                        var title = title.replace(/\]/g,"")
+                        var title = title.replace(/\[/g,"")
 						const embedFive = new MessageEmbed()
 							.setColor(client.config.embedColor)
 							.setDescription(
-								`**♪ | Now playing:** [${ song.title }](${ song.uri }) [${ player.queue.current.requester }]\n\n**Queued Tracks**\n${ pages[page] }`,
+								`**♪ | Now playing:** [${ title }](${ song.uri }) [${ player.queue.current.requester }]\n\n**Queued Tracks**\n${ pages[page] }`,
 							)
 							.addFields(
 								{

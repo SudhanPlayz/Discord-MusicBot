@@ -32,9 +32,10 @@ const command = new SlashCommand()
 				],
 				ephemeral: true,
 			});
-		}
+		} 
         
-        if (player.queue[0] == undefined) {
+	        const autoQueue = player.get("autoQueue");
+                if (player.queue[0] == undefined && (!autoQueue || autoQueue === false)) {
 		return interaction.reply({
 			embeds: [
 				new MessageEmbed()
