@@ -6,7 +6,6 @@ const command = new SlashCommand()
 	.setDescription("Summons the bot to the channel.")
 	.setRun(async (client, interaction, options) => {
 		let channel = await client.getChannel(client, interaction);
-		let node = await client.getLavalink(client);
 		if (!interaction.member.voice.channel) {
 			const joinEmbed = new MessageEmbed()
 				.setColor(client.config.embedColor)
