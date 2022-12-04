@@ -98,7 +98,7 @@ module.exports = async (client, oldState, newState) => {
 			}
 			break;
                 case "LEAVE":
-						var members = stateChange.channel.members.filter(member => !member.user.bot).size
+			var members = stateChange.channel.members.filter(member => !member.user.bot).size
 			const twentyFourSeven = player.get("twentyFourSeven");
 			if (player.get("autoPause") === true && player.get("autoLeave") === false) {
 				if (members === 0 && !player.paused && player.playing) {
