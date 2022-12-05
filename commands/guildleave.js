@@ -24,7 +24,7 @@ const command = new SlashCommand()
                     });
                     const guild = client.guilds.cache.map(guild => ` ${guild.name} | ${guild.id}`);
                     try{
-                    return interaction.reply({content:`Guilds:\n\`${guild}\``, ephemeral: true});
+                    	return interaction.reply({content:`Guilds:\n\`${guild}\``, ephemeral: true});
                     }catch{
                         return interaction.reply({content:`check console for list of guilds`, ephemeral: true});
                     }
