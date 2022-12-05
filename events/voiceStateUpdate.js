@@ -133,7 +133,7 @@ module.exports = async (client, oldState, newState) => {
 								let Disconnected = await client.channels.cache
 									.get(player.textChannel)
 									.send({ embeds: [leftEmbed] });
-								setTimeout(() => Disconnected.delete(true), 70000);
+								setTimeout(() => Disconnected.delete(true), 5000);
 								player.queue.clear();
 								player.destroy();
 								player.set("autoQueue", false);
@@ -151,7 +151,7 @@ module.exports = async (client, oldState, newState) => {
 						let Disconnected = await client.channels.cache
 							.get(player.textChannel)
 							.send({ embeds: [leftEmbed] });
-						setTimeout(() => Disconnected.delete(true), 70000);
+						setTimeout(() => Disconnected.delete(true), 5000);
 						player.destroy();	
 					}
 					
@@ -185,7 +185,7 @@ module.exports = async (client, oldState, newState) => {
 							let Disconnected = await client.channels.cache
 								.get(player.textChannel)
 								.send({ embeds: [leftEmbed] });
-							setTimeout(() => Disconnected.delete(true), 70000);
+							setTimeout(() => Disconnected.delete(true), 5000);
 							pausedMessage.delete(true);
 							player.queue.clear();
 							player.destroy();
@@ -205,7 +205,7 @@ module.exports = async (client, oldState, newState) => {
 						let Disconnected = await client.channels.cache
 							.get(player.textChannel)
 							.send({ embeds: [leftEmbed] });
-						setTimeout(() => Disconnected.delete(true), 70000);
+						setTimeout(() => Disconnected.delete(true), 5000);
 						player.destroy();
 					}
 				}
