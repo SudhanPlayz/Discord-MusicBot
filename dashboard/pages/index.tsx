@@ -10,7 +10,10 @@ const Home = (_props: any) => {
     const [data, setData] = useState<IData | null>(null)
 
     useEffect(() => {
-        getData().then(setData)
+	    getData().then(res => {
+		    if (res.loggedIn) window.location.href = "/dashboard";
+		    else setData(res);
+	    })
     }, [])
 
     return (

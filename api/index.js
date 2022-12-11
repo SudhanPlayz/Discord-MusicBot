@@ -7,7 +7,7 @@ const DiscordStrategy = require("passport-discord").Strategy;
 const passport = require("passport");
 const getConfig = require("../util/getConfig");
 const DiscordMusicBot = require("../lib/DiscordMusicBot");
-const Auth = require("./middlewares/auth");
+const router = require("./router");
 
 passport.serializeUser(function (user, done) {
 	done(null, user);
@@ -24,14 +24,36 @@ class Server extends EventEmitter {
 	 */
 	constructor(client) {
 		super();
-		getConfig()
-			.then((conf) => {
-				this.config = conf;
-				this.listen();
-			});
-		
+		this.client = client;
+		getConfig().then(this.init.bind(this));
+	}
+
+	init(conf) {
+		this.config = conf;
 		this.app = express();
 		
+		this.app.use(express.static(join(__dirname, "..", "public")));
+		
+		// Static Routes for scripts
+		const dist = join(__dirname, "..", "dashboard", "out", "_next")
+		
+		this.app.use("/_next", express.static(dist));
+
+		// Session and Passport
+		this.app.use(session({
+			resave: false,
+			saveUninitialized: false,
+			secret: this.config.cookieSecret,
+			cookie: {
+				secure: this.config.website.startsWith("https://"),
+				sameSite: true,
+			},
+		}));
+
+		this.initPassport();
+
+		this.app.use(router);
+
 		//API
 		fs.readdir(join(__dirname, "routes"), (err, files) => {
 			if (err) {
@@ -44,73 +66,39 @@ class Server extends EventEmitter {
 				);
 			});
 		});
-		
-		this.app.use(express.static(join(__dirname, "..", "public")));
-		
-		//Static Routes
-		let dist = join(__dirname, "..", "dashboard", "out")
-		
-		this.app.use(express.static(dist));
-		this.app.get("/login", (_req, res) => {
-			res.sendFile(join(dist, "login.html"));
-			res.redirect("/api/callback")
-		});
-		this.app.get("/logout", (req, res) => {
-			if (req.user) {
-				req.logout();
-			}
-			res.sendFile(join(dist, "logout.html"));
-		});
-		this.app.get("/dashboard", Auth, (_req, res) => {
-			res.sendFile(join(dist, "dashboard.html"));
-		});
-		this.app.get("/servers", Auth, (_req, res) => {
-			res.sendFile(join(dist, "servers.html"));
-		});
-		
-		// Session and Passport
-		this.app.use(session({
-			resave: true,
-			saveUninitialized: true,
-			secret: client.config.cookieSecret,
-			cookie: {
-				secure: client.config.website.startsWith("https://"),
-				sameSite: true,
-			},
-		}));
-		this.app.use(passport.initialize());
-		this.app.use(passport.session());
-		
-		passport.use(
-			new DiscordStrategy(
-				{
-					clientID: client.config.clientId,
-					clientSecret: client.config.clientSecret,
-					callbackURL: client.config.website + "/api/callback",
-					scope: client.config.scopes.filter(a => !a.startsWith("app")).join(" "),
-				},
-				function (accessToken, refreshToken, profile, done) {
-					process.nextTick(function () {
-						return done(null, profile);
-					});
-				},
-			),
-		);
-		
-		this.app.get(
-			"/api/callback",
-			passport.authenticate("discord", {
-				failureRedirect: "/",
-				session: true,
-			}),
-			function (req, res) {
-				res.redirect("/dashboard");
-			},
-		);
+
+		this.listen();
 	}
 	
+	initPassport() {
+		this.app.use(passport.initialize());
+
+		const strategy = new DiscordStrategy(
+			{
+				clientID: this.config.clientId,
+				clientSecret: this.config.clientSecret,
+				callbackURL: this.config.website + "/api/callback",
+				scope: this.config.scopes.filter(a => !a.startsWith("app")),
+				scopeSeparator: " ",
+			},
+			function (accessToken, refreshToken, profile, done) {
+				const data = {
+					accessToken,
+					refreshToken,
+					profile,
+				};
+
+				return done(null, data);
+			},
+		);
+		passport.use(strategy);
+
+		this.app.use(passport.session());
+	}
+
 	listen() {
 		this.app.listen(this.config.port);
+		console.log("[SERVER] Listening on port:", this.config.port);
 	}
 }
 

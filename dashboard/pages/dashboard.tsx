@@ -10,7 +10,7 @@ const Dashboard = (_props: any) => {
 
     useEffect(() => {
         getDashboard().then(setData)
-    })
+    }, []);
 
     return (<Content>
         <Head>
