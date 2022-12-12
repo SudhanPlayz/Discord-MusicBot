@@ -8,7 +8,8 @@ export interface IData {
     version: string;
     commands: ICommand[];
     inviteURL: string;
-    loggedIn: boolean;
+    loggedIn: boolean | null;
+    redirect: string | null;
 }
 
 export const getData: () => Promise<IData> = () => {

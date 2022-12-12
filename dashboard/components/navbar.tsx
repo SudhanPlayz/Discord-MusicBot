@@ -1,8 +1,9 @@
 import {Button, Link, Spacer} from "@nextui-org/react";
-import {useRouter} from "next/router";
+import { useRouter } from "next/router";
 
 export default function Navbar() {
-    const router = useRouter()
+    const router = useRouter();
+
     return <div style={ {
         height: '100%',
         width: '250px',
@@ -18,13 +19,13 @@ export default function Navbar() {
             fontWeight: 'bold',
             marginBottom: '30px',
             color: '#fff',
-        } }>Discord Music Bot</Link>
+        } } href='/'>Discord Music Bot</Link>
         <Button css={ {background: router.pathname == '/dashboard' ? '$primary' : '$gray100'} }
-                onClick={ () => router.push('/dashboard') } style={ {marginBottom: '10px'} }>Dashboard</Button>
+                onClick={ () => window.location.pathname = '/dashboard' } style={ {marginBottom: '10px'} }>Dashboard</Button>
         <Button css={ {background: router.pathname == '/servers' ? '$primary' : '$gray100'} } color='default'
-                onClick={ () => router.push('/servers') } style={ {marginBottom: '10px'} }>Servers</Button>
+                onClick={ () => window.location.pathname = '/servers' } style={ {marginBottom: '10px'} }>Servers</Button>
         <Spacer/>
-        <Button color='error' flat onClick={ () => router.push('/logout') }
+        <Button color='error' flat onClick={ () => window.location.pathname = '/logout' }
                 style={ {marginBottom: '10px'} }>Logout</Button>
     </div>
 }

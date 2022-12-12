@@ -9,7 +9,7 @@ const Dashboard = (_props: any) => {
     const [data, setData] = useState<IDashboard | null>(null)
 
     useEffect(() => {
-        getDashboard().then(setData)
+        getDashboard().then(setData);
     }, []);
 
     return (<Content>

@@ -20,10 +20,13 @@ router.get("/login", (req, res) => {
 router.get("/api/login", passport.authenticate("discord"));
 
 router.get("/logout", (req, res) => {
-	if (req.user) {
-		req.logout();
-	}
 	res.sendFile(join(dist, "logout.html"));
+});
+
+router.get("/api/logout", (req, res) => {
+	req.session.destroy(() => {
+		res.redirect("/");
+	});
 });
 
 router.get("/dashboard", Auth, (_req, res) => {
@@ -35,7 +38,7 @@ router.get("/servers", Auth, (_req, res) => {
 });
 
 router.get("/api/callback", passport.authenticate('discord', {
-	failureRedirect: '/'
+	failureRedirect: '/',
 }), (req, res ) => {
 	req.session.save(() => {
 		res.redirect("/");
