@@ -2,6 +2,7 @@ const { REST } = require("@discordjs/rest");
 const { Routes } = require("discord-api-types/v9");
 const getConfig = require("../util/getConfig");
 const LoadCommands = require("../util/loadCommands");
+const dotenv = require("dotenv").config();
 
 (async () => {
 	const config = await getConfig();
