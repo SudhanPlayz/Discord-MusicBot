@@ -3,7 +3,6 @@ const readline = require("readline");
 const { REST } = require("@discordjs/rest");
 const { Routes } = require("discord-api-types/v9");
 const getConfig = require("../util/getConfig");
-const dotenv = require("dotenv").config();
 
 const rl = readline.createInterface({
 	input: process.stdin,
