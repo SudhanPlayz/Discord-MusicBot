@@ -36,10 +36,10 @@ const command = new SlashCommand()
 						let cmd = require(SlashCommandsDirectory + "/" + file);
 						
 						if (!cmd || !cmd.run) {
-							return this.warn(
+							return client.warn(
 								"❌ Unable to load Command: " +
 								file.split(".")[0] +
-								", File doesn't have an valid command with run function",
+								", File doesn't have a valid command with run function",
 							);
 						}
 						client.slashCommands.set(file.split(".")[0].toLowerCase(), cmd);
