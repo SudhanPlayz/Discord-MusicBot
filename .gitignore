@@ -1,5 +1,6 @@
 # IDE
 .idea/
+.vscode
 
 # Logs
 logs
@@ -69,6 +70,7 @@ typings/
 *.tgz
 
 # Yarn Integrity file
+.yarn
 .yarn-integrity
 yarn.lock
 
@@ -111,4 +113,7 @@ dist
 dev-config.js
 a.js
 guild.json
-.vscode
+
+# Volta
+.pnp.cjs
+.pnp.loader.mjs
