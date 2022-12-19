@@ -121,7 +121,7 @@ module.exports = async (client, oldState, newState) => {
 					if (twentyFourSeven){
 						setTimeout(async () => {
 							var members = stateChange.channel.members.filter(member => !member.user.bot).size
-							if (members === 0){
+							if (members === 0 && player.state !== 'DISCONNECTED'){
 								let leftEmbed = new MessageEmbed()
 									.setColor(client.config.embedColor)
 									.setAuthor({
@@ -173,7 +173,7 @@ module.exports = async (client, oldState, newState) => {
 					player.setPausedMessage(client, pausedMessage);
 					setTimeout(async () => {
 						var members = stateChange.channel.members.filter(member => !member.user.bot).size
-						if (members === 0){
+						if (members === 0 && player.state !== 'DISCONNECTED'){
 							let leftEmbed = new MessageEmbed()
 								.setColor(client.config.embedColor)
 								.setAuthor({
@@ -193,7 +193,7 @@ module.exports = async (client, oldState, newState) => {
 						}
 					}, client.config.disconnectTime);
 				}else{
-					if (members === 0){
+					if (members === 0 && player.state !== 'DISCONNECTED'){
 						let leftEmbed = new MessageEmbed()
 						.setColor(client.config.embedColor)
 						.setAuthor({
