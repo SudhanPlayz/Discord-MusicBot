@@ -3,7 +3,7 @@ const { MessageEmbed } = require("discord.js");
 const escapeMarkdown = require('discord.js').Util.escapeMarkdown;
 
 module.exports = {
-    command: new ContextMenuCommandBuilder().setName("Play").setType(3),
+    command: new ContextMenuCommandBuilder().setName("Play Song").setType(3),
 
     /**
      * This function will handle context menu interaction
