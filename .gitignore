@@ -2,6 +2,9 @@
 db.json
 dbList.json
 .guild_dbs/
+dev-config.js
+yarn.lock
+package-lock.json
 
 # Logs
 logs
@@ -71,6 +74,7 @@ typings/
 *.tgz
 
 # Yarn Integrity file
+.yarn
 .yarn-integrity
 yarn.lock
 
@@ -109,9 +113,11 @@ dist
 # TernJS port file
 .tern-port
 
-# Etc
-dev-config.js
-db.json
-yarn.lock
-package-lock.json
+# Volta
+.pnp.cjs
+.pnp.loader.mjs
+
+# IDE
 .idea/
+.vscode/
+.history/

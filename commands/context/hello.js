@@ -8,7 +8,6 @@ var greetings = [
 	`I hope you've had your coffee already!`,
 	`It's me again!`]
 
-
 module.exports = {
 	command: new ContextMenuCommandBuilder().setName("Say Hello").setType(2),
 	
