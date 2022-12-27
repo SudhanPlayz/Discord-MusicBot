@@ -1,5 +1,14 @@
 const { ContextMenuCommandBuilder } = require("@discordjs/builders");
 
+var greetings = [
+	`How are you?`,
+	`I hope you're doing well!`,
+	`I hope you're having a great week!`,
+	`I hope you're having a wonderful day!`,
+	`I hope you've had your coffee already!`,
+	`It's me again!`]
+
+
 module.exports = {
 	command: new ContextMenuCommandBuilder().setName("Say Hello").setType(2),
 	
@@ -9,6 +18,6 @@ module.exports = {
 	 * @param {import("discord.js").GuildContextMenuInteraction} interaction
 	 */
 	run: (client, interaction, options) => {
-		interaction.reply(`<@${ interaction.options.getUser("user").id }>, Hello!`);
+		interaction.reply(`Hello <@${interaction.options.getUser("user").id}>, ${greetings[Math.floor(Math.random() * greetings.length)]}`);
 	},
 };
