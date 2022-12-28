@@ -72,7 +72,7 @@ const command = new SlashCommand()
 					new MessageEmbed()
 						.setColor(client.config.embedColor)
 						.setDescription(
-							`Cannot seek current playing track. This may happened because seek duration has exceeded track duration or a incorrect time format`,
+							`Unable to seek current playing track. This may be due to exceeding track duration or an incorrect time format. Please check and try again`,
 						),
 				],
 			});
