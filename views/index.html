@@ -26,11 +26,210 @@
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap"
       rel="stylesheet"
     />
-    <link
-      href="//db.onlinewebfonts.com/c/721c73bcd2e49f3a621991089838b503?family=Euclid+Circular+B+Medium"
-      rel="stylesheet"
-      type="text/css"
-    />
+    <style>
+      @font-face {
+        font-family: "Euclid Circular B Medium";
+        src: url("https://db.onlinewebfonts.com/t/721c73bcd2e49f3a621991089838b503.eot");
+        src: url("https://db.onlinewebfonts.com/t/721c73bcd2e49f3a621991089838b503.eot?#iefix")
+        format("embedded-opentype"),
+        url("https://db.onlinewebfonts.com/t/721c73bcd2e49f3a621991089838b503.woff2")
+        format("woff2"),
+        url("https://db.onlinewebfonts.com/t/721c73bcd2e49f3a621991089838b503.woff")
+        format("woff"),
+        url("https://db.onlinewebfonts.com/t/721c73bcd2e49f3a621991089838b503.ttf")
+        format("truetype"),
+        url("https://db.onlinewebfonts.com/t/721c73bcd2e49f3a621991089838b503.svg#Euclid Circular B Medium")
+        format("svg");
+        font-display: swap;
+      }
+
+      body {
+        background: linear-gradient(to right, #8a2387, #e94057, #f27121);
+        color: #fff;
+        font-family: "Euclid Circular B Medium", Poppins;
+      }
+
+      .navbar-toggler {
+        display: none;
+      }
+
+      .hero {
+        margin-top: 5%;
+      }
+
+      .commands {
+        margin-top: 100px;
+        padding-top: 110px;
+        padding-bottom: 120px;
+      }
+
+      .commands .title {
+        position: relative;
+        padding-bottom: 25px;
+        text-transform: uppercase;
+        font-weight: 700;
+        color: white;
+      }
+
+      @media only screen and (max-width: 630px) {
+        .navbar-toggler {
+          display: inherit;
+        }
+
+        .nav-links {
+          display: none !important;
+        }
+      }
+
+      #features {
+        margin-top: 100px;
+      }
+
+      .title-features {
+        color: white;
+        text-transform: uppercase;
+        font-weight: 700;
+      }
+
+      .section-features {
+        padding-top: 110px;
+        padding-bottom: 120px;
+        color: white;
+      }
+
+      .title {
+        background: linear-gradient(to right, #8a2387, #e94057, #f27121);
+        color: transparent;
+        -webkit-background-clip: text;
+        background-clip: text;
+        text-decoration: none;
+      }
+
+      .section-features .header-section {
+        margin-bottom: 35px;
+      }
+
+      .section-features .header-section .title {
+        position: relative;
+        margin-bottom: 40px;
+        padding-bottom: 25px;
+        text-transform: uppercase;
+        font-weight: 700;
+      }
+
+      .section-features .header-section .title:before {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 140px;
+        height: 1px;
+        background-color: #f70037;
+      }
+
+      .section-features .header-section .title:after {
+        content: "";
+        position: absolute;
+        bottom: -1px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 45px;
+        height: 3px;
+        background-color: #f70037;
+      }
+
+      .section-features .header-section .title span {
+        color: #f70037;
+      }
+
+      .section-features .header-section .description {
+        color: #6f6f71;
+      }
+
+      .section-features .single-service {
+        margin-top: 40px;
+        background: rgba(255, 255, 255, 0.35);
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        backdrop-filter: blur(9px);
+        -webkit-backdrop-filter: blur(9px);
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+      }
+
+      .section-features .single-service .part-1 {
+        padding: 40px 40px 25px;
+        border-bottom: 2px solid #1d1e23;
+      }
+
+      .section-features .single-service .part-1 i {
+        margin-bottom: 25px;
+        font-size: 50px;
+        color: #f70037;
+      }
+
+      .section-features .single-service .part-1 .title {
+        font-size: 17px;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+        line-height: 1.8em;
+      }
+
+      .section-features .single-service .part-2 {
+        padding: 30px 40px 40px;
+      }
+
+      .section-features .single-service .part-2 .description {
+        margin-bottom: 22px;
+        color: white;
+        font-size: 14px;
+        line-height: 1.8em;
+      }
+
+      .section-features .single-service .part-2 a {
+        color: #fff;
+        font-size: 14px;
+        text-decoration: none;
+      }
+
+      .section-features .single-service .part-2 a i {
+        margin-right: 10px;
+        color: #f70037;
+      }
+
+      .footer {
+        padding: 32px 0;
+        position: absolute;
+        width: 100%;
+        background-color: red;
+        color: white;
+        text-align: center;
+        background: rgba(255, 255, 255, 0.5);
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        backdrop-filter: blur(9px);
+        -webkit-backdrop-filter: blur(9px);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+      }
+
+      .footer p {
+        margin: 0;
+        line-height: 26px;
+        font-size: 15px;
+        color: #fff;
+      }
+
+      .footer p a {
+        background: linear-gradient(to right, #8a2387, #e94057, #f27121);
+        color: transparent;
+        -webkit-background-clip: text;
+        background-clip: text;
+        text-decoration: none;
+      }
+
+      .footer p a:hover {
+        color: white;
+      }
+    </style>
   </head>
 
   <body>
@@ -316,209 +515,6 @@
     ></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   </body>
-  <style>
-    @font-face {
-      font-family: "Euclid Circular B Medium";
-      src: url("//db.onlinewebfonts.com/t/721c73bcd2e49f3a621991089838b503.eot");
-      src: url("//db.onlinewebfonts.com/t/721c73bcd2e49f3a621991089838b503.eot?#iefix")
-          format("embedded-opentype"),
-        url("//db.onlinewebfonts.com/t/721c73bcd2e49f3a621991089838b503.woff2")
-          format("woff2"),
-        url("//db.onlinewebfonts.com/t/721c73bcd2e49f3a621991089838b503.woff")
-          format("woff"),
-        url("//db.onlinewebfonts.com/t/721c73bcd2e49f3a621991089838b503.ttf")
-          format("truetype"),
-        url("//db.onlinewebfonts.com/t/721c73bcd2e49f3a621991089838b503.svg#Euclid Circular B Medium")
-          format("svg");
-    }
-
-    body {
-      background: linear-gradient(to right, #8a2387, #e94057, #f27121);
-      color: #fff;
-      font-family: "Euclid Circular B Medium", Poppins;
-    }
-
-    .navbar-toggler {
-      display: none;
-    }
-
-    .hero {
-      margin-top: 5%;
-    }
-
-    .commands {
-      margin-top: 100px;
-      padding-top: 110px;
-      padding-bottom: 120px;
-    }
-
-    .commands .title {
-      position: relative;
-      padding-bottom: 25px;
-      text-transform: uppercase;
-      font-weight: 700;
-      color: white;
-    }
-
-    @media only screen and (max-width: 630px) {
-      .navbar-toggler {
-        display: inherit;
-      }
-
-      .nav-links {
-        display: none !important;
-      }
-    }
-
-    #features {
-      margin-top: 100px;
-    }
-
-    .title-features {
-      color: white;
-      text-transform: uppercase;
-      font-weight: 700;
-    }
-
-    .section-features {
-      padding-top: 110px;
-      padding-bottom: 120px;
-      color: white;
-    }
-
-    .title {
-      background: linear-gradient(to right, #8a2387, #e94057, #f27121);
-      color: transparent;
-      -webkit-background-clip: text;
-      background-clip: text;
-      text-decoration: none;
-    }
-
-    .section-features .header-section {
-      margin-bottom: 35px;
-    }
-
-    .section-features .header-section .title {
-      position: relative;
-      margin-bottom: 40px;
-      padding-bottom: 25px;
-      text-transform: uppercase;
-      font-weight: 700;
-    }
-
-    .section-features .header-section .title:before {
-      content: "";
-      position: absolute;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 140px;
-      height: 1px;
-      background-color: #f70037;
-    }
-
-    .section-features .header-section .title:after {
-      content: "";
-      position: absolute;
-      bottom: -1px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 45px;
-      height: 3px;
-      background-color: #f70037;
-    }
-
-    .section-features .header-section .title span {
-      color: #f70037;
-    }
-
-    .section-features .header-section .description {
-      color: #6f6f71;
-    }
-
-    .section-features .single-service {
-      margin-top: 40px;
-      background: rgba(255, 255, 255, 0.35);
-      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-      backdrop-filter: blur(9px);
-      -webkit-backdrop-filter: blur(9px);
-      border-radius: 10px;
-      border: 1px solid rgba(255, 255, 255, 0.18);
-    }
-
-    .section-features .single-service .part-1 {
-      padding: 40px 40px 25px;
-      border-bottom: 2px solid #1d1e23;
-    }
-
-    .section-features .single-service .part-1 i {
-      margin-bottom: 25px;
-      font-size: 50px;
-      color: #f70037;
-    }
-
-    .section-features .single-service .part-1 .title {
-      font-size: 17px;
-      font-weight: 700;
-      letter-spacing: 0.02em;
-      line-height: 1.8em;
-    }
-
-    .section-features .single-service .part-2 {
-      padding: 30px 40px 40px;
-    }
-
-    .section-features .single-service .part-2 .description {
-      margin-bottom: 22px;
-      color: white;
-      font-size: 14px;
-      line-height: 1.8em;
-    }
-
-    .section-features .single-service .part-2 a {
-      color: #fff;
-      font-size: 14px;
-      text-decoration: none;
-    }
-
-    .section-features .single-service .part-2 a i {
-      margin-right: 10px;
-      color: #f70037;
-    }
-
-    .footer {
-      padding: 32px 0;
-      position: absolute;
-      width: 100%;
-      background-color: red;
-      color: white;
-      text-align: center;
-      background: rgba(255, 255, 255, 0.5);
-      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-      backdrop-filter: blur(9px);
-      -webkit-backdrop-filter: blur(9px);
-      border: 1px solid rgba(255, 255, 255, 0.18);
-    }
-
-    .footer p {
-      margin: 0;
-      line-height: 26px;
-      font-size: 15px;
-      color: #fff;
-    }
-
-    .footer p a {
-      background: linear-gradient(to right, #8a2387, #e94057, #f27121);
-      color: transparent;
-      -webkit-background-clip: text;
-      background-clip: text;
-      text-decoration: none;
-    }
-
-    .footer p a:hover {
-      color: white;
-    }
-  </style>
   <script>
     $(document).ready(() => {
       $.get("/api/info", (data) => {

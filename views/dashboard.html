@@ -26,11 +26,142 @@
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap"
       rel="stylesheet"
     />
-    <link
-      href="//db.onlinewebfonts.com/c/721c73bcd2e49f3a621991089838b503?family=Euclid+Circular+B+Medium"
-      rel="stylesheet"
-      type="text/css"
-    />
+    <style>
+      @font-face {
+        font-family: "Euclid Circular B Medium";
+        src: url("https://db.onlinewebfonts.com/t/721c73bcd2e49f3a621991089838b503.eot");
+        src: url("https://db.onlinewebfonts.com/t/721c73bcd2e49f3a621991089838b503.eot?#iefix")
+        format("embedded-opentype"),
+        url("https://db.onlinewebfonts.com/t/721c73bcd2e49f3a621991089838b503.woff2")
+        format("woff2"),
+        url("https://db.onlinewebfonts.com/t/721c73bcd2e49f3a621991089838b503.woff")
+        format("woff"),
+        url("https://db.onlinewebfonts.com/t/721c73bcd2e49f3a621991089838b503.ttf")
+        format("truetype"),
+        url("https://db.onlinewebfonts.com/t/721c73bcd2e49f3a621991089838b503.svg#Euclid Circular B Medium")
+        format("svg");
+        font-display: swap;
+      }
+
+      body {
+        background: linear-gradient(to right, #8a2387, #e94057, #f27121);
+        color: #fff;
+        overflow-x: hidden;
+        font-family: "Euclid Circular B Medium", Poppins;
+      }
+
+      @media (min-width: 991.98px) {
+        main {
+          padding-left: 240px;
+        }
+      }
+
+      /* Sidebar */
+      .sidebar {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        padding: 100px 0 0; /* Height of navbar */
+        width: 240px;
+      }
+
+      .circle1,
+      .circle2,
+      .circle3 {
+        background: linear-gradient(
+                to right bottom,
+                rgba(255, 255, 255, 0.2),
+                rgba(255, 255, 255, 0.1)
+        );
+        position: absolute;
+        border-radius: 50%;
+        z-index: -100;
+      }
+
+      .circle1 {
+        top: 5%;
+        right: 5%;
+        height: 10rem;
+        width: 10rem;
+      }
+      .circle2 {
+        top: 10%;
+        left: 10%;
+        border-radius: 50%;
+        height: 8rem;
+        width: 8rem;
+      }
+      .circle3 {
+        bottom: 10%;
+        left: 5%;
+        border-radius: 50%;
+        height: 6rem;
+        width: 6rem;
+      }
+
+      @media (max-width: 991.98px) {
+        .sidebar {
+          width: 100%;
+          z-index: 100;
+        }
+      }
+      .sidebar .active {
+        box-shadow: 0 2px 5px 0 rgb(0 0 0 / 16%), 0 2px 10px 0 rgb(0 0 0 / 12%);
+      }
+
+      .sidebar-sticky {
+        position: relative;
+        top: 0;
+        height: calc(100vh - 48px);
+        padding-top: 0.5rem;
+        overflow-x: hidden;
+        overflow-y: auto;
+      }
+
+      .card {
+        background: rgba(255, 255, 255, 0.35);
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        backdrop-filter: blur(9px);
+        -webkit-backdrop-filter: blur(9px);
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        z-index: 2;
+      }
+
+      .footer {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        background-color: red;
+        color: white;
+        text-align: center;
+        background: rgba(255, 255, 255, 0.5);
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        backdrop-filter: blur(9px);
+        -webkit-backdrop-filter: blur(9px);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+      }
+      .footer p {
+        margin: 0;
+        line-height: 26px;
+        font-size: 15px;
+        color: #fff;
+      }
+
+      .footer p a {
+        background: linear-gradient(to right, #8a2387, #e94057, #f27121);
+        color: transparent;
+        -webkit-background-clip: text;
+        background-clip: text;
+        text-decoration: none;
+      }
+
+      .footer p a:hover {
+        color: white;
+      }
+    </style>
   </head>
 
   <body>
@@ -233,141 +364,6 @@
     <div class="circle2"></div>
     <div class="circle3"></div>
   </body>
-  <style>
-    @font-face {
-      font-family: "Euclid Circular B Medium";
-      src: url("//db.onlinewebfonts.com/t/721c73bcd2e49f3a621991089838b503.eot");
-      src: url("//db.onlinewebfonts.com/t/721c73bcd2e49f3a621991089838b503.eot?#iefix")
-          format("embedded-opentype"),
-        url("//db.onlinewebfonts.com/t/721c73bcd2e49f3a621991089838b503.woff2")
-          format("woff2"),
-        url("//db.onlinewebfonts.com/t/721c73bcd2e49f3a621991089838b503.woff")
-          format("woff"),
-        url("//db.onlinewebfonts.com/t/721c73bcd2e49f3a621991089838b503.ttf")
-          format("truetype"),
-        url("//db.onlinewebfonts.com/t/721c73bcd2e49f3a621991089838b503.svg#Euclid Circular B Medium")
-          format("svg");
-    }
-
-    body {
-      background: linear-gradient(to right, #8a2387, #e94057, #f27121);
-      color: #fff;
-      overflow-x: hidden;
-      font-family: "Euclid Circular B Medium", Poppins;
-    }
-
-    @media (min-width: 991.98px) {
-      main {
-        padding-left: 240px;
-      }
-    }
-
-    /* Sidebar */
-    .sidebar {
-      position: fixed;
-      top: 0;
-      bottom: 0;
-      left: 0;
-      padding: 100px 0 0; /* Height of navbar */
-      width: 240px;
-    }
-
-    .circle1,
-    .circle2,
-    .circle3 {
-      background: linear-gradient(
-        to right bottom,
-        rgba(255, 255, 255, 0.2),
-        rgba(255, 255, 255, 0.1)
-      );
-      position: absolute;
-      border-radius: 50%;
-      z-index: -100;
-    }
-
-    .circle1 {
-      top: 5%;
-      right: 5%;
-      height: 10rem;
-      width: 10rem;
-    }
-    .circle2 {
-      top: 10%;
-      left: 10%;
-      border-radius: 50%;
-      height: 8rem;
-      width: 8rem;
-    }
-    .circle3 {
-      bottom: 10%;
-      left: 5%;
-      border-radius: 50%;
-      height: 6rem;
-      width: 6rem;
-    }
-
-    @media (max-width: 991.98px) {
-      .sidebar {
-        width: 100%;
-        z-index: 100;
-      }
-    }
-    .sidebar .active {
-      box-shadow: 0 2px 5px 0 rgb(0 0 0 / 16%), 0 2px 10px 0 rgb(0 0 0 / 12%);
-    }
-
-    .sidebar-sticky {
-      position: relative;
-      top: 0;
-      height: calc(100vh - 48px);
-      padding-top: 0.5rem;
-      overflow-x: hidden;
-      overflow-y: auto;
-    }
-
-    .card {
-      background: rgba(255, 255, 255, 0.35);
-      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-      backdrop-filter: blur(9px);
-      -webkit-backdrop-filter: blur(9px);
-      border-radius: 10px;
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      z-index: 2;
-    }
-
-    .footer {
-      position: absolute;
-      left: 0;
-      bottom: 0;
-      width: 100%;
-      background-color: red;
-      color: white;
-      text-align: center;
-      background: rgba(255, 255, 255, 0.5);
-      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-      backdrop-filter: blur(9px);
-      -webkit-backdrop-filter: blur(9px);
-      border: 1px solid rgba(255, 255, 255, 0.18);
-    }
-    .footer p {
-      margin: 0;
-      line-height: 26px;
-      font-size: 15px;
-      color: #fff;
-    }
-
-    .footer p a {
-      background: linear-gradient(to right, #8a2387, #e94057, #f27121);
-      color: transparent;
-      -webkit-background-clip: text;
-      background-clip: text;
-      text-decoration: none;
-    }
-
-    .footer p a:hover {
-      color: white;
-    }
-  </style>
   <script>
     $(document).ready(() => {
       var socket = io();
