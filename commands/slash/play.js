@@ -11,6 +11,7 @@ const command = new SlashCommand()
     option
       .setName("query")
       .setDescription("What am I looking for?")
+      .setAutocomplete(true)
       .setRequired(true)
   )
   .setRun(async (client, interaction, options) => {
