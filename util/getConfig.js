@@ -1,3 +1,5 @@
+const dotenv = require("dotenv").config();
+
 module.exports = () => {
 	return new Promise((res, rej) => {
 		try {
