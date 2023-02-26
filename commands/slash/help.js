@@ -25,7 +25,7 @@ const command = new SlashCommand()
 		);
 		//console.log(filteredCommands);
 		const totalCmds = filteredCommands.length;
-		let maxPages = Math.ceil(totalCmds / client.config.cmdPerPage);
+		let maxPages = Math.ceil(totalCmds / client.config.helpCmdPerPage);
 		
 		// if git exists, then get commit hash
 		let gitHash = "";
