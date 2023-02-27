@@ -44,6 +44,7 @@ module.exports = async (client, interaction) => {
 	if (property === "Stop") {
 		player.queue.clear();
 		player.stop();
+		player.set("autoQueue", false);
 		client.warn(`Player: ${ player.options.guild } | Successfully stopped the player`);
 		const msg = await interaction.channel.send({
 			embeds: [
@@ -67,22 +68,19 @@ module.exports = async (client, interaction) => {
 		const previousSong = player.queue.previous;
 		const currentSong = player.queue.current;
 		const nextSong = player.queue[0]
-
-		if (!previousSong
-			|| previousSong === currentSong
-			|| previousSong === nextSong) {
-			const msg = await interaction.channel.send({
-				embeds: [
-					new MessageEmbed()
+        if (!player.queue.previous ||
+            player.queue.previous === player.queue.current ||
+            player.queue.previous === player.queue[0]) {
+            
+           return interaction.reply({
+                        ephemeral: true,
+			embeds: [
+				new MessageEmbed()
 					.setColor("RED")
-					.setDescription("There is no previous song in the queue."),
-				],
-			});
-			setTimeout(() => {
-				msg.delete();
-			}, 5000);
-			return interaction.deferUpdate();
-		}
+					.setDescription(`There is no previous song played.`),
+			],
+		});
+    }
 		if (previousSong !== currentSong && previousSong !== nextSong) {
 			player.queue.splice(0, 0, currentSong)
 			player.play(previousSong);
@@ -93,6 +91,7 @@ module.exports = async (client, interaction) => {
 	if (property === "PlayAndPause") {
 		if (!player || (!player.playing && player.queue.totalSize === 0)) {
 			const msg = await interaction.channel.send({
+                               ephemeral: true,
 				embeds: [
 					new MessageEmbed()
 						.setColor("RED")
@@ -119,9 +118,19 @@ module.exports = async (client, interaction) => {
 	}
 
 	if (property === "Next") {
-		player.stop();
-		return interaction.deferUpdate();
-	}
+                const song = player.queue.current;
+	        const autoQueue = player.get("autoQueue");
+                if (player.queue[0] == undefined && (!autoQueue || autoQueue === false)) {
+		return interaction.reply({
+                        ephemeral: true,
+			embeds: [
+				new MessageEmbed()
+					.setColor("RED")
+					.setDescription(`There is nothing after [${ song.title }](${ song.uri }) in the queue.`),
+			],
+		})} else player.stop();
+		return interaction.deferUpdate
+    }
 
 	if (property === "Loop") {
 		if (player.trackRepeat) {
@@ -132,7 +141,7 @@ module.exports = async (client, interaction) => {
 		} else {
 			player.setTrackRepeat(true);
 		}
-		client.warn(`Player: ${ player.options.guild } | Successfully toggled loop the player`);
+		client.warn(`Player: ${player.options.guild} | Successfully toggled loop ${player.trackRepeat ? "on" : player.queueRepeat ? "queue on" : "off"} the player`);
 
 		interaction.update({
 			components: [client.createController(player.options.guild, player)],

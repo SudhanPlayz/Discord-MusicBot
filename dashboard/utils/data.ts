@@ -6,8 +6,10 @@ export interface ICommand {
 export interface IData {
     name: string;
     version: string;
-    commands: ICommand[]
+    commands: ICommand[];
     inviteURL: string;
+    loggedIn: boolean | null;
+    redirect: string | null;
 }
 
 export const getData: () => Promise<IData> = () => {

@@ -1,11 +1,16 @@
 const SlashCommand = require("../../lib/SlashCommand");
-const { MessageEmbed } = require("discord.js");
-const fetch = require("node-fetch");
+const {
+	MessageActionRow,
+	MessageSelectMenu,
+	MessageButton,
+	MessageEmbed
+} = require("discord.js");
+const { Rlyrics } = require("rlyrics");
+const lyricsApi = new Rlyrics();
 
 const command = new SlashCommand()
 	.setName("lyrics")
-	.setDescription("Prints the lyrics of a song")
-	// get user input
+	.setDescription("Get the lyrics of a song")
 	.addStringOption((option) =>
 		option
 			.setName("song")
@@ -17,15 +22,15 @@ const command = new SlashCommand()
 			embeds: [
 				new MessageEmbed()
 					.setColor(client.config.embedColor)
-					.setDescription("🔎 **Searching...**"),
+					.setDescription("🔎 | **Searching...**"),
 			],
 		});
-		
+
 		let player;
 		if (client.manager) {
 			player = client.manager.players.get(interaction.guild.id);
 		} else {
-			return interaction.reply({
+			return interaction.editReply({
 				embeds: [
 					new MessageEmbed()
 						.setColor("RED")
@@ -33,7 +38,7 @@ const command = new SlashCommand()
 				],
 			});
 		}
-		
+
 		const args = interaction.options.getString("song");
 		if (!args && !player) {
 			return interaction.editReply({
@@ -44,45 +49,185 @@ const command = new SlashCommand()
 				],
 			});
 		}
-		
-		let search = args? args : player.queue.current.title;
-		let url = `https://api.darrennathanael.com/lyrics?song=${ search }`;
-		
-		let lyrics = await fetch(url)
-			.then((res) => {
-				return res.json();
-			})
-			.catch((err) => {
-				return err.name;
-			});
-		if (!lyrics || lyrics.response !== 200 || lyrics === "FetchError") {
+
+		let currentTitle = ``;
+		const phrasesToRemove = [
+			"Full Video", "Full Audio", "Official Music Video", "Lyrics", "Lyrical Video",
+			"Feat.", "Ft.", "Official", "Audio", "Video", "HD", "4K", "Remix",
+			"Extended", "DJ Edit", "with Lyrics", "Lyrics", "Karaoke",
+			"Instrumental", "Live", "Acoustic", "Cover", "\\(feat\\. .*\\)"
+		];
+		if (!args) {
+			currentTitle = player.queue.current.title;
+			currentTitle = currentTitle
+				.replace(new RegExp(phrasesToRemove.join('|'), 'gi'), '')
+				.replace(/\s*([\[\(].*?[\]\)])?\s*(\|.*)?\s*(\*.*)?$/, '');
+		}
+		let query = args ? args : currentTitle;
+		let lyricsResults = [];
+
+		lyricsApi.search(query).then(async (lyricsData) => {
+			if (lyricsData.length !== 0) {
+				for (let i = 0; i < client.config.lyricsMaxResults; i++) {
+					if (lyricsData[i]) {
+						lyricsResults.push({
+							label: `${lyricsData[i].title}`,
+							description: `${lyricsData[i].artist}`,
+							value: i.toString()
+						});
+					} else { break }
+				}
+
+				const menu = new MessageActionRow().addComponents(
+					new MessageSelectMenu()
+						.setCustomId("choose-lyrics")
+						.setPlaceholder("Choose a song")
+						.addOptions(lyricsResults),
+				);
+
+				let selectedLyrics = await interaction.editReply({
+					embeds: [
+						new MessageEmbed()
+							.setColor(client.config.embedColor)
+							.setDescription(
+								`Here are some of the results I found for \`${query}\`. Please choose a song to display lyrics within \`30 seconds\`.`
+							),
+					], components: [menu],
+				});
+
+				const filter = (button) => button.user.id === interaction.user.id;
+
+				const collector = selectedLyrics.createMessageComponentCollector({
+					filter,
+					time: 30000,
+				});
+
+				collector.on("collect", async (interaction) => {
+					if (interaction.isSelectMenu()) {
+						await interaction.deferUpdate();
+						const url = lyricsData[parseInt(interaction.values[0])].url;
+
+						lyricsApi.find(url).then((lyrics) => {
+							let lyricsText = lyrics.lyrics;
+
+							const button = new MessageActionRow()
+								.addComponents(
+									new MessageButton()
+										.setCustomId('tipsbutton')
+										.setLabel('Tips')
+										.setEmoji(`📌`)
+										.setStyle('SECONDARY'),
+									new MessageButton()
+										.setLabel('Source')
+										.setURL(url)
+										.setStyle('LINK'),
+								);
+
+							const musixmatch_icon = 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Musixmatch_logo_icon_only.svg/480px-Musixmatch_logo_icon_only.svg.png';
+							let lyricsEmbed = new MessageEmbed()
+								.setColor(client.config.embedColor)
+								.setTitle(`${lyrics.name}`)
+								.setURL(url)
+								.setThumbnail(lyrics.icon)
+								.setFooter({
+									text: 'Lyrics provided by MusixMatch.',
+									iconURL: musixmatch_icon
+								})
+								.setDescription(lyricsText);
+
+							if (lyricsText.length === 0) {
+								lyricsEmbed
+									.setDescription(`**Unfortunately we're not authorized to show these lyrics.**`)
+									.setFooter({
+										text: 'Lyrics is restricted by MusixMatch.',
+										iconURL: musixmatch_icon
+									})
+							}
+
+							if (lyricsText.length > 4096) {
+								lyricsText = lyricsText.substring(0, 4050) + "\n\n[...]";
+								lyricsEmbed
+									.setDescription(lyricsText + `\nTruncated, the lyrics were too long.`)
+							}
+
+							return interaction.editReply({
+								embeds: [lyricsEmbed],
+								components: [button],
+							});
+
+						})
+					}
+				});
+
+				collector.on("end", async (i) => {
+					if (i.size == 0) {
+						selectedLyrics.edit({
+							content: null,
+							embeds: [
+								new MessageEmbed()
+									.setDescription(
+										`No song is selected. You took too long to select a track.`
+									)
+									.setColor(client.config.embedColor),
+							], components: [],
+						});
+					}
+				});
+
+			} else {
+				const button = new MessageActionRow()
+					.addComponents(
+						new MessageButton()
+							.setEmoji(`📌`)
+							.setCustomId('tipsbutton')
+							.setLabel('Tips')
+							.setStyle('SECONDARY'),
+					);
+				return interaction.editReply({
+					embeds: [
+						new MessageEmbed()
+							.setColor("RED")
+							.setDescription(
+								`No results found for \`${query}\`!\nMake sure you typed in your search correctly.`,
+							),
+					], components: [button],
+				});
+			}
+		}).catch((err) => {
+			console.error(err);
 			return interaction.editReply({
 				embeds: [
 					new MessageEmbed()
 						.setColor("RED")
 						.setDescription(
-							`❌ | No lyrics found for ${ search }!\nMake sure you typed in your search correctly.`,
+							`An unknown error has occured, please check your console.`,
 						),
 				],
 			});
-		}
-		
-		let text = lyrics.lyrics;
-		let lyricsEmbed = new MessageEmbed()
-			.setColor(client.config.embedColor)
-			.setTitle(`${ lyrics.full_title }`)
-			.setURL(lyrics.url)
-			.setThumbnail(lyrics.thumbnail)
-			.setDescription(text);
-		
-		if (text.length > 4096) {
-			text = text.substring(0, 4090) + "[...]";
-			lyricsEmbed
-				.setDescription(text)
-				.setFooter({ text: "Truncated, the lyrics were too long." });
-		}
-		
-		return interaction.editReply({ embeds: [lyricsEmbed] });
+		});
+
+		const collector = interaction.channel.createMessageComponentCollector({
+			time: 1000 * 3600
+		});
+
+		collector.on('collect', async interaction => {
+			if (interaction.customId === 'tipsbutton') {
+				await interaction.deferUpdate();
+				await interaction.followUp({
+					embeds: [
+						new MessageEmbed()
+							.setTitle(`Lyrics Tips`)
+							.setColor(client.config.embedColor)
+							.setDescription(
+								`Here is some tips to get your song lyrics correctly \n\n\
+                                1. Try to add the artist's name in front of the song name.\n\
+                                2. Try to search the lyrics manually by providing the song query using your keyboard.\n\
+                                3. Avoid searching lyrics in languages other than English.`,
+							),
+					], ephemeral: true, components: []
+				});
+			};
+		});
 	});
 
 module.exports = command;

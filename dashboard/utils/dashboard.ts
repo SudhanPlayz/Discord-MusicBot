@@ -8,7 +8,8 @@ export interface IDashboard {
 export const getDashboard: () => Promise<IDashboard> = () => {
     return new Promise(async (resolve, _reject) => {
         let data = await fetch("/api/dashboard", {
-            method: "GET"
+            method: "GET",
+	    credentials: "same-origin",
         });
         let json = await data.json();
         resolve(json);

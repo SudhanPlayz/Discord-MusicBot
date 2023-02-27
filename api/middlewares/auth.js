@@ -6,7 +6,6 @@
  */
 
 const Auth = (req, res, next) => {
-	console.log("Middleware", req.user)
 	if (!req.user) {
 		return res.redirect("/login");
 	} else {

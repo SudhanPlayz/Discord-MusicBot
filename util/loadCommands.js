@@ -1,4 +1,4 @@
-const path = require("path");
+const { join } = require("path");
 const fs = require("fs");
 
 const LoadCommands = () => {
@@ -13,7 +13,7 @@ const LoadCommands = () => {
 const LoadDirectory = (dir) => {
 	return new Promise((resolve) => {
 		let commands = [];
-		let CommandsDir = path.join(__dirname, "..", "commands", dir);
+		let CommandsDir = join(__dirname, "..", "commands", dir);
 		
 		fs.readdir(CommandsDir, (err, files) => {
 			if (err) {

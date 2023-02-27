@@ -1,9 +1,10 @@
 const { Router } = require("express");
 const api = Router();
-const client = require("../../");
+const { getClient } = require("../../");
 const Auth = require("../middlewares/auth");
 
 api.get("/", Auth, (req, res) => {
+	const client = getClient();
 	let data = {
 		commandsRan: client.commandsRan,
 		users: client.users.cache.size,

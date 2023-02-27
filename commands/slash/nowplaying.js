@@ -1,4 +1,5 @@
 const { MessageEmbed } = require("discord.js");
+const escapeMarkdown = require('discord.js').Util.escapeMarkdown;
 const SlashCommand = require("../../lib/SlashCommand");
 const prettyMilliseconds = require("pretty-ms");
 
@@ -47,6 +48,9 @@ const command = new SlashCommand()
 		}
 		
 		const song = player.queue.current;
+        var title = escapeMarkdown(song.title)
+        var title = title.replace(/\]/g,"")
+        var title = title.replace(/\[/g,"")
 		const embed = new MessageEmbed()
 			.setColor(client.config.embedColor)
 			.setAuthor({ name: "Now Playing", iconURL: client.config.iconURL })
@@ -73,7 +77,7 @@ const command = new SlashCommand()
 			// show the thumbnail of the song using displayThumbnail("maxresdefault")
 			.setThumbnail(song.displayThumbnail("maxresdefault"))
 			// show the title of the song and link to it
-			.setDescription(`[${ song.title }](${ song.uri })`);
+			.setDescription(`[${ title }](${ song.uri })`);
 		return interaction.reply({ embeds: [embed] });
 	});
 module.exports = command;

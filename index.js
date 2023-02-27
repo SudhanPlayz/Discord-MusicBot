@@ -20,4 +20,8 @@ const client = new DiscordMusicBot();
 
 console.log("Make sure to fill in the config.js before starting the bot.");
 
-module.exports = client;
+const getClient = () => client;
+
+module.exports = {
+	getClient,
+};

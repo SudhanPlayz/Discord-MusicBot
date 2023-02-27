@@ -8,7 +8,7 @@ const command = new SlashCommand()
 	.addStringOption((option) =>
 		option
 			.setName("time")
-			.setDescription("Seek to time you want. Ex 2m | 10s | 53s")
+			.setDescription("Seek to time you want. Ex 1h 30m | 2h | 80m | 53s")
 			.setRequired(true),
 	)
 	.setRun(async (client, interaction, options) => {
@@ -42,9 +42,14 @@ const command = new SlashCommand()
 		}
 		
 		await interaction.deferReply();
-		
-		const args = interaction.options.getString("time");
-		const time = ms(args);
+
+		const rawArgs = interaction.options.getString("time");
+		const args = rawArgs.split(' ');
+		var rawTime = [];
+		for (i = 0; i < args.length; i++){
+			rawTime.push(ms(args[i]));
+		}
+		const time = rawTime.reduce((a,b) => a + b, 0);
 		const position = player.position;
 		const duration = player.queue.current.duration;
 		
@@ -67,7 +72,7 @@ const command = new SlashCommand()
 					new MessageEmbed()
 						.setColor(client.config.embedColor)
 						.setDescription(
-							`Cannot seek current playing track. This may happened because seek duration has exceeded track duration`,
+							`Unable to seek current playing track. This may be due to exceeding track duration or an incorrect time format. Please check and try again`,
 						),
 				],
 			});

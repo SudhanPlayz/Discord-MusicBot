@@ -1,16 +1,17 @@
 import {AudiotrackRounded, SettingsRounded, YouTube} from '@mui/icons-material'
 import {Button, Card, Container, Link, Text} from '@nextui-org/react'
 import Head from 'next/head'
-import {useRouter} from 'next/router'
 import {useEffect, useState} from 'react'
 import {getData, IData} from '../utils/data'
 
 const Home = (_props: any) => {
-    const router = useRouter()
     const [data, setData] = useState<IData | null>(null)
 
     useEffect(() => {
-        getData().then(setData)
+	    getData().then(res => {
+		    setData(res);
+		    if (res.redirect?.length) window.location.href = res.redirect;
+	    })
     }, [])
 
     return (
@@ -29,7 +30,7 @@ const Home = (_props: any) => {
                 top: '0',
                 zIndex: '$5'
             } }>
-                <Link css={ {fontSize: '$xl', fontWeight: '$semibold'} } href='#'>
+                <Link css={ {fontSize: '$xl', fontWeight: '$semibold'} } href='/'>
                     { data ? data.name : "Discord Music Bot" }
                 </Link>
                 <Link color='text' css={ {fontSize: '$lg', fontWeight: '$medium', marginLeft: '20px'} } href='#'>
@@ -39,7 +40,7 @@ const Home = (_props: any) => {
                       href='#features'>
                     Features
                 </Link>
-                <Button onClick={ () => router.push('/dashboard') } css={ {marginLeft: 'auto'} } auto shadow>
+                <Button onClick={ () => window.location.pathname = '/dashboard' } css={ {marginLeft: 'auto'} } auto shadow>
                     Dashboard
                 </Button>
             </Container>
@@ -56,7 +57,7 @@ const Home = (_props: any) => {
                 <Text h3 css={ {color: '$gray800'} }>An advanced discord music bot, supports Spotify, SoundCloud,
                     YouTube with Shuffling, Volume Control and Web Dashboard!</Text>
                 <Container css={ {display: 'flex', alignItems: 'center', justifyContent: 'center'} }>
-                    <Button color="primary" onClick={ () => router.push('/login') } shadow style={ {
+                    <Button color="primary" onClick={ () => window.location.pathname = '/login' } shadow style={ {
                         marginTop: '1rem'
                     } }>Login
                     </Button>

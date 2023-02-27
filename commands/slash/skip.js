@@ -32,7 +32,17 @@ const command = new SlashCommand()
 				],
 				ephemeral: true,
 			});
-		}
+		} 
+        	const song = player.queue.current;
+	        const autoQueue = player.get("autoQueue");
+                if (player.queue[0] == undefined && (!autoQueue || autoQueue === false)) {
+		return interaction.reply({
+			embeds: [
+				new MessageEmbed()
+					.setColor("RED")
+					.setDescription(`There is nothing after [${ song.title }](${ song.uri }) in the queue.`),
+			],
+		})}
 		
 		player.queue.previous = player.queue.current;
 		player.stop();
