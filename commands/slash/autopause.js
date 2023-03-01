@@ -34,7 +34,7 @@ const command = new SlashCommand()
 
     let autoPauseEmbed = new MessageEmbed().setColor(client.config.embedColor);
     const autoPause = player.get("autoPause");
-    player.set("requester", interaction.guild.me);
+    player.set("requester", interaction.guild.members.me);
 
     if (!autoPause || autoPause === false) {
       player.set("autoPause", true);
