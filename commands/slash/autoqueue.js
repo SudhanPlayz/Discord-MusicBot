@@ -37,7 +37,7 @@ const command = new SlashCommand()
 		
 		let autoQueueEmbed = new MessageEmbed().setColor(client.config.embedColor);
 		const autoQueue = player.get("autoQueue");
-		player.set("requester", interaction.guild.me);
+		player.set("requester", interaction.guild.members.me);
 		
 		if (!autoQueue || autoQueue === false) {
 			player.set("autoQueue", true);
