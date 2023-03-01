@@ -6,7 +6,7 @@ module.exports = async (client, message) => {
 	const refront = `^<@!?${client.user.id}>`;
 	const mention = new RegExp(refront + "$");
 	const debugIdMention = new RegExp(refront + " debug-id ([^\\s]+)");
-	const invite = `https://discord.com/oauth2/authorize?client_id=${client.config.clientId}&permissions=${client.config.permissions}&scope=${client.config.scopes.toString().replace(/,/g, '%20')}`;
+	const invite = `https://discord.com/oauth2/authorize?client_id=${client.config.clientId}&permissions=${client.config.permissions}&scope=bot%20applications.commands`;
 
 	const buttons = new MessageActionRow()
 		.addComponents(
