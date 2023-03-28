@@ -31,7 +31,14 @@ module.exports = {
       .setColor(client.botconfig.EmbedColor)
       .setDescription(`[${song.title}](${song.uri})`)
       .addField("Requested by", `${song.requester}`, true)
-      .addField(
+      .setThumbnail(player.queue.current.displayThumbnail());
+
+    // Check if song duration matches livestream duration
+
+    if (player.queue.current.duration == 9223372036854776000) {
+      QueueEmbed.addField("Duration", "`Live`");
+    } else {
+      QueueEmbed.addField(
         "Duration",
         `${
           client.ProgressBar(player.position, player.queue.current.duration, 15)
@@ -41,8 +48,9 @@ module.exports = {
         })} / ${prettyMilliseconds(player.queue.current.duration, {
           colonNotation: true,
         })}\``
-      )
-      .setThumbnail(player.queue.current.displayThumbnail());
+      );
+    }
+
     return message.channel.send(QueueEmbed);
   },
 
@@ -68,7 +76,14 @@ module.exports = {
         .setColor(client.botconfig.EmbedColor)
         .setDescription(`[${song.title}](${song.uri})`)
         .addField("Requested by", `${song.requester}`, true)
-        .addField(
+        .setThumbnail(player.queue.current.displayThumbnail());
+
+      // Check if song duration matches livestream duration
+
+      if (player.queue.current.duration == 9223372036854776000) {
+        QueueEmbed.addField("Duration", "`Live`");
+      } else {
+        QueueEmbed.addField(
           "Duration",
           `${
             client.ProgressBar(
@@ -81,8 +96,8 @@ module.exports = {
           })} / ${prettyMilliseconds(player.queue.current.duration, {
             colonNotation: true,
           })}\``
-        )
-        .setThumbnail(player.queue.current.displayThumbnail());
+        );
+      }
       return interaction.send(QueueEmbed);
     },
   },

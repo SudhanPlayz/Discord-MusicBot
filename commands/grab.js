@@ -1,5 +1,6 @@
 const { MessageEmbed } = require("discord.js");
 const prettyMilliseconds = require("pretty-ms");
+let d;
 
 module.exports = {
   name: "grab",
@@ -42,46 +43,47 @@ module.exports = {
         message.channel,
         "❌ | **You must be in the same voice channel as me to use this command!**"
       );
-    message.author
-      .send(
-        new MessageEmbed()
-          .setAuthor(
-            `Song saved`,
-            client.user.displayAvatarURL({
-              dynamic: true,
-            })
-          )
-          .setThumbnail(
-            `https://img.youtube.com/vi/${player.queue.current.identifier}/mqdefault.jpg`
-          )
-          .setURL(player.queue.current.uri)
-          .setColor(client.botconfig.EmbedColor)
-          .setTitle(`**${player.queue.current.title}**`)
-          .addField(
-            `⌛ Duration: `,
-            `\`${prettyMilliseconds(player.queue.current.duration, {
-              colonNotation: true,
-            })}\``,
-            true
-          )
-          .addField(`🎵 Author: `, `\`${player.queue.current.author}\``, true)
-          .addField(
-            `▶ Play it:`,
-            `\`${
-              GuildDB ? GuildDB.prefix : client.botconfig.DefaultPrefix
-            }play ${player.queue.current.uri}\``
-          )
-          .addField(`🔎 Saved in:`, `<#${message.channel.id}>`)
-          .setFooter(
-            `Requested by: ${player.queue.current.requester.tag}`,
-            player.queue.current.requester.displayAvatarURL({
-              dynamic: true,
-            })
-          )
+    let GrabEmbed = new MessageEmbed()
+      .setAuthor(
+        `Song saved`,
+        client.user.displayAvatarURL({
+          dynamic: true,
+        })
       )
-      .catch((e) => {
-        return message.channel.send("**❌ Your DMs are disabled**");
+      .setThumbnail(
+        `https://img.youtube.com/vi/${player.queue.current.identifier}/mqdefault.jpg`
+      )
+      .setURL(player.queue.current.uri)
+      .setColor(client.botconfig.EmbedColor)
+      .setTitle(`**${player.queue.current.title}**`);
+
+    // Check if duration matches duration of livestream
+
+    if (player.queue.current.duration == 9223372036854776000) {
+      d = "Live";
+    } else {
+      d = prettyMilliseconds(player.queue.current.duration, {
+        colonNotation: true,
       });
+    }
+    GrabEmbed.addField(`⌛ Duration: `, `\`${d}\``, true)
+      .addField(`🎵 Author: `, `\`${player.queue.current.author}\``, true)
+      .addField(
+        `▶ Play it:`,
+        `\`${GuildDB ? GuildDB.prefix : client.botconfig.DefaultPrefix}play ${
+          player.queue.current.uri
+        }\``
+      )
+      .addField(`🔎 Saved in:`, `<#${message.channel.id}>`)
+      .setFooter(
+        `Requested by: ${player.queue.current.requester.tag}`,
+        player.queue.current.requester.displayAvatarURL({
+          dynamic: true,
+        })
+      );
+    message.author.send(GrabEmbed).catch((e) => {
+      return message.channel.send("**❌ Your DMs are disabled**");
+    });
 
     client.sendTime(message.channel, "✅ | **Check your DMs!**");
   },
@@ -130,14 +132,16 @@ module.exports = {
           .setURL(player.queue.current.uri)
           .setColor(client.botconfig.EmbedColor)
           .setTimestamp()
-          .setTitle(`**${player.queue.current.title}**`)
-          .addField(
-            `⌛ Duration: `,
-            `\`${prettyMilliseconds(player.queue.current.duration, {
-              colonNotation: true,
-            })}\``,
-            true
-          )
+          .setTitle(`**${player.queue.current.title}**`);
+        if (player.queue.current.duration == 9223372036854776000) {
+          d = "Live";
+        } else {
+          d = prettyMilliseconds(player.queue.current.duration, {
+            colonNotation: true,
+          });
+        }
+        embed
+          .addField(`⌛ Duration: `, `\`${d}\``, true)
           .addField(`🎵 Author: `, `\`${player.queue.current.author}\``, true)
           .addField(
             `▶ Play it:`,
