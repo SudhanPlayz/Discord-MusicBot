@@ -1,17 +1,26 @@
-// toggle "const voteskip=true" to enable/disable voteskip on discord js v12
-
 const voteskip = true;
 
 module.exports = {
   name: "togglevote",
   description: "Toggle voteskip",
-  execute(message, args) {
+  permissions: {
+    member: ["ADMINISTRATOR"],
+  },
+  aliases: ["votes"],
+  /**
+   *
+   * @param {import("../structures/DiscordMusicBot")} client
+   * @param {import("discord.js").Message} message
+   * @param {string[]} args
+   * @param {*} param3
+   */
+  run: async (client, interaction, args, { GuildDB }) => {
     if (voteskip) {
       voteskip = false;
-      message.channel.send("Voteskip is now disabled!");
+      client.sendTime(interaction, `🔂 \`Disabled\``);
     } else {
       voteskip = true;
-      message.channel.send("Voteskip is now enabled!");
+      client.sendTime(interaction, `🔂 \`Enabled\``);
     }
   },
 };
