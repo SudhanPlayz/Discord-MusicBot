@@ -98,10 +98,12 @@ module.exports = async (client, oldState, newState) => {
 			}
 			break;
                 case "LEAVE":
-			if (player.get("autoPause") === true) {
-                         var members = stateChange.channel.members.filter(member => !member.user.bot).size
-			    if (members === 0 && !player.paused && player.playing){
-                                        player.pause(true);
+			var members = stateChange.channel.members.filter(member => !member.user.bot).size
+			const twentyFourSeven = player.get("twentyFourSeven");
+			if (player.get("autoPause") === true && player.get("autoLeave") === false) {
+				if (members === 0 && !player.paused && player.playing) {
+					player.pause(true);
+					
 					let playerPaused = new MessageEmbed()
 						.setColor(client.config.embedColor)
 						.setTitle(`Paused!`, client.config.iconURL)
@@ -114,7 +116,100 @@ module.exports = async (client, oldState, newState) => {
 						.send({ embeds: [playerPaused] });
 					player.setPausedMessage(client, pausedMessage);
 				}
+			}else if (player.get("autoLeave") === true && player.get("autoPause") === false) {
+				if (members === 0) {
+					if (twentyFourSeven){
+						setTimeout(async () => {
+							var members = stateChange.channel.members.filter(member => !member.user.bot).size
+							if (members === 0 && player.state !== 'DISCONNECTED'){
+								let leftEmbed = new MessageEmbed()
+									.setColor(client.config.embedColor)
+									.setAuthor({
+									name: "Disconnected!",
+									iconURL: client.config.iconURL,
+									})
+									.setFooter({ text: "Left because there is no one left in the voice channel." })
+									.setTimestamp();
+								let Disconnected = await client.channels.cache
+									.get(player.textChannel)
+									.send({ embeds: [leftEmbed] });
+								setTimeout(() => Disconnected.delete(true), 5000);
+								player.queue.clear();
+								player.destroy();
+								player.set("autoQueue", false);
+							}
+						}, client.config.disconnectTime);
+					} else{
+						let leftEmbed = new MessageEmbed()
+							.setColor(client.config.embedColor)
+							.setAuthor({
+							name: "Disconnected!",
+							iconURL: client.config.iconURL,
+							})
+							.setFooter({ text: "Left because there is no one left in the voice channel." })
+							.setTimestamp();
+						let Disconnected = await client.channels.cache
+							.get(player.textChannel)
+							.send({ embeds: [leftEmbed] });
+						setTimeout(() => Disconnected.delete(true), 5000);
+						player.destroy();	
+					}
+					
+				}
+			}else if (player.get("autoLeave") === true && player.get("autoPause") === true){
+				if (members === 0 && !player.paused && player.playing && twentyFourSeven) {
+					player.pause(true);
+					
+					let playerPaused = new MessageEmbed()
+						.setColor(client.config.embedColor)
+						.setTitle(`Paused!`, client.config.iconURL)
+						.setFooter({
+							text: `The current song has been paused because theres no one in the voice channel.`,
+						});
+					
+					let pausedMessage = await client.channels.cache
+						.get(player.textChannel)
+						.send({ embeds: [playerPaused] });
+					player.setPausedMessage(client, pausedMessage);
+					setTimeout(async () => {
+						var members = stateChange.channel.members.filter(member => !member.user.bot).size
+						if (members === 0 && player.state !== 'DISCONNECTED'){
+							let leftEmbed = new MessageEmbed()
+								.setColor(client.config.embedColor)
+								.setAuthor({
+								name: "Disconnected!",
+								iconURL: client.config.iconURL,
+								})
+								.setFooter({ text: "Left because there is no one left in the voice channel." })
+								.setTimestamp();
+							let Disconnected = await client.channels.cache
+								.get(player.textChannel)
+								.send({ embeds: [leftEmbed] });
+							setTimeout(() => Disconnected.delete(true), 5000);
+							pausedMessage.delete(true);
+							player.queue.clear();
+							player.destroy();
+							player.set("autoQueue", false);
+						}
+					}, client.config.disconnectTime);
+				}else{
+					if (members === 0 && player.state !== 'DISCONNECTED'){
+						let leftEmbed = new MessageEmbed()
+						.setColor(client.config.embedColor)
+						.setAuthor({
+						name: "Disconnected!",
+						iconURL: client.config.iconURL,
+						})
+						.setFooter({ text: "Left because there is no one left in the voice channel." })
+						.setTimestamp();
+						let Disconnected = await client.channels.cache
+							.get(player.textChannel)
+							.send({ embeds: [leftEmbed] });
+						setTimeout(() => Disconnected.delete(true), 5000);
+						player.destroy();
+					}
+				}
 			}
-			break;
+		break;
 	}
 };
