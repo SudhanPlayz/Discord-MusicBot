@@ -1,5 +1,6 @@
 const { MessageEmbed } = require("discord.js");
 const { TrackUtils } = require("erela.js");
+const { voteskip } = require("./togglevote");
 
 module.exports = {
   name: "skip",
@@ -83,37 +84,42 @@ module.exports = {
         (isNaN(skipTo) || skipTo < 1 || skipTo > player.queue.length)
       )
         return client.sendTime(interaction, "❌ | **Invalid number to skip!**");
-      if (message.member.voice.channel.members.size >= 3) {
-        if (!player.get("vote")) player.set("vote", 0);
-        if (!player.get("voters")) player.set("voters", []);
-        if (player.get("voters").includes(message.member.id))
-          return client.sendTime(
-            message.channel,
-            "❌ | **You have already voted!**"
-          );
-        player.set("vote", player.get("vote") + 1);
-        player.set("voters", [...player.get("voters"), message.member.id]);
-        if (
-          player.get("vote") >=
-          Math.ceil(message.member.voice.channel.members.size / 2)
-        ) {
-          player.stop();
-          player.set("vote", 0);
-          player.set("voters", []);
-          return client.sendTime(message.channel, "✅ | **Skipped!**");
-        } else {
-          return client.sendTime(
-            message.channel,
-            `✅ | **Your vote has been counted!**\n**Voted:** \`${player.get(
-              "vote"
-            )}\`/\`${Math.ceil(
-              message.member.voice.channel.members.size / 2
-            )}\``
-          );
+      if (!voteskip) {
+        player.stop();
+        return client.sendTime(interaction, "✅ | **Skipped!**");
+      } else {
+        if (message.member.voice.channel.members.size >= 3) {
+          if (!player.get("vote")) player.set("vote", 0);
+          if (!player.get("voters")) player.set("voters", []);
+          if (player.get("voters").includes(message.member.id))
+            return client.sendTime(
+              message.channel,
+              "❌ | **You have already voted!**"
+            );
+          player.set("vote", player.get("vote") + 1);
+          player.set("voters", [...player.get("voters"), message.member.id]);
+          if (
+            player.get("vote") >=
+            Math.ceil(message.member.voice.channel.members.size / 2)
+          ) {
+            player.stop();
+            player.set("vote", 0);
+            player.set("voters", []);
+            return client.sendTime(message.channel, "✅ | **Skipped!**");
+          } else {
+            return client.sendTime(
+              message.channel,
+              `✅ | **Your vote has been counted!**\n**Voted:** \`${player.get(
+                "vote"
+              )}\`/\`${Math.ceil(
+                message.member.voice.channel.members.size / 2
+              )}\``
+            );
+          }
         }
+        player.stop();
+        client.sendTime(message.channel, "✅ | **Skipped!**");
       }
-      player.stop();
-      client.sendTime(message.channel, "✅ | **Skipped!**");
     },
   },
 };
