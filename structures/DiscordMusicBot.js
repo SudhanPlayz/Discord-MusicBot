@@ -12,6 +12,7 @@ const prettyMilliseconds = require("pretty-ms");
 const deezer = require("erela.js-deezer");
 const apple = require("erela.js-apple");
 const facebook = require("erela.js-facebook");
+let d;
 
 //Class extending Stuff
 require("discordjs-activity"); //Epic Package, For more details: https://www.npmjs.com/package/discordjs-activity
@@ -165,14 +166,17 @@ class DiscordMusicBot extends Client {
           .setThumbnail(player.queue.current.displayThumbnail())
           .setDescription(`[${track.title}](${track.uri})`)
           .addField("Requested by", `${track.requester}`, true)
-          .addField(
-            "Duration",
-            `\`${prettyMilliseconds(track.duration, {
-              colonNotation: true,
-            })}\``,
-            true
-          )
           .setColor(this.botconfig.EmbedColor);
+
+        // Check if the duration matches the duration of a livestream
+        if (track.duration == 9223372036854776000) {
+          d = "Live";
+        } else {
+          d = prettyMilliseconds(track.duration, { colonNotation: true });
+        }
+
+        TrackStartedEmbed.addField("Duration", `\`${d}\``, true);
+
         //.setFooter("Started playing at");
         let NowPlaying = await client.channels.cache
           .get(player.textChannel)

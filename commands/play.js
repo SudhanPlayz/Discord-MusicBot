@@ -1,6 +1,7 @@
 const { Util, MessageEmbed } = require("discord.js");
 const { TrackUtils, Player } = require("erela.js");
 const prettyMilliseconds = require("pretty-ms");
+let d;
 
 module.exports = {
   name: "play",
@@ -176,13 +177,18 @@ module.exports = {
             `[${Searched.tracks[0].title}](${Searched.tracks[0].uri})`
           );
           SongAddedEmbed.addField("Author", Searched.tracks[0].author, true);
-          SongAddedEmbed.addField(
-            "Duration",
-            `\`${prettyMilliseconds(Searched.tracks[0].duration, {
+
+          // Check if the duration matches the duration of a livestream
+          if (Searched.tracks[0].duration == 9223372036854776000) {
+            d = "Live";
+          } else {
+            d = prettyMilliseconds(Searched.tracks[0].duration, {
               colonNotation: true,
-            })}\``,
-            true
-          );
+            });
+          }
+
+          SongAddedEmbed.addField("Duration", `\`${d}\``, true);
+
           if (player.queue.totalSize > 1)
             SongAddedEmbed.addField(
               "Position in queue",
@@ -383,13 +389,16 @@ module.exports = {
               `[${res.tracks[0].title}](${res.tracks[0].uri})`
             );
             SongAddedEmbed.addField("Author", res.tracks[0].author, true);
-            SongAddedEmbed.addField(
-              "Duration",
-              `\`${prettyMilliseconds(res.tracks[0].duration, {
+            // Check if the duration matches the duration of a livestream
+            if (res.tracks[0].duration == 9223372036854776000) {
+              d = "Live";
+            } else {
+              d = prettyMilliseconds(res.tracks[0].duration, {
                 colonNotation: true,
-              })}\``,
-              true
-            );
+              });
+            }
+
+            SongAddedEmbed.addField("Duration", `\`${d}\``, true);
             if (player.queue.totalSize > 1)
               SongAddedEmbed.addField(
                 "Position in queue",
