@@ -116,18 +116,9 @@ module.exports = {
           client.botconfig.IconURL
         )
         .setColor(client.botconfig.EmbedColor)
-        .setFooter(
-          `To get info of each command type ${
-            GuildDB ? GuildDB.prefix : client.botconfig.DefaultPrefix
-          }help [Command] | Have a nice day!`
-        ).setDescription(`${Commands.join("\n")}
+        .setFooter(`Lele Meow`).setDescription(`${Commands.join("\n")}
   
-  Discord Music Bot Version: v${require("../package.json").version}
-  [✨ Support Server](${
-    client.botconfig.SupportServer
-  }) | [GitHub](https://github.com/SudhanPlayz/Discord-MusicBot) | [Dashboard](${
-        client.botconfig.Website
-      }) | By [SudhanPlayz](https://github.com/SudhanPlayz)`);
+  DJ Meow`);
       if (!args) return interaction.send(Embed);
       else {
         let cmd =
