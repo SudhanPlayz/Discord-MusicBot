@@ -1,6 +1,6 @@
 const SlashCommand = require("../../lib/SlashCommand");
 const { MessageEmbed } = require("discord.js");
-const escapeMarkdown = require('discord.js').Util.escapeMarkdown;
+const escapeMarkdown = require("discord.js").Util.escapeMarkdown;
 
 const command = new SlashCommand()
   .setName("play")
@@ -20,18 +20,14 @@ const command = new SlashCommand()
       return;
     }
 
-    let player;
-    if (client.manager) {
-      player = client.createPlayer(interaction.channel, channel);
-    } else {
+    let node = await client.getLavalink(client);
+    if (!node) {
       return interaction.reply({
-        embeds: [
-          new MessageEmbed()
-            .setColor("RED")
-            .setDescription("Lavalink node is not connected"),
-        ],
+        embeds: [client.ErrorEmbed("Lavalink node is not connected")],
       });
     }
+
+    let player = client.createPlayer(interaction.channel, channel);
 
     if (player.state !== "CONNECTED") {
       player.connect();
@@ -39,11 +35,11 @@ const command = new SlashCommand()
 
     if (channel.type == "GUILD_STAGE_VOICE") {
       setTimeout(() => {
-        if (interaction.guild.me.voice.suppress == true) {
+        if (interaction.guild.members.me.voice.suppress == true) {
           try {
-            interaction.guild.me.voice.setSuppressed(false);
+            interaction.guild.members.me.voice.setSuppressed(false);
           } catch (e) {
-            interaction.guild.me.voice.setRequestToSpeak(true);
+            interaction.guild.members.me.voice.setRequestToSpeak(true);
           }
         }
       }, 2000); // Need this because discord api is buggy asf, and without this the bot will not request to speak on a stage - Darren
@@ -102,15 +98,13 @@ const command = new SlashCommand()
       if (!player.playing && !player.paused && !player.queue.size) {
         player.play();
       }
-      var title = escapeMarkdown(res.tracks[0].title)
-      var title = title.replace(/\]/g,"")
-      var title = title.replace(/\[/g,"")
+      var title = escapeMarkdown(res.tracks[0].title);
+      var title = title.replace(/\]/g, "");
+      var title = title.replace(/\[/g, "");
       let addQueueEmbed = new MessageEmbed()
         .setColor(client.config.embedColor)
         .setAuthor({ name: "Added to queue", iconURL: client.config.iconURL })
-        .setDescription(
-          `[${title}](${res.tracks[0].uri})` || "No Title"
-        )
+        .setDescription(`[${title}](${res.tracks[0].uri})` || "No Title")
         .setURL(res.tracks[0].uri)
         .addFields(
           {
