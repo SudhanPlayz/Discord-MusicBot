@@ -69,12 +69,13 @@ module.exports = async (client, oldState, newState) => {
       }
       break;
     case "LEAVE":
-      if (client.botconfig.AutoLeave) {
-        if (
-          stateChange.members.size === 0 &&
-          !player.paused &&
-          player.playing
-        ) {
+      if (stateChange.members.size === 0 && !player.paused && player.playing) {
+        let emb = new MessageEmbed()
+          .setAuthor(`Paused!`, client.botconfig.IconURL)
+          .setColor(client.botconfig.EmbedColor)
+          .setDescription(`The player has been paused because everybody left`);
+        await client.channels.cache.get(player.textChannel).send(emb);
+        if (client.botconfig.AutoLeave) {
           // Schedule bot to leave voice channel after 30 seconds of being alone
           const timer = setTimeout(async () => {
             player.destroy();
@@ -82,20 +83,12 @@ module.exports = async (client, oldState, newState) => {
               .setAuthor(`Left the VC!`, client.botconfig.IconURL)
               .setColor(client.botconfig.EmbedColor)
               .setDescription(
-                `Left the voice channel because I was alone for more than \`30\` seconds`
+                `Left the voice channel because I was alone for more than \`${client.botconfig.AutoLeaveTime}\` seconds`
               );
             await client.channels.cache.get(player.textChannel).send(emb);
-          }, 30000);
+          }, client.botconfig.AutoLeaveTime * 1000);
 
           player.timer = timer;
-
-          let emb = new MessageEmbed()
-            .setAuthor(`Paused!`, client.botconfig.IconURL)
-            .setColor(client.botconfig.EmbedColor)
-            .setDescription(
-              `The player has been paused because everybody left`
-            );
-          await client.channels.cache.get(player.textChannel).send(emb);
         } else if (player.timer) {
           // If the bot is no longer alone, cancel the scheduled timer
           clearTimeout(player.timer);

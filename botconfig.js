@@ -12,7 +12,8 @@ module.exports = {
   DefaultVolume: 100, // Sets the default volume of the bot, You can change this number anywhere from 1 to 9007199254740991 (JS Integer limit. If you do set it to that, you're a monster.)
   CallbackURL: "/api/callback", // Discord API Callback url. Do not touch it if you don't know what you are doing. All you need to change for website to work is on line 20.
   "24/7": false, // Make the bot stays in VC 24/7 (when you reboot the bot will **not** automatically rejoin.)
-  AutoLeave: true, // Make the bot automatically leave the voice channel after being alone for more than 30 seconds
+  AutoLeave: true, // Make the bot automatically leave the voice channel after the given time in AutoLeaveTime
+  AutoLeaveTime: 120, // Set the time to stay alone in the voice channel before disconnecting (in seconds). Only works if AutoLeave is enabled
   CookieSecret: "Pikachu is cute", // A cookie for you, cookie for me. make sure you change this value!
   IconURL:
     "https://raw.githubusercontent.com/SudhanPlayz/Discord-MusicBot/master/assets/logo.gif", // URL of all embed author icons | Dont edit unless you dont need that Music CD Spining
