@@ -72,7 +72,7 @@
     "youtube-sr": "^4.3.4"
   },
   "devDependencies": {
-    "prettier": "2.6.2"
+    "prettier": "2.8.8"
   },
   "volta": {
     "node": "16.15.1",
