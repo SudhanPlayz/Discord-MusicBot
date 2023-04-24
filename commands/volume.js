@@ -112,8 +112,12 @@ module.exports = {
           interaction,
           `**Please choose a number between** \`1 - 100\``
         );
-      player.setVolume(vol);
-      client.sendTime(interaction, `🔉 | Volume set to \`${player.volume}\``);
+      try {
+        player.setVolume(vol);
+        client.sendTime(interaction, `🔉 | Volume set to \`${player.volume}\``);
+      } catch(err) {
+        return client.sendTime(interaction, `⚠ | An error occured while changing the volume`);
+      }
     },
   },
 };
