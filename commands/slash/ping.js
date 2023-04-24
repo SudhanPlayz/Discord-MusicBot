@@ -39,31 +39,35 @@ const command = new SlashCommand()
     } else if (botPing >= 400) {
       botState = red;
     }
-
-    msg.delete();
-    interaction.reply({
-      embeds: [
-        new MessageEmbed()
-          .setTitle("🏓 | Pong!")
-          .addFields(
-            {
-              name: "API Latency",
-              value: `\`\`\`yml\n${apiState} | ${apiPing}ms\`\`\``,
-              inline: true,
-            },
-            {
-              name: "Bot Latency",
-              value: `\`\`\`yml\n${botState} | ${botPing}ms\`\`\``,
-              inline: true,
-            }
-          )
-          .setColor(client.config.embedColor)
-          .setFooter({
-            text: `Requested by ${interaction.user.tag}`,
-            iconURL: interaction.user.avatarURL(),
-          }),
-      ],
-    });
+    try {
+      msg.delete();
+      interaction.reply({
+        embeds: [
+          new MessageEmbed()
+            .setTitle("🏓 | Pong!")
+            .addFields(
+              {
+                name: "API Latency",
+                value: `\`\`\`yml\n${apiState} | ${apiPing}ms\`\`\``,
+                inline: true,
+              },
+              {
+                name: "Bot Latency",
+                value: `\`\`\`yml\n${botState} | ${botPing}ms\`\`\``,
+                inline: true,
+              }
+            )
+            .setColor(client.config.embedColor)
+            .setFooter({
+              text: `Requested by ${interaction.user.tag}`,
+             iconURL: interaction.user.avatarURL(),
+            }),
+        ],
+      });
+    } catch(err) {
+      console.error(err.stack);
+      return;
+    }
   });
 
 module.exports = command;
