@@ -7,8 +7,10 @@
     "start": "node index",
     "rm-logs": "rm logs.log",
     "lint": "prettier --check .",
-    "deploy": "node deploy/global",
-    "guild": "node deploy/guild",
+    "deploy": "node deploy/deployGlobal",
+    "guild": "node deploy/deployGuild",
+    "destroy-guild": "node deploy/destroyGuild",
+    "destroy-global": "node deploy/destroyGlobal",
     "ddev": "cd dashboard && npm run dev",
     "dbuild": "cd dashboard && npm run build && npm run export",
     "dstart": "cd dashboard && npm run start"
