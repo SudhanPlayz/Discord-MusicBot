@@ -53,7 +53,8 @@ const command = new SlashCommand()
 		let currentTitle = ``;
 		const phrasesToRemove = [
 			"Full Video", "Full Audio", "Official Music Video", "Lyrics", "Lyrical Video",
-			"Feat.", "Ft.", "Official", "Audio", "Video", "HD", "4K", "Remix",
+			"Feat.", "Ft.", "Official", "Audio", "Video", "HD", "4K", "Remix", "Lyric Video", "Lyrics Video", "8K", 
+			"High Quality", "Animation Video", "\\(Official Video\\. .*\\)", "\\(Music Video\\. .*\\)", "[NCS Release]",
 			"Extended", "DJ Edit", "with Lyrics", "Lyrics", "Karaoke",
 			"Instrumental", "Live", "Acoustic", "Cover", "\\(feat\\. .*\\)"
 		];
