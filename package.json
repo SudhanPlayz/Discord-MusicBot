@@ -42,7 +42,7 @@
     "@discordjs/builders": "^1.4.0",
     "@discordjs/rest": "^1.5.0",
     "axios": "^0.27.0",
-    "better-erela.js-apple": "^0.1.0",
+    "better-erela.js-apple": "^1.0.5",
     "better-erela.js-spotify": "1.3.9",
     "colors": "1.3.3",
     "discord-api-types": "0.37.1",
