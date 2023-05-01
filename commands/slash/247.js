@@ -63,7 +63,11 @@ const command = new SlashCommand()
 		);
 		
 		if (!player.playing && player.queue.totalSize === 0 && twentyFourSeven) {
-			player.destroy();
+			try {
+				player.destroy();
+			} catch(err) {
+				return;
+			}
 		}
 		
 		return interaction.reply({ embeds: [twentyFourSevenEmbed] });
