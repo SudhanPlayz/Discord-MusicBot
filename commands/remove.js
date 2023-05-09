@@ -71,14 +71,14 @@ module.exports = {
      *
      * @param {import("../structures/DiscordMusicBot")} client
      * @param {import("discord.js").Message} message
-     * @param {string[]} args
+     * @param {JSON object} args
      * @param {*} param3
      */
     run: async (client, interaction, args, { GuildDB }) => {
       let player = await client.Manager.get(interaction.guild_id);
       const guild = client.guilds.cache.get(interaction.guild_id);
       const member = guild.members.cache.get(interaction.member.user.id);
-      const song = player.queue.slice(args[0] - 1, 1);
+      const song = player.queue.slice(args[0].value - 1, 1);
       if (!player)
         return client.sendTime(
           interaction,
@@ -102,15 +102,15 @@ module.exports = {
         return client.sendTime("❌ | **Nothing is playing right now...**");
       let rm = new MessageEmbed()
         .setDescription(
-          `✅ | **Removed track** \`${Number(args[0])}\` from the queue!`
+          `✅ | **Removed track** \`${Number(args[0].value)}\` from the queue!`
         )
         .setColor("GREEN");
-      if (isNaN(args[0]))
+      if (isNaN(args[0].value))
         rm.setDescription(`**Usage:** \`${GuildDB.prefix}remove [track]\``);
-      if (args[0] > player.queue.length)
+      if (args[0].value > player.queue.length)
         rm.setDescription(`The queue has only ${player.queue.length} songs!`);
       await interaction.send(rm);
-      player.queue.remove(Number(args[0]) - 1);
+      player.queue.remove(args[0].value - 1);
     },
   },
 };
