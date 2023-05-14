@@ -21,7 +21,7 @@ const command = new SlashCommand()
                 client.config.clientId
               }&permissions=${
                 client.config.permissions
-              }&scope=${client.config.inviteScopes
+              }&scope=${client.config.scopes
                 .toString()
                 .replace(/,/g, "%20")}`
             )
