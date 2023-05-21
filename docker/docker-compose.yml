@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  djs-bot:
+    container_name: djs-bot
+    image: node:latest
+    restart: "unless-stopped"
+    stdin_open: true
+    tty: true
+    volumes:
+      - ../djs-bot:/djs-bot
+    working_dir: /djs-bot
+    command: ["npm", "run", "start"]

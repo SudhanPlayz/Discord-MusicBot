@@ -1,52 +1,35 @@
-<h1 align="center"><img src="./assets/logo.gif" width="30px"> Discord Music Bot <img src="./assets/logo.gif" width="30px"></h1>
-
-## 🚧 | Prerequisites
+## ⛔ | Prerequisites
 
 - [Node.js 16+](https://nodejs.org/en/download/)
-- [Lavalink Server](https://code.darrennathanael.com/how-to-lavalink)
-- You'll need to run `npm run deploy` or `yarn deploy`. to initialized the slash commands. _You can do this on your pc
-  locally_
 
-> NOTE: Lavalink is needed for music functionality. You need to have a working Lavalink server to make the bot work.
+## 🏃‍♂ | Installing and running the bot
 
-## 📝 | Important Note if you're Switching from v4 to v5
+### First of all you'll need to create a new bot application for your discord bot client:
+  - Go to [Discord Developer Portal](https://discord.com/developers/applications/)
+  - Click on the button "New Application" and give it a name
+    - On the main page you can messa around and give your bot a description, tags and a Profile picture
+  - Click on "Bot" in the panel on the left and "Add Bot" to create a new Discord Bot Client
+    - Here you can enable some really neat API features for your bot, the one's you'll be needing are: "Server Member Intent" and "Message Content Intent" (Also disable "Public Bot" if you want)
+  - Now go to the "OAuth2" section and press on the "URL Generator" Tab
+    - Select the "bot" and "applications.commands" scopes (A new table should open upon clicking on the "bot" scope)
+    - In the "Bot Permissions" table you can select what permissions your bot will ask to have upon entering a new server, as you're setting it up it might be useful to give it "Administrator"
+  - Now a link will have generated at the bottom which you can copy and paste in your browser search bar, this will allow you to invite the first instance of the bot in your server
+(It should look something like `https://discord.com/oauth2/authorize?client_id={clientId}&permissions={permissions}&scope=bot%20applications.commands` Obviously replace the {variables} with the correct values if you intend to write it out yourself)
 
-1. Download and configure v5 in a seperate folder.
-2. Kick your bot out of your server.
-3. Reinvite the Bot with the right
-   scopes. [Example Invite URL (Change CLIENT_ID)](https://discord.com/oauth2/authorize?client_id=CLIENT_ID&permissions=277083450689&scope=bot%20applications.commands)
-4. Run `npm run deploy` or `yarn deploy` to initialize the slash commands. _You can do this on your pc locally_
-
-## 📝 | Tutorial
-
-Soon
-
-## 📝 | [Support Server](https://discord.gg/sbySMS7m3v)
-
-If you have major coding issues with this bot, please join and ask for help.
-
-## 📸 | Screenshots
-
-Soon
-
-## 🚀 | Deploy
-
-[![Deploy to heroku](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/SudhanPlayz/Discord-MusicBot/tree/v5)
-[![Open in Gitpod](https://camo.githubusercontent.com/76e60919474807718793857d8eb615e7a50b18b04050577e5a35c19421f260a3/68747470733a2f2f676974706f642e696f2f627574746f6e2f6f70656e2d696e2d676974706f642e737667)](https://gitpod.io/#https://github.com/SudhanPlayz/Discord-MusicBot/tree/v5)
-
-## ✨ | Contributors
-
-Contributions are always welcomed :D Make sure to follow [Contributing.md](/CONTRIBUTING.md)
-
-<a href="https://github.com/SudhanPlayz/Discord-MusicBot/graphs/contributors">
-  <img src="https://contributors-img.web.app/image?repo=SudhanPlayz/Discord-MusicBot" />
-</a>
-
-## 🌟 | Made with
-
-- [Discord.js](https://discord.js.org/)
-- [Lavalink](https://github.com/freyacodes/Lavalink) with erela.js
-- [Express](https://expressjs.com/)
-- [Next JS](https://nextjs.org/)
-- [Next UI](https://nextui.org)
-- [Material UI Icons](https://mui.com/material-ui/material-icons/)
+### Now that everything is set up on the discord side of things:
+  - You will need to fill in all the blanks in the `config.js` with the appropriate contents of your discord bot application or make a `.env` file and fill in the contents in this manner (lines marked with `*` are optional):
+```bash
+TOKEN=botToken
+CLIENTID=botClientId
+CLIENTSECRET=botClientSecretToken
+DEVUID=yourDiscordUID *
+```
+  - To actually set up the bot and get it running you need to install all required dependencies and post slash commands to the discord bot application:
+```bash
+npm run update
+npm run deploy # this should be a one time thing
+```
+  - To run the bot:
+```bash
+npm run start
+```
