@@ -1,6 +1,6 @@
 {
-  "name": "djs-bot",
-  "version": "1.0.0",
+  "name": "discord-musicbot",
+  "version": "+5.0.0-beta",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -9,9 +9,15 @@
     "guild": "node scripts/guild",
     "update": "node scripts/update"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "discord",
+    "discord-bot",
+    "discord-musicbot",
+    "music",
+    "discord-music"
+  ],
+  "author": "SudhanPlayz",
+  "license": "CUSTOM",
   "dependencies": {
     "axios": "^1.4.0",
     "better-erela.js-apple": "^1.0.5",
@@ -29,5 +35,9 @@
     "pretty-ms": "^7.0.1",
     "shoukaku": "^3.4.0",
     "winston": "^3.8.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SudhanPlayz/Discord-MusicBot.git"
   }
 }
