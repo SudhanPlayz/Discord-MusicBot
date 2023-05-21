@@ -32,14 +32,14 @@ module.exports = {
 		const commandArg = interaction.options.getString("command");
 
 		let gitHash = "";
-    try {
-      gitHash = require("child_process")
-        .execSync("git rev-parse --short HEAD")
-        .toString()
-        .trim();
-    } catch (e) {
-      gitHash = "unknown";
-    }
+		try {
+			gitHash = require("child_process")
+				.execSync("git rev-parse --short HEAD")
+				.toString()
+				.trim();
+		} catch (e) {
+			gitHash = "unknown";
+		}
 
 		if (commandArg && !client.slash.has(commandArg)) {
 			return interaction.reply({
@@ -86,14 +86,13 @@ module.exports = {
 		}
 		helpMenuActionRow.addComponents(helpSelectMenu);
 
-		initialEmbed.addFields({
-			name: "Credits",
-			value:
-				`Discord Music Bot Version: v${require("../../package.json").version
-				}; Build: ${gitHash}` +
-				"\n" +
-				`[✨ Support Server](https://discord.gg/sbySMS7m3v) | [Issues](https://github.com/SudhanPlayz/Discord-MusicBot/issues) | [Source](https://github.com/SudhanPlayz/Discord-MusicBot/tree/v5) | [Invite Me](https://discord.com/oauth2/authorize?client_id=${client.config.clientId}&permissions=${client.config.permissions}&scope=${client.config.scopes.toString().replace(/,/g, '%20')})`,
-		});
+		initialEmbed.addField(
+			"Credits",
+			`Discord Music Bot Version: v${require("../../package.json").version
+			}; Build: ${gitHash}` +
+			"\n" +
+			`[✨ Support Server](https://discord.gg/sbySMS7m3v) | [Issues](https://github.com/SudhanPlayz/Discord-MusicBot/issues) | [Source](https://github.com/SudhanPlayz/Discord-MusicBot/tree/v5) | [Invite Me](https://discord.com/oauth2/authorize?client_id=${client.config.clientId}&permissions=${client.config.permissions}&scope=${client.config.scopes.toString().replace(/,/g, '%20')})`,
+		);
 
 		// when defer is active this needs to edit the previous reply instead
 		const menuSelectEmbed = await interaction.reply({ embeds: [initialEmbed], components: [helpMenuActionRow] });
@@ -127,15 +126,6 @@ module.exports = {
 						helpCategoryEmbed.addField(`${command}`, slashCommand.description);
 				}
 			}
-
-			helpCategoryEmbed.addFields({
-				name: "Credits",
-				value:
-					`Discord Music Bot Version: v${require("../../package.json").version
-					}; Build: ${gitHash}` +
-					"\n" +
-					`[✨ Support Server](https://discord.gg/sbySMS7m3v) | [Issues](https://github.com/SudhanPlayz/Discord-MusicBot/issues) | [Source](https://github.com/SudhanPlayz/Discord-MusicBot/tree/v5) | [Invite Me](https://discord.com/oauth2/authorize?client_id=${client.config.clientId}&permissions=${client.config.permissions}&scope=${client.config.scopes.toString().replace(/,/g, '%20')})`,
-			});
 
 			await interaction.editReply({ embeds: [helpCategoryEmbed] });
 		});
