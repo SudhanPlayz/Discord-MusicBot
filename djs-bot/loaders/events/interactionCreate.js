@@ -1,6 +1,8 @@
 const { MessageEmbed } = require("../../lib/Embed");
 const fuzzysort = require('fuzzysort')
 const { levDistance } = require('../../util/string');
+const { Interaction } = require("discord.js");
+const Bot = require("../../lib/Bot");
 
 // Defines whenever a "interactionCreate" event is fired, basically whenever a user writes a slash command in 
 // a server in which the bot is present
@@ -8,6 +10,12 @@ const { levDistance } = require('../../util/string');
 // node_modules\discord.js\typings\index.d.ts:3971
 // @interactionCreate: [interaction: Interaction];
 // This module checks some properties of the command and determines if it should be ran for that user or not
+/**
+ * 
+ * @param {Bot} client 
+ * @param {Interaction} interaction 
+ * @returns {Promise<InteractionResponse<boolean>>}
+ */
 module.exports = async (client, interaction) => {
 
 	// Autocomplete handler, takes autocomplete options specified in the command properties 

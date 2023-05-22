@@ -45,6 +45,9 @@ class Bot extends Client {
 			this.LoadSchedules(conf);
 			this.LoadCommands(conf);
 			this.LoadEvents(conf);
+
+			this.getChannel = require("../util/getChannel");
+			this.getLavalink = require("../util/getLavalink");
 		});
 	}
 
@@ -102,7 +105,7 @@ class Bot extends Client {
 		}
 		// If all the checks pass (the array is filled only with `1`) then the Music client can be initialized
 		if (nodeChecks.length && nodeChecks.every((status) => status === 1))
-			switch (this.config.musicClient) {
+			switch (this.config.musicEngine) {
 				case "Shoukaku":
 					this.manager = ShoukakuClient(this);
 					break;
@@ -124,6 +127,7 @@ class Bot extends Client {
 			if (err) { return this.error(err); }
 			else
 				files.forEach((file) => {
+					/* node_modules\discord.js\typings\index.d.ts : enum Events */
 					const event = require(EventsDir + "/" + file);
 					this.on(file.split(".")[0], event.bind(null, this));
 					

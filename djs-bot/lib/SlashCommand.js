@@ -1,4 +1,6 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
+const Bot = require("./Bot");
+const { Interaction, CommandInteractionOptionResolver } = require("discord.js");
 // https://discordjs.guide/popular-topics/builders.html#slash-command-builders
 
 // Extending the main discord.js slash command builder class to facilitate the
@@ -11,7 +13,8 @@ class SlashCommand extends SlashCommandBuilder {
 	}
 	
 	/** 
-	 * sets the `run:` property of the command to a callback function using a method
+	 * sets the command run function
+	 * @param {(client: Bot, interaction: Interaction, options: CommandInteractionOptionResolver)} callback
 	 */
 	setRun(callback) {
 		this.run = callback;
@@ -28,6 +31,7 @@ class SlashCommand extends SlashCommandBuilder {
 
 	/** sets the intended usage for a command as a string, which will be grabbed by the `help` command
 	 * syntax: /<commandName> <args?...>
+	 * @param {string} usage
 	 */
 	setUsage(usage = '') {
 		this.usage = usage;
@@ -36,6 +40,7 @@ class SlashCommand extends SlashCommandBuilder {
 
 	/**
 	 *  sets the intended category for the command, useful for findind mismatches
+	 * @param {string} category
 	 */ 
 	setCategory(category = 'misc') {
 		this.category = category;
@@ -44,9 +49,19 @@ class SlashCommand extends SlashCommandBuilder {
 
 	/**
 	 * Set permissions for a command
+	 * @param {Array<import("discord.js").PermissionFlags>} permissions an array of permission flags
 	 */
 	setPermissions(permissions = []) {
 		this.permissions = permissions;
+		return this;
+	}
+
+	/**
+	 * Set the available autocomplete options for a string command option
+	 * @param {(input: string, index: number, interaction: import("discord.js").Interaction) => Promise<Array<Object>} autocompleteOptions a function that returns an array of autocomplete options
+	 */
+	setAutocompleteOptions(autocompleteOptions) {
+		this.autocompleteOptions = autocompleteOptions;
 		return this;
 	}
 }

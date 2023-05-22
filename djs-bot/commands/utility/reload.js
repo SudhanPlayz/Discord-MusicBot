@@ -42,7 +42,7 @@ module.exports = {
 			client.error(err + `\nIn: ${interaction.member.guild.name} - ${interaction.member.guild.id}\n On shard: ${interaction.member.guild.shardId}`);
 			console.log(err);
 			return interaction.reply({ 
-				embeds: [new MessageEmbed().setColor("RED")
+				embeds: [new MessageEmbed().setColor("Red")
 				.setDescription("OOPSIE WOOPSIE!! Uwu We made a fucky wucky!! A wittle fucko boingo! The code monkeys at our headquarters are working VEWY HAWD to fix this!")
 				.setFooter({text: "In short... I don't know what happened... But you can ask a bot dev to look into it :D"})], 
 				ephemeral: true

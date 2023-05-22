@@ -1,3 +1,8 @@
+/* Typings */
+const Bot = require("./Bot");
+const { Message } = require("discord.js");
+
+/* Imports */
 const colors = require("colors");
 const { MessageEmbed } = require('./Embed');
 const prettyMilliseconds = require("pretty-ms");
@@ -5,7 +10,6 @@ const prettyMilliseconds = require("pretty-ms");
 /* Erela.js - Extension */
 const { Manager, Structure } = require("erela.js"); // <---
 const deezer = require("erela.js-deezer"); // <---
-const facebook = require("erela.js-facebook"); // <---
 const spotify = require("better-erela.js-spotify").default; // <---
 const { default: AppleMusic } = require("better-erela.js-apple"); // <---
 
@@ -18,6 +22,11 @@ Structure.extend("Player", (Player) => class extends Player {
 		this.twentyFourSeven = false;
 	}
 	
+	/**
+	 * Sets the now playing message for the erela player
+	 * @param {Message} message 
+	 * @returns {Message}
+	 */
 	setNowplayingMessage(message) {
 		if (this.nowPlayingMessage && !this.nowPlayingMessage.deleted)
 		//Message#deleted is deprecated, see https://github.com/discordjs/discord.js/issues/7091
@@ -32,6 +41,11 @@ Structure.extend("Player", (Player) => class extends Player {
 // The `.on(...)` methods check for emitted signals from the process and act accordingly to the
 // callback function on said signal, The signals caught here are from Erela.js or sub-node-modules
 // https://www.npmjs.com/package/erela.js-vk
+/**
+ * Erela.js Music Client
+ * @param {Bot} client
+ * @returns {Manager}
+ */
 module.exports = (client) => {
 	let errorEmbed = new MessageEmbed()
 	.setColor("Red")
@@ -44,7 +58,6 @@ module.exports = (client) => {
 			new deezer(),
 			new AppleMusic(),
 			new spotify(),
-			new facebook(),
 		],
 		// Gets the inserted nodes from the `config.js`
 		nodes: client.config.nodes,
@@ -64,6 +77,9 @@ module.exports = (client) => {
 	})
 	
 	//https://github.com/MenuDocs/erela.js/blob/master/src/structures/Manager.ts
+	.on("nodeCreate", (node) =>
+	client.log(`Node: ${node.options.identifier} | Lavalink node is created.`))
+	
 	.on("nodeConnect", (node) =>
 	client.log(`Node: ${node.options.identifier} | Lavalink node is connected.`))
 	

@@ -20,11 +20,21 @@ const isSelectMenuForUser = (returnValue, ...interaction) => {
  * retro compatibility for v13
  */
 class MessageEmbed extends EmbedBuilder {
+	/**
+	 * @param {string} name
+	 * @param {string} value
+	 * @returns {MessageEmbed}
+	 */
 	addField(name, value) {
 		this.addFields({ name, value });
 		return this;
 	}
 
+	/**
+	 * @param {Number} pageNo
+	 * @param {Number} maxPages
+	 * @returns {ActionRowBuilder}
+	 */
 	getButtons = (pageNo, maxPages) => {
 		return new ActionRowBuilder().addComponents(
 			new MessageButton()

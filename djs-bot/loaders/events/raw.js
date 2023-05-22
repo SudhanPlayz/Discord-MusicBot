@@ -1,6 +1,9 @@
 // 4153 constant events
 // (node_modules\discord.js\typings\rawDataTypes.d.ts)
 
+const { RawActivityData } = require("discord.js");
+const Bot = require("../../lib/Bot");
+
 // raw data, meaning it can be any of the emitted events from the API
 // functions as a general handler for any event
 
@@ -29,6 +32,11 @@ Heartbeat regex: ^\{[^}]*\}","[^"]*":"\[[^\]]*\]"\}$
 */
 const exceptions = [11, 1];
 
+/**
+ * 
+ * @param {Bot} client 
+ * @param {RawActivityData} data 
+ */
 module.exports = (client, data) => {
 	if ((client.OPLevel >= 2) && !exceptions.includes(parseInt(data.op)))
 	client.debug("> rawData", JSON.stringify(data, null, 4))

@@ -28,13 +28,13 @@
     "dotenv": "^16.0.3",
     "erela.js": "^2.4.0",
     "erela.js-deezer": "^1.0.7",
-    "erela.js-facebook": "^1.0.4",
     "fuzzysort": "^2.0.4",
     "moment": "^2.29.4",
     "moment-duration-format": "^2.3.2",
     "pretty-ms": "^7.0.1",
     "shoukaku": "^3.4.0",
-    "winston": "^3.8.2"
+    "winston": "^3.8.2",
+    "youtube-sr": "^4.3.4"
   },
   "repository": {
     "type": "git",

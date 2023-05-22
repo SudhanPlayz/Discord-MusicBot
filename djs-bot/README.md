@@ -1,6 +1,6 @@
 ## ⛔ | Prerequisites
 
-- [Node.js 16+](https://nodejs.org/en/download/)
+- [Node.js 17+](https://nodejs.org/en/download/)
 
 ## 🏃‍♂ | Installing and running the bot
 

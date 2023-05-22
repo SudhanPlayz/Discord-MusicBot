@@ -1,6 +1,7 @@
 const cron = require('cron');
 const fs = require('fs');
 const path = require('path');
+const Bot = require('../../lib/Bot');
 
 // https://crontab.guru/
 // https://cronitor.io/cron-reference?utm_source=crontabguru&utm_campaign=cron_reference
@@ -11,6 +12,9 @@ const path = require('path');
 // clears the `logs.log` file every day at midnight (00:00)
 
 // TODO: Archive logs.log instead of deleting it completely
+/**
+ * @param {Bot} client 
+ */
 module.exports = (client) => {
 	const rmLogsSchedule = new cron.CronJob('0 0 * * *', async () => {
 		// Relative Path: "../logs.log"

@@ -1,8 +1,12 @@
 const { ActivityType } = require("discord.js");
 const { capitalize, format } = require("../../util/string");
+const Bot = require("../../lib/Bot");
 // this fires once on the bot being launched, sets the presence for the bot
 
-// @ready: [client: Client<true>];
+/**
+ * 
+ * @param {Bot} client 
+ */
 module.exports = (client) => {
 	const activities = client.config.presence.activities;
 	setInterval(() => {

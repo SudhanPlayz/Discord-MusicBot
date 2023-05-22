@@ -1,4 +1,5 @@
 const { Shoukaku, Connectors } = require('shoukaku');
+const Bot = require('./Bot');
 
 function parseNode(node) {
 	return {
@@ -10,6 +11,11 @@ function parseNode(node) {
 	};
 }
 
+/**
+ * ShoukaKu Music Client
+ * @param {Bot} client 
+ * @returns {Shoukaku}
+ */
 module.exports = (client) => {
 	return new Shoukaku(new Connectors.DiscordJS(client), client.config.nodes.map(parseNode))
 	

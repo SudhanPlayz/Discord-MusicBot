@@ -1,7 +1,15 @@
+const { Message } = require("discord.js");
 const { MessageEmbed } = require("../../lib/Embed");
+const Bot = require("../../lib/Bot");
 
 // node_modules\discord.js\typings\index.d.ts:3940
 // @messageCreate: [message: Message];
+/**
+ * 
+ * @param {Bot} client 
+ * @param {Message} message 
+ * @returns {Promise<Message<boolean>>}
+ */
 module.exports = async (client, message) => {
 	const mention = new RegExp(`^<@!?${client.user.id}>( |)$`);
 	// Checks if, on every message sent in a server in which the bot is in, the bot is being mentioned and
