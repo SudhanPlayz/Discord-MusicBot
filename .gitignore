@@ -132,3 +132,6 @@ dist
 # Lockfiles
 yarn.lock
 package-lock.json
+
+# Docker
+docker-compose.override.yml
