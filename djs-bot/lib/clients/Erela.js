@@ -1,10 +1,10 @@
 /* Typings */
-const Bot = require("./Bot");
+const Bot = require("../Bot");
 const { Message } = require("discord.js");
 
 /* Imports */
 const colors = require("colors");
-const { MessageEmbed } = require('./Embed');
+const { MessageEmbed } = require('../Embed');
 const prettyMilliseconds = require("pretty-ms");
 
 /* Erela.js - Extension */
@@ -21,7 +21,7 @@ Structure.extend("Player", (Player) => class extends Player {
 		super(...props);
 		this.twentyFourSeven = false;
 	}
-	
+		
 	/**
 	 * Sets the now playing message for the erela player
 	 * @param {Message} message 

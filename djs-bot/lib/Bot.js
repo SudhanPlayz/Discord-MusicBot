@@ -12,8 +12,7 @@ const path = require("path");
 const Logger = require("./Logger");
 const getConfig = require("../util/getConfig");
 
-const ShoukakuClient = require("./Shoukaku");
-const ErelaClient = require("./Erela");
+const MusicManager = require("./MusicManager");
 
 /**
  * The class groups some useful functions for the client in order to facilitate expandability, maintenance and manageability
@@ -51,8 +50,9 @@ class Bot extends Client {
 		});
 	}
 
-	//Console logging => "../logs.log"
+	// Console logging => "../logs.log"
 	// Refer to `./Logger.js`
+	// These methods are just for convenience
 	log(...data) {
 		this.logger.log(data);
 	}
@@ -104,19 +104,9 @@ class Bot extends Client {
 			else nodeChecks.push(1);
 		}
 		// If all the checks pass (the array is filled only with `1`) then the Music client can be initialized
-		if (nodeChecks.length && nodeChecks.every((status) => status === 1))
-			switch (this.config.musicEngine) {
-				case "Shoukaku":
-					this.manager = ShoukakuClient(this);
-					break;
-				case "Erela":
-					this.manager = ErelaClient(this);
-					break;
-				default:
-					this.error("Invalid music client specified in config.json");
-					break;
-			}
-		else this.error("Invalid nodes specified in config.json");
+		if (nodeChecks.length && nodeChecks.every((status) => status === 1)) {
+			this.manager = new MusicManager(this);
+		} else this.error("Invalid nodes specified in config.json");
 
 		this.login(this.config.token);
 	}

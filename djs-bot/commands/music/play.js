@@ -59,9 +59,10 @@ const command = new SlashCommand()
 			});
 		}
 
-		let player = client.createPlayer(interaction.channel, channel);
+		let player = client.manager.createPlayer(client, interaction.channel, channel);
 
 		if (player.state !== "CONNECTED") {
+			/** @todo make connection a thing in the music manager */
 			player.connect();
 		}
 

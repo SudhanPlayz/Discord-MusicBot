@@ -2,7 +2,7 @@
  * Promise based module to get and return the contents of `config.js`
  * 
 */
-module.exports = () => {
+module.exports = async () => {
 	return new Promise((resolve, reject) => {
 		try {
 			const config = require("../config");

@@ -1,5 +1,5 @@
 const { Shoukaku, Connectors } = require('shoukaku');
-const Bot = require('./Bot');
+const Bot = require('../Bot');
 
 function parseNode(node) {
 	return {
@@ -7,17 +7,28 @@ function parseNode(node) {
 		url: `${node.host}:${node.port}`,
 		auth: node.password,
 		secure: node.secure || false,
-		// group: node.group || 'default', // dunno what this is
+		group: node.group || 'default', // dunno what this is
 	};
 }
 
 /**
- * ShoukaKu Music Client
+ * Extended Shoukaku Client
+ * Implements additional methods and features
+ * to meet the interface of the Music Manager
+ */
+class ShoukakuExtended extends Shoukaku {
+	constructor(connector, nodes) {
+		super(connector, nodes);
+	}
+}
+
+/**
+ * Shoukaku Music Client
  * @param {Bot} client 
- * @returns {Shoukaku}
+ * @returns {ShoukakuExtended}
  */
 module.exports = (client) => {
-	return new Shoukaku(new Connectors.DiscordJS(client), client.config.nodes.map(parseNode))
+	return new ShoukakuExtended(new Connectors.DiscordJS(client), client.config.nodes.map(parseNode))
 	
 	/* Event listeners */
 	.on('ready', (name) => client.log(`Node ${name} | Lavalink node is connected.`))
