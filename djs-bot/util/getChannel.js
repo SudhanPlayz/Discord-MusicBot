@@ -7,7 +7,7 @@ const { Interaction } = require("discord.js");
  * 
  * @param {Bot} client 
  * @param {Interaction} interaction 
- * @returns {Promise<boolean>}
+ * @returns {Promise<import("discord.js").VoiceBasedChannel>}
  */
 module.exports = async (client, interaction) => {
 	return new Promise(async (resolve) => {
