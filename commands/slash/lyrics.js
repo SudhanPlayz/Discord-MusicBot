@@ -55,10 +55,10 @@ const command = new SlashCommand()
 			"Full Video", "Full Audio", "Official Music Video", "Lyrics", "Lyrical Video",
 			"Feat.", "Ft.", "Official", "Audio", "Video", "HD", "4K", "Remix", "Lyric Video", "Lyrics Video", "8K", 
 			"High Quality", "Animation Video", "\\(Official Video\\. .*\\)", "\\(Music Video\\. .*\\)", "\\[NCS Release\\]",
-			"Extended", "DJ Edit", "with Lyrics", "Lyrics", "Karaoke",
+			"Extended", "DJ Edit", "with Lyrics", "Karaoke",
 			"Instrumental", "Live", "Acoustic", "Cover", "\\(feat\\. .*\\)", "\\(Feat\\. .*\\)", "Music Video", "MV", 
 			"8D", "8d", "8D Audio", "8D AUDIO", "8d AUDIO", "8d audio", "Edited", "Bass Boost", "Lofi", 
-			"10D", "10D Audio", "360", "360 AUDIO", "|", "by", "created by"
+			"10D", "10D Audio", "360", "360 AUDIO", "|", "by", "created by", "Film Video", ""
 		];
 		if (!args) {
 			currentTitle = player.queue.current.title;
