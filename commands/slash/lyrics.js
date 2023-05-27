@@ -55,7 +55,7 @@ const command = new SlashCommand()
 			"Full Video", "Video", "Official Music Video", "HD", "4K", "8K",
 			"\\(Official Video\\. .*\\)", "\\(Music Video\\. .*\\)", "\\(Official Music Video\\. .*\\)", "Official", "Animation Video",
 			"Lyrics", "Lyrical Video", "Lyric Video", "Lyrics Video", "with Lyrics", "Lyrics",
-			"Full Audio", "Audio", "High Quality",, "Raw Audio"
+			"Full Audio", "Audio", "High Quality",, "Raw Audio",
 			"Feat.", "Ft.", "Remix", "Cover", "\\(feat\\. .*\\)", "DJ Edit",
 			"Live", "LIVE", "🔴",
 			"\\[NCS Release\\]",
