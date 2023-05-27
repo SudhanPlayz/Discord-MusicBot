@@ -52,11 +52,19 @@ const command = new SlashCommand()
 
 		let currentTitle = ``;
 		const phrasesToRemove = [
-			"Full Video", "Full Audio", "Official Music Video", "Lyrics", "Lyrical Video",
-			"Feat.", "Ft.", "Official", "Audio", "Video", "HD", "4K", "Remix", "Lyric Video", "Lyrics Video", "8K", 
-			"High Quality", "Animation Video", "\\(Official Video\\. .*\\)", "\\(Music Video\\. .*\\)", "\\[NCS Release\\]",
-			"Extended", "DJ Edit", "with Lyrics", "Lyrics", "Karaoke",
-			"Instrumental", "Live", "Acoustic", "Cover", "\\(feat\\. .*\\)"
+			"Full Video", "Video", "Official Music Video", "HD", "4K", "8K",
+			"\\(Official Video\\. .*\\)", "\\(Music Video\\. .*\\)", "\\(Official Music Video\\. .*\\)", "Official", "Animation Video",
+			"Lyrics", "Lyrical Video", "Lyric Video", "Lyrics Video", "with Lyrics", "Lyrics",
+			"Full Audio", "Audio", "High Quality",, "Raw Audio"
+			"Feat.", "Ft.", "Remix", "Cover", "\\(feat\\. .*\\)", "DJ Edit",
+			"Live", "LIVE", "🔴",
+			"\\[NCS Release\\]",
+			"Extended", "Bass Boost", "Bass Boosted",
+			"Karaoke", "No Vocal",
+			"Instrumental", "Acoustic",
+			"8D", "8D Audio", "8D AUDIO", "10D", "360 Audio", "🎧",
+			"Nightcore", "Speed Up", "Speed Up Version",
+			"\\(Reversed\\. .*\\)", "\\(reversed\\. .*\\)", "reversed", "REVERSED",
 		];
 		if (!args) {
 			currentTitle = player.queue.current.title;
