@@ -1,6 +1,5 @@
 /* Typings */
 const Bot = require("../Bot");
-const { Message } = require("discord.js");
 
 /* Imports */
 const colors = require("colors");
@@ -25,7 +24,7 @@ class ErelaExtended extends Manager {
 /**
  * Erela.js Music Client
  * @param {Bot} client
- * @returns {Manager}
+ * @returns {ErelaExtended}
 */
 module.exports = (client) => {
 	let errorEmbed = new MessageEmbed()
@@ -37,25 +36,23 @@ module.exports = (client) => {
 	// The `.on(...)` methods check for emitted signals from the process and act accordingly to the
 	// callback function on said signal, The signals caught here are from Erela.js or sub-node-modules
 	// https://www.npmjs.com/package/erela.js-vk
-	return new ErelaExtended(
-		{
-			// If the lavalink allows it, these plugins (check the imports) will
-			// be constructed and used by the music client (player) manager to search
-			// grab and play music
-			plugins: [
-				new deezer(),
-				new AppleMusic(),
-				new spotify(),
-			],
-			nodes: client.config.nodes,
-			clientName: client.denom,
-			send: (id, payload) => {
-				let guild = client.guilds.cache.get(id);
-				if (guild) guild.shard.send(payload);
-			},
-			autoPlay: true,
-		}
-	)
+	return new ErelaExtended({
+		// If the lavalink allows it, these plugins (check the imports) will
+		// be constructed and used by the music client (player) manager to search
+		// grab and play music
+		plugins: [
+			new deezer(),
+			new AppleMusic(),
+			new spotify(),
+		],
+		nodes: client.config.nodes,
+		clientName: client.denom,
+		send: (id, payload) => {
+			let guild = client.guilds.cache.get(id);
+			if (guild) guild.shard.send(payload);
+		},
+		autoPlay: true,
+	})
 
 		//https://github.com/MenuDocs/erela.js/blob/master/src/structures/Manager.ts
 		.on("nodeCreate", (node) =>

@@ -11,11 +11,13 @@ class MusicManager {
 	* @returns {MusicManager}
 	*/
 	constructor(client) {
-		/** @type {
-			import('./clients/Erela.js') | 
-			import('./clients/Shoukaku.js')
-		} */
-		this.Engine = require(`./clients/${client.config.musicEngine}`)(client);
+		/** 
+		@type {
+			import("./clients/Erela") |
+			import("./clients/Shoukaku")
+		}
+		*/
+		this.Engine = require(`./clients/${client.config.musicEngine}`);
 	}
 }
 
