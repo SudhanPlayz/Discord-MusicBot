@@ -63,7 +63,6 @@ const command = new SlashCommand()
 		let player = client.manager.Engine.createPlayer(interaction.channel, channel);
 
 		if (player.state !== "CONNECTED") {
-			/** @todo make connection a thing in the music manager */
 			player.connect();
 		}
 

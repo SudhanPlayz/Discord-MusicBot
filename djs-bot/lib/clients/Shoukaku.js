@@ -20,6 +20,12 @@ export class ShoukakuExtended extends Shoukaku {
 	constructor(connector, nodes) {
 		super(connector, nodes);
 	}
+
+	/** @todo */
+	createPlayer() {}
+
+	/** @todo */
+	get leastUsedNode() {}
 }
 
 /**
