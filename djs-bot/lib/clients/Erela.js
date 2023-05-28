@@ -75,6 +75,10 @@ module.exports = (client) => {
 			client.warn(`Node: ${node.options.identifier} | Lavalink node is disconnected.`))
 
 		.on("nodeError", (_, err) => {
+			// Erela emits an error on "ready" signal from the client.
+			// Since the wrapper is archived, I can't fix it. So I'm just
+			// gonna ignore it.
+			if (err.message.includes("Unexpected op \"ready\"")) return;
 			client.error(err);
 			errorEmbed
 				.setTitle("Node error!")
