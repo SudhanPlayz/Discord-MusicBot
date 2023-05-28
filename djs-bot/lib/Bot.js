@@ -117,7 +117,7 @@ class Bot extends Client {
 			if (err) { return this.error(err); }
 			else
 				files.forEach((file) => {
-					/* node_modules\discord.js\typings\index.d.ts : enum Events */
+					/** @type {Function}*/
 					const event = require(EventsDir + "/" + file);
 					this.on(file.split(".")[0], event.bind(null, this));
 					
@@ -151,6 +151,7 @@ class Bot extends Client {
 				.readdirSync(`./commands/${category}`)
 				.filter((file) => file.endsWith(".js"));
 			for (const file of commandFiles) {
+				/** @type {import("./SlashCommand")} */
 				const command = require(`../commands/${category}/${file}`);
 				if (!command || !command.run || !command.name) {
 					this.error(`Unable to load command: ${file} in [${category.toUpperCase()}] is not a valid command with run function or name`);

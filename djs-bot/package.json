@@ -26,7 +26,7 @@
     "cron": "^2.3.0",
     "discord.js": "^14.11.0",
     "dotenv": "^16.0.3",
-    "erela.js": "^2.3.3",
+    "erela.js": "^2.4.0",
     "erela.js-deezer": "^1.0.7",
     "fuzzysort": "^2.0.4",
     "moment": "^2.29.4",

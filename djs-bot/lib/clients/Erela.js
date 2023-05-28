@@ -14,10 +14,14 @@ const { default: AppleMusic } = require("better-erela.js-apple"); // <---
 
 class ErelaExtended extends Manager {
 	/**
+	 * @param {Bot} client
 	 * @param {import("erela.js").ManagerOptions} options
 	 */
-	constructor(options) {
+	constructor(client, options) {
 		super(options);
+
+		client.once("ready", () => this.init(client.user.id));
+		client.on("raw", (data) => this.updateVoiceState(data));
 	}
 }
 
@@ -36,7 +40,7 @@ module.exports = (client) => {
 	// The `.on(...)` methods check for emitted signals from the process and act accordingly to the
 	// callback function on said signal, The signals caught here are from Erela.js or sub-node-modules
 	// https://www.npmjs.com/package/erela.js-vk
-	return new ErelaExtended({
+	return new ErelaExtended(client, {
 		// If the lavalink allows it, these plugins (check the imports) will
 		// be constructed and used by the music client (player) manager to search
 		// grab and play music
@@ -70,7 +74,7 @@ module.exports = (client) => {
 		.on("nodeDisconnect", (node) =>
 			client.warn(`Node: ${node.options.identifier} | Lavalink node is disconnected.`))
 
-		.on("nodeError", (node, err) => {
+		.on("nodeError", (_, err) => {
 			client.error(err);
 			errorEmbed
 				.setTitle("Node error!")
