@@ -28,9 +28,11 @@ class MusicManager {
 		this.Engine = require(`./clients/${specifiedEngine}`)(client);
 
 		// validate the music engine		
-		if (!this.Engine || !this.Engine.constructor.name === specifiedEngine) {
+		if (!this.Engine || (this.Engine.constructor.name !== specifiedEngine)) {
 			throw new Error(`Music engine "${specifiedEngine}" wasn't loaded correctly`);
 		}
+
+		client.log(`Music engine "${specifiedEngine}" has been loaded`);
 	}
 }
 
