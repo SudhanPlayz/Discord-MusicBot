@@ -23,6 +23,33 @@ class ErelaExtended extends Manager {
 		client.once("ready", () => this.init(client.user.id));
 		client.on("raw", (data) => this.updateVoiceState(data));
 	}
+
+	/**
+	 * Create a player for a guild, binds a text channel and voice channel to it
+	 * @param {import("discord.js").TextChannel} textChannel 
+	 * @param {import("discord.js").VoiceBasedChannel} voiceChannel 
+	 * @returns {import("erela.js").Player}
+	 */
+	createPlayer(textChannel, voiceChannel) {
+		return this.create({
+			guild: textChannel.guild.id,
+			voiceChannel: voiceChannel.id,
+			textChannel: textChannel.id,
+		});
+	}
+
+	/**
+	 * Returns the least used node from the array configured in the config file
+	 * @returns {import("erela.js").Node}
+	 */
+	get leastUsedNode() {
+		if (this.leastUsedNodes.first() !== undefined)
+			return this.leastUsedNodes.first();
+		else if (this.nodes.size > 0)
+			return this.nodes.first();
+		else
+			return undefined;
+	}
 }
 
 /**
@@ -153,7 +180,6 @@ module.exports = (client) => {
 				.get(player.textChannel)
 				.send({ embeds: [trackStartedEmbed] })
 				.catch(client.warn);
-			player.setNowplayingMessage(nowPlaying);
 			client.warn(`Player: ${player.options.guild} | Track has started playing [${colors.blue(track.title)}]`);
 		})
 		.on("queueEnd", (player) => {

@@ -1,6 +1,9 @@
 const Bot = require("./Bot");
 const fs = require("fs");
 
+/**
+ * @property { import("./clients/MusicClient.d.ts").MusicClient } Engine
+ */
 class MusicManager {
 
 	/**
@@ -20,10 +23,7 @@ class MusicManager {
 		if (!clients.includes(specifiedEngine)) throw new Error(`Music engine "${specifiedEngine}" does not exist`);
 
 		/** 
-		@type {
-			import("./clients/Erela") |
-			import("./clients/Shoukaku")
-		}
+		@type { import("./clients/MusicClient").MusicClient } 
 		*/
 		this.Engine = require(`./clients/${specifiedEngine}`)(client);
 

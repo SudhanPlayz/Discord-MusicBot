@@ -41,12 +41,14 @@ class Bot extends Client {
 			this.config = conf;	
 			this.boot();
 			
-			this.LoadSchedules(conf);
-			this.LoadCommands(conf);
-			this.LoadEvents(conf);
+			this.LoadSchedules();
+			this.LoadCommands();
+			this.LoadEvents();
 
 			this.getChannel = require("../util/getChannel");
 			this.getLavalink = require("../util/getLavalink");
+
+			this.ms = require("pretty-ms");
 		});
 	}
 

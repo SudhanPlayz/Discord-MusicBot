@@ -16,7 +16,7 @@ function parseNode(node) {
  * Implements additional methods and features
  * to meet the interface of the Music Manager
  */
-class ShoukakuExtended extends Shoukaku {
+export class ShoukakuExtended extends Shoukaku {
 	constructor(connector, nodes) {
 		super(connector, nodes);
 	}

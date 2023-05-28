@@ -1,6 +1,6 @@
 const SlashCommand = require("../../lib/SlashCommand");
 const { MessageEmbed } = require("../../lib/Embed");
-const escapeMarkdown = require("discord.js").Utils.escapeMarkdown;
+const { escapeMarkdown } = require("discord.js");
 const yt = require("youtube-sr").default;
 
 async function testUrlRegex(string) {
@@ -15,6 +15,7 @@ async function testUrlRegex(string) {
 	});
 }
 
+// This is currently only Erela.js compatible
 const command = new SlashCommand()
 	.setName("play")
 	.setDescription(
@@ -51,15 +52,15 @@ const command = new SlashCommand()
 			return interaction.reply({
 				embeds: [new MessageEmbed()
 					.setColor("Red")
-					.setTitle("Playback error!")
-					.setDescription(`Failed to load track: \`${title}\``)
+					.setTitle("Node error!")
+					.setDescription(`No available nodes to play music on!`)
 					.setFooter({
 						text: "Oops! something went wrong but it's not your fault!",
 					})],
 			});
 		}
 
-		let player = client.manager.createPlayer(client, interaction.channel, channel);
+		let player = client.manager.Engine.createPlayer(interaction.channel, channel);
 
 		if (player.state !== "CONNECTED") {
 			/** @todo make connection a thing in the music manager */
