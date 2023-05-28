@@ -20,7 +20,7 @@ module.exports = {
 	// Or host one yourself -> https://github.com/freyacodes/Lavalink 
 	//--> https://github.com/melike2d/lavalink
 	//--> https://darrennathanael.com/post/how-to-lavalink/
-	musicEngine: "Shoukaku", // "Shoukaku" or "Erela" (case sensitive) are supported
+	musicEngine: "Erela", // "Shoukaku" or "Erela" (case sensitive) are supported
 	nodes: [
 		{
 			identifier: "Lavalink 1", // log id string

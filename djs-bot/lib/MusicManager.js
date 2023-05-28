@@ -1,4 +1,5 @@
 const Bot = require("./Bot");
+const fs = require("fs");
 
 class MusicManager {
 
@@ -11,13 +12,25 @@ class MusicManager {
 	* @returns {MusicManager}
 	*/
 	constructor(client) {
+		const clients = fs.readdirSync("./lib/clients").filter((file) => file.endsWith(".js")).map((file) => file.split(".")[0]);
+		const specifiedEngine = client.config.musicEngine;
+
+		// check if the music engine is valid
+		if (!specifiedEngine) throw new Error("Music engine is not specified in the config file");
+		if (!clients.includes(specifiedEngine)) throw new Error(`Music engine "${specifiedEngine}" does not exist`);
+
 		/** 
 		@type {
 			import("./clients/Erela") |
 			import("./clients/Shoukaku")
 		}
 		*/
-		this.Engine = require(`./clients/${client.config.musicEngine}`);
+		this.Engine = require(`./clients/${specifiedEngine}`)(client);
+
+		// validate the music engine		
+		if (!this.Engine || !this.Engine.constructor.name === specifiedEngine) {
+			throw new Error(`Music engine "${specifiedEngine}" wasn't loaded correctly`);
+		}
 	}
 }
 
