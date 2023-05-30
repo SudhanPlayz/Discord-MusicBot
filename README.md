@@ -4,3 +4,17 @@
 - Open a terminal session in in the root directory of the project
 - Run `make help` to see the list of available commands
   - If you don't have or can't install makefile utilities then run `./dc.sh help`
+
+
+### DB
+
+Setup the ports in a docker-compose.override.yml file in the docker directory. The file should look like this:
+
+```yml
+version: "3"
+
+services:
+  scylladb:
+    ports:
+      - xxxx:xxxx
+```

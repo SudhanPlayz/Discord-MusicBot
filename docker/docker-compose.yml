@@ -11,3 +11,24 @@ services:
       - ../djs-bot:/djs-bot
     working_dir: /djs-bot
     command: ["npm", "run", "start"]
+    depends_on:
+      scylladb:
+        condition: service_healthy
+
+
+  scylladb:
+    container_name: scylladb
+    image: scylladb/scylla
+    restart: "unless-stopped"
+    volumes:
+      - scylladb:/var/lib/scylla
+    # command: ["--developer-mode", "0"] # uncomment this line to disable developer mode (May break)
+    
+    healthcheck:
+      test: ["CMD-SHELL", "[ $$(nodetool statusgossip) = running ]"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  scylladb:
