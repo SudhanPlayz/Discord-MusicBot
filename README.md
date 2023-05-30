@@ -18,3 +18,11 @@ services:
     ports:
       - xxxx:xxxx
 ```
+
+enter the DB with 
+
+```bash
+make enter scylladb fs
+```
+
+Default login credentials are `cassandra` and `[anything]` for username and password respectively.

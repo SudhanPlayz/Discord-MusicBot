@@ -22,7 +22,7 @@ services:
     restart: "unless-stopped"
     volumes:
       - scylladb:/var/lib/scylla
-    # command: ["--developer-mode", "0"] # uncomment this line to disable developer mode (May break)
+    command: ["--smp", "1", "--memory", "1G"]
     
     healthcheck:
       test: ["CMD-SHELL", "[ $$(nodetool statusgossip) = running ]"]
