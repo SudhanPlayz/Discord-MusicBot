@@ -3,12 +3,13 @@ const {
 	Collection,
 	GatewayIntentBits,
 } = require("discord.js");
-const { 
-	LoadErrorHandler, 
-	LoadDebugListeners, 
+const {
+	LoadErrorHandler,
+	LoadDebugListeners,
 } = require("../util/debug");
 const fs = require("fs");
 const path = require("path");
+const DBMS = require("./DBMS");
 const Logger = require("./Logger");
 const getConfig = require("../util/getConfig");
 
@@ -38,9 +39,9 @@ class Bot extends Client {
 
 		getConfig().then((conf) => {
 			this.OPLevel = conf.OPLevel;
-			this.config = conf;	
+			this.config = conf;
 			this.boot();
-			
+
 			this.LoadSchedules();
 			this.LoadCommands();
 			this.LoadEvents();
@@ -73,12 +74,13 @@ class Bot extends Client {
 	debug(...data) {
 		this.logger.debug(data);
 	}
-	
+
 	printBotInfo() {
 		// Denomination (name) of the bot
 		this.denom = `${this.config.name}/v${require("../package.json").version} (ID: ${this.config.clientId})`;
 		this.warn(`Bot running on OPLevel: ${this.OPLevel}`);
 
+		// Operator mode, for debugging purposes
 		switch (this.OPLevel) {
 			case 2:
 				this.warn("Dev mode [ENABLED]!\n\t`logs.log` for inspections");
@@ -94,7 +96,7 @@ class Bot extends Client {
 	boot() {
 		this.printBotInfo();
 		this.warn("Booting up the bot...\n\t" + this.denom);
-		
+
 		LoadErrorHandler(this);
 		LoadDebugListeners(this);
 
@@ -102,7 +104,7 @@ class Bot extends Client {
 		//this should prevent the building process from halting if there are invalid nodes
 		let nodeChecks = [];
 		for (const node of this.config.nodes) {
-			if(!node.host || !node.port) this.warn(node.identifier + " Is not filled in correctly");
+			if (!node.host || !node.port) this.warn(node.identifier + " Is not filled in correctly");
 			else nodeChecks.push(1);
 		}
 		// If all the checks pass (the array is filled only with `1`) then the Music client can be initialized
@@ -111,10 +113,18 @@ class Bot extends Client {
 		} else this.error("Invalid nodes specified in config.json");
 
 		this.login(this.config.token);
+
+		// DBMS initialization
+		try {
+			this.db = new DBMS(this);
+		} catch (err) {
+			this.error("Prisma ORM failed to load");
+			this.error(err);
+		}
 	}
 
 	LoadEvents() {
-		let EventsDir = path.join(__dirname, "..", "loaders", "events"); // Relative Path: "../events"
+		let EventsDir = path.join(__dirname, "..", "loaders", "events");
 		fs.readdir(EventsDir, (err, files) => {
 			if (err) { return this.error(err); }
 			else
@@ -122,32 +132,32 @@ class Bot extends Client {
 					/** @type {Function}*/
 					const event = require(EventsDir + "/" + file);
 					this.on(file.split(".")[0], event.bind(null, this));
-					
+
 					if (this.OPLevel >= 2)
-					this.log("Event Loaded: " + file.split(".")[0]);
+						this.log("Event Loaded: " + file.split(".")[0]);
 				});
 			this.info("Event listeners have been loaded.")
 		});
 	}
 
 	LoadSchedules() {
-		let SchedulesDir = path.join(__dirname, "..", "loaders", "schedules"); // Relative Path: "../schedules"
+		let SchedulesDir = path.join(__dirname, "..", "loaders", "schedules");
 		fs.readdir(SchedulesDir, (err, files) => {
 			if (err) { return this.error(err); }
 			else
 				files.forEach((file) => {
 					const schedule = require(SchedulesDir + "/" + file);
 					this.once("ready", schedule.bind(null, this));
-					
+
 					if (this.config.OPLevel >= 2)
-					this.log("Schedule Loaded: " + file.split(".")[0]);
+						this.log("Schedule Loaded: " + file.split(".")[0]);
 				});
 			this.info("Schedules have been loaded.");
 		});
 	}
 
 	LoadCommands() {
-		let CommandsDir = fs.readdirSync("./commands") // Relative Path: "../commands"
+		let CommandsDir = fs.readdirSync("./commands");
 		for (const category of CommandsDir) {
 			const commandFiles = fs
 				.readdirSync(`./commands/${category}`)
@@ -163,9 +173,9 @@ class Bot extends Client {
 					} catch (err) {
 						return this.error(err);
 					}
-					
-					if (this.OPLevel >= 2) 
-					this.log(`Slash Command Loaded: ${file} from [${category.toUpperCase()}]`);
+
+					if (this.OPLevel >= 2)
+						this.log(`Slash Command Loaded: ${file} from [${category.toUpperCase()}]`);
 				}
 			}
 		}

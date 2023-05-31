@@ -1,10 +1,10 @@
 {
   "name": "discord-musicbot",
-  "version": "+5.0.0-beta",
+  "version": "5.1.0-alpha",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "npm i && node index.js",
+    "start": "npm i && npx prisma db push && node index.js",
     "deploy": "node scripts/global",
     "guild": "node scripts/guild",
     "update": "node scripts/update"
@@ -19,6 +19,7 @@
   "author": "SudhanPlayz",
   "license": "CUSTOM",
   "dependencies": {
+    "@prisma/client": "^4.15.0",
     "axios": "^1.4.0",
     "better-erela.js-apple": "^1.0.5",
     "better-erela.js-spotify": "^1.3.11",
@@ -32,6 +33,7 @@
     "moment": "^2.29.4",
     "moment-duration-format": "^2.3.2",
     "pretty-ms": "^7.0.1",
+    "prisma": "^4.15.0",
     "shoukaku": "^3.4.0",
     "winston": "^3.8.2",
     "youtube-sr": "^4.3.4"

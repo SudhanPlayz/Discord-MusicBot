@@ -1,0 +1,6 @@
+version: '3'
+
+services:
+  postgres-db:
+    ports:
+      - 5432:5432
