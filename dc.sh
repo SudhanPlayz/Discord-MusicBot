@@ -14,6 +14,9 @@ if [ ! -d "./docker" ]; then
 elif [ ! -f "docker/docker-compose.yml" ]; then
     echo -e "\033[91mNo docker-compose.yml file found, please create one.\033[0m"
     exit 126
+elif [ ! -f "docker/.env" ]; then
+    echo -e "\033[91mNo .env file found, please create one.\033[0m"
+    exit 126
 fi
 
 COMPOSE_OVERRIDE=
@@ -22,6 +25,7 @@ if [[ -f "docker/docker-compose.override.yml" ]]; then
 fi
 DOCKER="docker compose \
         --file docker/docker-compose.yml \
+        --env-file docker/.env \
         ${COMPOSE_OVERRIDE} \
         -p ${PROJECT_NAME}"
         

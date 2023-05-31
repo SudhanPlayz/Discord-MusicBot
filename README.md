@@ -11,18 +11,18 @@
 Setup the ports in a docker-compose.override.yml file in the docker directory. The file should look like this:
 
 ```yml
-version: "3"
+version: '3'
 
 services:
-  scylladb:
+  postgres-db:
     ports:
       - xxxx:xxxx
 ```
 
-enter the DB with 
+Make a `.env` in the same directory as the docker-compose.override.yml file. The file should look like this:
 
-```bash
-make enter scylladb fs
+```env
+POSTGRES_DB=base
+POSTGRES_USER=root
+POSTGRES_PASSWORD=root
 ```
-
-Default login credentials are `cassandra` and `[anything]` for username and password respectively.
