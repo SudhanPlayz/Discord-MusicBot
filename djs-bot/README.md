@@ -23,6 +23,7 @@ TOKEN=botToken
 CLIENTID=botClientId
 CLIENTSECRET=botClientSecretToken
 DEVUID=yourDiscordUID *
+DATABASE_URL="dbArch://user:pass@host:port/db" # If you want DB functionality
 ```
   - To actually set up the bot and get it running you need to install all required dependencies and post slash commands to the discord bot application:
 ```bash
@@ -32,5 +33,6 @@ npm run deploy # this should be a one time thing
   - To run the bot:
 ```bash
 npm run start
+# or
+npm run db-start # if you have your own DB setup
 ```
- - While Prisma will load, the DB will not function unless you use the docker setup

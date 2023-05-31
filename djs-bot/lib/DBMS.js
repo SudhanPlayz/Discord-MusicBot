@@ -1,7 +1,6 @@
 const Bot = require('./Bot');
 
 const { PrismaClient } = require('@prisma/client');
-require("dotenv").config({ path: "../.env" });
 
 class PrismaManager extends PrismaClient {
 	/**
@@ -11,7 +10,7 @@ class PrismaManager extends PrismaClient {
 	constructor(client) {
 		super({
 			log: ["query", "info", "warn", "error"], errorFormat: "pretty",
-			datasources: { db: { url: process.env.DATABASE_URL } } //- not really needed but it's here for reference
+			datasources: { db: { url: client.config.db_url } } //- not really needed but it's here for reference
 		});
 		client.log(`Prisma ORM has been loaded`);
 	}

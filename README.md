@@ -8,7 +8,7 @@
   - If you don't have or can't install makefile utilities then run `./dc.sh help`
 
 
-## DB
+## Docker setup
 
 Setup the ports in a docker-compose.override.yml file in the docker directory. 
  - Or rename the docker-compose.override.yml.dist file to docker-compose.override.yml and fill in the values if they are not already filled in.

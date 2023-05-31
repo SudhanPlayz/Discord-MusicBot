@@ -5,6 +5,8 @@ require('dotenv').config()
 module.exports = {
 	/** @type {string} */
 	name: "InsertNameHereBot", // A fancy name to give your bot :D
+	/** @type {string}*/
+	db_url: process.env.DATABASE_URL || "", // URL to the database (Prisma ORM)
 
 	/**
 	 * Secret information, use the ENV file to store these values if possible
