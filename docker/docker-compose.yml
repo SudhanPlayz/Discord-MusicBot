@@ -10,7 +10,7 @@ services:
     volumes:
       - ../djs-bot:/djs-bot
     working_dir: /djs-bot
-    command: ["npm", "run", "start"]
+    command: ["npm", "run", "docker-start"]
     depends_on:
       postgres-db:
         condition: service_healthy

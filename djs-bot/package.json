@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "npm i && npx prisma db push && node index.js",
+    "start": "npm i && node index.js",
+    "docker-start": "npm i && npx prisma db push && node index.js",
     "deploy": "node scripts/global",
     "guild": "node scripts/guild",
     "update": "node scripts/update"

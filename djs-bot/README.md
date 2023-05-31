@@ -1,6 +1,6 @@
 ## ⛔ | Prerequisites
 
-- [Node.js 17+](https://nodejs.org/en/download/)
+- [Node.js 17+](https://nodejs.org/en/download/) (if you're not using the docker setup)
 
 ## 🏃‍♂ | Installing and running the bot
 
@@ -33,3 +33,4 @@ npm run deploy # this should be a one time thing
 ```bash
 npm run start
 ```
+ - While Prisma will load, the DB will not function unless you use the docker setup
