@@ -21,7 +21,7 @@ class Logger {
 			],
 		});
 	}
-	
+
 	/**
 	 * @returns String formatted date for logging
 	 */
@@ -29,23 +29,23 @@ class Logger {
 		let d = new Date();
 		return `[${d.getDate()}:${d.getMonth()}:${d.getFullYear()} - ${d.getHours()}:${d.getMinutes()}]`;
 	}
-	
-	printLog(formatting = {
-		level: "debug",
-		message: "info: ",
-		color: "green"
-	}, ...args) {
+
+	/**
+	 * @param {Formatting} formatting
+	 * @param  {...any} args
+	 */
+	printLog(formatting, ...args) {
 		const time = this.getCurrentTimeString();
-	
+
 		this.logger.log({
 			time: `${time}`,
 			level: (formatting.level || "debug"),
 			message: (formatting.message || "lost: ") + args.join(" "),
 		});
-	
+
 		if (formatting.color) {
 			console.log(
-				colors.gray(time) + colors[formatting.color || "green"](" | " + args.join(" "))
+				colors.gray(time) + colors[formatting.color || "green"](` [${formatting.level.toUpperCase()}] | `) + args.join(" ")
 			);
 		}
 	}
@@ -55,8 +55,8 @@ class Logger {
 	 * @param {string} text 
 	 */
 	log(...data) {
-		this.printLog({ 
-			level: "debug", message: "info: ", color: "green" 
+		this.printLog({
+			level: "debug", message: "info: ", color: "green"
 		}, ...data);
 	}
 

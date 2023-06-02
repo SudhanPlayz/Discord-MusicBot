@@ -21,6 +21,9 @@ services:
   postgres-db:
     ports:
       - xxxx:xxxx
+  lavalink:
+    ports:
+      - 2333:2333
 ```
 
 Make a `.env` in the same directory as the docker-compose.override.yml file. 

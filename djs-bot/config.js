@@ -28,14 +28,14 @@ module.exports = {
 	//--> https://github.com/melike2d/lavalink
 	//--> https://darrennathanael.com/post/how-to-lavalink/
 	/** @type {string} */
-	musicEngine: "Erela", // "Shoukaku" or "Erela" (case sensitive) are supported
+	musicEngine: "Erela", // (case sensitive) Only Erela is supported for now
 	/** @type {import("erela.js").Node[]} */
 	nodes: [
 		{
-			identifier: "Lavalink 1", // log id string
-			host: "narco.buses.rocks",
-			port: 2269,
-			password: "glasshost1984",
+			identifier: "DockerNode", // log id string
+			host: "host.docker.internal",
+			port: 2333,
+			password: "youshallnotpass",
 			retryAmount: 15, // for lavalink connection attempts [Erela.js]
 			retryDelay: 6000, // Delay between reconnect attempts if connection is lost. [Erela.js]
 			secure: false, // if SSL lavalink

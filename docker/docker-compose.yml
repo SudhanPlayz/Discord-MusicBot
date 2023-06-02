@@ -14,12 +14,13 @@ services:
     depends_on:
       postgres-db:
         condition: service_healthy
+      lavalink:
+        condition: service_started
 
   postgres-db:
     image: postgres:15.2-alpine
     container_name: postgres
     restart: unless-stopped
-
     # Create a .env file for these variables
     environment:
       POSTGRES_PASSWORD:  ${POSTGRES_PASSWORD}
@@ -27,12 +28,18 @@ services:
       POSTGRES_DB:        ${POSTGRES_DB}
     volumes:
       - postgres_data:/var/lib/postgresql/data
-
     healthcheck:
       test: ["CMD-SHELL", "sh -c 'pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}'"]
       interval: 10s
       timeout: 5s
       retries: 5
+
+  lavalink:
+    image: fredboat/lavalink:master
+    container_name: lavalink
+    restart: unless-stopped
+    volumes:
+      - ./lavalink/application.yml:/opt/Lavalink/application.yml
 
 volumes:
   postgres_data:

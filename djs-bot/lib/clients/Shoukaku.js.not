@@ -1,0 +1,177 @@
+const { Shoukaku, Connectors, Player } = require('shoukaku');
+const Bot = require('../Bot');
+
+/** @hidden */
+const SIZES = [
+    "0",
+    "1",
+    "2",
+    "3",
+    "default",
+    "mqdefault",
+    "hqdefault",
+    "maxresdefault",
+];
+
+function parseNode(node) {
+	return {
+		name: node.identifier,
+		url: `${node.host}:${node.port}`,
+		auth: node.password,
+		secure: node.secure || false,
+		group: node.group || 'default', // dunno what this is
+	};
+}
+
+/**
+ * Extended Player
+ * I tried... I really did...
+ */
+class ShoukakuExtendedPlayer extends Player {
+	/**
+	 * 
+	 * @param {import('shoukaku').Node} node 
+	 * @param {import('shoukaku').VoiceChannelOptions} options 
+	 */
+	constructor(node, options) {
+		super(node, options);
+	}
+
+	get state() {
+		switch (this.connection.state) {
+			case 0:
+				return "CONNECTING";
+			case 1:
+				return "CONNECTED";
+			case 2:
+				return "DISCONNECTING";
+			case 3:
+				return "DISCONNECTED";
+			default:
+				return "UNKNOWN";
+		}
+	}
+
+	/** Connect to the voice channel. */
+	connect() {
+		const connection = this.connection;
+		let player = this.node.joinChannel({
+			guildID: connection.guildId,
+			channelID: connection.channelId,
+			shardID: connection.shardId
+		});
+		return player;
+	}
+
+	/**
+	 * Search for a song
+	 * @param {string} query
+	 * @param {import("discord.js").User} requester
+	 */
+	async search(query, requester) {
+		return new Promise(async (resolve, reject) => {
+			const node = this.node;
+			if (!/^https?:\/\//.test(query)) {
+				query = `ytsearch:${query}`;
+			}
+			/** @type {import('shoukaku').LavalinkResponse | null} */
+			const res = await node.rest.resolve(query)
+				.catch(err => reject(err));
+			if (!res) {
+				return reject(new Error("Query not found."));
+			}
+			const result = {
+				loadType: res.loadType,
+				/** @type {string} */
+				exception: res.exception ?? null,
+				tracks: res.tracks.map(track => {
+					return {
+						track: track.track,
+						title: track.info.title,
+						identifier: track.info.identifier,
+						author: track.info.author,
+						duration: track.info.length,
+						isSeekable: track.info.isSeekable,
+						isStream: track.info.isStream,
+						uri: track.info.uri,
+						thumbnail: track.info.uri.includes("youtube")
+							? `https://img.youtube.com/vi/${track.info.identifier}/default.jpg`
+							: null,
+						displayThumbnail(size = "default") {
+							const finalSize = SIZES.find((s) => s === size) ?? "default";
+							return this.uri.includes("youtube")
+								? `https://img.youtube.com/vi/${track.info.identifier}/${finalSize}.jpg`
+								: null;
+						},
+						requester: requester,
+					};
+				}),
+			};
+			if (result.loadType === "PLAYLIST_LOADED") {
+				result.playlist = {
+					name: res.playlistInfo.name,
+					selectedTrack: res.playlistInfo.selectedTrack === -1 ? null :
+						result.tracks[res.playlistInfo.selectedTrack],
+					duration: result.tracks
+						.reduce((acc, cur) => acc + (cur.duration || 0), 0),
+				};
+			}
+			return resolve(result);
+		});
+	}
+}
+
+
+/**
+ * Extended Shoukaku Client
+ * Implements additional methods and features
+ * to meet the interface of the Music Manager
+ */
+class ShoukakuExtended extends Shoukaku {
+	constructor(connector, nodes) {
+		super(connector, nodes);
+	}
+
+	/**
+	 * Create a player for a guild, binds a voice channel to it
+	 * @param {import("discord.js").Guild} guild
+	 * @param {import("discord.js").VoiceBasedChannel} voiceChannel
+	 * @returns {ShoukakuExtendedPlayer}
+	 * 
+	 * @todo Verify if this is the correct way to create a player
+	 */
+	createPlayer(guild, voiceChannel) {
+		const players = this.players;
+		const player = players.get(guild.id) ||
+			new ShoukakuExtendedPlayer(this.leastUsedNode, {
+				guildID: guild.id,
+				shardId: guild.shardId,
+				channelId: voiceChannel.id
+			});
+
+		if (!players.has(guild.id))
+			players.set(guild.id, player);
+
+		return player;
+	}
+
+	/**
+	 * Returns the least used node from the array configured in the config file
+	 */
+	get leastUsedNode() {
+		return this.getNode();
+	}
+}
+
+/**
+ * Shoukaku Music Client
+ * @param {Bot} client 
+ * @returns {ShoukakuExtended}
+ */
+module.exports = (client) => {
+	return new ShoukakuExtended(new Connectors.DiscordJS(client), client.config.nodes.map(parseNode))
+
+		/* Event listeners */
+		.on('ready', (name) => client.log(`Node ${name} | Lavalink node is connected.`))
+		.on('error', (name, error) => client.error(`Node ${name} | Lavalink node has encountered an error: ${error}`));
+};
