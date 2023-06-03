@@ -71,7 +71,7 @@ const command = new SlashCommand()
 
 		lyricsApi.search(query).then(async (lyricsData) => {
 			if (lyricsData.length !== 0) {
-				for (let i = 0; i < client.config.lyricsMaxResults; i++) {
+				for (let i = 0; i <= 25; i++) {
 					if (lyricsData[i]) {
 						lyricsResults.push({
 							label: `${lyricsData[i].title}`,
