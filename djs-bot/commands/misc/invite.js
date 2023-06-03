@@ -15,7 +15,7 @@ const command = new SlashCommand()
         new MessageActionRow().addComponents(
           new MessageButton()
             .setLabel("Invite me")
-            .setStyle(Link)
+            .setStyle('Link')
             .setURL(
               `https://discord.com/oauth2/authorize?client_id=${
                 client.config.clientId
