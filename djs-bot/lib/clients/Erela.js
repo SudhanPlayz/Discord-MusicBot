@@ -259,58 +259,117 @@ module.exports = (client) => {
 		.on("playerDestroy", (player) =>
 			client.warn(`Player: ${player.options.guild} | A music player has been destroyed in ${client.guilds.cache.get(player.options.guild) ? client.guilds.cache.get(player.options.guild).name : "a guild"}`))
 
+		.on("loadFailed", (node, type, error) =>
+			client.warn(`Node: ${node.options.identifier} | Failed to load ${type}: ${error.message}`))
+
 		.on("trackStart", async (player, track) => {
+			let playedTracks = client.playedTracks;
+			if (playedTracks.length >= 25)
+				playedTracks.shift();
+			if (!playedTracks.includes(track))
+				playedTracks.push(track);
+
+			let activeProperties = [
+				player.get("autoQueue") ? "autoqueue" : null,
+				player.get("twentyFourSeven") ? "24/7" : null,
+			]
+
 			let trackStartedEmbed = new MessageEmbed()
 				.setColor(client.config.embedColor)
 				.setAuthor({ name: "Now playing", iconURL: client.config.iconURL })
-				.setDescription(`[${track.title}](${track.uri})` || "No Descriptions")
+				.setDescription(`[${track.title}](${track.uri})`)
 				.addField("Requested by", `${track.requester}`, true)
-				.addField("Duration", track.isStream ? `\`LIVE\`` : `\`${prettyMilliseconds(track.duration, { colonNotation: true, })}\``, true);
+				.addField("Duration", track.isStream ? `\`LIVE\`` : `\`${prettyMilliseconds(track.duration, { secondsDecimalDigits: 0, })}\``, true)
+				.setFooter({ text: `${activeProperties.filter(e => e).join(" • ")}` });
+
 			try {
 				trackStartedEmbed.setThumbnail(track.displayThumbnail("maxresdefault"));
 			} catch (err) {
 				trackStartedEmbed.setThumbnail(track.thumbnail);
 			}
+
 			let nowPlaying = await client.channels.cache
 				.get(player.textChannel)
 				.send({ embeds: [trackStartedEmbed] })
 				.catch(client.warn);
+
+			player.setNowplayingMessage(client, nowPlaying);
 			client.warn(`Player: ${player.options.guild} | Track has started playing [${colors.blue(track.title)}]`);
 		})
-		.on("queueEnd", (player) => {
-			/** @todo autoqueue */
-			client.warn(`Player: ${player.options.guild} | Queue has ended`);
-			let queueEmbed = new MessageEmbed()
-				.setColor(client.config.embedColor)
-				.setAuthor({ name: "The queue has ended", iconURL: client.config.iconURL, })
-				.setFooter({ text: "Queue ended" })
-				.setTimestamp();
-			client.channels.cache
-				.get(player.textChannel)
-				.send({ embeds: [queueEmbed] });
-			try {
-				if (!player.playing && !player.twentyFourSeven) {
-					setTimeout(() => {
-						if (!player.playing && player.state !== "DISCONNECTED") {
-							let disconnectedEmbed = new MessageEmbed()
-								.setColor(client.config.embedColor)
+
+		.on("queueEnd", async (player, track) => {
+			const autoQueue = player.get("autoQueue");
+
+			if (autoQueue) {
+				const requester = player.get("requester");
+				const identifier = track.identifier;
+				const search = `https://www.youtube.com/watch?v=${identifier}&list=RD${identifier}`;
+				const res = await player.search(search, requester).catch(err => console.log(err));
+				let nextTrackIndex;
+
+				const identifierMap = client.playedTracks.map(track => track.identifier);
+				res.tracks.some((track, index) => {
+					nextTrackIndex = index;
+					return !identifierMap.includes(track.identifier)
+				});
+
+				if (res.exception) {
+					client.channels.cache.get(player.textChannel)
+						.send({
+							embeds: [new MessageEmbed()
+								.setColor("Red")
 								.setAuthor({
-									name: "Disconnected",
+									name: `${res.exception.severity}`,
 									iconURL: client.config.iconURL,
 								})
-								.setDescription(`The player has been disconnected due to inactivity.`);
-							client.channels.cache.get(player.textChannel)
-								.send({ embeds: [disconnectedEmbed] });
-							player.destroy();
-						} else if (player.playing) {
-							client.warn(`Player: ${player.options.guild} | Still playing`);
-						}
-					}, client.config.disconnectTime);
-				} else if (player.playing || player.twentyFourSeven) {
-					client.warn(`Player: ${player.options.guild} | Still playing and 24/7 is active`);
+								.setDescription(`Could not load track.\n**ERR:** ${res.exception.message}`)
+							]
+						});
+					return player.destroy();
 				}
-			} catch (err) {
-				client.error(err);
+
+				player.play(res.tracks[nextTrackIndex]);
+				player.queue.previous = track;
+			} else {
+				const twentyFourSeven = player.get("twentyFourSeven");
+
+				let queueEmbed = new MessageEmbed()
+					.setColor(client.config.embedColor)
+					.setAuthor({ name: `The queue has ended ${(twentyFourSeven) ? "but 24/7 is on!" : ""}`, iconURL: client.config.iconURL, })
+					.setDescription(`${(twentyFourSeven) ? "The bot will not exit the VC since 24/7 mode has been enabled" : ""}`)
+					.setFooter({ text: "If you wish for the queue to never end use `/autoqueue`" })
+					.setTimestamp();
+
+				client.channels.cache
+					.get(player.textChannel)
+					.send({ embeds: [queueEmbed] });
+
+				try {
+					if (!player.playing && !twentyFourSeven) {
+						setTimeout(() => {
+							if (!player.playing && player.state !== "DISCONNECTED") {
+								client.channels.cache.get(player.textChannel)
+									.send({
+										embeds: [new MessageEmbed()
+											.setColor(client.config.embedColor)
+											.setAuthor({
+												name: "Disconnected",
+												iconURL: client.config.iconURL,
+											})
+											.setDescription(`The player has been disconnected due to inactivity.`)
+										]
+									});
+								player.destroy();
+							} else if (player.playing) {
+								client.warn(`Player: ${player.options.guild} | A new song was added during the timeout`);
+							}
+						}, client.config.disconnectTime);
+					} else if (!player.playing && twentyFourSeven) {
+						client.warn(`Player: ${player.options.guild} | Queue has ended [${colors.blue("24/7 ENABLED")}]`);
+					}
+				} catch (err) {
+					client.error(err);
+				}
 			}
 		});
 }

@@ -50,6 +50,11 @@ class Bot extends Client {
 			this.getLavalink = require("../util/getLavalink");
 
 			this.ms = require("pretty-ms");
+
+			/** @type {WeakSet<import("discord.js").Message>} */
+			this.deletedMessages = new WeakSet();
+			/** @type {Array<import("erela.js").Track>} */
+			this.playedTracks = new Array();
 		});
 	}
 
