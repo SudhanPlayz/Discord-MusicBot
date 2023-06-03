@@ -278,6 +278,7 @@ module.exports = (client) => {
 			client.warn(`Player: ${player.options.guild} | Track has started playing [${colors.blue(track.title)}]`);
 		})
 		.on("queueEnd", (player) => {
+			/** @todo autoqueue */
 			client.warn(`Player: ${player.options.guild} | Queue has ended`);
 			let queueEmbed = new MessageEmbed()
 				.setColor(client.config.embedColor)
