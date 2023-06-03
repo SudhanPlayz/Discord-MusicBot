@@ -119,11 +119,11 @@ const command = new SlashCommand()
 										.setCustomId('tipsbutton')
 										.setLabel('Tips')
 										.setEmoji(`📌`)
-										.setStyle('SECONDARY'),
+										.setStyle('Secondary'),
 									new MessageButton()
 										.setLabel('Source')
 										.setURL(url)
-										.setStyle('LINK'),
+										.setStyle('Link'),
 								);
 
 							const musixmatch_icon = 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Musixmatch_logo_icon_only.svg/480px-Musixmatch_logo_icon_only.svg.png';
@@ -184,7 +184,7 @@ const command = new SlashCommand()
 							.setEmoji(`📌`)
 							.setCustomId('tipsbutton')
 							.setLabel('Tips')
-							.setStyle('SECONDARY'),
+							.setStyle('Secondary'),
 					);
 				return interaction.editReply({
 					embeds: [

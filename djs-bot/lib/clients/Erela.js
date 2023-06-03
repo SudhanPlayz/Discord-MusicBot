@@ -101,22 +101,22 @@ class ErelaExtended extends Manager {
 	createController(guild, player) {
 		return new MessageActionRow().addComponents(
 			new MessageButton()
-				.setStyle("DANGER")
+				.setStyle("Danger")
 				.setCustomId(`controller:${guild}:Stop`)
 				.setEmoji("⏹️"),
 
 			new MessageButton()
-				.setStyle("PRIMARY")
+				.setStyle("Primary")
 				.setCustomId(`controller:${guild}:Replay`)
 				.setEmoji("⏮️"),
 
 			new MessageButton()
-				.setStyle(player.playing ? "PRIMARY" : "DANGER")
+				.setStyle(player.playing ? "Primary" : "Danger")
 				.setCustomId(`controller:${guild}:PlayAndPause`)
 				.setEmoji(player.playing ? "⏸️" : "▶️"),
 
 			new MessageButton()
-				.setStyle("PRIMARY")
+				.setStyle("Primary")
 				.setCustomId(`controller:${guild}:Next`)
 				.setEmoji("⏭️"),
 
@@ -126,7 +126,7 @@ class ErelaExtended extends Manager {
 						? "SUCCESS"
 						: player.queueRepeat
 							? "SUCCESS"
-							: "DANGER"
+							: "Danger"
 				)
 				.setCustomId(`controller:${guild}:Loop`)
 				.setEmoji(player.trackRepeat ? "🔂" : player.queueRepeat ? "🔁" : "🔁")

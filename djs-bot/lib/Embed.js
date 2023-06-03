@@ -67,12 +67,12 @@ class MessageEmbed extends EmbedBuilder {
 			new MessageButton()
 				.setCustomId("previous_page")
 				.setEmoji("◀️")
-				.setStyle("PRIMARY")
+				.setStyle("Primary")
 				.setDisabled(pageNo == 0),
 			new MessageButton()
 				.setCustomId("next_page")
 				.setEmoji("▶️")
-				.setStyle("PRIMARY")
+				.setStyle("Primary")
 				.setDisabled(pageNo == (maxPages - 1)),
 		);
 	};

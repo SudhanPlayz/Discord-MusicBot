@@ -202,11 +202,11 @@ const command = new SlashCommand()
 				const buttonOne = new MessageButton()
 					.setCustomId("queue_cmd_but_1_app")
 					.setEmoji("⏭️")
-					.setStyle("PRIMARY");
+					.setStyle("Primary");
 				const buttonTwo = new MessageButton()
 					.setCustomId("queue_cmd_but_2_app")
 					.setEmoji("⏮️")
-					.setStyle("PRIMARY");
+					.setStyle("Primary");
 				
 				await interaction
 					.editReply({
