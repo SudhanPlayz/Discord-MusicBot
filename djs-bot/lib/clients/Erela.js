@@ -7,10 +7,64 @@ const { MessageEmbed } = require('../Embed');
 const prettyMilliseconds = require("pretty-ms");
 
 /* Erela.js - Extension */
-const { Manager } = require("erela.js"); // <---
+const { Manager, Structure } = require("erela.js"); // <---
 const deezer = require("erela.js-deezer"); // <---
 const spotify = require("better-erela.js-spotify").default; // <---
 const { default: AppleMusic } = require("better-erela.js-apple"); // <---
+
+Structure.extend(
+	"Player",
+	/** @param {import("erela.js").Player} Player */
+	(Player) => class extends Player {
+		/** @returns {import("erela.js").Player} */
+		constructor(...props) {
+			super(...props);
+			this.twentyFourSeven = false;
+		}
+
+		/**
+		 * Set's (maps) the client's resume message so it can be deleted afterwards
+		 * @param {Bot} client
+		 * @param {import("discord.js").Message} message
+		 * @returns the Set Message
+		 */
+		setResumeMessage(client, message) {
+			if (this.pausedMessage && !client.isMessageDeleted(this.pausedMessage)) {
+				this.pausedMessage.delete();
+				client.markMessageAsDeleted(this.pausedMessage);
+			}
+			return (this.resumeMessage = message);
+		}
+
+		/**
+		 * Set's (maps) the client's paused message so it can be deleted afterwards
+		 * @param {Bot} client
+		 * @param {import("discord.js").Message} message
+		 * @returns
+		 */
+		setPausedMessage(client, message) {
+			if (this.resumeMessage && !client.isMessageDeleted(this.resumeMessage)) {
+				this.resumeMessage.delete();
+				client.markMessageAsDeleted(this.resumeMessage);
+			}
+			return (this.pausedMessage = message);
+		}
+
+		/**
+		 * Set's (maps) the client's now playing message so it can be deleted afterwards
+		 * @param {Bot} client
+		 * @param {import("discord.js").Message} message
+		 * @returns
+		 */
+		setNowplayingMessage(client, message) {
+			if (this.nowPlayingMessage && !client.isMessageDeleted(this.nowPlayingMessage)) {
+				this.nowPlayingMessage.delete();
+				client.markMessageAsDeleted(this.nowPlayingMessage);
+			}
+			return (this.nowPlayingMessage = message);
+		}
+	},
+);
 
 class ErelaExtended extends Manager {
 	/**
@@ -36,6 +90,47 @@ class ErelaExtended extends Manager {
 			voiceChannel: voiceChannel.id,
 			textChannel: textChannel.id,
 		});
+	}
+
+	/**
+	 * Creates the buttons for the controller on the message for a player
+	 * @param {import("discord.js").Guild} guild 
+	 * @param {import("erela.js").Player} player 
+	 * @returns 
+	 */
+	createController(guild, player) {
+		return new MessageActionRow().addComponents(
+			new MessageButton()
+				.setStyle("DANGER")
+				.setCustomId(`controller:${guild}:Stop`)
+				.setEmoji("⏹️"),
+
+			new MessageButton()
+				.setStyle("PRIMARY")
+				.setCustomId(`controller:${guild}:Replay`)
+				.setEmoji("⏮️"),
+
+			new MessageButton()
+				.setStyle(player.playing ? "PRIMARY" : "DANGER")
+				.setCustomId(`controller:${guild}:PlayAndPause`)
+				.setEmoji(player.playing ? "⏸️" : "▶️"),
+
+			new MessageButton()
+				.setStyle("PRIMARY")
+				.setCustomId(`controller:${guild}:Next`)
+				.setEmoji("⏭️"),
+
+			new MessageButton()
+				.setStyle(
+					player.trackRepeat
+						? "SUCCESS"
+						: player.queueRepeat
+							? "SUCCESS"
+							: "DANGER"
+				)
+				.setCustomId(`controller:${guild}:Loop`)
+				.setEmoji(player.trackRepeat ? "🔂" : player.queueRepeat ? "🔁" : "🔁")
+		);
 	}
 
 	/**

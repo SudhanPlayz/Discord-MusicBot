@@ -190,6 +190,24 @@ class Bot extends Client {
 			this.silly(this.denom + " is online!");
 		});
 	}
+
+	/**
+	 * Checks if a message has been deleted during the run time of the Bot
+	 * @param {import("discord.js").Message} message
+	 * @returns
+	 */
+	isMessageDeleted(message) {
+		return this.deletedMessages.has(message);
+	}
+
+	/**
+	 * Marks (adds) a message on the client's `deletedMessages` WeakSet so it's
+	 * state can be seen through the code
+	 * @param {import("discord.js").Message} message
+	 */
+	markMessageAsDeleted(message) {
+		this.deletedMessages.add(message);
+	}
 }
 
 module.exports = Bot;

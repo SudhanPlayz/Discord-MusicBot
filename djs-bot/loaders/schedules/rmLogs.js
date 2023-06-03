@@ -18,7 +18,7 @@ const Bot = require('../../lib/Bot');
 module.exports = (client) => {
 	const rmLogsSchedule = new cron.CronJob('0 0 * * *', async () => {
 		// Relative Path: "../logs.log"
-		const logsPath = path.join(__dirname, "..", "logs.log");
+		const logsPath = path.join(__dirname, "..", "..", "logs.log");
 		fs.writeFile(logsPath, '', function () { client.info("'logs.log' has been purged.") })
 	});
 	rmLogsSchedule.start()

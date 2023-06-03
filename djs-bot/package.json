@@ -35,6 +35,7 @@
     "moment-duration-format": "^2.3.2",
     "pretty-ms": "^7.0.1",
     "prisma": "^4.15.0",
+    "rlyrics": "^2.0.1",
     "shoukaku": "^3.4.0",
     "winston": "^3.8.2",
     "youtube-sr": "^4.3.4"

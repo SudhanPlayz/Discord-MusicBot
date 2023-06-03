@@ -1,4 +1,4 @@
-const { EmbedBuilder, ActionRowBuilder } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, StringSelectMenuBuilder, ButtonBuilder } = require('discord.js');
 
 const isButtonForUser = (returnValue, ...interaction) => {
 	if (returnValue.user.id === interaction.user.id) return true;
@@ -15,6 +15,33 @@ const isButtonForUser = (returnValue, ...interaction) => {
 const isSelectMenuForUser = (returnValue, ...interaction) => {
 	return returnValue.user.id === interaction.user.id && returnValue.isSelectMenu();
 };
+
+/**
+ * retro compatibility for v13
+ */
+class MessageActionRow extends ActionRowBuilder {
+	constructor() {
+		super();
+	}
+}
+
+/**
+ * retro compatibility for v13
+ */
+class MessageSelectMenu extends StringSelectMenuBuilder {
+	constructor() {
+		super();
+	}
+}
+
+/**
+ * retro compatibility for v13
+ */
+class MessageButton extends ButtonBuilder {
+	constructor() {
+		super();
+	}
+}
 
 /**
  * retro compatibility for v13
@@ -51,5 +78,5 @@ class MessageEmbed extends EmbedBuilder {
 	};
 }
 
-module.exports = { MessageEmbed,
+module.exports = { MessageEmbed, MessageActionRow, MessageSelectMenu, MessageButton,
 	isButtonForUser, isSelectMenuForUser };
