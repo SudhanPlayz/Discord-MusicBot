@@ -1,8 +1,8 @@
 const SlashCommand = require("../../lib/SlashCommand");
 const { MessageEmbed, MessageButton, MessageActionRow } = require("../../lib/Embed");
-const escapeMarkdown = require('discord.js').Utils.escapeMarkdown;
 const load = require("lodash");
 const pms = require("pretty-ms");
+const { escapeMarkdown } = require("discord.js");
 
 const command = new SlashCommand()
 	.setName("queue")

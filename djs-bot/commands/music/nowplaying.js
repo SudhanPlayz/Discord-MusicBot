@@ -1,5 +1,5 @@
 const { MessageEmbed } = require("../../lib/Embed");
-const escapeMarkdown = require('discord.js').Utils.escapeMarkdown;
+const { escapeMarkdown } = require('discord.js');
 const SlashCommand = require("../../lib/SlashCommand");
 const prettyMilliseconds = require("pretty-ms");
 
