@@ -6,6 +6,8 @@ const fs = require("fs");
 const { getCommands, getCategories } = require("../../util/getDirs");
 const { ComponentType, ActionRowBuilder, StringSelectMenuBuilder } = require("discord.js");
 const { capitalize } = require("../../util/string");
+const SlashCommand = require("../../lib/SlashCommand");
+const Bot = require("../../lib/Bot");
 
 
 module.exports = {
@@ -28,6 +30,10 @@ module.exports = {
 	category: "misc",
 	description: "Return all commands, or one specific command!",
 	ownerOnly: false,
+	/** 
+	 * @param {Bot} client
+	 * @param {import("discord.js").CommandInteraction} interaction
+	 */
 	run: async (client, interaction) => {
 		const commandArg = interaction.options.getString("command");
 
@@ -119,14 +125,14 @@ module.exports = {
 					.setColor(client.config.embedColor)
 					.setTitle(`${capitalize(category)} Commands`);
 
-				for (let command of commandFiles) {
+				for (const [index, command] of commandFiles.entries()) {
 					command = command.split(".")[0];
 					const slashCommand = client.slash.get(command);
 					if (!slashCommand.ownerOnly)
+						/** @todo Fix in case the commands are more than 25 */
 						helpCategoryEmbed.addField(`${command}`, slashCommand.description);
 				}
 			}
-
 			await interaction.editReply({ embeds: [helpCategoryEmbed] });
 		});
 	}
