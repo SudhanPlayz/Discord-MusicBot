@@ -7,7 +7,7 @@
 ### First of all you'll need to create a new bot application for your discord bot client:
   - Go to [Discord Developer Portal](https://discord.com/developers/applications/)
   - Click on the button "New Application" and give it a name
-    - On the main page you can messa around and give your bot a description, tags and a Profile picture
+    - On the main page you can mess around and give your bot a description, tags and a Profile picture
   - Click on "Bot" in the panel on the left and "Add Bot" to create a new Discord Bot Client
     - Here you can enable some really neat API features for your bot, the one's you'll be needing are: "Server Member Intent" and "Message Content Intent" (Also disable "Public Bot" if you want)
   - Now go to the "OAuth2" section and press on the "URL Generator" Tab
@@ -23,7 +23,7 @@ TOKEN=botToken
 CLIENTID=botClientId
 CLIENTSECRET=botClientSecretToken
 DEVUID=yourDiscordUID *
-DATABASE_URL="dbArch://user:pass@host:port/db" # If you want DB functionality
+DATABASE_URL="dbArch://user:pass@host:port/db" * # If you want DB functionality
 ```
   - To actually set up the bot and get it running you need to install all required dependencies and post slash commands to the discord bot application:
 ```bash
