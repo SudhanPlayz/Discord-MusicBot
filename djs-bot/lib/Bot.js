@@ -120,13 +120,13 @@ class Bot extends Client {
 		this.login(this.config.token);
 
 		// DBMS initialization
-		try {
-			if (this.config.db_url)
+		if (this.config.db_url)
+			try {
 				this.db = new DBMS(this);
-		} catch (err) {
-			this.error("Prisma ORM failed to load");
-			this.error(err);
-		}
+			} catch (err) {
+				this.error("Prisma ORM failed to load");
+				this.error(err);
+			}
 	}
 
 	LoadEvents() {
