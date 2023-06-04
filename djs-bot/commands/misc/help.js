@@ -1,7 +1,5 @@
 const {
 	MessageEmbed,
-	isButtonForUser,
-	isSelectMenuForUser,
 } = require("../../lib/Embed");
 const fs = require("fs");
 const { getCommands, getCategories } = require("../../util/getDirs");
@@ -13,7 +11,7 @@ const Bot = require("../../lib/Bot");
 
 module.exports = {
 	name: "help",
-	usage: '/help <command>',
+	usage: '/help <command?>',
 	options: [
 		{
 			type: 3, // "STRING"
@@ -103,7 +101,7 @@ module.exports = {
 
 		// when defer is active this needs to edit the previous reply instead
 		const menuSelectEmbed = await interaction.reply({ embeds: [initialEmbed], components: [helpMenuActionRow] });
-		const collector = menuSelectEmbed.createMessageComponentCollector({ isSelectMenuForUser, componentType: ComponentType.StringSelect });
+		const collector = menuSelectEmbed.createMessageComponentCollector({ componentType: ComponentType.StringSelect });
 
 		collector.on("collect", async (category) => {
 			category = category.values[0];
@@ -143,7 +141,7 @@ module.exports = {
 					helpCategoryEmbed.addFields(fieldsPerPage);
 
 					const helpCategoryMessage = await interaction.editReply({ embeds: [helpCategoryEmbed], components: [ helpMenuActionRow, helpCategoryEmbed.getButtons(currentPage, maxPages)] });
-					const buttonCollector = helpCategoryMessage.createMessageComponentCollector({ isButtonForUser, componentType: ComponentType.Button });
+					const buttonCollector = helpCategoryMessage.createMessageComponentCollector({ componentType: ComponentType.Button });
 
 					buttonCollector.on("collect", async (button) => {
 						if (button.customId === "previous_page") {

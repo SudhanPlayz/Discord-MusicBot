@@ -1,21 +1,5 @@
 const { EmbedBuilder, ActionRowBuilder, StringSelectMenuBuilder, ButtonBuilder } = require('discord.js');
 
-const isButtonForUser = (returnValue, ...interaction) => {
-	if (returnValue.user.id === interaction.user.id) return true;
-	return returnValue.reply({
-		embeds: [
-			new MessageEmbed()
-				.setColor("Red")
-				.setDescription("This Button Isn't For You")
-		],
-		ephemeral: true
-	});
-};
-
-const isSelectMenuForUser = (returnValue, ...interaction) => {
-	return returnValue.user.id === interaction.user.id && returnValue.isSelectMenu();
-};
-
 /**
  * retro compatibility for v13
  */
@@ -78,5 +62,4 @@ class MessageEmbed extends EmbedBuilder {
 	};
 }
 
-module.exports = { MessageEmbed, MessageActionRow, MessageSelectMenu, MessageButton,
-	isButtonForUser, isSelectMenuForUser };
+module.exports = { MessageEmbed, MessageActionRow, MessageSelectMenu, MessageButton };
