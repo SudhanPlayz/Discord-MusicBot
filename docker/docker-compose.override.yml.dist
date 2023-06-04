@@ -2,7 +2,7 @@
 ## Replace the values with your own and rename the file to .docker-compose.override.yml ##
 ##########################################################################################
 
-version: '3'
+version: '3.8'
 
 services:
   postgres-db:
