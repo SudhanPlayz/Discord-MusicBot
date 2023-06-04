@@ -110,6 +110,7 @@ module.exports = {
 			let helpCategoryEmbed = new MessageEmbed();
 			if (category === "overview") {
 				helpCategoryEmbed = initialEmbed;
+				await interaction.editReply({ embeds: [helpCategoryEmbed], components: [helpMenuActionRow] });
 			} else {
 				const commandFiles = fs
 					.readdirSync(`./commands/${category}`)
@@ -181,9 +182,9 @@ module.exports = {
 						if (!slashCommand.ownerOnly)
 							helpCategoryEmbed.addField(`${command}`, slashCommand.description);
 					}
+					await interaction.editReply({ embeds: [helpCategoryEmbed], components: [helpMenuActionRow] });
 				}
 			}
-			await interaction.editReply({ embeds: [helpCategoryEmbed], components: [helpMenuActionRow] });
 		});
 	}
 };
