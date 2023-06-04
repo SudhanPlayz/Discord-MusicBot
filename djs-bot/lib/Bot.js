@@ -200,7 +200,6 @@ class Bot extends Client {
 	/**
 	 * Checks if a message has been deleted during the run time of the Bot
 	 * @param {import("discord.js").Message} message
-	 * @returns
 	 */
 	isMessageDeleted(message) {
 		return this.deletedMessages.has(message);
