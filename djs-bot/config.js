@@ -87,7 +87,7 @@ module.exports = {
 	/** 
 	 * Debug mode for the bot
 	 * 
-	 * 0 = No debug logging, 1 = Standard Logging, 2 = Development (contains debug)
+	 * 0 = No debug logging (production), 1 = Standard Logging (debug info), 2 = Development (everything)
 	 * @type {number} */
 	OPLevel: 1,
 	/**
