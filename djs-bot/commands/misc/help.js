@@ -6,9 +6,8 @@ const { getCommands, getCategories } = require("../../util/getDirs");
 const { ComponentType, ActionRowBuilder, StringSelectMenuBuilder } = require("discord.js");
 const { capitalize } = require("../../util/string");
 const SlashCommand = require("../../lib/SlashCommand");
-const Bot = require("../../lib/Bot");
 
-
+/** @type {SlashCommand} */
 module.exports = {
 	name: "help",
 	usage: '/help <command?>',
@@ -29,10 +28,6 @@ module.exports = {
 	category: "misc",
 	description: "Return all commands, or one specific command!",
 	ownerOnly: false,
-	/** 
-	 * @param {Bot} client
-	 * @param {import("discord.js").CommandInteraction} interaction
-	 */
 	run: async (client, interaction) => {
 		const commandArg = interaction.options.getString("command");
 

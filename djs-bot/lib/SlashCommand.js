@@ -29,7 +29,8 @@ class SlashCommand extends SlashCommandBuilder {
 		return this;
 	}
 
-	/** sets the intended usage for a command as a string, which will be grabbed by the `help` command
+	/** 
+	 * sets the intended usage for a command as a string, which will be grabbed by the `help` command
 	 * syntax: /<commandName> <args?...>
 	 * @param {string} usage
 	 */
@@ -39,7 +40,7 @@ class SlashCommand extends SlashCommandBuilder {
 	}
 
 	/**
-	 *  sets the intended category for the command, useful for findind mismatches
+	 * sets the intended category for the command, useful for finding mismatches
 	 * @param {string} category
 	 */ 
 	setCategory(category = 'misc') {
@@ -58,7 +59,7 @@ class SlashCommand extends SlashCommandBuilder {
 
 	/**
 	 * Set the available autocomplete options for a string command option
-	 * @param {(input: string, index: number, interaction: CommandInteraction) => Promise<Array<Object>} autocompleteOptions a function that returns an array of autocomplete options
+	 * @param {(input: string, index: number, interaction: CommandInteraction, client:Bot) => Promise<{name:string, value:string}[]>} autocompleteOptions a function that returns an array of autocomplete options
 	 */
 	setAutocompleteOptions(autocompleteOptions) {
 		this.autocompleteOptions = autocompleteOptions;
