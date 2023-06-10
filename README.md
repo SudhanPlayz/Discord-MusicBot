@@ -3,7 +3,7 @@
 ## 🚧 | Prerequisites
 
 - [Docker](https://www.docker.com/)
-- Optionally: [CMake](https://cmake.org/)
+- Optionally: [GNU Make](https://www.gnu.org/software/make/)
 
 ## 📝 | Tutorial
 
