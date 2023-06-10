@@ -10,7 +10,7 @@
 ### Written Setup
 
 - Follow the [installation](https://github.com/BioCla/Discord-MusicBot/blob/feature/DJSv14/djs-bot/README.md) procedure for the bot
-- Make sure you have [Docker](https://www.docker.com/) (and [CMake](https://cmake.org/)) installed on your machine
+- Make sure you have [Docker](https://www.docker.com/) (and [GNU Make](https://www.gnu.org/software/make/)) installed on your machine
   - If you are planning on running the bot through docker on windows, then you'll have to use WSL and set up the appropriate docker configurations for that [(click here)](https://docs.docker.com/desktop/windows/wsl/)
 - Open a terminal session in in the root directory of the project
 - Run `make help` to see the list of available commands
