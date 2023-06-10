@@ -60,7 +60,11 @@ const command = new SlashCommand()
 			});
 		}
 
-		let player = client.manager.Engine.createPlayer(interaction.channel, channel);
+		let player = client.manager.Engine.createPlayer({
+			guildId: interaction.guild.id,
+			voiceChannel: channel.id,
+			textChannel: interaction.channel.id,
+		});
 
 		if (player.state !== "CONNECTED") {
 			player.connect();
@@ -107,7 +111,7 @@ const command = new SlashCommand()
 							.setDescription("There was an error while searching"),
 					],
 				})
-				.catch(this.warn);
+				.catch(client.warn);
 		}
 
 		if (res.loadType === "NO_MATCHES") {
@@ -122,7 +126,7 @@ const command = new SlashCommand()
 							.setDescription("No results were found"),
 					],
 				})
-				.catch(this.warn);
+				.catch(client.warn);
 		}
 
 		if (res.loadType === "TRACK_LOADED" || res.loadType === "SEARCH_RESULT") {
@@ -174,7 +178,7 @@ const command = new SlashCommand()
 				player.queue.previous = player.queue.current;
 			}
 
-			await interaction.editReply({ embeds: [addQueueEmbed] }).catch(this.warn);
+			await interaction.editReply({ embeds: [addQueueEmbed] }).catch(client.warn);
 		}
 
 		if (res.loadType === "PLAYLIST_LOADED") {
@@ -212,10 +216,10 @@ const command = new SlashCommand()
 					}
 				);
 
-			await interaction.editReply({ embeds: [playlistEmbed] }).catch(this.warn);
+			await interaction.editReply({ embeds: [playlistEmbed] }).catch(client.warn);
 		}
 
-		if (ret) setTimeout(() => ret.delete().catch(this.warn), 20000);
+		if (ret) setTimeout(() => ret.delete().catch(client.warn), 20000);
 		return ret;
 	});
 

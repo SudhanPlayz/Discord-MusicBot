@@ -22,9 +22,7 @@ class MusicManager {
 		if (!specifiedEngine) throw new Error("Music engine is not specified in the config file");
 		if (!clients.includes(specifiedEngine)) throw new Error(`Music engine "${specifiedEngine}" does not exist`);
 
-		/** 
-		@type { import("./clients/MusicClient").MusicClient } 
-		*/
+		/** @type { import("./clients/MusicClient").MusicClient } */
 		this.Engine = require(`./clients/${specifiedEngine}`)(client);
 
 		// validate the music engine		

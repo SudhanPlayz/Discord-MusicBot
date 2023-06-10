@@ -23,7 +23,11 @@ const command = new SlashCommand()
 
     let player;
     if (client.manager.Engine) {
-      player = client.createPlayer(interaction.channel, channel);
+      player = client.manager.Engine.createPlayer({
+        guildId: interaction.guild.id,
+        voiceChannel: channel.id,
+        textChannel: interaction.channel.id,
+      });
     } else {
       return interaction.reply({
         embeds: [

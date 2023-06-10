@@ -40,8 +40,8 @@ module.exports = {
 	//--> https://github.com/melike2d/lavalink
 	//--> https://darrennathanael.com/post/how-to-lavalink/
 	/** 
-	 * Music engine to use (Erela is the only supported engine at the moment)
-	 * @type {string} */
+	 * Music engine to use
+	 * @type {import("./lib/clients/MusicClient").Engine} */
 	musicEngine: "Erela",
 	/** 
 	 * Nodes to connect to
@@ -52,8 +52,8 @@ module.exports = {
 			host: "host.docker.internal",
 			port: 2333,
 			password: "youshallnotpass",
-			retryAmount: 15, // for lavalink connection attempts [Erela.js]
-			retryDelay: 6000, // Delay between reconnect attempts if connection is lost. [Erela.js]
+			retryAmount: 15, // for lavalink connection attempts
+			retryDelay: 6000, // Delay between reconnect attempts if connection is lost.
 			secure: false, // if lavalink is running SSL
 		},
 		/* {

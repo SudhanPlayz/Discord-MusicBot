@@ -35,7 +35,7 @@ services:
       retries: 5
 
   lavalink:
-    image: fredboat/lavalink:master
+    image: ghcr.io/lavalink-devs/lavalink:3
     container_name: lavalink
     restart: unless-stopped
     volumes:

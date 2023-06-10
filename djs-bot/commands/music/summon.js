@@ -17,7 +17,11 @@ const command = new SlashCommand()
 		
 		let player = client.manager.Engine.players.get(interaction.guild.id);
 		if (!player) {
-			player = client.createPlayer(interaction.channel, channel);
+			player = client.manager.Engine.createPlayer({
+				guildId: interaction.guild.id,
+				voiceChannel: channel.id,
+				textChannel: interaction.channel.id,
+			});
 			player.connect(true);
 		}
 		

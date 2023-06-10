@@ -3,7 +3,7 @@ const Bot = require("../Bot");
 
 /* Imports */
 const colors = require("colors");
-const { MessageEmbed } = require('../Embed');
+const { MessageEmbed, MessageActionRow, MessageButton } = require('../Embed');
 const prettyMilliseconds = require("pretty-ms");
 
 /* Erela.js - Extension */
@@ -80,15 +80,14 @@ class ErelaExtended extends Manager {
 
 	/**
 	 * Create a player for a guild, binds a text channel and voice channel to it
-	 * @param {import("discord.js").TextChannel} textChannel 
-	 * @param {import("discord.js").VoiceBasedChannel} voiceChannel 
+	 * @param {{ guildId: string, voiceChannel: string, textChannel: string }} options
 	 * @returns {import("erela.js").Player}
 	 */
-	createPlayer(textChannel, voiceChannel) {
+	createPlayer(options) {
 		return this.create({
-			guild: textChannel.guild.id,
-			voiceChannel: voiceChannel.id,
-			textChannel: textChannel.id,
+			guild: options.guildId,
+			voiceChannel: options.voiceChannel,
+			textChannel: options.textChannel,
 		});
 	}
 
@@ -280,7 +279,7 @@ module.exports = (client) => {
 				.setDescription(`[${track.title}](${track.uri})`)
 				.addField("Requested by", `${track.requester}`, true)
 				.addField("Duration", track.isStream ? `\`LIVE\`` : `\`${prettyMilliseconds(track.duration, { secondsDecimalDigits: 0, })}\``, true)
-				.setFooter({ text: `${activeProperties.filter(e => e).join(" • ")}` });
+				// .setFooter({ text: `${activeProperties.filter(e => e).join(" • ")}` }); // might error?
 
 			try {
 				trackStartedEmbed.setThumbnail(track.displayThumbnail("maxresdefault"));
@@ -336,7 +335,7 @@ module.exports = (client) => {
 				let queueEmbed = new MessageEmbed()
 					.setColor(client.config.embedColor)
 					.setAuthor({ name: `The queue has ended ${(twentyFourSeven) ? "but 24/7 is on!" : ""}`, iconURL: client.config.iconURL, })
-					.setDescription(`${(twentyFourSeven) ? "The bot will not exit the VC since 24/7 mode has been enabled" : ""}`)
+					.setDescription(`${(twentyFourSeven) ? "The bot will not exit the VC since 24/7 mode has been enabled" : null}`)
 					.setFooter({ text: "If you wish for the queue to never end use `/autoqueue`" })
 					.setTimestamp();
 

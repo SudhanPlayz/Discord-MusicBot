@@ -1,7 +1,16 @@
-import { Manager } from "erela.js";
+import { CosmiNode, CosmiPlayerOptions, CosmiSearchQuery, Cosmicord, CosmiLoadedTracks } from "cosmicord.js";
 
-interface MusicClient extends Manager {
-  createPlayer(...props: any[]): import("erela.js").Player;
+interface CosmicordPlayerExtended extends CosmiPlayer {
+  search(query: CosmiSearchQuery, requesterId?: string): Promise<CosmiLoadedTracks>;
+}
 
-  get leastUsedNode(): import("erela.js").Node;
+export interface MusicClient extends Cosmicord {
+  createPlayer(options: CosmiPlayerOptions, node?: CosmiNode): CosmicordPlayerExtended;
+
+  get leastUsedNode(): CosmiNode;
+}
+
+export enum Engine {
+  "Cosmicord" = "Cosmicord",
+  "Erela" = "Erela",
 }
