@@ -335,7 +335,7 @@ module.exports = (client) => {
 				let queueEmbed = new MessageEmbed()
 					.setColor(client.config.embedColor)
 					.setAuthor({ name: `The queue has ended ${(twentyFourSeven) ? "but 24/7 is on!" : ""}`, iconURL: client.config.iconURL, })
-					.setDescription(`${(twentyFourSeven) ? "The bot will not exit the VC since 24/7 mode has been enabled" : null}`)
+					.setDescription(`${(twentyFourSeven) ? "The bot will not exit the VC since 24/7 mode has been enabled" : "24/7 was not set, exiting!"}`)
 					.setFooter({ text: "If you wish for the queue to never end use `/autoqueue`" })
 					.setTimestamp();
 
