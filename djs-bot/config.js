@@ -42,7 +42,7 @@ module.exports = {
 	/** 
 	 * Music engine to use
 	 * @type {import("./lib/clients/MusicClient").Engine} */
-	musicEngine: "Erela",
+	musicEngine: "Cosmicord",
 	/** 
 	 * Nodes to connect to
 	 * @type {import("erela.js").Node[]} */
