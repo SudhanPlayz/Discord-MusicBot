@@ -53,7 +53,7 @@ class Bot extends Client {
 
 			/** @type {WeakSet<import("discord.js").Message>} */
 			this.deletedMessages = new WeakSet();
-			/** @type {Array<import("erela.js").Track>} */
+			/** @type {Array<import("cosmicord.js").CosmiTrack>} */
 			this.playedTracks = new Array();
 		});
 	}

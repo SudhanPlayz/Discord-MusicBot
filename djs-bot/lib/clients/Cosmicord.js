@@ -18,6 +18,13 @@ class CosmicordPlayerExtended extends CosmiPlayer {
 
 		/** @type {CosmicordExtended} */
 		this.cosmicord = cosmicordExtended;
+		/** @type {boolean} */
+		this.twentyFourSeven = false;
+	}
+
+	/** The guild id of the player */
+	get guild() {
+		return this.options.guildId;
 	}
 
 	/**
@@ -35,6 +42,48 @@ class CosmicordPlayerExtended extends CosmiPlayer {
 				resolve(results);
 			}).catch(reject);
 		});
+	}
+
+	/**
+		 * Set's (maps) the client's resume message so it can be deleted afterwards
+		 * @param {Bot} client
+		 * @param {import("discord.js").Message} message
+		 * @returns the Set Message
+		 */
+	setResumeMessage(client, message) {
+		if (this.pausedMessage && !client.isMessageDeleted(this.pausedMessage)) {
+			this.pausedMessage.delete();
+			client.markMessageAsDeleted(this.pausedMessage);
+		}
+		return (this.resumeMessage = message);
+	}
+
+	/**
+	 * Set's (maps) the client's paused message so it can be deleted afterwards
+	 * @param {Bot} client
+	 * @param {import("discord.js").Message} message
+	 * @returns
+	 */
+	setPausedMessage(client, message) {
+		if (this.resumeMessage && !client.isMessageDeleted(this.resumeMessage)) {
+			this.resumeMessage.delete();
+			client.markMessageAsDeleted(this.resumeMessage);
+		}
+		return (this.pausedMessage = message);
+	}
+
+	/**
+	 * Set's (maps) the client's now playing message so it can be deleted afterwards
+	 * @param {Bot} client
+	 * @param {import("discord.js").Message} message
+	 * @returns
+	 */
+	setNowplayingMessage(client, message) {
+		if (this.nowPlayingMessage && !client.isMessageDeleted(this.nowPlayingMessage)) {
+			this.nowPlayingMessage.delete();
+			client.markMessageAsDeleted(this.nowPlayingMessage);
+		}
+		return (this.nowPlayingMessage = message);
 	}
 }
 
@@ -166,43 +215,123 @@ module.exports = (client) => {
 		})
 
 		.on("playerCreated", (node, player) =>
-			client.warn(`Player: ${player.guildId} | A music player has been created in ${client.guilds.cache.get(player.guildId) ? client.guilds.cache.get(player.guildId).name : "a guild"}`))
+			client.warn(`Player: ${player.guildId} | A music player has been created in ${client.guilds.cache.get(player.guildId) ? client.guilds.cache.get(player.guildId).name : "a guild"}`)
+		)
 
 		.on("playerDestoryed", (node, player) =>
-			client.warn(`Player: ${player.guildId} | A music player has been destroyed in ${client.guilds.cache.get(player.guildId) ? client.guilds.cache.get(player.guildId).name : "a guild"}`))
+			client.warn(`Player: ${player.guildId} | A music player has been destroyed in ${client.guilds.cache.get(player.guildId) ? client.guilds.cache.get(player.guildId).name : "a guild"}`)
+		)
 
-		.on("trackStart", async (player, track) => {
-			let playedTracks = client.playedTracks;
-			if (playedTracks.length >= 25)
-				playedTracks.shift();
-			if (!playedTracks.includes(track))
-				playedTracks.push(track);
+		.on("trackStart",
+			/** @param {CosmicordPlayerExtended} player */
+			async (player, track) => {
+				let playedTracks = client.playedTracks;
+				if (playedTracks.length >= 25)
+					playedTracks.shift();
+				if (!playedTracks.includes(track))
+					playedTracks.push(track);
 
-			let trackStartedEmbed = new MessageEmbed()
-				.setColor(client.config.embedColor)
-				.setAuthor({ name: "Now playing", iconURL: client.config.iconURL })
-				.setDescription(`[${track.title}](${track.uri})`)
-				.addField("Requested by", `${track.requester}`, true)
-				.addField("Duration", track.isStream ? `\`LIVE\`` : `\`${prettyMilliseconds(track.duration, { secondsDecimalDigits: 0, })}\``, true);
+				let trackStartedEmbed = new MessageEmbed()
+					.setColor(client.config.embedColor)
+					.setAuthor({ name: "Now playing", iconURL: client.config.iconURL })
+					.setDescription(`[${track.title}](${track.uri})`)
+					.addField("Requested by", `${track.requester}`, true)
+					.addField("Duration", track.isStream ? `\`LIVE\`` : `\`${prettyMilliseconds(track.duration, { secondsDecimalDigits: 0, })}\``, true);
 
-			try {
-				trackStartedEmbed.setThumbnail(track.displayThumbnail("maxresdefault"));
-			} catch (err) {
-				trackStartedEmbed.setThumbnail(track.thumbnail);
+				try {
+					trackStartedEmbed.setThumbnail(track.displayThumbnail("maxresdefault"));
+				} catch (err) {
+					trackStartedEmbed.setThumbnail(track.thumbnail);
+				}
+
+				let nowPlaying = await client.channels.cache
+					.get(player.textChannel)
+					.send({ embeds: [trackStartedEmbed] })
+					.catch(client.warn);
+
+				player.setNowplayingMessage(client, nowPlaying);
+				client.warn(`Player: ${player.guildId} | Track has started playing [${colors.blue(track.title)}]`);
 			}
+		)
 
-			client.warn(`Player: ${player.guildId} | Track has started playing [${colors.blue(track.title)}]`);
-		})
+		.on("queueEnd",
+			/** @param {CosmicordPlayerExtended} player */
+			async (player) => {
+				const autoQueue = player.get("autoQueue");
 
-		.on("queueEnd", async (player) => {
-			let queueEndEmbed = new MessageEmbed()
-				.setColor(client.config.embedColor)
-				.setDescription("Queue has ended, leaving voice channel.");
+				if (autoQueue) {
+					const track = player.queue.previous;
+					const requester = player.get("requester");
+					const identifier = track.identifier;
+					const search = `https://www.youtube.com/watch?v=${identifier}&list=RD${identifier}`;
+					const res = await player.search(search, requester).catch(err => console.log(err));
+					console.log(res);
+					let nextTrackIndex;
 
-			client.channels.cache
-				.get(player.textChannel)
-				.send({ embeds: [queueEndEmbed] });
+					const identifierMap = client.playedTracks.map(track => track.identifier);
+					res.tracks.some((track, index) => {
+						nextTrackIndex = index;
+						return !identifierMap.includes(track.identifier)
+					});
 
-			player.destroy();
-		});
+					if (res.exception) {
+						client.channels.cache.get(player.textChannel)
+							.send({
+								embeds: [new MessageEmbed()
+									.setColor("Red")
+									.setAuthor({
+										name: `${res.exception.severity}`,
+										iconURL: client.config.iconURL,
+									})
+									.setDescription(`Could not load track.\n**ERR:** ${res.exception.message}`)
+								]
+							});
+						return player.destroy();
+					}
+
+					player.play(res.tracks[nextTrackIndex]);
+					player.queue.previous = track;
+				} else {
+					const twentyFourSeven = player.get("twentyFourSeven");
+
+					let queueEmbed = new MessageEmbed()
+						.setColor(client.config.embedColor)
+						.setAuthor({ name: `The queue has ended ${(twentyFourSeven) ? "but 24/7 is on!" : ""}`, iconURL: client.config.iconURL, })
+						.setDescription(`${(twentyFourSeven) ? "The bot will not exit the VC since 24/7 mode has been enabled" : "24/7 was not set, exiting!"}`)
+						.setFooter({ text: "If you wish for the queue to never end use `/autoqueue`" })
+						.setTimestamp();
+
+					client.channels.cache
+						.get(player.textChannel)
+						.send({ embeds: [queueEmbed] });
+
+					try {
+						if (!player.playing && !twentyFourSeven) {
+							setTimeout(() => {
+								if (!player.playing && player.state !== "DISCONNECTED") {
+									client.channels.cache.get(player.textChannel)
+										.send({
+											embeds: [new MessageEmbed()
+												.setColor(client.config.embedColor)
+												.setAuthor({
+													name: "Disconnected",
+													iconURL: client.config.iconURL,
+												})
+												.setDescription(`The player has been disconnected due to inactivity.`)
+											]
+										});
+									player.destroy();
+								} else if (player.playing) {
+									client.warn(`Player: ${player.options.guild} | A new song was added during the timeout`);
+								}
+							}, client.config.disconnectTime);
+						} else if (!player.playing && twentyFourSeven) {
+							client.warn(`Player: ${player.options.guild} | Queue has ended [${colors.blue("24/7 ENABLED")}]`);
+						}
+					} catch (err) {
+						client.error(err);
+					}
+				}
+			}
+		);
 }
