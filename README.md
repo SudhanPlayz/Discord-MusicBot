@@ -15,6 +15,7 @@
 - Open a terminal session in in the root directory of the project
 - Run `make help` to see the list of available commands
   - If you don't have or can't install makefile utilities then run `./dc.sh help`
+  - If you're having trouble running the script due to lack of permissions be sure to `chmod +x dc.sh`
 
 ### Docker setup
 
