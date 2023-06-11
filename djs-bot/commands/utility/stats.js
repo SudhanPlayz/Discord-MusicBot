@@ -1,41 +1,89 @@
+const os = require("os");
 const moment = require("moment");
 require("moment-duration-format");
 const { MessageEmbed } = require("../../lib/Embed");
-const os = require("os");
+const SlashCommand = require("../../lib/SlashCommand");
 
-module.exports = {
-	name: "stats",
-	category: "utility",
-	usage: "/stats",
-	description: "Check the bot's stats!",
-	ownerOnly: false,
-	run: async (client, interaction) => {
+const command = new SlashCommand()
+	.setName("stats")
+	.setDescription("Get information about the bot")
+	.setRun(async (client, interaction) => {
+		// get OS info
 		const osver = os.platform() + " " + os.release();
+		
+		// Get nodejs version
 		const nodeVersion = process.version;
+		
+		// get the uptime in a human readable format
 		const runtime = moment
-		.duration(client.uptime)
-		.format("d[ Days]・h[ Hrs]・m[ Mins]・s[ Secs]");
-		
+			.duration(client.uptime)
+			.format("d[ Days]・h[ Hrs]・m[ Mins]・s[ Secs]");
+		// show lavalink uptime in a nice format
+		const lavauptime = moment
+			.duration(client.manager.Engine.nodes.values().next().value.stats.uptime)
+			.format(" D[d], H[h], m[m]");
+		// show lavalink memory usage in a nice format
+		const lavaram = (
+			client.manager.Engine.nodes.values().next().value.stats.memory.used /
+			1024 /
+			1024
+		).toFixed(2);
+		// sow lavalink memory alocated in a nice format
+		const lavamemalocated = (
+			client.manager.Engine.nodes.values().next().value.stats.memory.allocated /
+			1024 /
+			1024
+		).toFixed(2);
+		// show system uptime
 		var sysuptime = moment
-		.duration(os.uptime() * 1000)
-		.format("d[ Days]・h[ Hrs]・m[ Mins]・s[ Secs]");
+			.duration(os.uptime() * 1000)
+			.format("d[ Days]・h[ Hrs]・m[ Mins]・s[ Secs]");
 		
-		return interaction.reply({ embeds: [new MessageEmbed()
-			.setTitle(`${client.user.username} Information`)
+		// get commit hash and date
+		let gitHash = "unknown";
+		try {
+			gitHash = require("child_process")
+				.execSync("git rev-parse HEAD")
+				.toString()
+				.trim();
+		} catch (e) {
+			// do nothing
+			gitHash = "unknown";
+		}
+		
+		const statsEmbed = new MessageEmbed()
+			.setTitle(`${ client.user.username } Information`)
 			.setColor(client.config.embedColor)
-			.setDescription(`\`\`\`yml\nName: ${client.user.username}#${client.user.discriminator} [${client.user.id}]\nRuntime: ${runtime}\n\`\`\``)
+			.setDescription(
+				`\`\`\`yml\nName: ${ client.user.username }#${ client.user.discriminator } [${ client.user.id }]\nAPI: ${ client.ws.ping }ms\nRuntime: ${ runtime }\`\`\``,
+			)
 			.setFields([
 				{
+					name: `Lavalink stats`,
+					value: `\`\`\`yml\nUptime: ${ lavauptime }\nRAM: ${ lavaram } MB\nPlaying: ${
+						client.manager.Engine.nodes.values().next().value.stats.playingPlayers
+					} out of ${
+						client.manager.Engine.nodes.values().next().value.stats.players
+					}\`\`\``,
+					inline: true,
+				},
+				{
 					name: "Bot stats",
-					value: `\`\`\`yml\nGuilds: ${client.guilds.cache.size}\nNodeJS: ${nodeVersion}\nBot: v${require("../../package.json").version}\n\`\`\``,
+					value: `\`\`\`yml\nGuilds: ${
+						client.guilds.cache.size
+					} \nNodeJS: ${ nodeVersion }\nDiscordMusicBot: v${
+						require("../../package.json").version
+					} \`\`\``,
 					inline: true,
 				},
 				{
 					name: "System stats",
-					value: `\`\`\`yml\nOS: ${osver}\nUptime: ${sysuptime}\nShards: ${client.ws.totalShards}\nIndex: ${interaction.member.guild.shardId}\n\`\`\``,
+					value: `\`\`\`yml\nOS: ${ osver }\nUptime: ${ sysuptime }\n\`\`\``,
 					inline: false,
 				},
 			])
-		], ephemeral: true });
-	},
-};
+			.setFooter({ text: `Build: ${ gitHash }` });
+		return interaction.reply({ embeds: [statsEmbed], ephemeral: false });
+	});
+
+module.exports = command;
