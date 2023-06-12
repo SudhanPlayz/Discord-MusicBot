@@ -71,4 +71,4 @@ Contributions are always welcomed :D Make sure to follow [Contributing.md](/CONT
 ## 🌟 | Made with
 
 - [Discord.js](https://discord.js.org/)
-- [Lavalink](https://github.com/freyacodes/Lavalink) with erela.js
+- [Lavalink](https://github.com/freyacodes/Lavalink) with erela.js, Cosmicord.js
