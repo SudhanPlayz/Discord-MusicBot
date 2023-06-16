@@ -1,6 +1,6 @@
 {
   "name": "discord-musicbot",
-  "version": "5.1.0-alpha",
+  "version": "5.1.0-beta",
   "description": "",
   "main": "index.js",
   "scripts": {
