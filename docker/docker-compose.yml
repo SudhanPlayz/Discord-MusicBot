@@ -17,6 +17,22 @@ services:
       lavalink:
         condition: service_started
 
+  djs-dashboard:
+    container_name: djs-dashboard
+    image: node:latest
+    restart: "unless-stopped"
+    stdin_open: true
+    tty: true
+    volumes:
+      - ../dashboard:/dashboard
+    ports:
+      - "3000:3000"
+    working_dir: /dashboard
+    command: ["npm", "run", "start"]
+    depends_on:
+      djs-bot:
+        condition: service_started
+
   postgres-db:
     image: postgres:15.2-alpine
     container_name: postgres
