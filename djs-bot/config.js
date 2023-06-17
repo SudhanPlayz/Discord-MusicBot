@@ -49,7 +49,7 @@ module.exports = {
 	nodes: [
 		{
 			identifier: "DockerNode", // log id string
-			host: "host.docker.internal",
+			host: "172.21.0.3",
 			port: 2333,
 			password: "youshallnotpass",
 			retryAmount: 15, // for lavalink connection attempts
