@@ -113,7 +113,7 @@ module.exports = {
 		 */
 		activities: [
 			{
-				name: "{someVariable}",
+				name: "{someVariable} servers",
 				type: "WATCHING",
 				data: (client) => {
 					return {
