@@ -1,6 +1,7 @@
 const { MessageEmbed } = require("../../lib/Embed");
 const SlashCommand = require("../../lib/SlashCommand");
 
+//@TODO update this command to be compatible with cosmicord v1.1.0
 const command = new SlashCommand()
 	.setName("filters")
 	.setDescription("add or remove filters")
