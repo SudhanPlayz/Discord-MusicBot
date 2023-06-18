@@ -25,7 +25,7 @@ const command = new SlashCommand()
 	)
 	
 	.setRun(async (client, interaction, options) => {
-		const args = interaction.options.getString("preset");
+		const args = options.getString("preset")
 		
 		let channel = await client.getChannel(client, interaction);
 		if (!channel) {
