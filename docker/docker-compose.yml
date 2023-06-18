@@ -54,6 +54,7 @@ services:
     image: fredboat/lavalink:latest
     container_name: lavalink
     restart: unless-stopped
+    hostname: docker.lavalink
     volumes:
       - ./lavalink/application.yml:/opt/Lavalink/application.yml
     ports:
