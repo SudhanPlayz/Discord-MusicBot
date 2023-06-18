@@ -7,6 +7,7 @@ const { getCommands } = require("../util/getDirs");
 // Docs: https://discordjs.guide/interactions/slash-commands.html#global-commands
 // https://github.com/discordjs/discord.js/tree/main/packages/rest
 // https://github.com/discordjs/discord-api-types/
+// @TODO fix this
 (async () => {
 	const config = await getConfig();
 	const rest = new REST({ version: "10" }).setToken(config.token);

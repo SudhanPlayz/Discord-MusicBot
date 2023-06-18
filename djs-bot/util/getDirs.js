@@ -31,7 +31,7 @@ async function getCommands() {
 };
 
 
-// Needs to be updated to conform the method in InfoBot.js
+// Needs to be updated to conform the method in Bot.js
 // fills the commands array and resolves it to the calling function
 const getCommandsDir = () => {
 	return new Promise((resolve) => {
