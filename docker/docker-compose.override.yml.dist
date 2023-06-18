@@ -8,6 +8,3 @@ services:
   postgres-db:
     ports:
       - 5432:5432
-  lavalink:
-    ports:
-      - 2333:2333

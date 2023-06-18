@@ -30,9 +30,6 @@ services:
   postgres-db:
     ports:
       - xxxx:xxxx
-  lavalink:
-    ports:
-      - 2333:2333
 ```
 
 Make a `.env` in the same directory as the docker-compose.override.yml file. 
@@ -46,7 +43,9 @@ POSTGRES_PASSWORD=root
 ```
 
 - Run `make up log` to start the docker environment and view the logs. 
-- You can also run `make up` to start the docker environment in the background.
+  - You can also run `make up` to start the docker environment in the background.
+
+If you don't want a particular service to start up on `make up` you can simply comment the block for the service you want to remove from the docker-compose.yml file
 
 ## 📝 | [Support Server](https://discord.gg/sbySMS7m3v)
 

@@ -17,8 +17,8 @@ services:
       lavalink:
         condition: service_started
 
-  djs-dashboard:
-    container_name: djs-dashboard
+  dashboard:
+    container_name: dashboard
     image: node:latest
     restart: "unless-stopped"
     stdin_open: true
@@ -56,6 +56,8 @@ services:
     restart: unless-stopped
     volumes:
       - ./lavalink/application.yml:/opt/Lavalink/application.yml
+    ports:
+      - 2333:2333
 
 volumes:
   postgres_data:
