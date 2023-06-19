@@ -21,7 +21,6 @@ function getCategories() {
 	return categories;
 }
 
-// Loads all commands from the commands folder
 async function getCommands() {
 	return new Promise(async (resolve) => {
 		let slash = await getCommandsDir();
@@ -30,13 +29,10 @@ async function getCommands() {
 	});
 };
 
-
-// Needs to be updated to conform the method in Bot.js
-// fills the commands array and resolves it to the calling function
 const getCommandsDir = () => {
 	return new Promise((resolve) => {
 		let commands = [];
-		let CommandsDir = fs.readdirSync("./commands") // Relative Path: "../commands"
+		let CommandsDir = fs.readdirSync("./commands")
 		let i = 0,
 			f = getFiles("./commands").length,
 			r = false;
@@ -57,8 +53,13 @@ const getCommandsDir = () => {
 	});
 };
 
-// Dunno where I found this function but I'm pretty sure it's not mine
-// Reads all files of a dir and sub dirs
+/**
+ * Reads all files of a dir and sub dirs
+ * @param {string} dir Directory to read
+ * @param {Array<string>} files_ 
+ * @returns {Array<string>} Array of files
+ * @note Dunno where I found this function but I'm pretty sure it's not mine
+ */
 const getFiles = (dir, files_) => {
 	files_ = files_ || [];
 	let files = fs.readdirSync(dir);
@@ -76,4 +77,5 @@ const getFiles = (dir, files_) => {
 module.exports = {
 	getCategories,
 	getCommands,
+	getFiles,
 };
