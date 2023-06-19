@@ -9,6 +9,8 @@ services:
     tty: true
     volumes:
       - ../djs-bot:/djs-bot
+    ports:
+      - "8080:8080"
     working_dir: /djs-bot
     command: ["npm", "run", "db-start"]
     depends_on:

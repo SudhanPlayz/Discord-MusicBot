@@ -11,6 +11,7 @@ const fs = require("fs");
 const path = require("path");
 const DBMS = require("./DBMS");
 const Logger = require("./Logger");
+const app = require("../api/v0/index");
 const getConfig = require("../util/getConfig");
 
 const MusicManager = require("./MusicManager");
@@ -45,6 +46,7 @@ class Bot extends Client {
 			this.LoadSchedules();
 			this.LoadCommands();
 			this.LoadEvents();
+			this.api = app;
 
 			this.getChannel = require("../util/getChannel");
 			this.getLavalink = require("../util/getLavalink");

@@ -22,5 +22,11 @@ module.exports = (client) => {
 			type: ActivityType[capitalize(activities[index].type)],
 		});
 	}, 10000);
+	
+	// Express API
+	client.api.listen(client.config.api.port, () => {
+		client.info(`API is now listening on port ${client.config.api.port}`);
+	});
+
 	client.info("Successfully logged in as " + client.user.tag);
 };

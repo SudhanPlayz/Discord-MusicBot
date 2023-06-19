@@ -33,6 +33,16 @@ module.exports = {
 	clientSecret: process.env.CLIENTSECRET || "",
 
 	/**
+	 * API configuration
+	 */
+	api: {
+		/**
+		 * Port to run the API on
+		 * @type {number} */
+		port: process.env.API_PORT || 8080,
+	},
+
+	/**
 	 * Lavalink configuration
 	 */
 	// Lavalink server; optional public lavalink -> https://lavalink-list.darrennathanael.com/
