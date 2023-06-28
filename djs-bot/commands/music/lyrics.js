@@ -112,6 +112,12 @@ const command = new SlashCommand()
 
 						lyricsApi.find(url).then((lyrics) => {
 							let lyricsText = lyrics.lyrics;
+							
+							if (lyricsText.length === 0) {
+								lyricsText = `**Unfortunately we're not authorized to show these lyrics.**`
+							} else if (lyricsText.length > 4096) {
+								lyricsText = lyricsText.substring(0, 4045) + "\n\n[...]\nTruncated, the lyrics were too long."
+							}
 
 							const button = new MessageActionRow()
 								.addComponents(
@@ -137,21 +143,6 @@ const command = new SlashCommand()
 									iconURL: musixmatch_icon
 								})
 								.setDescription(lyricsText);
-
-							if (lyricsText.length === 0) {
-								lyricsEmbed
-									.setDescription(`**Unfortunately we're not authorized to show these lyrics.**`)
-									.setFooter({
-										text: 'Lyrics is restricted by MusixMatch.',
-										iconURL: musixmatch_icon
-									})
-							}
-
-							if (lyricsText.length > 4096) {
-								lyricsText = lyricsText.substring(0, 4050) + "\n\n[...]";
-								lyricsEmbed
-									.setDescription(lyricsText + `\nTruncated, the lyrics were too long.`)
-							}
 
 							return interaction.editReply({
 								embeds: [lyricsEmbed],
