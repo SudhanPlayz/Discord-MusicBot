@@ -47,6 +47,10 @@ POSTGRES_PASSWORD=root
 
 If you don't want a particular service to start up on `make up` you can simply comment the block for the service you want to remove from the docker-compose.yml file
 
+If you don't want to use the integrated DB you can simply run `make up-nodb log` to start the docker environment without the DB and view the logs. 
+  - You can also run `make up-nodb` to start the docker environment without the DB in the background.
+  - Remeber to remove the DB related environment variables from the `./djs-bot/.env` file if you are not using the DB at all.
+
 ## 📝 | [Support Server](https://discord.gg/sbySMS7m3v)
 
 If you have major coding issues with this bot, please join and ask for help.

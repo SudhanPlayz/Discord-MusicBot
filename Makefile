@@ -7,6 +7,9 @@ all: rebuild
 up:
 	@./dc.sh up
 
+up-nodb:
+	@./dc.sh up-nodb
+
 down:
 	@./dc.sh down
 

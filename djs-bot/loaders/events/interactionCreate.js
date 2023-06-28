@@ -70,6 +70,10 @@ module.exports = async (client, interaction) => {
 			return interaction.reply({ content: "This command is only for the bot developers!", ephemeral: true });
 		}
 
+		if (command.usesDb && !client.db) {
+			return interaction.reply({ content: "This command uses the database but the bot is not connected to it!", ephemeral: true });
+		}
+
 		if (command.permissions) {
 			let missingUserPerms = [];
 			let missingBotPerms = []

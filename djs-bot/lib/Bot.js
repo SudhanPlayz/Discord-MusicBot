@@ -122,13 +122,18 @@ class Bot extends Client {
 		this.login(this.config.token);
 
 		// DBMS initialization
-		if (this.config.db_url)
+		if (this.config.db_url && this.config.db_url !== "") {
 			try {
 				this.db = new DBMS(this);
 			} catch (err) {
 				this.error("Prisma ORM failed to load");
 				this.error(err);
+				this.db = null;
 			}
+		} else {
+			this.warn("No database URL specified");
+			this.db = null;
+		}
 	}
 
 	LoadEvents() {

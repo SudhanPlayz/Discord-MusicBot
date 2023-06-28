@@ -29,6 +29,14 @@ class SlashCommand extends SlashCommandBuilder {
 		return this;
 	}
 
+	/**
+	 * tells the the command if it's using DBMS or not
+	 */
+	setDBMS() {
+		this.usesDb = true;
+		return this;
+	}
+
 	/** 
 	 * sets the intended usage for a command as a string, which will be grabbed by the `help` command
 	 * syntax: /<commandName> <args?...>

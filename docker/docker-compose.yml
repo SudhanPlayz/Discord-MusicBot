@@ -12,7 +12,7 @@ services:
     ports:
       - "8080:8080"
     working_dir: /djs-bot
-    command: ["npm", "run", "db-start"]
+    command: ["npm", "run", "${ENABLE:-start}"]
     depends_on:
       postgres-db:
         condition: service_healthy

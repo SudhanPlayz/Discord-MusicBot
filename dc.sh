@@ -36,7 +36,12 @@ ps \
 # Start of utility
 if [[ "$1" = "up" ]]; then
 
+    export ENABLE=db-start     
     ${DOCKER} up -d --force-recreate --remove-orphans
+
+elif [[ "$1" = "up-nodb" ]]; then
+
+    ${DOCKER} up -d --force-recreate --remove-orphans --scale postgres-db=0
 
 elif [[ "$1" = "enter" ]]; then
     shift

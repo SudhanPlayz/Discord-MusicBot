@@ -44,57 +44,60 @@ module.exports = new SlashCommand()
 		.setAutocomplete(true)
 	)
 	.setAutocompleteOptions(async (input, index, interaction, client) => {
-		if (index == 1) {
-			const operation = interaction.options.getString("operation");
-			if (operation === 'delete' || operation === 'view' || operation === 'add' || operation === 'remove') {
-				const playlists = await client.db.playlist.findMany({
-					where: {
-						user: {
-							id: interaction.user.id
+		if (client.db) {
+			if (index == 1) {
+				const operation = interaction.options.getString("operation");
+				if (operation === 'delete' || operation === 'view' || operation === 'add' || operation === 'remove') {
+					const playlists = await client.db.playlist.findMany({
+						where: {
+							user: {
+								id: interaction.user.id
+							}
 						}
-					}
-				});
-				return playlists.map(playlist => {
-					return { name: capitalize(playlist.name), value: playlist.name }
-				});
-			} else return [];
-		} else if (index == 2) {
-			const operation = interaction.options.getString("operation");
-			if (operation === 'remove') {
-				const playlistName = interaction.options.getString("playlist_name");
-				if (!playlistName) return [];
-				const playlist = await client.db.playlist.findFirst({
-					where: {
-						name: playlistName,
-						userId: interaction.user.id
-					}
-				});
-				if (!playlist) return [];
-				const songs = await client.db.song.findMany({
-					where: {
-						playlistId: playlist.id
-					}
-				});
-				return songs.map(song => {
-					return { name: capitalize(song.name), value: song.name }
-				});
-			} else if (operation === 'add') {
-				if (input.length <= 3) return [];
-				if (await testUrlRegex(input)) return [{ name: "URL", value: input }];
+					});
+					return playlists.map(playlist => {
+						return { name: capitalize(playlist.name), value: playlist.name }
+					});
+				} else return [];
+			} else if (index == 2) {
+				const operation = interaction.options.getString("operation");
+				if (operation === 'remove') {
+					const playlistName = interaction.options.getString("playlist_name");
+					if (!playlistName) return [];
+					const playlist = await client.db.playlist.findFirst({
+						where: {
+							name: playlistName,
+							userId: interaction.user.id
+						}
+					});
+					if (!playlist) return [];
+					const songs = await client.db.song.findMany({
+						where: {
+							playlistId: playlist.id
+						}
+					});
+					return songs.map(song => {
+						return { name: capitalize(song.name), value: song.name }
+					});
+				} else if (operation === 'add') {
+					if (input.length <= 3) return [];
+					if (await testUrlRegex(input)) return [{ name: "URL", value: input }];
 
-				const random = "ytsearch"[Math.floor(Math.random() * "ytsearch".length)];
-				const results = await yt.search(input || random, { safeSearch: false, limit: 25 });
+					const random = "ytsearch"[Math.floor(Math.random() * "ytsearch".length)];
+					const results = await yt.search(input || random, { safeSearch: false, limit: 25 });
 
-				const choices = [];
-				for (const video of results) {
-					choices.push({ name: video.title, value: video.url });
-				}
-				return choices;
-			} else return [];
-		}
+					const choices = [];
+					for (const video of results) {
+						choices.push({ name: video.title, value: video.url });
+					}
+					return choices;
+				} else return [];
+			}
+		} else return [{ name: "DB Unavailable", value: "DB_Error" }];
 	})
 	.setCategory("music")
 	.setUsage("/playlists")
+	.setDBMS()
 	.setRun(async (client, interaction, options) => {
 
 		const operation = options.getString("operation");
