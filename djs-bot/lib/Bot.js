@@ -46,7 +46,6 @@ class Bot extends Client {
 			this.LoadSchedules();
 			this.LoadCommands();
 			this.LoadEvents();
-			this.api = app;
 
 			this.getChannel = require("../util/getChannel");
 			this.getLavalink = require("../util/getLavalink");
@@ -120,6 +119,7 @@ class Bot extends Client {
 		} else this.error("Invalid nodes specified in config.json");
 
 		this.login(this.config.token);
+		this.api = require("../api/v0/index")(this);
 
 		// DBMS initialization
 		if (this.config.db_url && this.config.db_url !== "") {

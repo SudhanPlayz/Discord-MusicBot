@@ -1,5 +1,6 @@
 const fs = require('fs');
 const express = require('express');
+const Bot = require('../../lib/Bot');
 
 // https://expressjs.com/en/starter/installing.html
 const app = express();
@@ -16,10 +17,18 @@ app.get('/', (req, res) => {
 // it will be mounted on `/api/v0/test`
 // read https://expressjs.com/en/guide/routing.html for more info
 const router = express.Router()
-const routes = fs.readdirSync(__dirname + '/routes').filter(file => file.endsWith('.js'))
-for (const file of routes) {
-	router.use('/' + file.split('.')[0], require('./routes/' + file))
-}
-app.use('/api/v0', router)
 
-module.exports = app
+/**
+ * Constructs and mounts the API on to the Bot instance provided
+ * @param {Bot} bot 
+ */
+module.exports = (bot) => {
+	const routes = fs.readdirSync(__dirname + '/routes').filter(file => file.endsWith('.js'))
+	for (const file of routes) {
+		const route = require('./routes/' + file);
+		router.use('/' + file.split('.')[0], (req, res) => route(req, res, bot))
+	}
+	app.use('/api/v0', router)
+
+	return app;
+}
