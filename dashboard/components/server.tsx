@@ -16,7 +16,7 @@ export default function Server(props: IProps) {
     return <div key={ props.id } style={ {
         margin: "10px"
     } }>
-        <Link href={ "/servers/" + props.id }><a>
+        <Link href={ "/servers/" + props.id }>
             <Tooltip content={ props.name } color="secondary">
                 <Avatar
                     src={ props.icon }
@@ -27,6 +27,6 @@ export default function Server(props: IProps) {
                     pointer
                 />
             </Tooltip>
-        </a></Link>
+        </Link>
     </div>
 }

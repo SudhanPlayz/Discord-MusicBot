@@ -1,8 +1,13 @@
 import Head from "next/head";
-import Content from "../components/content";
 import Server from "../components/server";
+import Content from "../components/content";
+import { apiCall } from "../utils/serviceCall";
 
 export default function Servers(_props: any) {
+    // @todo
+    const servers = apiCall("GET", "/servers")
+    console.log(servers)
+
     return <Content>
         <Head>
             <title>Servers | Discord Music Bot</title>

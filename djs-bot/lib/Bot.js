@@ -13,7 +13,6 @@ const DBMS = require("./DBMS");
 const Logger = require("./Logger");
 const app = require("../api/v0/index");
 const getConfig = require("../util/getConfig");
-
 const MusicManager = require("./MusicManager");
 
 /**
@@ -119,9 +118,11 @@ class Bot extends Client {
 		} else this.error("Invalid nodes specified in config.json");
 
 		this.login(this.config.token);
-		this.api = require("../api/v0/index")(this);
 
-		// DBMS initialization
+		// API initialization (done after the login to prevent lack of info)
+		this.api = app(this);
+
+		// DBMS initialization (done after the login to prevent lack of info)
 		if (this.config.db_url && this.config.db_url !== "") {
 			try {
 				this.db = new DBMS(this);
