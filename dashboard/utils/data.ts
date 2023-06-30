@@ -1,3 +1,5 @@
+import { apiCall } from "./serviceCall";
+
 export interface ICommand {
     name: string;
     description: string;
@@ -14,9 +16,11 @@ export interface IData {
 
 export const getData: () => Promise<IData> = () => {
     return new Promise(async (resolve, _reject) => {
-        let data = await fetch("/api/data", {
+        let commands = await (apiCall("GET", "/commands", {
             method: "GET"
-        })
-        resolve(await data.json())
+        })).then(async ({data}) => {
+            return await data;
+        });
+        resolve(await commands)
     });
 }

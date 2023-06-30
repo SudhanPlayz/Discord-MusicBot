@@ -1,3 +1,5 @@
+import { apiCall } from "./serviceCall";
+
 export interface IDashboard {
     commandsRan: number;
     users: number;
@@ -7,11 +9,11 @@ export interface IDashboard {
 
 export const getDashboard: () => Promise<IDashboard> = () => {
     return new Promise(async (resolve, _reject) => {
-        let data = await fetch("/api/dashboard", {
-            method: "GET",
-	    credentials: "same-origin",
+        let json = await apiCall("GET", "/dashboard", {
+            credentials: "same-origin",
+        }).then(async ({data}) => {
+            return await data;
         });
-        let json = await data.json();
         resolve(json);
     })
 }

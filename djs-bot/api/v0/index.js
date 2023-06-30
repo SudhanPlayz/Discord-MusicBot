@@ -1,9 +1,11 @@
 const fs = require('fs');
+const cors = require('cors');
 const express = require('express');
 const Bot = require('../../lib/Bot');
 
 // https://expressjs.com/en/starter/installing.html
 const app = express();
+app.use(cors());
 app.get('/', (req, res) => {
 	res.status(200).json({
 		message: "Systems Operational!",

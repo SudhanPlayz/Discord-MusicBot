@@ -1,30 +1,37 @@
 import Head from "next/head";
+import { useEffect, useState } from "react";
 import Server from "../components/server";
 import Content from "../components/content";
 import { apiCall } from "../utils/serviceCall";
 
-export default function Servers(_props: any) {
-    // @todo
-    const servers = apiCall("GET", "/servers")
-    console.log(servers)
+interface IServer {
+  id: string;
+  icon: string;
+  name: string;
+}
 
-    return <Content>
-        <Head>
-            <title>Servers | Discord Music Bot</title>
-        </Head>
-        <h1>Select a server</h1>
-        <div style={ {
-            display: 'flex',
-        } }>
-            <Server
-                icon="https://cdn.discordapp.com/icons/855346696258060338/93317b7b5c163ecaa21ed16db455066f.png?size=4096"
-                name="Coding with amogus" id=";-;"/>
-            <Server
-                icon="https://cdn.discordapp.com/icons/855346696258060338/93317b7b5c163ecaa21ed16db455066f.png?size=4096"
-                name="Coding with amogus" id=";-;"/>
-            <Server
-                icon="https://cdn.discordapp.com/icons/855346696258060338/93317b7b5c163ecaa21ed16db455066f.png?size=4096"
-                name="Coding with amogus" id=";-;"/>
-        </div>
+export default function Servers(_props: any) {
+  const [servers, setServers] = useState<IServer[]>()
+
+  useEffect(() => {
+    async function getServerList() {
+      const servers = (await apiCall("GET", "/servers")).data.servers
+      setServers(servers)
+    }
+    getServerList()
+  }, [])
+
+  return (
+    <Content>
+      <Head>
+        <title>Servers | Discord Music Bot</title>
+      </Head>
+      <h1>Select a server</h1>
+      <div style={{
+        display: 'flex',
+      }}>
+        {servers?.map((server) => <Server key={server.id} id={server.id} icon={server.icon} name={server.name} />)}
+      </div>
     </Content>
+  )
 }
