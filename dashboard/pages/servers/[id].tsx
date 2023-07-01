@@ -1,29 +1,58 @@
 import Head from "next/head";
+import { useEffect, useState } from "react";
 import Content from "../../components/content";
+import { apiCall } from "../../utils/serviceCall";
+import { useRouter } from "next/router";
+import { Avatar } from "@nextui-org/react";
 
 export default function Server(_props: any) {
-    let server = {
-        name: "Amongus",
-        id: "137984839",
-        icon: "https://cdn.discordapp.com/icons/855346696258060338/93317b7b5c163ecaa21ed16db455066f.png?size=4096",
-        loop: {
-            song: true,
-            queue: false
-        },
-        queue: [],
-        playing: {
-            title: "nice song",
-            duration: 4000000000,
-            currentTime: 3000
+    const [loading, setLoading] = useState(true)
+    const [server, setServer] = useState(null)
+    const serverId = useRouter().query.id
+
+    useEffect(() => {
+        async function getServer() {
+            setServer((await apiCall("GET", "/servers", { id: serverId })).data)
         }
-    }
+        getServer()
+        setLoading(false)
+    }, [])
 
     return (
         <Content>
             <Head>
-                <title>{ server.name }</title>
+                <title>{server?.name} | Discord Music Bot</title>
             </Head>
-            <h1>{ server.name }</h1>
+            {loading ? <h1>Loading...</h1> : <>
+                <Avatar src={server?.icon} size="xl" color="gradient" bordered pointer />
+                <h1>{server?.name}</h1>
+            </>}
+            <h2>Server ID: {server?.id}</h2>
+            <h2>Server Owner: {server?.owner}</h2>
+            <h2>Server Roles:
+                <div style={{ display: 'flex' }}>
+                    {server?.roles.map((role: { id: string, name: string, color: string }) => {
+                        return (
+                            <div key={role.id}
+                                style={{
+                                    color: 'white',
+                                    backgroundColor: role.color,
+                                    padding: '5px',
+                                    borderRadius: '5px',
+                                    margin: '5px'
+                                }}
+                            >
+                                {role.name}
+                            </div>
+                        )
+                    })}
+                </div>
+            </h2>
+            <h2>Server Members: {server?.members.length}</h2>
+            <h2>Server Channels: {server?.channels.length}</h2>
+            {/* Player */}
+            <h2>Server Queue: {server?.player?.queue?.length || 0}</h2>
+            <h2>Server Now Playing: {server?.player?.playing?.title || "Nothing"}</h2>
         </Content>
-    );
+    )
 }

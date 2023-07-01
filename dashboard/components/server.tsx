@@ -7,11 +7,6 @@ interface IProps {
     id: string;
 }
 
-const getColor = () => {
-    let c = ["gradient", "primary", "secondary", "error", "warning"]
-    return c[Math.floor(Math.random() * c.length)];
-}
-
 export default function Server(props: IProps) {
     return <div key={ props.id } style={ {
         margin: "10px"
@@ -21,8 +16,7 @@ export default function Server(props: IProps) {
                 <Avatar
                     src={ props.icon }
                     size="xl"
-                    //@ts-ignore
-                    color={ getColor() }
+                    color={ "gradient" }
                     bordered
                     pointer
                 />

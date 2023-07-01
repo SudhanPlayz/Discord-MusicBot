@@ -14,9 +14,8 @@ export default function Servers(_props: any) {
   const [servers, setServers] = useState<IServer[]>()
 
   useEffect(() => {
-    async function getServerList() {
-      const servers = (await apiCall("GET", "/servers")).data.servers
-      setServers(servers)
+    async function getServerList() { 
+      setServers((await apiCall("GET", "/servers")).data.servers)
     }
     getServerList()
   }, [])
