@@ -36,7 +36,7 @@ module.exports = async (
     curPage.edit(
       pages[page].setFooter(
         `Page ${page + 1}/${pages.length} `,
-        msg.author.displayAvatarURL({ dynamic: true })
+        msg.author.avatarURL({ dynamic: true })
       )
     );
   });
