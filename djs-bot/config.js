@@ -51,8 +51,8 @@ module.exports = {
 	//--> https://darrennathanael.com/post/how-to-lavalink/
 	/** 
 	 * Music engine to use
-	 * @type {import("./lib/clients/MusicClient").Engine} */
-	musicEngine: "Cosmicord",
+	 * @type {keyof typeof import("./lib/clients/MusicClient").Engine} */
+	musicEngine: "Erela",
 	/** 
 	 * Nodes to connect to
 	 * @type {import("erela.js").Node[]} */
