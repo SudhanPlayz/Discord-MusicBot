@@ -10,11 +10,12 @@ assignees: ""
 
 ## Please describe the problem you are having in as much detail as possible:
 
-## Include a reproducible code sample here, if possible:
+## Include a reproducible code sample here, if possible, the snippet of code which is throwing the error or which you presume is giving issues:
 
 ```js
 // Place your code here
 ```
+## If you have your own setup, without the original docker configuration, please provide:
 
 ## Further details:
 
