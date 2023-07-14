@@ -5,7 +5,14 @@
 
 version: 2
 updates:
+  # Frontend React/NextJs
   - package-ecosystem: "npm" # See documentation for possible values
-    directory: "/" # Location of package manifests
+    directory: "/dashboard" # Location of package manifests
+    schedule:
+      interval: "daily"
+
+  # Backend NODE
+  - package-ecosystem: "npm"
+    directory: "/djs-bot"
     schedule:
       interval: "daily"
