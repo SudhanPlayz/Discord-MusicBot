@@ -1,0 +1,22 @@
+# To get started with Dependabot version updates, you'll need to specify which
+# package ecosystems to update and where the package manifests are located.
+# Please see the documentation for all configuration options:
+# https://docs.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
+
+version: 2
+updates:
+  - package-ecosystem: "npm" # See documentation for possible values
+    directory: "/djs-bot/" # Location of package manifests
+    schedule:
+      interval: "daily"
+    # Separate sections of the branch name with a hyphen
+    # for example, `dependabot-npm_and_yarn-next_js-acorn-6.4.1`
+    pull-request-branch-names:
+      separator: "/"
+
+  - package-ecosystem: "npm"
+    directory: "/dashboard/"
+    schedule:
+      interval: "daily"
+    pull-request-branch-name:
+      separator: "/"
