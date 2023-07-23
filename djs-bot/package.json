@@ -6,6 +6,7 @@
   "scripts": {
     "guild": "node scripts/guild",
     "deploy": "node scripts/global",
+    "destroy": "node scripts/destroy",
     "update": "node scripts/update",
     "start": "npm i && node index.js",
     "db-start": "npm i && npx prisma db push && node index.js"

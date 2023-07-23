@@ -16,13 +16,8 @@ elif [ ! -f "docker/docker-compose.yml" ]; then
     exit 126
 fi
 
-COMPOSE_OVERRIDE=
-if [[ -f "docker/docker-compose.override.yml" ]]; then
-    COMPOSE_OVERRIDE="--file docker/docker-compose.override.yml"
-fi
 DOCKER="docker compose \
         --file docker/docker-compose.yml \
-        ${COMPOSE_OVERRIDE} \
         -p ${PROJECT_NAME}"
         
 COMPOSE_CONTAINERS=$(${DOCKER} \
@@ -56,7 +51,7 @@ if [[ "$1" = "up" ]]; then
     else 
         OPTIONS=$@
         export ENABLE=db-start # Enable the database by default
-        COMMAND="${DOCKER} up -d --force-recreate --remove-orphans"
+        COMMAND="${DOCKER} up -d --remove-orphans"
         while [[ "$1" != "" ]]; do
             case $1 in
                 nodb)
