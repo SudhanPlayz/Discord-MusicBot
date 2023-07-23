@@ -17,39 +17,17 @@
   - If you don't have or can't install makefile utilities then run `./dc.sh help`
   - If you're having trouble running the script due to lack of permissions be sure to `chmod +x dc.sh`
 
-### Docker setup
+#### Docker setup
 
-Setup the ports in a docker-compose.override.yml file in the docker directory. 
- - Or rename the docker-compose.override.yml.dist file to docker-compose.override.yml and fill in the values if they are not already filled in.
+- Run `make up` to start the docker environment with all services active 
+  - If you don't want a particular service to start up on `make up` you can simply add a `no` flag to the command. For example: `make up nodb` will start the docker environment without the DB.
 
-The file should look like this:
-```yml
-version: '3'
+#### Local setup
 
-services:
-  postgres-db:
-    ports:
-      - xxxx:xxxx
-```
+- Run `make up no-docker` to start the bot locally
 
-Make a `.env` in the same directory as the docker-compose.override.yml file. 
- - Or rename the `.env.dist` file to `.env` and fill in the values if they are not already filled in.
-
-The file should look like this:
-```bash
-POSTGRES_DB=base
-POSTGRES_USER=root
-POSTGRES_PASSWORD=root
-```
-
-- Run `make up log` to start the docker environment and view the logs. 
-  - You can also run `make up` to start the docker environment in the background.
-
-If you don't want a particular service to start up on `make up` you can simply comment the block for the service you want to remove from the docker-compose.yml file
-
-If you don't want to use the integrated DB you can simply run `make up-nodb log` to start the docker environment without the DB and view the logs. 
-  - You can also run `make up-nodb` to start the docker environment without the DB in the background.
-  - Remeber to remove the DB related environment variables from the `./djs-bot/.env` file if you are not using the DB at all.
+- Run `make up help` to see the list of available commands and options
+- Remember to remove the DB related environment variables from the `./djs-bot/.env` file if you are not using the DB at all.
 
 ## 📝 | [Support Server](https://discord.gg/sbySMS7m3v)
 

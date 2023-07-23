@@ -64,6 +64,8 @@ const command = new SlashCommand()
 						client.manager.Engine.nodes.values().next().value.stats.playingPlayers
 					} out of ${
 						client.manager.Engine.nodes.values().next().value.stats.players
+					}\nWrapper: ${
+						client.config.musicEngine
 					}\`\`\``,
 					inline: true,
 				},

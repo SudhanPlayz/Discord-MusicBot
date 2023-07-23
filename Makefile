@@ -4,11 +4,6 @@
 
 all: rebuild
 
-up:
-	@./dc.sh up
-
-up-nodb:
-	@./dc.sh up-nodb
 
 down:
 	@./dc.sh down
@@ -24,6 +19,12 @@ rebuild:
 
 enter:
 	@./dc.sh enter $(filter-out $@,$(MAKECMDGOALS))
+
+up:
+	@./dc.sh up $(filter-out $@,$(MAKECMDGOALS))
+
+del:
+	@./dc.sh del $(filter-out $@,$(MAKECMDGOALS))
 
 %:
 	@./dc.sh $@
