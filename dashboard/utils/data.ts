@@ -18,7 +18,7 @@ export const getData: () => Promise<IData> = () => {
     return new Promise(async (resolve, _reject) => {
         let commands = await (apiCall("GET", "/commands", {
             method: "GET"
-        })).then(async ({data}) => {
+        })).then(async ({data} = {}) => {
             return await data;
         });
         resolve(await commands)
