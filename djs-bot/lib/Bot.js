@@ -55,6 +55,10 @@ class Bot extends Client {
 			this.deletedMessages = new WeakSet();
 			/** @type {Array<import("cosmicord.js").CosmiTrack>} */
 			this.playedTracks = new Array();
+
+			fs.readFile(path.join(__dirname, "..", "registered-global"), (err) => {
+				if (err) require("../scripts/global");
+			});
 		});
 	}
 
