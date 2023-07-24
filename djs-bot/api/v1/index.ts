@@ -1,5 +1,5 @@
 import fastify from 'fastify';
-const Bot = require('../../../lib/Bot');
+import type Bot from '../../lib/Bot';
 
 const server = fastify();
 
@@ -8,12 +8,11 @@ server.get('/ping', async (request, reply) => {
   return 'pong\n';
 });
 
-// !TODO: add type declaration to Bot.js
-let bot: typeof Bot | undefined;
+let bot: Bot | undefined;
 
 const getBot = () => bot;
 
-const app = (djsBot?: typeof Bot) => {
+const app = (djsBot?: Bot) => {
   bot = djsBot;
   return server;
 };
