@@ -28,11 +28,81 @@ COMPOSE_CONTAINERS_RUNNING=$(${DOCKER} \
 ps \
 --format table | grep -v "NAME" | awk '{print $1}' )
 
+# creates 2 files named .SERVICES and .ENABLE
+# used for setting variable for the parent
+parse_start_options () {
+    echo djs-bot dashboard postgres-db lavalink > .SERVICES
+    echo db-start > .ENABLE # Enable the database by default
+
+    while [[ "$1" != "" ]]; do
+        case $1 in
+            nodb)
+                echo start > .ENABLE # Disable the database startup script from running
+                sed -i "s/postgres-db//" .SERVICES
+                ;;
+            noll) 
+                sed -i "s/lavalink//" .SERVICES
+                ;;
+            nofe) 
+                sed -i "s/dashboard//" .SERVICES
+                ;;
+            *) 
+                echo -e "\033[91mInvalid option: $1\033[0m"
+                return 2
+                ;;
+        esac
+        shift
+    done
+
+    return 0
+}
+
+# creates 2 files named .SERVICES and .ENABLE
+# used for setting variable for the parent
+parse_lite_options () {
+    echo djs-bot > .SERVICES
+    echo start > .ENABLE # Disable the database by default
+
+    while [[ "$1" != "" ]]; do
+        case $1 in
+            db)
+                echo db-start > .ENABLE # Disable the database startup script from running
+                sed -i "s/$/ postgres-db/" .SERVICES
+                ;;
+            ll) 
+                sed -i "s/$/ lavalink/" .SERVICES
+                ;;
+            fe) 
+                sed -i "s/$/ dashboard/" .SERVICES
+                ;;
+            *) 
+                echo -e "\033[91mInvalid option: $1\033[0m"
+                return 2
+                ;;
+        esac
+        shift
+    done
+
+    return 0
+}
+
+create_and_run () {
+    echo -e "\033[92;4mCreating container for: \033[90m$SERVICES\033[0m"
+    ${DOCKER} create --pull never --remove-orphans $@ $SERVICES
+
+    echo -e "\033[92;4mRunning \033[90m$SERVICES\033[0m"
+    ${DOCKER} start $SERVICES
+}
+
+cleanup_file_vars () {
+    rm .ENABLE .SERVICES
+}
+
 # Start of utility
-if [[ "$1" = "up" ]]; then
+if [[ "$1" == "up" ]]; then
     shift
 
-    if [[ "$1" = "help" ]]; then
+    if [[ "$1" == "help" ]]; then
         echo -e "\033[93;4mUsage:\033[0m"
         echo -e "\t\033[3m$0 up [nodb] [noll] [nofe]\033[23m"
         echo -e "\033[93;4mOptions:\033[0m"
@@ -47,49 +117,75 @@ if [[ "$1" = "up" ]]; then
         echo -e "\t\033[3m$0 up nofe\033[23m"
         echo -e "\t\033[3m$0 up nodb noll nofe\033[23m"
         exit 3
-    elif [[ "$1" = "no-docker" ]]; then
+    elif [[ "$1" == "no-docker" ]]; then
         shift
         # Run the bot without docker
         cd ./djs-bot && npm run start
-        exit 130
     else 
-        OPTIONS=$@
-        export ENABLE=db-start # Enable the database by default
-        COMMAND="${DOCKER} up -d --remove-orphans"
-        while [[ "$1" != "" ]]; do
-            case $1 in
-                nodb)
-                    export ENABLE=start # Disable the database startup script from running
-                    COMMAND+=" --scale postgres-db=0"
-                    ;;
-                noll) 
-                    COMMAND+=" --scale lavalink=0"
-                    ;;
-                nofe) 
-                    COMMAND+=" --scale dashboard=0"
-                    ;;
-                *) 
-                    echo -e "\033[91mInvalid option: $1\033[0m"
-                    exit 2
-                    ;;
-            esac
-            shift
-        done
+        parse_start_options $@
+        export ENABLE=$(cat .ENABLE)
+        SERVICES=$(cat .SERVICES)
+
+        # Start the project
+        ${DOCKER} pull $SERVICES
+        create_and_run
+
+        cleanup_file_vars
     fi
-    
-    # Start the project
-    ${COMMAND}
 
     echo -e "\n\033[92;4mProject started: \033[90m$(date)\033[0m"
     echo -e "\033[3m${PROJECT_NAME}\033[23m is now running.\n"
-    
+
     echo -e "\033[93;4mType \033[3m$0 help\033[23m\033[93m for more options.\033[0m\n"
     exit 130
 
-elif [[ "$1" = "enter" ]]; then
+elif [[ "$1" == "lite" ]]; then
     shift
-    
-    if [[ "$1" = "help" ]]; then
+
+    if [[ "$1" == "help" ]]; then
+        echo -e "\033[93;4mUsage:\033[0m"
+        echo -e "\t\033[3m$0 lite [db] [ll] [fe]\033[23m"
+        echo -e "\033[93;4mOptions:\033[0m"
+        echo -e "\t\033[3mdb\033[23m\tStart the project with the database"
+        echo -e "\t\033[3mll\033[23m\tStart the project with the Lavalink server"
+        echo -e "\t\033[3mfe\033[23m\tStart the project with the frontend"
+        echo -e "\t\033[3mdocker\033[23m\tStart the project with docker"
+        echo -e "\033[93;4mExamples:\033[0m"
+        echo -e "\t\033[3m$0 lite\033[23m"
+        echo -e "\t\033[3m$0 lite db\033[23m"
+        echo -e "\t\033[3m$0 lite ll\033[23m"
+        echo -e "\t\033[3m$0 lite fe\033[23m"
+        echo -e "\t\033[3m$0 lite db ll fe\033[23m"
+        exit 3
+    elif [[ "$1" == "" ]]; then
+        # Run the bot without docker
+        cd ./djs-bot && npm run start
+    else 
+        if [[ "$1" == "docker" ]]; then
+            shift
+        fi
+
+        parse_lite_options $@
+        export ENABLE=$(cat .ENABLE)
+        SERVICES=$(cat .SERVICES)
+
+        # Start the project
+        ${DOCKER} pull $SERVICES
+        create_and_run
+
+        cleanup_file_vars
+    fi
+
+    echo -e "\n\033[92;4mProject started: \033[90m$(date)\033[0m"
+    echo -e "\033[3m${PROJECT_NAME}\033[23m is now running.\n"
+
+    echo -e "\033[93;4mType \033[3m$0 help\033[23m\033[93m for more options.\033[0m\n"
+    exit 130
+
+elif [[ "$1" == "enter" ]]; then
+    shift
+
+    if [[ "$1" == "help" ]]; then
         echo -e "\033[93;4mUsage:\033[0m"
         echo -e "\t\033[3m$0 enter <container> [fs]\033[23m"
         echo -e "\033[93;4mOptions:\033[0m"
@@ -106,7 +202,7 @@ elif [[ "$1" = "enter" ]]; then
         echo -e "\033[93;4mEntering container:\033[0m \033[3m$1\033[23m\n"
         
         # Additional option to enter the container's filesystem
-        if [[ "$2" != "" && "$2" = "fs" ]]; then
+        if [[ "$2" != "" && "$2" == "fs" ]]; then
             docker exec -it "${CONTAINER}" /bin/bash
             exit 130
         elif [[ "$2" != "" ]]; then
@@ -125,17 +221,26 @@ elif [[ "$1" = "enter" ]]; then
         exit 2
     fi
 
-elif [[ "$1" = "rebuild" ]]; then
-
-    ${DOCKER} down
-    ${DOCKER} build
-    ${DOCKER} up -d --force-recreate --remove-orphans
-
-elif [[ "$1" = "down" ]]; then
+elif [[ "$1" == "rebuild" ]]; then
 
     ${DOCKER} down
 
-elif [[ "$1" = "purge" ]]; then
+    parse_start_options $@
+    export ENABLE=$(cat .ENABLE)
+    SERVICES=$(cat .SERVICES)
+
+    ${DOCKER} pull $SERVICES
+    ${DOCKER} build --no-cache $SERVICES
+
+    create_and_run --force-recreate 
+
+    cleanup_file_vars
+
+elif [[ "$1" == "down" ]]; then
+
+    ${DOCKER} down
+
+elif [[ "$1" == "purge" ]]; then
 
     ${DOCKER} down
 	docker system prune -a
@@ -143,10 +248,10 @@ elif [[ "$1" = "purge" ]]; then
     docker rm "$(docker ps -a -f status=exited -q)"
     docker volume prune
 
-elif [[ "$1" = "del" ]]; then
+elif [[ "$1" == "del" ]]; then
     shift
 
-    if [[ "$1" = "help" ]]; then
+    if [[ "$1" == "help" ]]; then
         echo -e "\033[93;4mUsage:\033[0m"
         echo -e "\t\033[3m$0 del <container>\033[23m"
         echo -e "\033[93;4mExamples:\033[0m"
@@ -191,16 +296,17 @@ elif [[ "$1" = "del" ]]; then
         exit 2
     fi
 
-elif [[ "$1" = "log" ]]; then
+elif [[ "$1" == "log" ]]; then
 
     ${DOCKER} logs -f --tail="100"
 
-elif [[ "$1" = "help" ]]; then
+elif [[ "$1" == "help" ]]; then
 
     echo -e "\033[93;4mUsage:\033[0m"
     echo -e "\t\033[3m$0 <command>\033[23m"
     echo -e "\033[93;4mCommands:\033[0m"
     echo -e "  up [help]   \tStart the project"
+    echo -e "  lite [help]\tStart bot only without database, lavalink and dashboard"
     echo -e "  down    \tStop the project"
     echo -e "  enter    \tEnter a container"
     echo -e "  log    \tView the logs"
@@ -210,7 +316,8 @@ elif [[ "$1" = "help" ]]; then
     echo -e "\033[93;4mOptions:\033[0m"
     echo -e "  --help    \tView the docker-compose help"
     echo -e "\033[93;4mExamples:\033[0m"
-    echo -e "  \033[3m$0 up [nodb] [noll] [nofe]\033[23m"
+    echo -e "  \033[3m$0 up nodb noll nofe\033[23m"
+    echo -e "  \033[3m$0 lite db ll fe\033[23m"
     echo -e "  \033[3m$0 enter php\033[23m"
     echo -e "  \033[3m$0 enter php fs\033[23m"
     echo -e "  \033[3m$0 log\033[23m"

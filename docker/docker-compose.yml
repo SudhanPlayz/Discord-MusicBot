@@ -13,11 +13,6 @@ services:
       - "8080:8080"
     working_dir: /djs-bot
     command: ["npm", "run", "${ENABLE:-start}"]
-    depends_on:
-      postgres-db:
-        condition: service_healthy
-      lavalink:
-        condition: service_started
 
   dashboard:
     container_name: dashboard
@@ -43,10 +38,9 @@ services:
       POSTGRES_PASSWORD:  root
       POSTGRES_USER:      root
       POSTGRES_DB:        base
+      PGPORT:             5432
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    ports:
-      - 5432:5432
     healthcheck:
       test: ["CMD-SHELL", "sh -c 'pg_isready -U root -d base'"]
       interval: 10s

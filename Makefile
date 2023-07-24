@@ -23,6 +23,9 @@ enter:
 up:
 	@./dc.sh up $(filter-out $@,$(MAKECMDGOALS))
 
+lite:
+	@./dc.sh lite $(filter-out $@,$(MAKECMDGOALS))
+
 del:
 	@./dc.sh del $(filter-out $@,$(MAKECMDGOALS))
 
