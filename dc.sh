@@ -57,6 +57,14 @@ parse_start_options () {
     return 0
 }
 
+create_and_run () {
+    echo -e "\033[92;4mCreating container for: \033[90m$SERVICES\033[0m"
+    ${DOCKER} create --pull never --remove-orphans $@ $SERVICES
+
+    echo -e "\033[92;4mRunning \033[90m$SERVICES\033[0m"
+    ${DOCKER} start $SERVICES
+}
+
 cleanup_file_vars () {
     rm .ENABLE .SERVICES
 }
@@ -90,25 +98,22 @@ if [[ "$1" = "up" ]]; then
         export ENABLE=$(cat .ENABLE)
         SERVICES=$(cat .SERVICES)
 
+        # Start the project
         ${DOCKER} pull $SERVICES
-        COMMAND="${DOCKER} up -d --pull never --remove-orphans $SERVICES"
-        echo $COMMAND
+        create_and_run
 
         cleanup_file_vars
     fi
-    
-    # Start the project
-    ${COMMAND}
 
     echo -e "\n\033[92;4mProject started: \033[90m$(date)\033[0m"
     echo -e "\033[3m${PROJECT_NAME}\033[23m is now running.\n"
-    
+
     echo -e "\033[93;4mType \033[3m$0 help\033[23m\033[93m for more options.\033[0m\n"
     exit 130
 
 elif [[ "$1" = "enter" ]]; then
     shift
-    
+
     if [[ "$1" = "help" ]]; then
         echo -e "\033[93;4mUsage:\033[0m"
         echo -e "\t\033[3m$0 enter <container> [fs]\033[23m"
@@ -154,8 +159,9 @@ elif [[ "$1" = "rebuild" ]]; then
     SERVICES=$(cat .SERVICES)
 
     ${DOCKER} pull $SERVICES
-    ${DOCKER} build $SERVICES
-    ${DOCKER} up -d --pull never --force-recreate --remove-orphans $SERVICES
+    ${DOCKER} build --no-cache $SERVICES
+
+    create_and_run --force-recreate 
 
     cleanup_file_vars
 
