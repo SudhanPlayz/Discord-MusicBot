@@ -54,6 +54,8 @@ services:
     hostname: docker.lavalink
     volumes:
       - ./lavalink/application.yml:/opt/Lavalink/application.yml
+    ports:
+      - 2333:2333
 
 volumes:
   postgres_data:
