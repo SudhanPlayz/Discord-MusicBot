@@ -157,8 +157,13 @@ elif [[ "$1" == "lite" ]]; then
         echo -e "\t\033[3m$0 lite fe\033[23m"
         echo -e "\t\033[3m$0 lite db ll fe\033[23m"
         exit 3
-    elif [[ "$1" == "docker" ]]; then
-        shift
+    elif [[ "$1" == "" ]]; then
+        # Run the bot without docker
+        cd ./djs-bot && npm run start
+    else 
+        if [[ "$1" == "docker" ]]; then
+            shift
+        fi
 
         parse_lite_options $@
         export ENABLE=$(cat .ENABLE)
@@ -169,9 +174,6 @@ elif [[ "$1" == "lite" ]]; then
         create_and_run
 
         cleanup_file_vars
-    else 
-        # Run the bot without docker
-        cd ./djs-bot && npm run start
     fi
 
     echo -e "\n\033[92;4mProject started: \033[90m$(date)\033[0m"
