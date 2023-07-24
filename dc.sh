@@ -182,10 +182,10 @@ elif [[ "$1" == "lite" ]]; then
     echo -e "\033[93;4mType \033[3m$0 help\033[23m\033[93m for more options.\033[0m\n"
     exit 130
 
-elif [[ "$1" = "enter" ]]; then
+elif [[ "$1" == "enter" ]]; then
     shift
 
-    if [[ "$1" = "help" ]]; then
+    if [[ "$1" == "help" ]]; then
         echo -e "\033[93;4mUsage:\033[0m"
         echo -e "\t\033[3m$0 enter <container> [fs]\033[23m"
         echo -e "\033[93;4mOptions:\033[0m"
@@ -202,7 +202,7 @@ elif [[ "$1" = "enter" ]]; then
         echo -e "\033[93;4mEntering container:\033[0m \033[3m$1\033[23m\n"
         
         # Additional option to enter the container's filesystem
-        if [[ "$2" != "" && "$2" = "fs" ]]; then
+        if [[ "$2" != "" && "$2" == "fs" ]]; then
             docker exec -it "${CONTAINER}" /bin/bash
             exit 130
         elif [[ "$2" != "" ]]; then
@@ -221,7 +221,7 @@ elif [[ "$1" = "enter" ]]; then
         exit 2
     fi
 
-elif [[ "$1" = "rebuild" ]]; then
+elif [[ "$1" == "rebuild" ]]; then
 
     ${DOCKER} down
 
@@ -236,11 +236,11 @@ elif [[ "$1" = "rebuild" ]]; then
 
     cleanup_file_vars
 
-elif [[ "$1" = "down" ]]; then
+elif [[ "$1" == "down" ]]; then
 
     ${DOCKER} down
 
-elif [[ "$1" = "purge" ]]; then
+elif [[ "$1" == "purge" ]]; then
 
     ${DOCKER} down
 	docker system prune -a
@@ -248,10 +248,10 @@ elif [[ "$1" = "purge" ]]; then
     docker rm "$(docker ps -a -f status=exited -q)"
     docker volume prune
 
-elif [[ "$1" = "del" ]]; then
+elif [[ "$1" == "del" ]]; then
     shift
 
-    if [[ "$1" = "help" ]]; then
+    if [[ "$1" == "help" ]]; then
         echo -e "\033[93;4mUsage:\033[0m"
         echo -e "\t\033[3m$0 del <container>\033[23m"
         echo -e "\033[93;4mExamples:\033[0m"
@@ -296,11 +296,11 @@ elif [[ "$1" = "del" ]]; then
         exit 2
     fi
 
-elif [[ "$1" = "log" ]]; then
+elif [[ "$1" == "log" ]]; then
 
     ${DOCKER} logs -f --tail="100"
 
-elif [[ "$1" = "help" ]]; then
+elif [[ "$1" == "help" ]]; then
 
     echo -e "\033[93;4mUsage:\033[0m"
     echo -e "\t\033[3m$0 <command>\033[23m"
