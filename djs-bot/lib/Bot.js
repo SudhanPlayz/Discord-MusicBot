@@ -11,7 +11,7 @@ const fs = require("fs");
 const path = require("path");
 const DBMS = require("./DBMS");
 const Logger = require("./Logger");
-const app = require("../api/v0/index");
+const app = require("../api/v1/dist");
 const getConfig = require("../util/getConfig");
 const MusicManager = require("./MusicManager");
 

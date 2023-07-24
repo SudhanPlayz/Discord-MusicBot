@@ -39,7 +39,7 @@ module.exports = {
 		/**
 		 * Port to run the API on
 		 * @type {number} */
-		port: process.env.API_PORT || 8080,
+		port: parseInt(process.env.API_PORT) || 8080,
 	},
 
 	/**

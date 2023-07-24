@@ -1,0 +1,8 @@
+{
+  "extends": ["@tsconfig/node16/tsconfig.json"],
+  "compilerOptions": {
+    "outDir": "api/v1/dist",
+    "sourceMap": true
+  },
+  "include": ["api/v1/**/*.ts"]
+}
