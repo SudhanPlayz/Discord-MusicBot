@@ -28,6 +28,39 @@ COMPOSE_CONTAINERS_RUNNING=$(${DOCKER} \
 ps \
 --format table | grep -v "NAME" | awk '{print $1}' )
 
+# creates 2 files named .SERVICES and .ENABLE
+# used for setting variable for the parent
+parse_start_options () {
+    echo djs-bot dashboard postgres-db lavalink > .SERVICES
+    echo db-start > .ENABLE # Enable the database by default
+
+    while [[ "$1" != "" ]]; do
+        case $1 in
+            nodb)
+                echo start > .ENABLE # Disable the database startup script from running
+                sed -i "s/postgres-db//" .SERVICES
+                ;;
+            noll) 
+                sed -i "s/lavalink//" .SERVICES
+                ;;
+            nofe) 
+                sed -i "s/dashboard//" .SERVICES
+                ;;
+            *) 
+                echo -e "\033[91mInvalid option: $1\033[0m"
+                return 2
+                ;;
+        esac
+        shift
+    done
+
+    return 0
+}
+
+cleanup_file_vars () {
+    rm .ENABLE .SERVICES
+}
+
 # Start of utility
 if [[ "$1" = "up" ]]; then
     shift
@@ -53,28 +86,15 @@ if [[ "$1" = "up" ]]; then
         cd ./djs-bot && npm run start
         exit 130
     else 
-        OPTIONS=$@
-        export ENABLE=db-start # Enable the database by default
-        COMMAND="${DOCKER} up -d --remove-orphans"
-        while [[ "$1" != "" ]]; do
-            case $1 in
-                nodb)
-                    export ENABLE=start # Disable the database startup script from running
-                    COMMAND+=" --scale postgres-db=0"
-                    ;;
-                noll) 
-                    COMMAND+=" --scale lavalink=0"
-                    ;;
-                nofe) 
-                    COMMAND+=" --scale dashboard=0"
-                    ;;
-                *) 
-                    echo -e "\033[91mInvalid option: $1\033[0m"
-                    exit 2
-                    ;;
-            esac
-            shift
-        done
+        parse_start_options $@
+        export ENABLE=$(cat .ENABLE)
+        SERVICES=$(cat .SERVICES)
+
+        ${DOCKER} pull $SERVICES
+        COMMAND="${DOCKER} up -d --pull never --remove-orphans $SERVICES"
+        echo $COMMAND
+
+        cleanup_file_vars
     fi
     
     # Start the project
@@ -128,8 +148,16 @@ elif [[ "$1" = "enter" ]]; then
 elif [[ "$1" = "rebuild" ]]; then
 
     ${DOCKER} down
-    ${DOCKER} build
-    ${DOCKER} up -d --force-recreate --remove-orphans
+
+    parse_start_options $@
+    export ENABLE=$(cat .ENABLE)
+    SERVICES=$(cat .SERVICES)
+
+    ${DOCKER} pull $SERVICES
+    ${DOCKER} build $SERVICES
+    ${DOCKER} up -d --pull never --force-recreate --remove-orphans $SERVICES
+
+    cleanup_file_vars
 
 elif [[ "$1" = "down" ]]; then
 
