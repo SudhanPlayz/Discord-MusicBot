@@ -21,6 +21,10 @@ DOCKER="docker compose \
         -p ${PROJECT_NAME}"
         
 COMPOSE_CONTAINERS=$(${DOCKER} \
+ps --all \
+--format table | grep -v "NAME" | awk '{print $1}' )
+
+COMPOSE_CONTAINERS_RUNNING=$(${DOCKER} \
 ps \
 --format table | grep -v "NAME" | awk '{print $1}' )
 
@@ -94,7 +98,7 @@ elif [[ "$1" = "enter" ]]; then
         echo -e "\t\033[3m$0 enter php\033[23m"
         echo -e "\t\033[3m$0 enter php fs\033[23m"
         exit 3
-    elif [[ ${COMPOSE_CONTAINERS} == "" ]]; then
+    elif [[ ${COMPOSE_CONTAINERS_RUNNING} == "" ]]; then
         echo -e "\033[91mNo containers found, make sure the project is running.\033[0m"
         exit 126
     elif [[ "$1" != "" ]]; then
@@ -117,7 +121,7 @@ elif [[ "$1" = "enter" ]]; then
     else 
         echo -e "\033[93;4mPlease specify the container name:\033[0m"
         echo -e "\n\t\033[4mAvailable containers:\033[24m"
-        echo -e "\033[3m${COMPOSE_CONTAINERS}\033[23m\n"
+        echo -e "\033[3m${COMPOSE_CONTAINERS_RUNNING}\033[23m\n"
         exit 2
     fi
 
@@ -148,17 +152,37 @@ elif [[ "$1" = "del" ]]; then
         echo -e "\033[93;4mExamples:\033[0m"
         echo -e "\t\033[3m$0 del php\033[23m"
         exit 3
-    elif [[ ${COMPOSE_CONTAINERS} == "" ]]; then
-        echo -e "\033[91mNo containers found, make sure the project is running.\033[0m"
+    elif [[ $COMPOSE_CONTAINERS == "" ]]; then
+        echo -e "\033[91mNo containers found.\033[0m"
         exit 126
     elif [[ "$1" != "" ]]; then
         # get the ID of the container to delete, from the the inputted name
-        SERVICE=$(docker ps | grep $1 | awk '{print $1}')
-        SERVICE_IMAGE=$(docker ps | grep $1 | awk '{print $2}')
-        echo -e "\033[93;4mStopping container: \033[0m\033[3m$1\033[23m"
-        docker stop ${SERVICE} > /dev/null 2>&1
-        docker rmi ${SERVICE_IMAGE} -f > /dev/null 2>&1
-        echo -e "\033[92;4mImage deleted: \033[90m$(date)\033[0m"
+        SERVICE=$(docker container ls --all | grep $1 | awk '{print $1}')
+        SERVICE_IMAGE=$(docker container ls --all | grep $1 | awk '{print $2}')
+
+        echo -e "\033[93;4mContainer Name: \033[0m\033[3m$1\033[23m"
+        echo -e "\033[93;4mContainer Id: ${SERVICE}\033[0m"
+        echo -e "\033[93;4mContainer Image: ${SERVICE_IMAGE}\033[0m"
+
+        SERVICE_IS_RUNNING=$(echo $COMPOSE_CONTAINERS_RUNNING | grep $1)
+        if [[ $SERVICE_IS_RUNNING != '' ]]; then
+            docker container stop $SERVICE > /dev/null 2>&1
+            echo -e "\033[92;4mContainer stopped: \033[90m$(date)\033[0m"
+        fi
+
+        CONTAINER_EXIST=$(echo $COMPOSE_CONTAINERS | grep $1)
+        if [[ $CONTAINER_EXIST != '' ]]; then
+            docker container rm $SERVICE > /dev/null 2>&1
+            echo -e "\033[92;4mContainer deleted: \033[90m$(date)\033[0m"
+        fi
+
+        if [[ $SERVICE_IMAGE != '' ]]; then
+            docker rmi $SERVICE_IMAGE > /dev/null 2>&1
+            echo -e "\033[92;4mImage deleted: \033[90m$(date)\033[0m"
+        else
+            echo -e "\033[93;4mContainer didn't exist, Image not deleted.\033[0m"
+        fi
+
         exit 130
     else 
         echo -e "\033[93;4mPlease specify the container name:\033[0m"
