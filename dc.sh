@@ -223,9 +223,7 @@ elif [[ "$1" == "enter" ]]; then
     fi
 
 elif [[ "$1" == "rebuild" ]]; then
-    if [[ "$1" == "rebuild" ]]; then
-        shift
-    fi
+    shift
 
     ${DOCKER} down
 
