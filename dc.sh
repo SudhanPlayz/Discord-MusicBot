@@ -35,23 +35,23 @@ parse_start_options () {
     echo db-start > .ENABLE # Enable the database by default
 
     while [[ "$1" != "" ]]; do
-	case $1 in
-	    nodb)
-		echo start > .ENABLE # Disable the database startup script from running
-		sed -i "s/postgres-db//" .SERVICES
-		;;
-	    noll) 
-		sed -i "s/lavalink//" .SERVICES
-		;;
-	    nofe) 
-		sed -i "s/dashboard//" .SERVICES
-		;;
-	    *) 
-		echo -e "\033[91mInvalid option: $1\033[0m"
-		return 2
-		;;
-	esac
-	shift
+        case $1 in
+            nodb)
+                echo start > .ENABLE # Disable the database startup script from running
+                sed -i "s/postgres-db//" .SERVICES
+                ;;
+            noll) 
+                sed -i "s/lavalink//" .SERVICES
+                ;;
+            nofe) 
+                sed -i "s/dashboard//" .SERVICES
+                ;;
+            *) 
+                echo -e "\033[91mInvalid option: $1\033[0m"
+                return 2
+                ;;
+        esac
+        shift
     done
 
     return 0
@@ -64,23 +64,23 @@ parse_lite_options () {
     echo start > .ENABLE # Disable the database by default
 
     while [[ "$1" != "" ]]; do
-	case $1 in
-	    db)
-		echo db-start > .ENABLE # Disable the database startup script from running
-		sed -i "s/$/ postgres-db/" .SERVICES
-		;;
-	    ll) 
-		sed -i "s/$/ lavalink/" .SERVICES
-		;;
-	    fe) 
-		sed -i "s/$/ dashboard/" .SERVICES
-		;;
-	    *) 
-		echo -e "\033[91mInvalid option: $1\033[0m"
-		return 2
-		;;
-	esac
-	shift
+        case $1 in
+            db)
+                echo db-start > .ENABLE # Disable the database startup script from running
+                sed -i "s/$/ postgres-db/" .SERVICES
+                ;;
+            ll) 
+                sed -i "s/$/ lavalink/" .SERVICES
+                ;;
+            fe) 
+                sed -i "s/$/ dashboard/" .SERVICES
+                ;;
+            *) 
+                echo -e "\033[91mInvalid option: $1\033[0m"
+                return 2
+                ;;
+        esac
+        shift
     done
 
     return 0
@@ -108,34 +108,34 @@ if [[ "$1" == "up" ]]; then
     shift
 
     if [[ "$1" == "help" ]]; then
-	echo -e "\033[93;4mUsage:\033[0m"
-	echo -e "\t\033[3m$0 up [nodb] [noll] [nofe]\033[23m"
-	echo -e "\033[93;4mOptions:\033[0m"
-	echo -e "\t\033[3mnodb\033[23m\tStart the project without the database"
-	echo -e "\t\033[3mnoll\033[23m\tStart the project without the Lavalink server"
-	echo -e "\t\033[3mnofe\033[23m\tStart the project without the frontend"
-	echo -e "\t\033[3mno-docker\033[23m\tStart the project without docker"
-	echo -e "\033[93;4mExamples:\033[0m"
-	echo -e "\t\033[3m$0 up\033[23m"
-	echo -e "\t\033[3m$0 up nodb\033[23m"
-	echo -e "\t\033[3m$0 up noll\033[23m"
-	echo -e "\t\033[3m$0 up nofe\033[23m"
-	echo -e "\t\033[3m$0 up nodb noll nofe\033[23m"
-	exit 3
+        echo -e "\033[93;4mUsage:\033[0m"
+        echo -e "\t\033[3m$0 up [nodb] [noll] [nofe]\033[23m"
+        echo -e "\033[93;4mOptions:\033[0m"
+        echo -e "\t\033[3mnodb\033[23m\tStart the project without the database"
+        echo -e "\t\033[3mnoll\033[23m\tStart the project without the Lavalink server"
+        echo -e "\t\033[3mnofe\033[23m\tStart the project without the frontend"
+        echo -e "\t\033[3mno-docker\033[23m\tStart the project without docker"
+        echo -e "\033[93;4mExamples:\033[0m"
+        echo -e "\t\033[3m$0 up\033[23m"
+        echo -e "\t\033[3m$0 up nodb\033[23m"
+        echo -e "\t\033[3m$0 up noll\033[23m"
+        echo -e "\t\033[3m$0 up nofe\033[23m"
+        echo -e "\t\033[3m$0 up nodb noll nofe\033[23m"
+        exit 3
     elif [[ "$1" == "no-docker" ]]; then
-	shift
-	# Run the bot without docker
-	cd ./djs-bot && npm run start
+        shift
+        # Run the bot without docker
+        cd ./djs-bot && npm run start
     else 
-	parse_start_options $@
-	export ENABLE=$(cat .ENABLE)
-	SERVICES=$(cat .SERVICES)
+        parse_start_options $@
+        export ENABLE=$(cat .ENABLE)
+        SERVICES=$(cat .SERVICES)
 
-	# Start the project
-	${DOCKER} pull $SERVICES
-	create_and_run
+        # Start the project
+        ${DOCKER} pull $SERVICES
+        create_and_run
 
-	cleanup_file_vars
+        cleanup_file_vars
     fi
 
     echo -e "\n\033[92;4mProject started: \033[90m$(date)\033[0m"
@@ -148,37 +148,37 @@ elif [[ "$1" == "lite" ]]; then
     shift
 
     if [[ "$1" == "help" ]]; then
-	echo -e "\033[93;4mUsage:\033[0m"
-	echo -e "\t\033[3m$0 lite [db] [ll] [fe]\033[23m"
-	echo -e "\033[93;4mOptions:\033[0m"
-	echo -e "\t\033[3mdb\033[23m\tStart the project with the database"
-	echo -e "\t\033[3mll\033[23m\tStart the project with the Lavalink server"
-	echo -e "\t\033[3mfe\033[23m\tStart the project with the frontend"
-	echo -e "\t\033[3mdocker\033[23m\tStart the project with docker"
-	echo -e "\033[93;4mExamples:\033[0m"
-	echo -e "\t\033[3m$0 lite\033[23m"
-	echo -e "\t\033[3m$0 lite db\033[23m"
-	echo -e "\t\033[3m$0 lite ll\033[23m"
-	echo -e "\t\033[3m$0 lite fe\033[23m"
-	echo -e "\t\033[3m$0 lite db ll fe\033[23m"
-	exit 3
+        echo -e "\033[93;4mUsage:\033[0m"
+        echo -e "\t\033[3m$0 lite [db] [ll] [fe]\033[23m"
+        echo -e "\033[93;4mOptions:\033[0m"
+        echo -e "\t\033[3mdb\033[23m\tStart the project with the database"
+        echo -e "\t\033[3mll\033[23m\tStart the project with the Lavalink server"
+        echo -e "\t\033[3mfe\033[23m\tStart the project with the frontend"
+        echo -e "\t\033[3mdocker\033[23m\tStart the project with docker"
+        echo -e "\033[93;4mExamples:\033[0m"
+        echo -e "\t\033[3m$0 lite\033[23m"
+        echo -e "\t\033[3m$0 lite db\033[23m"
+        echo -e "\t\033[3m$0 lite ll\033[23m"
+        echo -e "\t\033[3m$0 lite fe\033[23m"
+        echo -e "\t\033[3m$0 lite db ll fe\033[23m"
+        exit 3
     elif [[ "$1" == "" ]]; then
-	# Run the bot without docker
-	cd ./djs-bot && npm run start
+        # Run the bot without docker
+        cd ./djs-bot && npm run start
     else 
-	if [[ "$1" == "docker" ]]; then
-	    shift
-	fi
+        if [[ "$1" == "docker" ]]; then
+            shift
+        fi
 
-	parse_lite_options $@
-	export ENABLE=$(cat .ENABLE)
-	SERVICES=$(cat .SERVICES)
+        parse_lite_options $@
+        export ENABLE=$(cat .ENABLE)
+        SERVICES=$(cat .SERVICES)
 
-	# Start the project
-	${DOCKER} pull $SERVICES
-	create_and_run
+        # Start the project
+        ${DOCKER} pull $SERVICES
+        create_and_run
 
-	cleanup_file_vars
+        cleanup_file_vars
     fi
 
     exit 130
@@ -187,44 +187,44 @@ elif [[ "$1" == "enter" ]]; then
     shift
 
     if [[ "$1" == "help" ]]; then
-	echo -e "\033[93;4mUsage:\033[0m"
-	echo -e "\t\033[3m$0 enter <container> [fs]\033[23m"
-	echo -e "\033[93;4mOptions:\033[0m"
-	echo -e "\t\033[3mfs\033[23m\tEnter the container's filesystem"
-	echo -e "\033[93;4mExamples:\033[0m"
-	echo -e "\t\033[3m$0 enter php\033[23m"
-	echo -e "\t\033[3m$0 enter php fs\033[23m"
-	exit 3
+        echo -e "\033[93;4mUsage:\033[0m"
+        echo -e "\t\033[3m$0 enter <container> [fs]\033[23m"
+        echo -e "\033[93;4mOptions:\033[0m"
+        echo -e "\t\033[3mfs\033[23m\tEnter the container's filesystem"
+        echo -e "\033[93;4mExamples:\033[0m"
+        echo -e "\t\033[3m$0 enter php\033[23m"
+        echo -e "\t\033[3m$0 enter php fs\033[23m"
+        exit 3
     elif [[ ${COMPOSE_CONTAINERS_RUNNING} == "" ]]; then
-	echo -e "\033[91mNo containers found, make sure the project is running.\033[0m"
-	exit 126
+        echo -e "\033[91mNo containers found, make sure the project is running.\033[0m"
+        exit 126
     elif [[ "$1" != "" ]]; then
-	CONTAINER=$(docker ps | grep $1 | awk '{print $1}') 
-	echo -e "\033[93;4mEntering container:\033[0m \033[3m$1\033[23m\n"
+        CONTAINER=$(docker ps | grep $1 | awk '{print $1}') 
+        echo -e "\033[93;4mEntering container:\033[0m \033[3m$1\033[23m\n"
 
-	# Additional option to enter the container's filesystem
-	if [[ "$2" != "" && "$2" == "fs" ]]; then
-	    docker exec -it "${CONTAINER}" /bin/bash
-	    exit 130
-	elif [[ "$2" != "" ]]; then
-	    echo -e "\033[91mInvalid option: $2\033[0m"
-	    exit 2
-	else
-	    # Enter the container's active process
-	    echo -e "\033[93;4mPress CTRL+P then CTRL+Q to detach from the container.\033[0m\n"
-	    docker attach ${CONTAINER}
-	    exit 130
-	fi
+        # Additional option to enter the container's filesystem
+        if [[ "$2" != "" && "$2" == "fs" ]]; then
+            docker exec -it "${CONTAINER}" /bin/bash
+            exit 130
+        elif [[ "$2" != "" ]]; then
+            echo -e "\033[91mInvalid option: $2\033[0m"
+            exit 2
+        else
+            # Enter the container's active process
+            echo -e "\033[93;4mPress CTRL+P then CTRL+Q to detach from the container.\033[0m\n"
+            docker attach ${CONTAINER}
+            exit 130
+        fi
     else 
-	echo -e "\033[93;4mPlease specify the container name:\033[0m"
-	echo -e "\n\t\033[4mAvailable containers:\033[24m"
-	echo -e "\033[3m${COMPOSE_CONTAINERS_RUNNING}\033[23m\n"
-	exit 2
+        echo -e "\033[93;4mPlease specify the container name:\033[0m"
+        echo -e "\n\t\033[4mAvailable containers:\033[24m"
+        echo -e "\033[3m${COMPOSE_CONTAINERS_RUNNING}\033[23m\n"
+        exit 2
     fi
 
 elif [[ "$1" == "rebuild" ]]; then
     if [[ "$1" == "rebuild" ]]; then
-	shift
+        shift
     fi
 
     ${DOCKER} down
@@ -257,48 +257,48 @@ elif [[ "$1" == "del" ]]; then
     shift
 
     if [[ "$1" == "help" ]]; then
-	echo -e "\033[93;4mUsage:\033[0m"
-	echo -e "\t\033[3m$0 del <container>\033[23m"
-	echo -e "\033[93;4mExamples:\033[0m"
-	echo -e "\t\033[3m$0 del php\033[23m"
-	exit 3
+        echo -e "\033[93;4mUsage:\033[0m"
+        echo -e "\t\033[3m$0 del <container>\033[23m"
+        echo -e "\033[93;4mExamples:\033[0m"
+        echo -e "\t\033[3m$0 del php\033[23m"
+        exit 3
     elif [[ $COMPOSE_CONTAINERS == "" ]]; then
-	echo -e "\033[91mNo containers found.\033[0m"
-	exit 126
+        echo -e "\033[91mNo containers found.\033[0m"
+        exit 126
     elif [[ "$1" != "" ]]; then
-	# get the ID of the container to delete, from the the inputted name
-	SERVICE=$(docker container ls --all | grep $1 | awk '{print $1}')
-	SERVICE_IMAGE=$(docker container ls --all | grep $1 | awk '{print $2}')
+        # get the ID of the container to delete, from the the inputted name
+        SERVICE=$(docker container ls --all | grep $1 | awk '{print $1}')
+        SERVICE_IMAGE=$(docker container ls --all | grep $1 | awk '{print $2}')
 
-	echo -e "\033[93;4mContainer Name: \033[0m\033[3m$1\033[23m"
-	echo -e "\033[93;4mContainer Id: ${SERVICE}\033[0m"
-	echo -e "\033[93;4mContainer Image: ${SERVICE_IMAGE}\033[0m"
+        echo -e "\033[93;4mContainer Name: \033[0m\033[3m$1\033[23m"
+        echo -e "\033[93;4mContainer Id: ${SERVICE}\033[0m"
+        echo -e "\033[93;4mContainer Image: ${SERVICE_IMAGE}\033[0m"
 
-	SERVICE_IS_RUNNING=$(echo $COMPOSE_CONTAINERS_RUNNING | grep $1)
-	if [[ $SERVICE_IS_RUNNING != '' ]]; then
-	    docker container stop $SERVICE > /dev/null 2>&1
-	    echo -e "\033[92;4mContainer stopped: \033[90m$(date)\033[0m"
-	fi
+        SERVICE_IS_RUNNING=$(echo $COMPOSE_CONTAINERS_RUNNING | grep $1)
+        if [[ $SERVICE_IS_RUNNING != '' ]]; then
+            docker container stop $SERVICE > /dev/null 2>&1
+            echo -e "\033[92;4mContainer stopped: \033[90m$(date)\033[0m"
+        fi
 
-	CONTAINER_EXIST=$(echo $COMPOSE_CONTAINERS | grep $1)
-	if [[ $CONTAINER_EXIST != '' ]]; then
-	    docker container rm $SERVICE > /dev/null 2>&1
-	    echo -e "\033[92;4mContainer deleted: \033[90m$(date)\033[0m"
-	fi
+        CONTAINER_EXIST=$(echo $COMPOSE_CONTAINERS | grep $1)
+        if [[ $CONTAINER_EXIST != '' ]]; then
+            docker container rm $SERVICE > /dev/null 2>&1
+            echo -e "\033[92;4mContainer deleted: \033[90m$(date)\033[0m"
+        fi
 
-	if [[ $SERVICE_IMAGE != '' ]]; then
-	    docker rmi $SERVICE_IMAGE > /dev/null 2>&1
-	    echo -e "\033[92;4mImage deleted: \033[90m$(date)\033[0m"
-	else
-	    echo -e "\033[93;4mContainer didn't exist, Image not deleted.\033[0m"
-	fi
+        if [[ $SERVICE_IMAGE != '' ]]; then
+            docker rmi $SERVICE_IMAGE > /dev/null 2>&1
+            echo -e "\033[92;4mImage deleted: \033[90m$(date)\033[0m"
+        else
+            echo -e "\033[93;4mContainer didn't exist, Image not deleted.\033[0m"
+        fi
 
-	exit 130
+        exit 130
     else 
-	echo -e "\033[93;4mPlease specify the container name:\033[0m"
-	echo -e "\n\t\033[4mAvailable containers:\033[24m"
-	echo -e "\033[3m${COMPOSE_CONTAINERS}\033[23m\n"
-	exit 2
+        echo -e "\033[93;4mPlease specify the container name:\033[0m"
+        echo -e "\n\t\033[4mAvailable containers:\033[24m"
+        echo -e "\033[3m${COMPOSE_CONTAINERS}\033[23m\n"
+        exit 2
     fi
 
 elif [[ "$1" == "log" ]]; then
@@ -335,4 +335,4 @@ elif [[ "$1" != "" ]]; then
     ${DOCKER} "$@"
 fi
 
-# vim: noet sw=4
+# vim: et sw=4
