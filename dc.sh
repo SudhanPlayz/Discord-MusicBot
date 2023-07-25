@@ -3,10 +3,10 @@
 PROJECT_NAME=$(basename $(pwd) | tr  '[:upper:]' '[:lower:]')
 
 echo -e "\
-OS: \033[38;5;51m$(uname)\033[0m\n\
-ARCHITECURE: \033[38;5;51m$(uname -m)\033[0m\n\
-PROJECT_NAME: \033[38;5;51m${PROJECT_NAME}\033[0m\n\
-PROJECT_PATH: \033[38;5;51m$(pwd)\033[0m\n"
+    OS: \033[38;5;51m$(uname)\033[0m\n\
+    ARCHITECURE: \033[38;5;51m$(uname -m)\033[0m\n\
+    PROJECT_NAME: \033[38;5;51m${PROJECT_NAME}\033[0m\n\
+    PROJECT_PATH: \033[38;5;51m$(pwd)\033[0m\n"
 
 if [ ! -d "./docker" ]; then
     echo -e "\033[91mNo docker directory found, please create one or relocate this script to the appropriate directory.\033[0m"
@@ -17,16 +17,16 @@ elif [ ! -f "docker/docker-compose.yml" ]; then
 fi
 
 DOCKER="docker compose \
-        --file docker/docker-compose.yml \
-        -p ${PROJECT_NAME}"
-        
+    --file docker/docker-compose.yml \
+    -p ${PROJECT_NAME}"
+
 COMPOSE_CONTAINERS=$(${DOCKER} \
-ps --all \
---format table | grep -v "NAME" | awk '{print $1}' )
+    ps --all \
+    --format table | grep -v "NAME" | awk '{print $1}' )
 
 COMPOSE_CONTAINERS_RUNNING=$(${DOCKER} \
-ps \
---format table | grep -v "NAME" | awk '{print $1}' )
+    ps \
+    --format table | grep -v "NAME" | awk '{print $1}' )
 
 # creates 2 files named .SERVICES and .ENABLE
 # used for setting variable for the parent
@@ -92,6 +92,11 @@ create_and_run () {
 
     echo -e "\033[92;4mRunning \033[90m$SERVICES\033[0m"
     ${DOCKER} start $SERVICES
+
+    echo -e "\n\033[92;4mProject started: \033[90m$(date)\033[0m"
+    echo -e "\033[3m${PROJECT_NAME}\033[23m is now running.\n"
+
+    echo -e "\033[93;4mType \033[3m$0 help\033[23m\033[93m for more options.\033[0m\n"
 }
 
 cleanup_file_vars () {
@@ -176,10 +181,6 @@ elif [[ "$1" == "lite" ]]; then
         cleanup_file_vars
     fi
 
-    echo -e "\n\033[92;4mProject started: \033[90m$(date)\033[0m"
-    echo -e "\033[3m${PROJECT_NAME}\033[23m is now running.\n"
-
-    echo -e "\033[93;4mType \033[3m$0 help\033[23m\033[93m for more options.\033[0m\n"
     exit 130
 
 elif [[ "$1" == "enter" ]]; then
@@ -200,7 +201,7 @@ elif [[ "$1" == "enter" ]]; then
     elif [[ "$1" != "" ]]; then
         CONTAINER=$(docker ps | grep $1 | awk '{print $1}') 
         echo -e "\033[93;4mEntering container:\033[0m \033[3m$1\033[23m\n"
-        
+
         # Additional option to enter the container's filesystem
         if [[ "$2" != "" && "$2" == "fs" ]]; then
             docker exec -it "${CONTAINER}" /bin/bash
@@ -222,6 +223,7 @@ elif [[ "$1" == "enter" ]]; then
     fi
 
 elif [[ "$1" == "rebuild" ]]; then
+    shift
 
     ${DOCKER} down
 
@@ -235,6 +237,7 @@ elif [[ "$1" == "rebuild" ]]; then
     create_and_run --force-recreate 
 
     cleanup_file_vars
+    exit 130
 
 elif [[ "$1" == "down" ]]; then
 
@@ -243,7 +246,7 @@ elif [[ "$1" == "down" ]]; then
 elif [[ "$1" == "purge" ]]; then
 
     ${DOCKER} down
-	docker system prune -a
+    docker system prune -a
     docker rmi "$(docker images -a -q)"
     docker rm "$(docker ps -a -f status=exited -q)"
     docker volume prune
@@ -325,7 +328,9 @@ elif [[ "$1" == "help" ]]; then
     echo -e "  \033[3m$0 purge\033[23m"
     echo -e "  \033[3m$0 --help\033[23m"
     echo -e "  \033[3m$0 help\033[23m"
-    
+
 elif [[ "$1" != "" ]]; then
     ${DOCKER} "$@"
 fi
+
+# vim: et sw=4
