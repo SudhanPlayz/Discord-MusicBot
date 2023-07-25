@@ -12,7 +12,6 @@ export async function apiCall(method: HTTP_METHOD, path: string, params?: any) {
         const res = await axios[method.toLowerCase()](endpoint, {
             params: params,
         });
-        console.log('response:', fullpath, res);
         return res;
     } catch (error) {
         return error.response;
