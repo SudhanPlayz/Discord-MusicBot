@@ -8,8 +8,9 @@
     "deploy": "node scripts/global",
     "destroy": "node scripts/destroy",
     "update": "node scripts/update",
-    "start": "npm i && npm run api-build && node index.js",
-    "db-start": "npm i && npx prisma db push && node index.js",
+    "bot": "npm run api-build && node index.js",
+    "start": "npm i && npm run bot",
+    "db-start": "npm i && npx prisma db push && npm run bot",
     "api-build": "tsc -p api/v1/tsconfig.json",
     "api-start": "node api/v1/dist/standalone.js"
   },
@@ -23,6 +24,7 @@
   "author": "SudhanPlayz",
   "license": "CUSTOM",
   "dependencies": {
+    "@fastify/cors": "^8.3.0",
     "@prisma/client": "^5.0.0",
     "axios": "^1.4.0",
     "better-erela.js-apple": "^1.0.5",

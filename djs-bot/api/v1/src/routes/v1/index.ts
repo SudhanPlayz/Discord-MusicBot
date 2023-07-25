@@ -6,10 +6,10 @@ const routes: RegisterRouteHandler = (app, opts, done) => {
   // !TODO: probably move this to each own folder
 
   app.get('/', async (request, reply) => {
-    reply.send({
+    return {
       message: 'Systems Operational!',
       version: pkg.version,
-    });
+    };
   });
 
   app.get('/commands', async (request, reply) => {

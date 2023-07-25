@@ -3,6 +3,7 @@ import type { Bot } from './interfaces/common';
 import routes from './routes/v1';
 import routesErrorHandler from './routes/v1/errorHandler';
 import APIError from './lib/APIError';
+import cors from '@fastify/cors';
 
 const pkg = require('../../../package.json');
 
@@ -27,14 +28,22 @@ const getBot = (noThrow: boolean = false) => {
   return bot as Bot;
 };
 
-const app = (djsBot?: Bot) => {
-  bot = djsBot;
+const setupServer = async () => {
+  await server.register(cors, {
+    origin: true,
+  });
 
-  server.register(routes, {
+  await server.register(routes, {
     prefix: '/api/v1',
   });
 
   server.setErrorHandler(routesErrorHandler);
+};
+
+const app = (djsBot?: Bot) => {
+  bot = djsBot;
+
+  setupServer();
 
   return server;
 };
