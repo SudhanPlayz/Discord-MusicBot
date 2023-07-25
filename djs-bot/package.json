@@ -10,7 +10,7 @@
     "update": "node scripts/update",
     "start": "npm i && npm run api-build && node index.js",
     "db-start": "npm i && npx prisma db push && node index.js",
-    "api-build": "tsc -p tsconfig.json",
+    "api-build": "tsc -p api/v1/tsconfig.json",
     "api-start": "node api/v1/dist/standalone.js"
   },
   "keywords": [

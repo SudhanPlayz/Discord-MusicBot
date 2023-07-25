@@ -68,4 +68,4 @@ declare class Bot extends Client {
   markMessageAsDeleted(message: Message): Bot["deletedMessages"];
 }
 
-export default Bot;
+export = Bot;

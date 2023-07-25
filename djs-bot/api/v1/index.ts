@@ -1,12 +1,8 @@
 import fastify from 'fastify';
 import type Bot from '../../lib/Bot';
+import routes from './routes/v1';
 
 const server = fastify();
-
-// !TODO: move this to routes/
-server.get('/ping', async (request, reply) => {
-  return 'pong\n';
-});
 
 let bot: Bot | undefined;
 
@@ -14,6 +10,11 @@ const getBot = () => bot;
 
 const app = (djsBot?: Bot) => {
   bot = djsBot;
+
+  server.register(routes, {
+    prefix: '/v1',
+  });
+
   return server;
 };
 
