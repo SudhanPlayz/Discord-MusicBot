@@ -1,0 +1,10 @@
+{
+  "extends": ["@tsconfig/node16/tsconfig.json"],
+  "compilerOptions": {
+    "sourceMap": true,
+    "allowJs": true,
+    "alwaysStrict": true,
+    "strict": true
+  },
+  "include": []
+}

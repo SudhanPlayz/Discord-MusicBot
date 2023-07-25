@@ -11,7 +11,7 @@ const fs = require("fs");
 const path = require("path");
 const DBMS = require("./DBMS");
 const Logger = require("./Logger");
-const app = require("../api/v0/index");
+const { app } = require("../api/v1/dist");
 const getConfig = require("../util/getConfig");
 const MusicManager = require("./MusicManager");
 
@@ -55,6 +55,9 @@ class Bot extends Client {
 			this.deletedMessages = new WeakSet();
 			/** @type {Array<import("cosmicord.js").CosmiTrack>} */
 			this.playedTracks = new Array();
+
+			this.commandsRan = 0;
+			this.songsPlayed = 0;
 
 			fs.readFile(path.join(__dirname, "..", "registered-global"), (err) => {
 				if (err) require("../scripts/global");

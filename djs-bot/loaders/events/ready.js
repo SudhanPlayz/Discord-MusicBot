@@ -11,7 +11,7 @@ module.exports = (client) => {
 	const activities = client.config.presence.activities;
 	setInterval(() => {
 		const index = Math.floor(Math.random() * activities.length);
-		
+
 		let data = {};
 		try {
 			data = activities[index].data(client);
@@ -22,9 +22,15 @@ module.exports = (client) => {
 			type: ActivityType[capitalize(activities[index].type)],
 		});
 	}, 10000);
-	
+
 	// Express API
-	client.api.listen(client.config.api.port, () => {
+	client.api.listen({ host: '0.0.0.0', port: client.config.api.port }, (err, address) => {
+		if (err) {
+			client.error("Can't start API:");
+			client.error(err);
+			return;
+		}
+
 		client.info(`API is now listening on port ${client.config.api.port}`);
 	});
 

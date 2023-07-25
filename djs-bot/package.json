@@ -8,8 +8,11 @@
     "deploy": "node scripts/global",
     "destroy": "node scripts/destroy",
     "update": "node scripts/update",
-    "start": "npm i && node index.js",
-    "db-start": "npm i && npx prisma db push && node index.js"
+    "bot": "npm run api-build && node index.js",
+    "start": "npm i && npm run bot",
+    "db-start": "npm i && npx prisma db push && npm run bot",
+    "api-build": "tsc -p api/v1/tsconfig.json",
+    "api-start": "node api/v1/dist/standalone.js"
   },
   "keywords": [
     "music",
@@ -21,31 +24,38 @@
   "author": "SudhanPlayz",
   "license": "CUSTOM",
   "dependencies": {
-    "cors": "^2.8.5",
-    "cron": "^2.3.1",
-    "axios": "^1.4.0",
-    "colors": "^1.4.0",
-    "moment": "^2.29.4",
-    "prisma": "^5.0.0",
-    "dotenv": "^16.3.1",
-    "rlyrics": "^2.0.1",
-    "winston": "^3.9.0",
-    "express": "^4.18.2",
-    "shoukaku": "^3.4.0",
-    "erela.js": "^2.4.0",
-    "fuzzysort": "^2.0.4",
-    "pretty-ms": "^7.0.1",
-    "youtube-sr": "^4.3.4",
-    "discord.js": "^14.11.0",
-    "cosmicord.js": "^1.1.0",
+    "@fastify/cors": "^8.3.0",
     "@prisma/client": "^5.0.0",
-    "erela.js-deezer": "^1.0.7",
+    "axios": "^1.4.0",
     "better-erela.js-apple": "^1.0.5",
+    "better-erela.js-spotify": "^1.3.11",
+    "colors": "^1.4.0",
+    "cors": "^2.8.5",
+    "cosmicord.js": "^1.1.0",
+    "cron": "^2.3.1",
+    "discord.js": "^14.11.0",
+    "dotenv": "^16.3.1",
+    "erela.js": "^2.4.0",
+    "erela.js-deezer": "^1.0.7",
+    "express": "^4.18.2",
+    "fastify": "^4.20.0",
+    "fuzzysort": "^2.0.4",
+    "moment": "^2.29.4",
     "moment-duration-format": "^2.3.2",
-    "better-erela.js-spotify": "^1.3.11"
+    "pretty-ms": "^7.0.1",
+    "prisma": "^5.0.0",
+    "rlyrics": "^2.0.1",
+    "shoukaku": "^3.4.0",
+    "winston": "^3.9.0",
+    "youtube-sr": "^4.3.4"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/SudhanPlayz/Discord-MusicBot.git"
+  },
+  "devDependencies": {
+    "@tsconfig/node16": "^16.1.0",
+    "@types/node": "^20.4.4",
+    "typescript": "^5.1.6"
   }
 }
