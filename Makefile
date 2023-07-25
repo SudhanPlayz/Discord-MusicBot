@@ -15,7 +15,7 @@ purge:
 	@./dc.sh purge
 
 rebuild:
-	@./dc.sh rebuild
+	@./dc.sh rebuild $(filter-out $@,$(MAKECMDGOALS))
 
 enter:
 	@./dc.sh enter $(filter-out $@,$(MAKECMDGOALS))
