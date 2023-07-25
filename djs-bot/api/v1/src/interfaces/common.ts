@@ -8,6 +8,8 @@ export type FastifyInstance = ReturnType<typeof fastify>;
 
 export type RegisterRouteHandler = Parameters<FastifyInstance['register']>[0];
 
+export type RouteHandler = Parameters<FastifyInstance['route']>[0]['handler'];
+
 export type RouteErrorHandler = Parameters<
   FastifyInstance['setErrorHandler']
 >[0];

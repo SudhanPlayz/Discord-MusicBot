@@ -8,7 +8,7 @@ import cors from '@fastify/cors';
 const pkg = require('../../../package.json');
 
 const server = fastify({
-  logger: true,
+  logger: false, // true,
 });
 
 let bot: Bot | undefined;
@@ -59,7 +59,4 @@ const app = (djsBot?: Bot) => {
   return server;
 };
 
-export default app;
-export { getBot, pkg };
-
-module.exports = app;
+export { app, getBot, pkg };
