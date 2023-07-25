@@ -7,7 +7,7 @@ const routesErrorHandler: RouteErrorHandler = (err, request, reply) => {
 
   if (err instanceof APIError) {
     reply.status(err.status).send({
-      error: true,
+      success: false,
       code: err.code,
       message: err.message,
     });

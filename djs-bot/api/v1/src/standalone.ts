@@ -2,7 +2,7 @@ import app from './index';
 
 const server = app();
 
-server.listen({ host: 'localhost', port: 3000 }, (err, address) => {
+server.listen({ host: '0.0.0.0', port: 3000 }, (err, address) => {
   if (err) {
     console.error(err);
     process.exit(1);

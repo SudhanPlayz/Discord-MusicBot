@@ -24,7 +24,7 @@ module.exports = (client) => {
 	}, 10000);
 
 	// Express API
-	client.api.listen({ host: 'localhost', port: client.config.api.port }, (err, address) => {
+	client.api.listen({ host: '0.0.0.0', port: client.config.api.port }, (err, address) => {
 		if (err) {
 			client.error("Can't start API:");
 			client.error(err);
