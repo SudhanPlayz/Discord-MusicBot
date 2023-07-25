@@ -6,7 +6,7 @@ import DBMS from "./DBMS";
 import prettyMilliseconds from "pretty-ms";
 import { CosmiTrack } from "cosmicord.js";
 import config from "../config";
-import app from "../api/v1";
+import app from "../api/v1/src";
 
 /**
  * The class groups some useful functions for the client in order to facilitate expandability, maintenance and manageability

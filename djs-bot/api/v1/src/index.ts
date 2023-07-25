@@ -28,10 +28,14 @@ const getBot = (noThrow: boolean = false) => {
   return bot as Bot;
 };
 
+const corsOpts = {
+  origin: true,
+  methods: 'GET',
+  credentials: true,
+};
+
 const setupServer = async () => {
-  await server.register(cors, {
-    origin: true,
-  });
+  await server.register(cors);
 
   await server.register(routes, {
     prefix: '/api/v1',
