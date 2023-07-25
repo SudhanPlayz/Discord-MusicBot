@@ -92,6 +92,11 @@ create_and_run () {
 
     echo -e "\033[92;4mRunning \033[90m$SERVICES\033[0m"
     ${DOCKER} start $SERVICES
+
+    echo -e "\n\033[92;4mProject started: \033[90m$(date)\033[0m"
+    echo -e "\033[3m${PROJECT_NAME}\033[23m is now running.\n"
+
+    echo -e "\033[93;4mType \033[3m$0 help\033[23m\033[93m for more options.\033[0m\n"
 }
 
 cleanup_file_vars () {
@@ -176,10 +181,6 @@ elif [[ "$1" == "lite" ]]; then
 	cleanup_file_vars
     fi
 
-    echo -e "\n\033[92;4mProject started: \033[90m$(date)\033[0m"
-    echo -e "\033[3m${PROJECT_NAME}\033[23m is now running.\n"
-
-    echo -e "\033[93;4mType \033[3m$0 help\033[23m\033[93m for more options.\033[0m\n"
     exit 130
 
 elif [[ "$1" == "enter" ]]; then
@@ -238,6 +239,7 @@ elif [[ "$1" == "rebuild" ]]; then
     create_and_run --force-recreate 
 
     cleanup_file_vars
+    exit 130
 
 elif [[ "$1" == "down" ]]; then
 
