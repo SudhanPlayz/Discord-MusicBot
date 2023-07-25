@@ -1,16 +1,9 @@
-import { getBot, pkg } from '../..';
+import { getBot } from '../..';
 import type { RegisterRouteHandler } from '../../interfaces/common';
 import APIError from '../../lib/APIError';
 
 const routes: RegisterRouteHandler = (app, opts, done) => {
   // !TODO: probably move this to each own folder
-
-  app.get('/', async (request, reply) => {
-    return {
-      message: 'Systems Operational!',
-      version: pkg.version,
-    };
-  });
 
   app.get('/commands', async (request, reply) => {
     const bot = getBot();

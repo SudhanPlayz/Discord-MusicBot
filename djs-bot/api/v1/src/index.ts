@@ -37,6 +37,13 @@ const corsOpts = {
 const setupServer = async () => {
   await server.register(cors);
 
+  server.get('/', async (request, reply) => {
+    return {
+      message: 'Systems Operational!',
+      version: pkg.version,
+    };
+  });
+
   await server.register(routes, {
     prefix: '/api/v1',
   });
