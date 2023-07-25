@@ -56,6 +56,9 @@ class Bot extends Client {
 			/** @type {Array<import("cosmicord.js").CosmiTrack>} */
 			this.playedTracks = new Array();
 
+			this.commandsRan = 0;
+			this.songsPlayed = 0;
+
 			fs.readFile(path.join(__dirname, "..", "registered-global"), (err) => {
 				if (err) require("../scripts/global");
 			});

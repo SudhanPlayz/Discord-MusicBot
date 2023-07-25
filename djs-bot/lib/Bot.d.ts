@@ -28,6 +28,8 @@ declare class Bot extends Client {
   manager: MusicManager | undefined;
   api: ReturnType<typeof app>;
   db: DBMS | undefined;
+  commandsRan: number;
+  songsPlayed: number;
 
   /**
    * This is really the only thing that the DJS API needs to start and log in to
