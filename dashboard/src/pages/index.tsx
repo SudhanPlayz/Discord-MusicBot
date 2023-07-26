@@ -7,8 +7,11 @@ import { Button, Card, Container, Link, Text } from '@nextui-org/react';
 import Head from 'next/head';
 import { useEffect, useState } from 'react';
 import { getData, IData } from '@/utils/data';
+import { NextPageWithLayout } from '@/interfaces/layouts';
+import { useRouter } from 'next/router';
 
-const Home = (_props: any) => {
+const Home: NextPageWithLayout = () => {
+    const router = useRouter();
     const [data, setData] = useState<IData | null>(null);
 
     useEffect(() => {
@@ -40,7 +43,7 @@ const Home = (_props: any) => {
             >
                 <Link
                     css={{ fontSize: '$xl', fontWeight: '$semibold' }}
-                    href="/"
+                    onClick={() => router.push('/')}
                 >
                     {data ? data.name : 'Discord Music Bot'}
                 </Link>
@@ -67,7 +70,7 @@ const Home = (_props: any) => {
                     Features
                 </Link>
                 <Button
-                    onClick={() => (window.location.pathname = '/dashboard')}
+                    onClick={() => router.push('/dashboard')}
                     css={{ marginLeft: 'auto' }}
                     auto
                     shadow
@@ -107,7 +110,7 @@ const Home = (_props: any) => {
                 >
                     <Button
                         color="primary"
-                        onClick={() => (window.location.pathname = '/login')}
+                        onClick={() => router.push('/login')}
                         shadow
                         style={{
                             marginTop: '1rem',

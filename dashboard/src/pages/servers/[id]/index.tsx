@@ -1,11 +1,12 @@
 import Head from 'next/head';
 import { useEffect, useState } from 'react';
-import Content from '@/components/content';
 import { apiCall } from '@/utils/serviceCall';
 import { useRouter } from 'next/router';
 import { Avatar } from '@nextui-org/react';
+import DashboardLayout from '@/layouts/DashboardLayout';
+import { NextPageWithLayout } from '@/interfaces/layouts';
 
-export default function Server(_props: any) {
+const Server: NextPageWithLayout = () => {
     const [loading, setLoading] = useState(true);
     const [server, setServer] = useState(null);
     const serverId = useRouter().query.id;
@@ -21,7 +22,7 @@ export default function Server(_props: any) {
     }, []);
 
     return (
-        <Content>
+        <>
             <Head>
                 <title>{server?.name} | Discord Music Bot</title>
             </Head>
@@ -43,7 +44,13 @@ export default function Server(_props: any) {
             <h2>Server Owner: {server?.owner}</h2>
             <h2>
                 Server Roles:
-                <div style={{ display: 'flex' }}>
+                <div
+                    style={{
+                        display: 'flex',
+                        flexWrap: 'wrap',
+                        justifyContent: 'space-between',
+                    }}
+                >
                     {server?.roles.map(
                         (role: { id: string; name: string; color: string }) => {
                             return (
@@ -72,6 +79,10 @@ export default function Server(_props: any) {
                 Server Now Playing:{' '}
                 {server?.player?.playing?.title || 'Nothing'}
             </h2>
-        </Content>
+        </>
     );
-}
+};
+
+Server.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
+
+export default Server;

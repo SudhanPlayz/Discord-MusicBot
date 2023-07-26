@@ -1,8 +1,9 @@
 import Head from 'next/head';
 import { useEffect, useState } from 'react';
 import Server from '@/components/server';
-import Content from '@/components/content';
 import { apiCall } from '@/utils/serviceCall';
+import { NextPageWithLayout } from '@/interfaces/layouts';
+import DashboardLayout from '@/layouts/DashboardLayout';
 
 interface IServer {
     id: string;
@@ -10,7 +11,7 @@ interface IServer {
     name: string;
 }
 
-export default function Servers(_props: any) {
+const Servers: NextPageWithLayout = () => {
     const [servers, setServers] = useState<IServer[]>();
 
     useEffect(() => {
@@ -21,7 +22,7 @@ export default function Servers(_props: any) {
     }, []);
 
     return (
-        <Content>
+        <>
             <Head>
                 <title>Servers | Discord Music Bot</title>
             </Head>
@@ -40,6 +41,10 @@ export default function Servers(_props: any) {
                     />
                 ))}
             </div>
-        </Content>
+        </>
     );
-}
+};
+
+Servers.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
+
+export default Servers;

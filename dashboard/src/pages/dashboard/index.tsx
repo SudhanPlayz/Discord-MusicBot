@@ -5,12 +5,13 @@ import {
     PersonRounded,
     RocketLaunchRounded,
 } from '@mui/icons-material';
-import Content from '@/components/content';
 import StatCard from '@/components/StatCard';
 import { useEffect, useState } from 'react';
 import { getDashboard, IDashboard } from '@/utils/dashboard';
+import { NextPageWithLayout } from '@/interfaces/layouts';
+import DashboardLayout from '@/layouts/DashboardLayout';
 
-const Dashboard = (_props: any) => {
+const Dashboard: NextPageWithLayout = () => {
     const [data, setData] = useState<IDashboard | null>(null);
 
     useEffect(() => {
@@ -18,7 +19,7 @@ const Dashboard = (_props: any) => {
     }, []);
 
     return (
-        <Content>
+        <>
             <Head>
                 <title>Dashboard | Discord Music Bot</title>
             </Head>
@@ -51,8 +52,10 @@ const Dashboard = (_props: any) => {
                     icon={<AudiotrackRounded fontSize="large" />}
                 />
             </div>
-        </Content>
+        </>
     );
 };
+
+Dashboard.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
 
 export default Dashboard;

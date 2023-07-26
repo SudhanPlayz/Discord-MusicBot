@@ -1,13 +1,9 @@
-import {createTheme, NextUIProvider} from '@nextui-org/react';
+import { AppPropsWithLayout } from '@/interfaces/layouts';
+import AppLayout from '@/layouts/AppLayout';
 
-function MyApp({Component, pageProps}) {
-    return (
-        <NextUIProvider theme={ createTheme({
-            type: "dark"
-        }) }>
-            <Component { ...pageProps } />
-        </NextUIProvider>
-    );
+export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
+    // Use the layout defined at the page level, if available
+    const getLayout = Component.getLayout ?? ((page) => page);
+
+    return <AppLayout>{getLayout(<Component {...pageProps} />)}</AppLayout>;
 }
-
-export default MyApp;
