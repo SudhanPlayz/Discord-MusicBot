@@ -24,7 +24,11 @@ const Home: NextPageWithLayout = () => {
     }, []);
 
     return (
-        <Container>
+        <Container
+            css={{
+                overflow: 'auto',
+            }}
+        >
             <Head>
                 <title>Discord Music Bot</title>
             </Head>
