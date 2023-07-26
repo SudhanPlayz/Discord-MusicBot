@@ -6,7 +6,6 @@ const DashboardLayout: PageLayout = ({ children }) => {
         <div
             style={{
                 display: 'flex',
-                gap: '50px',
                 height: '100%',
                 overflow: 'auto',
             }}
@@ -14,7 +13,10 @@ const DashboardLayout: PageLayout = ({ children }) => {
             <Navbar />
             <div
                 style={{
-                    marginTop: '30px',
+                    paddingLeft: '50px',
+                    paddingRight: '50px',
+                    paddingTop: '30px',
+                    paddingBottom: '50px',
                 }}
             >
                 {children}
