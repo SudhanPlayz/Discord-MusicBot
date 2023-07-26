@@ -6,7 +6,7 @@ import {
 import { Button, Card, Container, Link, Text } from '@nextui-org/react';
 import Head from 'next/head';
 import { useEffect, useState } from 'react';
-import { getData, IData } from '../utils/data';
+import { getData, IData } from '@/utils/data';
 
 const Home = (_props: any) => {
     const [data, setData] = useState<IData | null>(null);
