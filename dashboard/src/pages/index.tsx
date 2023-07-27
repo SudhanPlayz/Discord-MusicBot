@@ -5,23 +5,11 @@ import {
 } from '@mui/icons-material';
 import { Button, Card, Container, Link, Text } from '@nextui-org/react';
 import Head from 'next/head';
-import { useEffect, useState } from 'react';
-import { getData, IData } from '@/utils/data';
 import { NextPageWithLayout } from '@/interfaces/layouts';
 import { useRouter } from 'next/router';
 
 const Home: NextPageWithLayout = () => {
     const router = useRouter();
-    const [data, setData] = useState<IData | null>(null);
-
-    useEffect(() => {
-        getData().then((res) => {
-            if (data) {
-                setData(res);
-                if (res.redirect?.length) window.location.href = res.redirect;
-            }
-        });
-    }, []);
 
     return (
         <Container
@@ -49,7 +37,7 @@ const Home: NextPageWithLayout = () => {
                     css={{ fontSize: '$xl', fontWeight: '$semibold' }}
                     onClick={() => router.push('/')}
                 >
-                    {data ? data.name : 'Discord Music Bot'}
+                    Discord Music Bot
                 </Link>
                 <Link
                     color="text"
