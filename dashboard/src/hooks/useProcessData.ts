@@ -8,12 +8,13 @@ export function useProcessData<R>(
     const {
         loadingComponent = 'Loading',
         failedComponent = 'Failed to fetch data',
+        enabled = true,
     } = options;
 
     return function <T>(successValue: T) {
-        return isLoading
+        return isLoading && enabled
             ? loadingComponent
-            : data?.success
+            : data?.success || !enabled
             ? typeof successValue === 'function'
                 ? successValue()
                 : successValue

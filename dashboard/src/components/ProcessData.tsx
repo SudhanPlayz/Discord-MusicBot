@@ -11,12 +11,10 @@ export default function ProcessData<T>({
     data,
     isLoading,
     children,
-    loadingComponent,
-    failedComponent,
+    ...props
 }: IProcessDataProps<T>) {
     const processData = useProcessData(data, isLoading, {
-        loadingComponent,
-        failedComponent,
+        ...props,
     });
 
     return processData(children);

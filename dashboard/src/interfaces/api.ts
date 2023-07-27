@@ -29,4 +29,5 @@ export interface IUseQueryOptions<T = undefined> {
 export interface IUseProcessDataOptions {
     loadingComponent?: React.ReactNode;
     failedComponent?: React.ReactNode;
+    enabled?: boolean;
 }

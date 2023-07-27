@@ -6,8 +6,10 @@ import {
     IUseQueryOptions,
 } from '@/interfaces/api';
 import { IGuild } from '@/interfaces/guild';
+import { IUserAuth } from '@/interfaces/user';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
+import { ParsedUrlQuery } from 'querystring';
 
 const apiService = axios.create({
     baseURL: API_URL,
@@ -87,6 +89,31 @@ export function useGetLoginURL(options: IUseQueryOptions<IGetLoginURL> = {}) {
     return useQuery({
         queryKey: ['get-login-url'],
         queryFn: getLoginURL,
+        ...options,
+    });
+}
+
+type IPostLogin = IBaseApiResponse<IUserAuth>;
+
+export async function postLogin(data: ParsedUrlQuery) {
+    const { origin, pathname } = window.location;
+
+    const res = await apiService.post<IPostLogin>('/login', {
+        ...data,
+        redirect_uri: origin + pathname,
+    });
+
+    return res.data;
+}
+
+export function usePostLogin(
+    query: ParsedUrlQuery,
+    options: IUseQueryOptions<IPostLogin> = {},
+) {
+    return useQuery({
+        queryKey: ['post-login', query.code],
+        queryFn: () => postLogin(query),
+        enabled: !!query.code,
         ...options,
     });
 }

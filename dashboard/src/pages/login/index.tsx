@@ -1,26 +1,53 @@
 import ProcessData from '@/components/ProcessData';
-import { useGetLoginURL } from '@/services/api';
+import { useGetLoginURL, usePostLogin } from '@/services/api';
+import { saveAuth } from '@/utils/localStorage';
 import { getQueryData } from '@/utils/query';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
-function Redirecting() {
-    return <h1>Redirecting you to login...</h1>;
+function LoggingIn() {
+    return <h1>Logging in...</h1>;
 }
 
+// it doesn't seems like it does anything
+// but i can guarantee you this page will
+// break if you remove this, so don't
+export const getServerSideProps = () => {
+    return { props: {} };
+};
+
 const Login = () => {
-    const { data, isLoading } = useGetLoginURL();
+    const router = useRouter();
+    const query = router.query;
 
-    const opts = {
-        loadingComponent: <Redirecting />,
-        failedComponent: <h1>Failed logging in</h1>,
-    };
+    const enableGetLoginURL = !query.code;
 
-    const url = getQueryData(data);
+    const { data: loginURL, isLoading } = useGetLoginURL({
+        enabled: enableGetLoginURL,
+    });
+
+    const { data } = usePostLogin(query, {
+        onError: () => router.replace('/login'),
+    });
+
+    const url = getQueryData(loginURL);
 
     useEffect(() => {
         if (url) window.location.href = url;
-    }, []);
+    }, [url]);
+
+    if (data?.data) {
+        saveAuth(data.data);
+
+        router.replace('/dashboard');
+    }
+
+    const opts = {
+        loadingComponent: <LoggingIn />,
+        failedComponent: <h1>Failed logging in</h1>,
+        enabled: enableGetLoginURL,
+    };
 
     return (
         <>
@@ -35,7 +62,7 @@ const Login = () => {
                     height: '100%',
                 }}
             >
-                <ProcessData {...{ data, isLoading, ...opts }}>
+                <ProcessData {...{ data: loginURL, isLoading, ...opts }}>
                     {opts.loadingComponent}
                 </ProcessData>
             </div>

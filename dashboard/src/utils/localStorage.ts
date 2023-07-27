@@ -1,4 +1,4 @@
-import { IUser } from '@/interfaces/user';
+import { IUserAuth } from '@/interfaces/user';
 
 export function setLocalStorage<T>(key: string, data: T) {
     if (typeof data !== 'object') return;
@@ -13,13 +13,17 @@ export function getLocalStorage<T>(key: string) {
 
     if (!str?.length) return;
 
-    return JSON.parse(str);
+    return JSON.parse(str) as T;
 }
 
-export function saveUser(data: IUser) {
-    return setLocalStorage('user', data);
+export function saveAuth(data: IUserAuth) {
+    return setLocalStorage('userAuth', data);
 }
 
-export function getSavedUser() {
-    return getLocalStorage('user');
+export function clearAuth() {
+    return localStorage.removeItem('userAuth');
+}
+
+export function getSavedAuth() {
+    return getLocalStorage('userAuth') as IUserAuth | undefined;
 }

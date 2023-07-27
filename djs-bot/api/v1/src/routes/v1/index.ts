@@ -1,14 +1,8 @@
-import type { RegisterRouteHandler } from '../../interfaces/common';
+import type {
+  IServerMethod,
+  RegisterRouteHandler,
+} from '../../interfaces/common';
 import { readdirSync } from 'fs';
-
-type IServerMethod =
-  | 'delete'
-  | 'get'
-  | 'head'
-  | 'patch'
-  | 'post'
-  | 'put'
-  | 'options';
 
 const routes: RegisterRouteHandler = async (app, opts, done) => {
   const routes = readdirSync(__dirname + '/routesHandler').filter((file) =>
@@ -21,10 +15,16 @@ const routes: RegisterRouteHandler = async (app, opts, done) => {
     const routeHandler = module.default;
     const routePath = file.split('.')[0];
 
-    app[(routeHandler.method as IServerMethod) || 'get'](
-      '/' + routePath,
-      routeHandler.default,
-    );
+    if (Array.isArray(routeHandler.default)) {
+      for (const handler of routeHandler.default) {
+        app[handler.method as IServerMethod]('/' + routePath, handler.handler);
+      }
+    } else {
+      app[(routeHandler.method as IServerMethod) || 'get'](
+        '/' + routePath,
+        routeHandler.default,
+      );
+    }
   }
 
   done();
