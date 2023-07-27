@@ -1,47 +1,42 @@
 import Head from 'next/head';
-import { useEffect, useState } from 'react';
-import { apiCall } from '@/utils/serviceCall';
 import { useRouter } from 'next/router';
 import { Avatar } from '@nextui-org/react';
 import DashboardLayout from '@/layouts/DashboardLayout';
 import { NextPageWithLayout } from '@/interfaces/layouts';
+import { useGetServer } from '@/services/api';
+import { getQueryData } from '@/utils/query';
+import ProcessData from '@/components/ProcessData';
 
-const Server: NextPageWithLayout = () => {
-    const [loading, setLoading] = useState(true);
-    const [server, setServer] = useState(null);
-    const serverId = useRouter().query.id;
-
-    useEffect(() => {
-        async function getServer() {
-            setServer(
-                (await apiCall('GET', '/servers', { id: serverId })).data,
-            );
-        }
-        getServer();
-        setLoading(false);
-    }, []);
-
+function Loading() {
     return (
         <>
             <Head>
-                <title>{server?.name} | Discord Music Bot</title>
+                <title>Discord Music Bot</title>
             </Head>
-            {loading ? (
-                <h1>Loading...</h1>
-            ) : (
-                <>
-                    <Avatar
-                        src={server?.icon}
-                        size="xl"
-                        color="gradient"
-                        bordered
-                        pointer
-                    />
-                    <h1>{server?.name}</h1>
-                </>
-            )}
-            <h2>Server ID: {server?.id}</h2>
-            <h2>Server Owner: {server?.owner}</h2>
+            <h1>Loading...</h1>
+        </>
+    );
+}
+
+const Server: NextPageWithLayout = () => {
+    const router = useRouter();
+    const serverId = router.query.id;
+    const { data, isLoading } = useGetServer(serverId as string);
+
+    console.log('server:', data);
+
+    const { id, name, icon, owner, roles, channels, members, player } =
+        getQueryData(data) || {};
+
+    return (
+        <ProcessData {...{ data, isLoading }} loadingComponent={<Loading />}>
+            <Head>
+                <title>{name} | Discord Music Bot</title>
+            </Head>
+            <Avatar src={icon} size="xl" color="gradient" bordered pointer />
+            <h1>{name}</h1>
+            <h2>Server ID: {id}</h2>
+            <h2>Server Owner: {owner}</h2>
             <h2>
                 Server Roles:
                 <div
@@ -51,7 +46,7 @@ const Server: NextPageWithLayout = () => {
                         justifyContent: 'space-between',
                     }}
                 >
-                    {server?.roles.map(
+                    {roles?.map(
                         (role: { id: string; name: string; color: string }) => {
                             return (
                                 <div
@@ -71,15 +66,12 @@ const Server: NextPageWithLayout = () => {
                     )}
                 </div>
             </h2>
-            <h2>Server Members: {server?.members.length}</h2>
-            <h2>Server Channels: {server?.channels.length}</h2>
+            <h2>Server Members: {members?.length}</h2>
+            <h2>Server Channels: {channels?.length}</h2>
             {/* Player */}
-            <h2>Server Queue: {server?.player?.queue?.length || 0}</h2>
-            <h2>
-                Server Now Playing:{' '}
-                {server?.player?.playing?.title || 'Nothing'}
-            </h2>
-        </>
+            <h2>Server Queue: {player?.queue?.length || 0}</h2>
+            <h2>Server Now Playing: {player?.playing?.title || 'Nothing'}</h2>
+        </ProcessData>
     );
 };
 

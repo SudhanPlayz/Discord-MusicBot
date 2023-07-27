@@ -7,7 +7,6 @@ const AppLayout: PageLayout = ({ children }) => {
             theme={createTheme({
                 type: 'dark',
             })}
-            disableBaseline={true}
         >
             <div
                 style={{

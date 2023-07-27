@@ -1,6 +1,7 @@
 import { getBot } from '../../..';
 import APIError from '../../../lib/APIError';
 import { RouteHandler } from '../../../interfaces/common';
+import { createReply } from '../../../utils/reply';
 
 const handler: RouteHandler = async (request, reply) => {
   const bot = getBot();
@@ -15,7 +16,7 @@ const handler: RouteHandler = async (request, reply) => {
         APIError.ERROR_CODES.NOT_FOUND,
       );
 
-    return {
+    return createReply({
       id: guild.id,
       name: guild.name,
       icon: guild.iconURL(),
@@ -55,16 +56,16 @@ const handler: RouteHandler = async (request, reply) => {
             ?.duration,
         },
       },
-    };
+    });
   }
 
-  return {
+  return createReply({
     servers: bot.guilds.cache.map((guild) => ({
       id: guild.id,
       name: guild.name,
       icon: guild.iconURL(),
     })),
-  };
+  });
 };
 
 export default handler;

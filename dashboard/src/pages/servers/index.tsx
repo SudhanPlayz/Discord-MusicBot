@@ -1,25 +1,19 @@
 import Head from 'next/head';
-import { useEffect, useState } from 'react';
 import Server from '@/components/server';
-import { apiCall } from '@/utils/serviceCall';
 import { NextPageWithLayout } from '@/interfaces/layouts';
 import DashboardLayout from '@/layouts/DashboardLayout';
-
-interface IServer {
-    id: string;
-    icon: string;
-    name: string;
-}
+import { useGetServerList } from '@/services/api';
+import { useProcessData } from '@/hooks/useProcessData';
+import { getQueryData } from '@/utils/query';
 
 const Servers: NextPageWithLayout = () => {
-    const [servers, setServers] = useState<IServer[]>();
+    const { data, isLoading } = useGetServerList();
 
-    useEffect(() => {
-        async function getServerList() {
-            setServers((await apiCall('GET', '/servers')).data.servers);
-        }
-        getServerList();
-    }, []);
+    const processData = useProcessData(data, isLoading);
+
+    console.log('serverList:', data);
+
+    const { servers } = getQueryData(data) || {};
 
     return (
         <>
@@ -32,14 +26,16 @@ const Servers: NextPageWithLayout = () => {
                     display: 'flex',
                 }}
             >
-                {servers?.map((server) => (
-                    <Server
-                        key={server.id}
-                        id={server.id}
-                        icon={server.icon}
-                        name={server.name}
-                    />
-                ))}
+                {processData(() =>
+                    servers?.map((server) => (
+                        <Server
+                            key={server.id}
+                            id={server.id}
+                            icon={server.icon}
+                            name={server.name}
+                        />
+                    )),
+                )}
             </div>
         </>
     );

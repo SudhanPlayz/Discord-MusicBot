@@ -6,17 +6,21 @@ import {
     RocketLaunchRounded,
 } from '@mui/icons-material';
 import StatCard from '@/components/StatCard';
-import { useEffect, useState } from 'react';
-import { getDashboard, IDashboard } from '@/utils/dashboard';
 import { NextPageWithLayout } from '@/interfaces/layouts';
 import DashboardLayout from '@/layouts/DashboardLayout';
+import { useGetDashboardData } from '@/services/api';
+import { getQueryData } from '@/utils/query';
+import { useProcessData } from '@/hooks/useProcessData';
 
 const Dashboard: NextPageWithLayout = () => {
-    const [data, setData] = useState<IDashboard | null>(null);
+    const { data, isLoading } = useGetDashboardData();
 
-    useEffect(() => {
-        getDashboard().then(setData);
-    }, []);
+    const processData = useProcessData(data, isLoading);
+
+    console.log('dashboardData:', data);
+
+    const { commandsRan, users, servers, songsPlayed } =
+        getQueryData(data) || {};
 
     return (
         <>
@@ -32,23 +36,23 @@ const Dashboard: NextPageWithLayout = () => {
             >
                 <StatCard
                     title="Commands Ran"
-                    amount={data ? data.commandsRan : 'Loading'}
+                    amount={processData(commandsRan)}
                     icon={<RocketLaunchRounded fontSize="large" />}
                 />
                 <StatCard
                     title="Users"
-                    amount={data ? data.users : 'Loading'}
+                    amount={processData(users)}
                     icon={<PersonRounded fontSize="large" />}
                 />
                 <StatCard
                     title="Servers"
-                    amount={data ? data.servers : 'Loading'}
+                    amount={processData(servers)}
                     icon={<DnsRounded fontSize="large" />}
                 />
 
                 <StatCard
                     title="Songs Played"
-                    amount={data ? data.songsPlayed : 'Loading'}
+                    amount={processData(songsPlayed)}
                     icon={<AudiotrackRounded fontSize="large" />}
                 />
             </div>
