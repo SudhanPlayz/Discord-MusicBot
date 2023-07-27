@@ -74,3 +74,19 @@ export function useGetServer(
         ...options,
     });
 }
+
+type IGetLoginURL = IBaseApiResponse<string>;
+
+export async function getLoginURL() {
+    const res = await apiService.get<IGetLoginURL>('/login');
+
+    return res.data;
+}
+
+export function useGetLoginURL(options: IUseQueryOptions<IGetLoginURL> = {}) {
+    return useQuery({
+        queryKey: ['get-login-url'],
+        queryFn: getLoginURL,
+        ...options,
+    });
+}

@@ -33,6 +33,12 @@ module.exports = {
 	clientSecret: process.env.CLIENTSECRET || "",
 
 	/**
+	 * Discord OAuth2 url for dashboard login
+	 * You can generate your url here: https://discord.com/developers/applications/960168583969767424/oauth2/url-generator
+	 */
+	oauth2: process.env.OAUTH2 || "",
+
+	/**
 	 * API configuration
 	 */
 	api: {

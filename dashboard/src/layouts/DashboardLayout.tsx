@@ -1,7 +1,10 @@
 import { PageLayout } from '@/interfaces/layouts';
 import Navbar from '@/components/navbar';
+import useAuthGuard from '@/hooks/useAuthGuard';
 
 const DashboardLayout: PageLayout = ({ children }) => {
+    useAuthGuard();
+
     return (
         <div
             style={{
