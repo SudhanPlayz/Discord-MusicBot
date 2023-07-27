@@ -68,6 +68,6 @@ const handler: RouteHandler = async (request, reply) => {
   });
 };
 
-export default handler;
+export const options = { requiresAuth: true };
 
-export const method = 'get';
+export default handler;

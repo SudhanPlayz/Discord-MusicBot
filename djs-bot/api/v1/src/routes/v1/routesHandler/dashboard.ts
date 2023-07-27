@@ -13,4 +13,6 @@ const handler: RouteHandler = async (request, reply) => {
   });
 };
 
+export const options = { requiresAuth: true };
+
 export default handler;

@@ -12,6 +12,16 @@ export type FastifyRouteHandler = Parameters<
   FastifyInstance['route']
 >[0]['handler'];
 
+export interface IRouteHandlerOptions {
+  requiresAuth?: boolean;
+}
+
+export interface APIRouteHandler {
+  default: FastifyRouteHandler;
+  method?: IServerMethod;
+  options?: IRouteHandlerOptions;
+}
+
 export type IServerMethod =
   | 'delete'
   | 'get'
@@ -24,6 +34,7 @@ export type IServerMethod =
 export interface RouteHandlerEntry {
   handler: FastifyRouteHandler;
   method: IServerMethod;
+  options?: IRouteHandlerOptions;
 }
 
 export type RouteHandler = FastifyRouteHandler | RouteHandlerEntry;

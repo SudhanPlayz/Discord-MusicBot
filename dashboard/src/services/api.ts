@@ -7,6 +7,7 @@ import {
 } from '@/interfaces/api';
 import { IGuild } from '@/interfaces/guild';
 import { IUserAuth } from '@/interfaces/user';
+import { getAuthHeaders } from '@/utils/query';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { ParsedUrlQuery } from 'querystring';
@@ -18,7 +19,9 @@ const apiService = axios.create({
 type IGetDashboardData = IBaseApiResponse<IDashboardData>;
 
 export async function getDashboardData() {
-    const res = await apiService.get<IGetDashboardData>('/dashboard');
+    const res = await apiService.get<IGetDashboardData>('/dashboard', {
+        headers: getAuthHeaders(),
+    });
 
     return res.data;
 }
@@ -36,7 +39,9 @@ export function useGetDashboardData(
 type IGetServerList = IBaseApiResponse<IServerList>;
 
 export async function getServerList() {
-    const res = await apiService.get<IGetServerList>('/servers');
+    const res = await apiService.get<IGetServerList>('/servers', {
+        headers: getAuthHeaders(),
+    });
 
     return res.data;
 }
@@ -60,6 +65,7 @@ export async function getServer(id?: string) {
         params: {
             id,
         },
+        headers: getAuthHeaders(),
     });
 
     return res.data;
