@@ -29,12 +29,7 @@ const Servers: NextPageWithLayout = () => {
             >
                 {processData(() =>
                     servers?.map((server) => (
-                        <Server
-                            key={server.id}
-                            id={server.id}
-                            icon={server.icon}
-                            name={server.name}
-                        />
+                        <Server key={server.id} {...server} />
                     )),
                 )}
             </div>

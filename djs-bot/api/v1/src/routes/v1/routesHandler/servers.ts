@@ -66,11 +66,14 @@ const handler: RouteHandler = async (request, reply) => {
   return createReply({
     servers: guilds.map((userGuild) => {
       // @ts-ignore
-      const guild = new Guild(bot, userGuild);
+      const guild: Guild = new Guild(bot, userGuild);
+
+      const cachedGuild = bot.guilds.cache.get(guild.id);
 
       return {
         ...userGuild,
         icon: guild.iconURL(),
+        mutual: !!cachedGuild,
       };
     }),
   });

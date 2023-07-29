@@ -34,6 +34,7 @@ export interface IGuildDisplay {
     id: string;
     name: string;
     icon?: string;
+    mutual: boolean;
 }
 
 export interface IGuild {

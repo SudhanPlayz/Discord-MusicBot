@@ -135,3 +135,9 @@ export function usePostLogin(
         ...options,
     });
 }
+
+export async function getInvite() {
+    const res = await apiService.get<IBaseApiResponse<string>>('/invite');
+
+    return res.data;
+}
