@@ -14,7 +14,7 @@ export const getUserAuth = async (userId: string) => {
   const cache = getUserAuthDbCache.get(userId);
   if (cache) return cache;
 
-  const data: IUserAuth = bot.db.userAuth.findUnique({
+  const data: IUserAuth = await bot.db.userAuth.findUnique({
     where: { userId },
   });
 
