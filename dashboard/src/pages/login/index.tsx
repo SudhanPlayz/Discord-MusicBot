@@ -34,7 +34,11 @@ const Login = () => {
     const url = getQueryData(loginURL);
 
     useEffect(() => {
-        if (url) window.location.href = url;
+        if (url)
+            window.location.href =
+                url +
+                '&redirect_uri=' +
+                encodeURIComponent(window.location.href);
     }, [url]);
 
     if (data?.data) {

@@ -14,11 +14,7 @@ import { signToken } from '../../../lib/jwt';
 const handlers: RouteHandler[] = [
   {
     handler: async (request, reply) => {
-      return createReply(
-        getBaseOauthURL() +
-          getOauthScopesParameter() +
-          `&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Flogin`,
-      );
+      return createReply(getBaseOauthURL() + getOauthScopesParameter());
     },
     method: 'get',
   },
