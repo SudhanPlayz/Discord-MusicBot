@@ -24,6 +24,7 @@ const Servers: NextPageWithLayout = () => {
             <div
                 style={{
                     display: 'flex',
+                    flexWrap: 'wrap',
                 }}
             >
                 {processData(() =>

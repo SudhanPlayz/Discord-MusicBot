@@ -76,32 +76,3 @@ export const getUserGuilds = async (userId: string) => {
 
   return res.data;
 };
-
-const getUserGuildResponseCache = new APICache<string, IGetUserGuildsResponse>({
-  invalidateTimeout: 10 * 60 * 1000,
-});
-
-export const getUserGuild = async (guildId: string, userId: string) => {
-  const { token_type, access_token } = await db.getUserAuth(userId as string);
-
-  const auth = `${token_type} ${access_token}`;
-
-  const cache = getUserGuildResponseCache.get(guildId);
-
-  if (cache) {
-    return cache;
-  }
-
-  const res = await discordService.get<IGetUserGuildsResponse>(
-    '/guilds/' + guildId,
-    {
-      headers: {
-        Authorization: auth,
-      },
-    },
-  );
-
-  getUserGuildResponseCache.set(guildId, res.data);
-
-  return res.data;
-};

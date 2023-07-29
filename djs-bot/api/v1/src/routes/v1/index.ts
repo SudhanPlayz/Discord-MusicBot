@@ -2,7 +2,6 @@ import type {
   IRouteHandlerOptions,
   IServerMethod,
   RegisterRouteHandler,
-  RouteHandlerEntry,
 } from '../../interfaces/common';
 import { readdirSync } from 'fs';
 import { API_ROUTES_PREFIX } from '../../lib/constants';
