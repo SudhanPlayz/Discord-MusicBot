@@ -4,6 +4,7 @@ import { IPostLoginData } from '../../../interfaces/discord';
 import APIError from '../../../lib/APIError';
 import { getUserOauthInfo, postLogin } from '../../../services/discord';
 import { createReply } from '../../../utils/reply';
+import * as db from '../../../lib/db';
 
 const handlers: RouteHandler[] = [
   {
@@ -51,16 +52,16 @@ const handlers: RouteHandler[] = [
         authType: res.token_type,
       });
 
-      if (authData.user) {
-        const { id } = authData.user;
-
-        // update access token in database
-      } else
+      if (!authData.user) {
         throw new APIError(
           'Unauthorized',
           APIError.STATUS_CODES.UNAUTHORIZED,
           APIError.ERROR_CODES.UNAUTHORIZED,
         );
+      }
+
+      const { id } = authData.user;
+      await db.updateUserAuth(id, res);
 
       return createReply(authData.user);
     },

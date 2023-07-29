@@ -1,4 +1,4 @@
-import { IUser } from './user';
+import { IUser, IUserGuild } from './user';
 
 export interface IPostLoginData {
   client_id: string;
@@ -25,3 +25,5 @@ export interface IGetUserOauthInfoResponse {
   // unused property left out, fill when needed
   user?: IUser;
 }
+
+export type IGetUserGuildsResponse = IUserGuild[];

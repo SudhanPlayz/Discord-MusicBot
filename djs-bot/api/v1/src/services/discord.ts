@@ -1,11 +1,16 @@
 import axios from 'axios';
+
 import { DISCORD_API_URL } from '../lib/constants';
+
 import type {
+  IGetUserGuildsResponse,
   IGetUserOauthInfoParams,
   IGetUserOauthInfoResponse,
   IPostLoginData,
   IPostLoginResponse,
 } from '../interfaces/discord';
+import APICache from '../lib/APICache';
+import * as db from '../lib/db';
 
 const discordService = axios.create({
   baseURL: DISCORD_API_URL,
@@ -37,6 +42,66 @@ export const getUserOauthInfo = async ({
       },
     },
   );
+
+  return res.data;
+};
+
+const getUserGuildsResponseCache = new APICache<string, IGetUserGuildsResponse>(
+  {
+    invalidateTimeout: 10 * 60 * 1000,
+  },
+);
+
+export const getUserGuilds = async (userId: string) => {
+  const { token_type, access_token } = await db.getUserAuth(userId as string);
+
+  const auth = `${token_type} ${access_token}`;
+
+  const cache = getUserGuildsResponseCache.get(auth);
+
+  if (cache) {
+    return cache;
+  }
+
+  const res = await discordService.get<IGetUserGuildsResponse>(
+    '/users/@me/guilds',
+    {
+      headers: {
+        Authorization: auth,
+      },
+    },
+  );
+
+  getUserGuildsResponseCache.set(auth, res.data);
+
+  return res.data;
+};
+
+const getUserGuildResponseCache = new APICache<string, IGetUserGuildsResponse>({
+  invalidateTimeout: 10 * 60 * 1000,
+});
+
+export const getUserGuild = async (guildId: string, userId: string) => {
+  const { token_type, access_token } = await db.getUserAuth(userId as string);
+
+  const auth = `${token_type} ${access_token}`;
+
+  const cache = getUserGuildResponseCache.get(guildId);
+
+  if (cache) {
+    return cache;
+  }
+
+  const res = await discordService.get<IGetUserGuildsResponse>(
+    '/guilds/' + guildId,
+    {
+      headers: {
+        Authorization: auth,
+      },
+    },
+  );
+
+  getUserGuildResponseCache.set(guildId, res.data);
 
   return res.data;
 };

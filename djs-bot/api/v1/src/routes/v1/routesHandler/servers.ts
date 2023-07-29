@@ -2,6 +2,8 @@ import { getBot } from '../../..';
 import APIError from '../../../lib/APIError';
 import { RouteHandler } from '../../../interfaces/common';
 import { createReply } from '../../../utils/reply';
+import { getUserGuilds } from '../../../services/discord';
+import { Guild } from 'discord.js';
 
 const handler: RouteHandler = async (request, reply) => {
   const bot = getBot();
@@ -59,12 +61,18 @@ const handler: RouteHandler = async (request, reply) => {
     });
   }
 
+  const guilds = await getUserGuilds(request.headers.user_id as string);
+
   return createReply({
-    servers: bot.guilds.cache.map((guild) => ({
-      id: guild.id,
-      name: guild.name,
-      icon: guild.iconURL(),
-    })),
+    servers: guilds.map((userGuild) => {
+      // @ts-ignore
+      const guild = new Guild(bot, userGuild);
+
+      return {
+        ...userGuild,
+        icon: guild.iconURL(),
+      };
+    }),
   });
 };
 

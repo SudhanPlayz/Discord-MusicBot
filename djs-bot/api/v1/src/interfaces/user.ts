@@ -1,3 +1,5 @@
+import { IPostLoginResponse } from './discord';
+
 export interface IUser {
   id: string;
   username: string;
@@ -10,4 +12,17 @@ export interface IUser {
   global_name: string;
   avatar_decoration?: string;
   banner_color: string;
+}
+
+export interface IUserAuth extends IPostLoginResponse {
+  userId: string;
+}
+
+export interface IUserGuild {
+  id: string;
+  name: string;
+  icon: string;
+  owner: boolean;
+  permissions: string;
+  features: string[];
 }

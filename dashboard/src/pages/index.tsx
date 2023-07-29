@@ -35,7 +35,7 @@ const Home: NextPageWithLayout = () => {
             >
                 <Link
                     css={{ fontSize: '$xl', fontWeight: '$semibold' }}
-                    onPress={() => router.push('/')}
+                    onClick={() => router.push('/')}
                 >
                     Discord Music Bot
                 </Link>

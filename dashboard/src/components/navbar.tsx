@@ -28,7 +28,7 @@ export default function Navbar() {
                     marginBottom: '30px',
                     color: '#fff',
                 }}
-                onPress={() => router.push('/')}
+                onClick={() => router.push('/')}
             >
                 Discord Music Bot
             </Link>
