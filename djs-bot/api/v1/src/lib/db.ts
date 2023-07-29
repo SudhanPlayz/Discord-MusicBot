@@ -1,6 +1,7 @@
 import { getBot } from '..';
 import { IPostLoginResponse } from '../interfaces/discord';
 import { IUserAuth } from '../interfaces/user';
+import { invalidateGetUserGuildsResponseCache } from '../services/discord';
 import APICache from './APICache';
 
 const getUserAuthDbCache = new APICache<string, IUserAuth>({
@@ -17,6 +18,7 @@ export const getUserAuth = async (userId: string) => {
     where: { userId },
   });
 
+  invalidateGetUserGuildsResponseCache(userId);
   getUserAuthDbCache.set(userId, data);
 
   return data;
@@ -36,6 +38,7 @@ export const updateUserAuth = async (
     update: authData,
   });
 
+  invalidateGetUserGuildsResponseCache(userId);
   getUserAuthDbCache.set(userId, res);
 
   return res;

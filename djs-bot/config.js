@@ -33,12 +33,6 @@ module.exports = {
 	clientSecret: process.env.CLIENTSECRET || "",
 
 	/**
-	 * Discord OAuth2 url for dashboard login
-	 * You can generate your url here: https://discord.com/developers/applications/960168583969767424/oauth2/url-generator
-	 */
-	oauth2: process.env.OAUTH2 || "",
-
-	/**
 	 * API configuration
 	 */
 	api: {
@@ -97,8 +91,16 @@ module.exports = {
 	 */
 	/** 
 	 * Scopes to request for the bot
-	 * @type {import("discord.js").OAuth2Scopes[]} */
+	 * @type {import("discord.js").OAuth2Scopes[]}
+	 */
 	scopes: ["bot", "applications.commands"],
+
+	/** 
+	 * Bot oauth scopes
+	 * @type {import("discord.js").OAuth2Scopes[]}
+	 */
+	oauth2Scopes: ["identify", "guilds"],
+
 	/** 
 	* Permissions to request for the bot
 	* @type {import("discord.js").PermissionResolvable | bigint} 

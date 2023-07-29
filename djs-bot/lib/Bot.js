@@ -235,8 +235,12 @@ class Bot extends Client {
 		}&permissions=${
 			this.config.permissions
 		}&scope=${this.config.scopes
-				.toString()
+				.join()
 				.replace(/,/g, "%20")}`
+	}
+
+	getOauthScopes() {
+		return this.config.oauth2Scopes.join(" ");
 	}
 }
 

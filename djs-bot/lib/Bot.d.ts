@@ -70,6 +70,7 @@ declare class Bot extends Client {
   markMessageAsDeleted(message: Message): Bot["deletedMessages"];
 
   getInviteLink(): string;
+  getOauthScopes(): string;
 }
 
 export = Bot;

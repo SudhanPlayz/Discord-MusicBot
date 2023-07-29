@@ -52,6 +52,12 @@ const getUserGuildsResponseCache = new APICache<string, IGetUserGuildsResponse>(
   },
 );
 
+export const invalidateGetUserGuildsResponseCache = async (userId: string) => {
+  const { token_type, access_token } = await db.getUserAuth(userId as string);
+  const auth = `${token_type} ${access_token}`;
+  getUserGuildsResponseCache.delete(auth);
+};
+
 export const getUserGuilds = async (userId: string) => {
   const { token_type, access_token } = await db.getUserAuth(userId as string);
 

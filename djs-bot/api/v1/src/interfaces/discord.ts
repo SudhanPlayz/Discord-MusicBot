@@ -14,6 +14,7 @@ export interface IPostLoginResponse {
   expires_in: number;
   refresh_token: string;
   scope: string;
+  guild?: any;
 }
 
 export interface IGetUserOauthInfoParams {

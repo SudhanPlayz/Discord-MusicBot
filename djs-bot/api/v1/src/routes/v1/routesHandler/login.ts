@@ -5,13 +5,19 @@ import APIError from '../../../lib/APIError';
 import { getUserOauthInfo, postLogin } from '../../../services/discord';
 import { createReply } from '../../../utils/reply';
 import * as db from '../../../lib/db';
+import {
+  getBaseOauthURL,
+  getOauthScopesParameter,
+} from '../../../utils/common';
 
 const handlers: RouteHandler[] = [
   {
     handler: async (request, reply) => {
-      const bot = getBot();
-
-      return createReply(bot.config.oauth2);
+      return createReply(
+        getBaseOauthURL() +
+          getOauthScopesParameter() +
+          `&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Flogin`,
+      );
     },
     method: 'get',
   },
@@ -60,7 +66,11 @@ const handlers: RouteHandler[] = [
         );
       }
 
+      // saving this incase one day needed
+      const guild = res.guild;
+
       const { id } = authData.user;
+      delete res.guild;
       await db.updateUserAuth(id, res);
 
       return createReply(authData.user);

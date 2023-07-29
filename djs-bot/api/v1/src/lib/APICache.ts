@@ -32,7 +32,7 @@ export default class APICache<K, T> {
   }
 
   set(key: K, value: T) {
-    this.cache.set(key, value);
+    const ret = this.cache.set(key, value);
 
     this.cleanUpTimer(key);
 
@@ -44,6 +44,8 @@ export default class APICache<K, T> {
         },
         this.invalidateTimeout,
       );
+
+    return ret;
   }
 
   get(key: K) {
