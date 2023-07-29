@@ -1,4 +1,4 @@
-import { getSavedAuth } from '@/utils/localStorage';
+import { getSavedUser } from '@/utils/localStorage';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
@@ -6,8 +6,8 @@ export default function useAuthGuard() {
     const router = useRouter();
 
     useEffect(() => {
-        const auth = getSavedAuth();
+        const user = getSavedUser();
 
-        if (!auth?.access_token) router.push('/login');
+        if (!user?.id) router.push('/login');
     }, []);
 }

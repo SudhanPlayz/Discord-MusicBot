@@ -1,6 +1,6 @@
 import ProcessData from '@/components/ProcessData';
 import { useGetLoginURL, usePostLogin } from '@/services/api';
-import { saveAuth } from '@/utils/localStorage';
+import { saveUser } from '@/utils/localStorage';
 import { getQueryData } from '@/utils/query';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
@@ -38,7 +38,7 @@ const Login = () => {
     }, [url]);
 
     if (data?.data) {
-        saveAuth(data.data);
+        saveUser(data.data);
 
         router.replace('/dashboard');
     }

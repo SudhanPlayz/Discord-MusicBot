@@ -6,7 +6,8 @@ import {
     IUseQueryOptions,
 } from '@/interfaces/api';
 import { IGuild } from '@/interfaces/guild';
-import { IUserAuth } from '@/interfaces/user';
+import { IUser } from '@/interfaces/user';
+import { logout } from '@/utils/common';
 import { getAuthHeaders } from '@/utils/query';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
@@ -15,6 +16,17 @@ import { ParsedUrlQuery } from 'querystring';
 const apiService = axios.create({
     baseURL: API_URL,
 });
+
+apiService.interceptors.response.use(
+    (res) => res,
+    (err) => {
+        if (err.response.status === 401) {
+            logout();
+        }
+
+        return Promise.reject(err);
+    },
+);
 
 type IGetDashboardData = IBaseApiResponse<IDashboardData>;
 
@@ -99,7 +111,7 @@ export function useGetLoginURL(options: IUseQueryOptions<IGetLoginURL> = {}) {
     });
 }
 
-type IPostLogin = IBaseApiResponse<IUserAuth>;
+type IPostLogin = IBaseApiResponse<IUser>;
 
 export async function postLogin(data: ParsedUrlQuery) {
     const { origin, pathname } = window.location;

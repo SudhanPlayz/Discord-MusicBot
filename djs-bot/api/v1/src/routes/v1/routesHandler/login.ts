@@ -2,7 +2,7 @@ import { getBot } from '../../..';
 import { RouteHandler } from '../../../interfaces/common';
 import { IPostLoginData } from '../../../interfaces/discord';
 import APIError from '../../../lib/APIError';
-import { postLogin } from '../../../services/discord';
+import { getUserOauthInfo, postLogin } from '../../../services/discord';
 import { createReply } from '../../../utils/reply';
 
 const handlers: RouteHandler[] = [
@@ -46,7 +46,23 @@ const handlers: RouteHandler[] = [
 
       const res = await postLogin(req);
 
-      return createReply(res);
+      const authData = await getUserOauthInfo({
+        authToken: res.access_token,
+        authType: res.token_type,
+      });
+
+      if (authData.user) {
+        const { id } = authData.user;
+
+        // update access token in database
+      } else
+        throw new APIError(
+          'Unauthorized',
+          APIError.STATUS_CODES.UNAUTHORIZED,
+          APIError.ERROR_CODES.UNAUTHORIZED,
+        );
+
+      return createReply(authData.user);
     },
     method: 'post',
   },

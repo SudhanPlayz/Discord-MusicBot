@@ -35,7 +35,7 @@ const Home: NextPageWithLayout = () => {
             >
                 <Link
                     css={{ fontSize: '$xl', fontWeight: '$semibold' }}
-                    onClick={() => router.push('/')}
+                    onPress={() => router.push('/')}
                 >
                     Discord Music Bot
                 </Link>
@@ -62,7 +62,7 @@ const Home: NextPageWithLayout = () => {
                     Features
                 </Link>
                 <Button
-                    onClick={() => router.push('/dashboard')}
+                    onPress={() => router.push('/dashboard')}
                     css={{ marginLeft: 'auto' }}
                     auto
                     shadow
@@ -102,7 +102,7 @@ const Home: NextPageWithLayout = () => {
                 >
                     <Button
                         color="primary"
-                        onClick={() => router.push('/login')}
+                        onPress={() => router.push('/login')}
                         shadow
                         style={{
                             marginTop: '1rem',
@@ -113,7 +113,7 @@ const Home: NextPageWithLayout = () => {
                     <Button
                         color="primary"
                         flat
-                        onClick={() =>
+                        onPress={() =>
                             window.open(
                                 'https://github.com/SudhanPlayz/Discord-MusicBot',
                             )

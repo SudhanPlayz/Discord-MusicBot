@@ -1,4 +1,4 @@
-import { clearAuth } from '@/utils/localStorage';
+import { clearAuth, clearUser } from '@/utils/localStorage';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
@@ -8,6 +8,7 @@ export default function Logout(_props: any) {
 
     useEffect(() => {
         clearAuth();
+        clearUser();
         router.replace('/');
     }, []);
 

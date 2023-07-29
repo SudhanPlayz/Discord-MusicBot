@@ -1,3 +1,5 @@
+import { IUser } from './user';
+
 export interface IPostLoginData {
   client_id: string;
   client_secret: string;
@@ -12,4 +14,14 @@ export interface IPostLoginResponse {
   expires_in: number;
   refresh_token: string;
   scope: string;
+}
+
+export interface IGetUserOauthInfoParams {
+  authType: string;
+  authToken: string;
+}
+
+export interface IGetUserOauthInfoResponse {
+  // unused property left out, fill when needed
+  user?: IUser;
 }

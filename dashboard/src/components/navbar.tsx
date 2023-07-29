@@ -28,7 +28,7 @@ export default function Navbar() {
                     marginBottom: '30px',
                     color: '#fff',
                 }}
-                onClick={() => router.push('/')}
+                onPress={() => router.push('/')}
             >
                 Discord Music Bot
             </Link>
@@ -36,7 +36,7 @@ export default function Navbar() {
                 css={{
                     background: pathIs('/dashboard') ? '$primary' : '$gray100',
                 }}
-                onClick={() => router.push('/dashboard')}
+                onPress={() => router.push('/dashboard')}
                 style={{ marginBottom: '10px' }}
             >
                 Dashboard
@@ -46,7 +46,7 @@ export default function Navbar() {
                     background: pathIs('/servers') ? '$primary' : '$gray100',
                 }}
                 color="default"
-                onClick={() => router.push('/servers')}
+                onPress={() => router.push('/servers')}
                 style={{ marginBottom: '10px' }}
             >
                 Servers
@@ -55,7 +55,7 @@ export default function Navbar() {
             <Button
                 color="error"
                 flat
-                onClick={() => router.push('/logout')}
+                onPress={() => router.push('/logout')}
                 style={{ marginBottom: '10px' }}
             >
                 Logout

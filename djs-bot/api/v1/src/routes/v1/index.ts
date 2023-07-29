@@ -50,12 +50,11 @@ const routes: RegisterRouteHandler = async (app, opts, done) => {
     const rPath = request.routerPath.substring(API_ROUTES_PREFIX.length);
 
     if (routesRequiresAuth.some((path) => rPath === path)) {
-      // !TODO: what kind of authorization check is this???
-      if (!request.headers.access_token?.length)
+      if (!request.headers.user_id?.length)
         throw new APIError(
-          'Forbidden',
-          APIError.STATUS_CODES.FORBIDDEN,
-          APIError.ERROR_CODES.FORBIDDEN,
+          'Unauthorized',
+          APIError.STATUS_CODES.UNAUTHORIZED,
+          APIError.ERROR_CODES.UNAUTHORIZED,
         );
     }
   });
