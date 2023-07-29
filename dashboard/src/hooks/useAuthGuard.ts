@@ -8,6 +8,6 @@ export default function useAuthGuard() {
     useEffect(() => {
         const user = getSavedUser();
 
-        if (!user?.id) router.push('/login');
+        if (!user?.access_token?.length) router.push('/login');
     }, []);
 }

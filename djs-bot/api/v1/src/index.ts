@@ -36,6 +36,8 @@ const corsOpts = {
 };
 
 const setupServer = async () => {
+  server.setErrorHandler(routesErrorHandler);
+
   await server.register(cors);
 
   server.get('/', async (request, reply) => {
@@ -48,8 +50,6 @@ const setupServer = async () => {
   await server.register(routes, {
     prefix: API_ROUTES_PREFIX,
   });
-
-  server.setErrorHandler(routesErrorHandler);
 };
 
 const app = (djsBot?: Bot) => {

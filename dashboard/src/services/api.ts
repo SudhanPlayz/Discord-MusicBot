@@ -22,6 +22,7 @@ apiService.interceptors.response.use(
     (err) => {
         if (err.response.status === 401) {
             logout();
+            window.location.pathname = '/login';
         }
 
         return Promise.reject(err);

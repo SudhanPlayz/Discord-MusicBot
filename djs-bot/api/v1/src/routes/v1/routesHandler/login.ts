@@ -9,6 +9,7 @@ import {
   getBaseOauthURL,
   getOauthScopesParameter,
 } from '../../../utils/common';
+import { signToken } from '../../../lib/jwt';
 
 const handlers: RouteHandler[] = [
   {
@@ -73,6 +74,7 @@ const handlers: RouteHandler[] = [
       delete res.guild;
       await db.updateUserAuth(id, res);
 
+      authData.user.access_token = signToken({ user_id: id });
       return createReply(authData.user);
     },
     method: 'post',

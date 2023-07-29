@@ -7,6 +7,7 @@ import { readdirSync } from 'fs';
 import { API_ROUTES_PREFIX } from '../../lib/constants';
 import APIError from '../../lib/APIError';
 import * as db from '../../lib/db';
+import { verifyToken } from '../../lib/jwt';
 
 const routes: RegisterRouteHandler = async (app, opts, done) => {
   const routes = readdirSync(__dirname + '/routesHandler').filter((file) =>
@@ -58,11 +59,17 @@ const routes: RegisterRouteHandler = async (app, opts, done) => {
         );
       };
 
-      if (!request.headers.user_id?.length) throwError();
+      if (!request.headers.access_token?.length) throwError();
 
-      const auth = await db.getUserAuth(request.headers.user_id as string);
+      const { user_id } = verifyToken(request.headers.access_token as string);
+
+      if (!user_id?.length) throwError();
+
+      const auth = await db.getUserAuth(user_id as string);
 
       if (!auth?.access_token?.length) throwError();
+
+      request.headers.user_id = user_id;
     }
   });
 

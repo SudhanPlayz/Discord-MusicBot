@@ -7,6 +7,6 @@ export function getQueryData<T = {}>(data: IBaseApiResponse<T> | undefined) {
 
 export function getAuthHeaders() {
     return {
-        user_id: getSavedUser()?.id,
+        access_token: getSavedUser()?.access_token,
     };
 }

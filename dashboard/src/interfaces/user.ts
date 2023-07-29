@@ -18,4 +18,5 @@ export interface IUser {
     global_name: string;
     avatar_decoration?: string;
     banner_color: string;
+    access_token: string;
 }
