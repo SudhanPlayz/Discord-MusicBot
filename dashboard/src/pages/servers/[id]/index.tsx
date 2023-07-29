@@ -1,11 +1,12 @@
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { Avatar } from '@nextui-org/react';
+import { Avatar, Button } from '@nextui-org/react';
 import DashboardLayout from '@/layouts/DashboardLayout';
 import { NextPageWithLayout } from '@/interfaces/layouts';
 import { useGetServer } from '@/services/api';
 import { getQueryData } from '@/utils/query';
 import ProcessData from '@/components/ProcessData';
+import type { AxiosError } from 'axios';
 
 function Loading() {
     return (
@@ -18,10 +19,39 @@ function Loading() {
     );
 }
 
+function Failed({ error }: { error?: AxiosError }) {
+    const router = useRouter();
+
+    const back = () => {
+        router.push('/servers');
+    };
+
+    if (error?.response?.status === 404)
+        return (
+            <div
+                style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '30px',
+                }}
+            >
+                <h1>Bot isn't in the server, it's gone!</h1>
+
+                <div>
+                    <Button shadow size={'lg'} onClick={back}>
+                        Return to server list
+                    </Button>
+                </div>
+            </div>
+        );
+
+    return <h1>Failed to fetch server data</h1>;
+}
+
 const Server: NextPageWithLayout = () => {
     const router = useRouter();
     const serverId = router.query.id;
-    const { data, isLoading } = useGetServer(serverId as string);
+    const { data, isLoading, error } = useGetServer(serverId as string);
 
     console.log('server:', data);
 
@@ -29,7 +59,11 @@ const Server: NextPageWithLayout = () => {
         getQueryData(data) || {};
 
     return (
-        <ProcessData {...{ data, isLoading }} loadingComponent={<Loading />}>
+        <ProcessData
+            {...{ data, isLoading }}
+            loadingComponent={<Loading />}
+            failedComponent={<Failed error={error as AxiosError} />}
+        >
             <Head>
                 <title>{name} | Discord Music Bot</title>
             </Head>
