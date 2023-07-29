@@ -36,9 +36,7 @@ export const updateUserAuth = async (
     update: authData,
   });
 
-  console.log({ dbUpdate: res });
-
-  getUserAuthDbCache.delete(userId);
+  getUserAuthDbCache.set(userId, res);
 
   return res;
 };
