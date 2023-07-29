@@ -35,7 +35,7 @@ function Failed({ error }: { error?: AxiosError }) {
                     gap: '30px',
                 }}
             >
-                <h1>Bot isn't in the server, it's gone!</h1>
+                <h1>Bot isn&apos;t in the server, it&apos;s gone!</h1>
 
                 <div>
                     <Button shadow size={'lg'} onClick={back}>
