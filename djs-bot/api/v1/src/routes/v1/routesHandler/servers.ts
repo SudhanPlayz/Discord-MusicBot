@@ -64,18 +64,20 @@ const handler: RouteHandler = async (request, reply) => {
   const guilds = await getUserGuilds(request.headers.user_id as string);
 
   return createReply({
-    servers: guilds.map((userGuild) => {
-      // @ts-ignore
-      const guild: Guild = new Guild(bot, userGuild);
+    servers: guilds
+      .map((userGuild) => {
+        // @ts-ignore
+        const guild: Guild = new Guild(bot, userGuild);
 
-      const cachedGuild = bot.guilds.cache.get(guild.id);
+        const cachedGuild = bot.guilds.cache.get(guild.id);
 
-      return {
-        ...userGuild,
-        icon: guild.iconURL(),
-        mutual: !!cachedGuild,
-      };
-    }),
+        return {
+          ...userGuild,
+          icon: guild.iconURL(),
+          mutual: !!cachedGuild,
+        };
+      })
+      .sort((a, b) => ((b.mutual && 1) || 0) - ((a.mutual && 1) || 0)),
   });
 };
 
