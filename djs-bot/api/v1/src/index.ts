@@ -4,6 +4,7 @@ import routes from './routes/v1';
 import routesErrorHandler from './routes/v1/errorHandler';
 import APIError from './lib/APIError';
 import cors from '@fastify/cors';
+import { API_ROUTES_PREFIX } from './lib/constants';
 
 const pkg = require('../../../package.json');
 
@@ -35,6 +36,8 @@ const corsOpts = {
 };
 
 const setupServer = async () => {
+  server.setErrorHandler(routesErrorHandler);
+
   await server.register(cors);
 
   server.get('/', async (request, reply) => {
@@ -45,10 +48,8 @@ const setupServer = async () => {
   });
 
   await server.register(routes, {
-    prefix: '/api/v1',
+    prefix: API_ROUTES_PREFIX,
   });
-
-  server.setErrorHandler(routesErrorHandler);
 };
 
 const app = (djsBot?: Bot) => {

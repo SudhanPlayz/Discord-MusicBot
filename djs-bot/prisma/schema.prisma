@@ -42,3 +42,15 @@ model User {
   DJ        Boolean    @default(false)
   playlists Playlist[]
 }
+
+model UserAuth {
+  id            Int      @id @default(autoincrement())
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  userId        String   @unique
+  access_token  String
+  token_type    String
+  expires_in    Int
+  refresh_token String
+  scope         String
+}

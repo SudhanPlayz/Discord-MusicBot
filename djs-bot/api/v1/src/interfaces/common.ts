@@ -8,7 +8,36 @@ export type FastifyInstance = ReturnType<typeof fastify>;
 
 export type RegisterRouteHandler = Parameters<FastifyInstance['register']>[0];
 
-export type RouteHandler = Parameters<FastifyInstance['route']>[0]['handler'];
+export type FastifyRouteHandler = Parameters<
+  FastifyInstance['route']
+>[0]['handler'];
+
+export interface IRouteHandlerOptions {
+  requiresAuth?: boolean;
+}
+
+export interface APIRouteHandler {
+  default: FastifyRouteHandler;
+  method?: IServerMethod;
+  options?: IRouteHandlerOptions;
+}
+
+export type IServerMethod =
+  | 'delete'
+  | 'get'
+  | 'head'
+  | 'patch'
+  | 'post'
+  | 'put'
+  | 'options';
+
+export interface RouteHandlerEntry {
+  handler: FastifyRouteHandler;
+  method: IServerMethod;
+  options?: IRouteHandlerOptions;
+}
+
+export type RouteHandler = FastifyRouteHandler | RouteHandlerEntry;
 
 export type RouteErrorHandler = Parameters<
   FastifyInstance['setErrorHandler']

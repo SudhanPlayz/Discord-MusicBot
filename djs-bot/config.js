@@ -66,6 +66,15 @@ module.exports = {
 			retryDelay: 6000, // Delay between reconnect attempts if connection is lost.
 			secure: false, // if lavalink is running SSL
 		},
+		{
+			identifier: "LocalNode", // log id string
+			host: "localhost",
+			port: 2333,
+			password: "youshallnotpass",
+			retryAmount: 15, // for lavalink connection attempts
+			retryDelay: 6000, // Delay between reconnect attempts if connection is lost.
+			secure: false, // if lavalink is running SSL
+		},
 		/* {
 			identifier: "Lavalink 2", 
 			host: "",
@@ -82,8 +91,16 @@ module.exports = {
 	 */
 	/** 
 	 * Scopes to request for the bot
-	 * @type {import("discord.js").OAuth2Scopes[]} */
+	 * @type {import("discord.js").OAuth2Scopes[]}
+	 */
 	scopes: ["bot", "applications.commands"],
+
+	/** 
+	 * Bot oauth scopes
+	 * @type {import("discord.js").OAuth2Scopes[]}
+	 */
+	oauth2Scopes: ["identify", "guilds"],
+
 	/** 
 	* Permissions to request for the bot
 	* @type {import("discord.js").PermissionResolvable | bigint} 

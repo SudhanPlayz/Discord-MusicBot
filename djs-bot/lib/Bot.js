@@ -228,6 +228,20 @@ class Bot extends Client {
 	markMessageAsDeleted(message) {
 		this.deletedMessages.add(message);
 	}
+
+	getInviteLink() {
+		return `https://discord.com/oauth2/authorize?client_id=${
+			this.config.clientId
+		}&permissions=${
+			this.config.permissions
+		}&scope=${this.config.scopes
+				.join()
+				.replace(/,/g, "%20")}`
+	}
+
+	getOauthScopes() {
+		return this.config.oauth2Scopes.join(" ");
+	}
 }
 
 module.exports = Bot;

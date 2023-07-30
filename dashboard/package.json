@@ -7,18 +7,16 @@
     "lint": "npm i && next lint",
     "build": "npm i && next build",
     "start": "npm i && next start",
-    "export": "npm i && next export"
+    "export": "npm i && next export",
+    "build-and-start": "npm i && next build && next start"
   },
   "dependencies": {
     "@nextui-org/react": "1.0.0-beta.13",
-    
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
-    
     "@mui/material": "^5.13.6",
     "@mui/icons-material": "^5.11.16",
-    
-    
+    "@tanstack/react-query": "^4.32.0",
     "next": "13.4.12",
     "axios": "^1.4.0",
     "react": "18.2.0",

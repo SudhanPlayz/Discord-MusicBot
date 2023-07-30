@@ -17,13 +17,7 @@ const command = new SlashCommand()
             .setLabel("Invite me")
             .setStyle('Link')
             .setURL(
-              `https://discord.com/oauth2/authorize?client_id=${
-                client.config.clientId
-              }&permissions=${
-                client.config.permissions
-              }&scope=${client.config.scopes
-                .toString()
-                .replace(/,/g, "%20")}`
+              client.getInviteLink(),
             )
         ),
       ],

@@ -1,6 +1,9 @@
 import { getBot } from '../../..';
 import APIError from '../../../lib/APIError';
 import { RouteHandler } from '../../../interfaces/common';
+import { createReply } from '../../../utils/reply';
+import { getUserGuilds } from '../../../services/discord';
+import { Guild } from 'discord.js';
 
 const handler: RouteHandler = async (request, reply) => {
   const bot = getBot();
@@ -15,7 +18,7 @@ const handler: RouteHandler = async (request, reply) => {
         APIError.ERROR_CODES.NOT_FOUND,
       );
 
-    return {
+    return createReply({
       id: guild.id,
       name: guild.name,
       icon: guild.iconURL(),
@@ -55,18 +58,29 @@ const handler: RouteHandler = async (request, reply) => {
             ?.duration,
         },
       },
-    };
+    });
   }
 
-  return {
-    servers: bot.guilds.cache.map((guild) => ({
-      id: guild.id,
-      name: guild.name,
-      icon: guild.iconURL(),
-    })),
-  };
+  const guilds = await getUserGuilds(request.headers.user_id as string);
+
+  return createReply({
+    servers: guilds
+      .map((userGuild) => {
+        // @ts-ignore
+        const guild: Guild = new Guild(bot, userGuild);
+
+        const cachedGuild = bot.guilds.cache.get(guild.id);
+
+        return {
+          ...userGuild,
+          icon: guild.iconURL(),
+          mutual: !!cachedGuild,
+        };
+      })
+      .sort((a, b) => ((b.mutual && 1) || 0) - ((a.mutual && 1) || 0)),
+  });
 };
 
-export default handler;
+export const options = { requiresAuth: true };
 
-export const method = 'get';
+export default handler;

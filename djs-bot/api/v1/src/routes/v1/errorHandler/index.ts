@@ -15,6 +15,16 @@ const routesErrorHandler: RouteErrorHandler = (err, request, reply) => {
     return;
   }
 
+  if (err?.name === 'JsonWebTokenError') {
+    reply.status(APIError.STATUS_CODES.UNAUTHORIZED).send({
+      success: false,
+      code: APIError.ERROR_CODES.UNAUTHORIZED,
+      message: 'Go away you pesky hacker',
+    });
+
+    return;
+  }
+
   if (bot) {
     bot.error('Unhandled server error:');
     bot.error(err);
