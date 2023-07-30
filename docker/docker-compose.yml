@@ -5,6 +5,11 @@ services:
     container_name: djs-bot
     image: node:latest
     restart: "unless-stopped"
+    environment:
+      - TOKEN=${TOKEN}
+      - CLIENTID=${CLIENTID}
+      - CLIENTSECRET=${CLIENTSECRET}
+      - DEVUID=${DEVUID}
     stdin_open: true
     tty: true
     volumes:
