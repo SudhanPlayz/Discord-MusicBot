@@ -10,6 +10,7 @@ services:
       - CLIENTID=${CLIENTID}
       - CLIENTSECRET=${CLIENTSECRET}
       - DEVUID=${DEVUID}
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
     stdin_open: true
     tty: true
     volumes:
