@@ -30,7 +30,7 @@ services:
     ports:
       - "3000:3000"
     working_dir: /dashboard
-    command: ["npm", "run", "dev"]
+    command: ["npm", "run", "build-and-start"]
     depends_on:
       djs-bot:
         condition: service_started
