@@ -14,11 +14,11 @@ module.exports = async (client, interaction, options = {}) => {
 	return new Promise(async (resolve) => {
 		let errorStr;
 
+
 		if (!interaction.member.voice.channel) {
 			errorStr = "You must be in a voice channel to use this command!";
 		}
-
-		if (
+		else if (
 			interaction.guild.members.cache.get(client.user.id).voice.channel &&
 			!interaction.guild.members.cache
 			.get(client.user.id)
@@ -27,10 +27,10 @@ module.exports = async (client, interaction, options = {}) => {
 			errorStr =
 				"You must be in the same voice channel as me to use this command!";
 		}
-
-		if (!interaction.member.voice.channel.joinable) {
+		else if (!interaction.member.voice.channel.joinable) {
 			errorStr = "I don't have enough permission to join your voice channel!";
 		}
+
 
 		if (errorStr) {
 			await interaction.reply({
