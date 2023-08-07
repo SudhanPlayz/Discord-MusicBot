@@ -26,17 +26,20 @@ export type AutocompleteOptionsCallback = (
 // construction of commands using methods instead of properties
 class SlashCommand<T = unknown> extends SlashCommandBuilder {
   type: number;
-  run: RunCallback<T>;
+  run: RunCallback<T> | undefined;
   ownerOnly: boolean | undefined;
   usesDb: boolean | undefined;
-  usage: string | "";
-  category: string | "misc";
+  usage: string | "" | undefined;
+  category: string | "misc" | undefined;
   permissions: unknown[];
-  autocompleteOptions: AutocompleteOptionsCallback;
+  autocompleteOptions: AutocompleteOptionsCallback | undefined;
 
   constructor() {
     super();
     this.type = 1; // "CHAT_INPUT"
+
+    this.permissions = [];
+
     return this;
   }
 
