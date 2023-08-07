@@ -1,5 +1,5 @@
 const { getClient } = require("../bot");
-const { MessageEmbed } = require("./Embed");
+const { MessageEmbed } = require("../lib/Embed");
 
 const successEmbed = ({ color, desc = "Success" } = {}) =>
 	new MessageEmbed()

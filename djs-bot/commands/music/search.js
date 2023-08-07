@@ -1,7 +1,7 @@
 const SlashCommand = require("../../lib/SlashCommand");
 const prettyMilliseconds = require("pretty-ms");
 const { ActionRowBuilder, StringSelectMenuBuilder } = require("discord.js");
-const { embedNoLLNode, redEmbed, colorEmbed } = require("../../lib/embeds");
+const { embedNoLLNode, redEmbed, colorEmbed } = require("../../util/embeds");
 const { MessageEmbed } = require("../../lib/Embed");
 
 const command = new SlashCommand()

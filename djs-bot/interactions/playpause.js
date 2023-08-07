@@ -1,8 +1,5 @@
 const SlashCommand = require("../lib/SlashCommand");
-const {
-	embedNoLLNode,
-	embedNoTrackPlaying,
-} = require("../lib/embeds");
+const { embedNoLLNode, embedNoTrackPlaying } = require("../util/embeds");
 
 const command = new SlashCommand()
 	.setName("playpause")
@@ -20,26 +17,26 @@ const command = new SlashCommand()
 			return;
 		}
 
-		if (!client.manager.Engine) {
+		const sendError = (embed) => {
 			return interaction.reply({
-				embeds: [embedNoLLNode()],
+				embeds: [embed],
 				ephemeral: true,
 			});
+		};
+
+		if (!client.manager.Engine) {
+			return sendError(embedNoLLNode());
 		}
 
 		const player = client.manager.Engine.players.get(interaction.guild.id);
 
 		if (!player) {
-			return interaction.reply({
-				embeds: [embedNoTrackPlaying()],
-				ephemeral: true,
-			});
+			return sendError(embedNoTrackPlaying());
 		}
 
 		if (player.paused) {
 			player.play();
-		}
-		else player.pause();
+		} else player.pause();
 
 		interaction.deferUpdate();
 		return;
