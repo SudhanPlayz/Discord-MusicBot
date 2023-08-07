@@ -201,6 +201,7 @@ class Bot extends Client {
 				}
 			}
 		}
+		this.loadInteractionCommands();
 		this.info("Slash commands have been loaded. Waiting for bot to finish initializing...");
 		this.once("ready", async () => {
 			try {

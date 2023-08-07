@@ -1,4 +1,4 @@
-const { getClient } = require("../../bot");
+const { getClient } = require("../bot");
 const { MessageEmbed } = require("./Embed");
 
 const successEmbed = ({ color, desc = "Success" } = {}) =>
