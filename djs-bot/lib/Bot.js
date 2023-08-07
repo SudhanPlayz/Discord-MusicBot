@@ -35,6 +35,7 @@ class Bot extends Client {
 		super(clientOptions); //Construct
 
 		this.slash = new Collection();
+		this.interactionCommands = new Collection();
 		this.logger = new Logger(path.join(__dirname, "..", "logs.log"));
 
 		getConfig().then((conf) => {
@@ -178,7 +179,7 @@ class Bot extends Client {
 	}
 
 	LoadCommands() {
-		let CommandsDir = fs.readdirSync("./commands");
+		const CommandsDir = fs.readdirSync("./commands");
 		for (const category of CommandsDir) {
 			const commandFiles = fs
 				.readdirSync(`./commands/${category}`)
@@ -241,6 +242,30 @@ class Bot extends Client {
 
 	getOauthScopes() {
 		return this.config.oauth2Scopes.join(" ");
+	}
+
+	loadInteractionCommands() {
+		const folderPath = path.join(__dirname, "..", "interactions");
+
+		const commands = fs.readdirSync(folderPath)
+			.filter((file) => file.endsWith(".js"));
+
+		for (const file of commands) {
+			/** @type {import("./SlashCommand")} */
+			const command = require(path.join(folderPath, file));
+			if (!command || !command.run || !command.name) {
+				this.error(`Unable to load interaction command: ${file} is not a valid command with run function or name`);
+			} else {
+				try {
+					this.interactionCommands.set(command.name, command);
+				} catch (err) {
+					return this.error(err);
+				}
+
+				if (this.OPLevel >= 2)
+					this.log(`Interaction Command Loaded: ${file}`);
+			}
+		}
 	}
 }
 

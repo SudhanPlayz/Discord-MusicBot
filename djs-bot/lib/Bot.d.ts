@@ -14,6 +14,7 @@ import { app } from "../api/v1/src";
  */
 declare class Bot extends Client {
   slash: Collection<SlashCommand["name"], SlashCommand>;
+  interactionCommands: Collection<SlashCommand["name"], SlashCommand>;
   logger: Logger;
   OPLevel: number;
   config: typeof config;
@@ -71,6 +72,8 @@ declare class Bot extends Client {
 
   getInviteLink(): string;
   getOauthScopes(): string;
+
+  loadInteractionCommands(): void;
 }
 
 export = Bot;
