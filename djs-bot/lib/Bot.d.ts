@@ -4,6 +4,8 @@ import Logger from "./Logger";
 import MusicManager from "./MusicManager";
 import DBMS from "./DBMS";
 import prettyMilliseconds from "pretty-ms";
+import getChannel from "../util/getChannel";
+import getLavalink from "../util/getLavalink";
 import { CosmiTrack } from "cosmicord.js";
 import config from "../config";
 import { app } from "../api/v1/src";
@@ -18,6 +20,8 @@ declare class Bot extends Client {
   logger: Logger;
   OPLevel: number;
   config: typeof config;
+  getChannel: typeof getChannel;
+  getLavalink: typeof getLavalink;
   ms: typeof prettyMilliseconds;
   deletedMessages: WeakSet<Message>;
   playedTracks: Array<CosmiTrack>;
