@@ -78,6 +78,23 @@ declare class Bot extends Client {
   getOauthScopes(): string;
 
   loadInteractionCommands(): void;
+
+  registerCommand(command: SlashCommand, file: string, category: string): void;
+
+  loadSubCommand(
+    commandIndex: SlashCommand,
+    path: string,
+    level?: number
+  ): boolean | void;
+
+  parseCommandFolder(
+    folder: string,
+    categoryPath: string
+  ): {
+    commandFolderPath: string | undefined;
+    indexFilePath: string | undefined;
+    folderFiles: string | undefined;
+  };
 }
 
 export = Bot;

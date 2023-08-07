@@ -35,8 +35,8 @@ const command = new SlashCommand()
 		}
 
 		if (player.paused) {
-			player.play();
-		} else player.pause();
+			player.pause(false);
+		} else player.pause(true);
 
 		interaction.deferUpdate();
 		return;
