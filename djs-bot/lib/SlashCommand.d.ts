@@ -1,5 +1,5 @@
 import type {
-  CommandInteraction,
+  ClientEvents,
   CommandInteractionOptionResolver,
   SlashCommandBuilder,
 } from "discord.js";
@@ -7,14 +7,14 @@ import Bot from "./Bot";
 
 type RunCallback<T> = (
   client: Bot,
-  interaction: CommandInteraction,
+  interaction: ClientEvents["interactionCreate"][0],
   options: CommandInteractionOptionResolver
 ) => T;
 
 type AutocompleteOptionsCallback = (
   input: string,
   index: number,
-  interaction: CommandInteraction,
+  interaction: ClientEvents["interactionCreate"][0],
   client: Bot
 ) => Promise<
   {

@@ -2,14 +2,17 @@ const SlashCommand = require("../lib/SlashCommand");
 const {
 	embedNoLLNode,
 	embedNoTrackPlaying,
-	errorEmbed,
 } = require("../lib/embeds");
 
 const command = new SlashCommand()
 	.setName("playpause")
 	.setDescription("Play and Pause interaction")
 	.setRun(async (client, interaction, options) => {
-		let channel = await client.getChannel(client, interaction, {
+		if (!interaction.isButton()) {
+			throw new Error("Invalid interaction type for this command");
+		}
+
+		const channel = await client.getChannel(client, interaction, {
 			ephemeral: true,
 		});
 
@@ -33,11 +36,13 @@ const command = new SlashCommand()
 			});
 		}
 
-		if (interaction.isButton()) {
-			// do smt
+		if (player.paused) {
+			player.play();
 		}
+		else player.pause();
 
-		throw new Error("Invalid interaction type");
+		interaction.deferUpdate();
+		return;
 	});
 
 module.exports = command;
