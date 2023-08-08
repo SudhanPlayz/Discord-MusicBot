@@ -11,7 +11,7 @@
     "build-and-start": "npm i && next build && next start"
   },
   "dependencies": {
-    "@nextui-org/react": "2.0.5",
+    "@nextui-org/react": "2.0.6",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@mui/material": "^5.13.6",
