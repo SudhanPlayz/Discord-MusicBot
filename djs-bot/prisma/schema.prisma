@@ -42,13 +42,13 @@ model User {
   playlists Playlist[]
 }
 
-model GuildConfig {
+model Guild {
   id                String     @id
   createdAt         DateTime   @default(now())
   updatedAt         DateTime   @updatedAt
   guildId           String     @unique
-  djRoleId          String
-  controlChannelId  String
+  DJRole            String?
+  controlChannelId  String?
 }
 
 model UserAuth {
