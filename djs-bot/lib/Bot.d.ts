@@ -95,6 +95,8 @@ declare class Bot extends Client {
     indexFilePath: string | undefined;
     folderFiles: string | undefined;
   };
+
+  static setNoBoot(val: boolean): void;
 }
 
 export = Bot;

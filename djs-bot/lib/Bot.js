@@ -8,6 +8,8 @@ const { app } = require("../api/v1/dist");
 const getConfig = require("../util/getConfig");
 const MusicManager = require("./MusicManager");
 
+let noBoot = false;
+
 /**
  * The class groups some useful functions for the client in order to facilitate expandability, maintenance and manageability
  * as well as initialize the bot through it's proprietary methods
@@ -38,9 +40,7 @@ class Bot extends Client {
 			this.config = conf;
 			this.boot();
 
-			this.LoadSchedules();
 			this.LoadCommands();
-			this.LoadEvents();
 
 			this.getChannel = require("../util/getChannel");
 			this.getLavalink = require("../util/getLavalink");
@@ -105,6 +105,12 @@ class Bot extends Client {
 
 	boot() {
 		this.printBotInfo();
+
+		if (noBoot !== false) return;
+
+		this.LoadSchedules();
+		this.LoadEvents();
+
 		this.warn("Booting up the bot...\n\t" + this.denom);
 
 		LoadErrorHandler(this);
@@ -212,7 +218,7 @@ class Bot extends Client {
 				if (!indexFilePath) break;
 
 				/** @type {import("./SlashCommand")} */
-				const commandIndex = require(indexFilePath);
+				const mainCommand = require(indexFilePath);
 
 				const subFiles = folderFiles.filter((file) => file.endsWith(".js"));
 
@@ -229,7 +235,7 @@ class Bot extends Client {
 						continue;
 					}
 
-					handler(commandIndex);
+					handler(mainCommand);
 				}
 
 				const subCommandFolders = subFiles.filter(
@@ -241,14 +247,15 @@ class Bot extends Client {
 				for (const subCommandFolder of subCommandFolders) {
 					if (
 						this.loadSubCommand(
-							commandIndex,
-							path.join(commandFolderPath, subCommandFolder)
+							mainCommand,
+							commandFolderPath,
+							subCommandFolder
 						) === true
 					)
 						break;
 				}
 
-				this.registerCommand(commandIndex, folder, commandFolderPath);
+				this.registerCommand(mainCommand, folder, commandFolderPath);
 			}
 		}
 
@@ -345,16 +352,37 @@ class Bot extends Client {
 			this.log(`Slash Command Loaded: ${file} from [${category}]`);
 	}
 
-	loadSubCommand(commandIndex, path, level = 1) {
-		if (level > 2) {
+	/**
+	 * Load a subcommand or subcommand group
+	 * For loading subcommand group, the handler should have and use its own loader to load its nested subcommand
+	 *
+	 * @returns {boolean | undefined} whether if the caller loop should stop loading next subcommand
+	 */
+	loadSubCommand(mainCommand, categoryPath, folder) {
+		const { commandFolderPath, indexFilePath } = this.parseCommandFolder(
+			folder,
+			categoryPath
+		);
+
+		if (!indexFilePath) {
 			this.error(
-				`Unable to load subcommand folder: ${path}, too many level violating discord slash command structure`
+				`Unable to load handler: ${commandFolderPath}, no valid handler index file inside subcommand folder`
 			);
 
-			return true;
+			return;
 		}
 
-		// !TODO: implement subcommand folder loading
+		const subCommandHandler = require(indexFilePath);
+
+		if (typeof subCommandHandler !== "function") {
+			this.error(
+				`Unable to load handler: ${commandFolderPath}, handler isn't a function`
+			);
+
+			return;
+		}
+
+		subCommandHandler(mainCommand);
 	}
 
 	parseCommandFolder(folder, categoryPath) {
@@ -385,6 +413,10 @@ class Bot extends Client {
 			indexFilePath,
 			folderFiles,
 		};
+	}
+
+	static setNoBoot(val) {
+		noBoot = val;
 	}
 }
 

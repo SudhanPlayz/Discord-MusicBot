@@ -2,10 +2,11 @@ const {
 	MessageEmbed,
 } = require("../../lib/Embed");
 const fs = require("fs");
-const { getCommands, getCategories } = require("../../util/getDirs");
+const { getCategories } = require("../../util/getDirs");
 const { ComponentType, ActionRowBuilder, StringSelectMenuBuilder } = require("discord.js");
 const { capitalize } = require("../../util/string");
 const SlashCommand = require("../../lib/SlashCommand");
+const { getClient } = require("../../bot");
 
 /** @type {SlashCommand} */
 module.exports = {
@@ -20,10 +21,8 @@ module.exports = {
 			autocomplete: true,
 		}
 	],
-	autocompleteOptions: () => getCommands().then((cmds) => {
-		return cmds.slash.map(cmd => {
-			return { name: cmd.name, value: cmd.name }
-		});
+	autocompleteOptions: () => getClient().slash.map(cmd => {
+		return { name: cmd.name, value: cmd.name }
 	}),
 	category: "misc",
 	description: "Return all commands, or one specific command!",

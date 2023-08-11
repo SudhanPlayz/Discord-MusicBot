@@ -1,6 +1,9 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const Bot = require("./Bot");
-const { CommandInteractionOptionResolver, CommandInteraction } = require("discord.js");
+const {
+	CommandInteractionOptionResolver,
+	CommandInteraction,
+} = require("discord.js");
 // https://discordjs.guide/popular-topics/builders.html#slash-command-builders
 
 // Extending the main discord.js slash command builder class to facilitate the
@@ -11,8 +14,8 @@ class SlashCommand extends SlashCommandBuilder {
 		this.type = 1; // "CHAT_INPUT"
 		return this;
 	}
-	
-	/** 
+
+	/**
 	 * sets the command run function
 	 * @param {(client: Bot, interaction: CommandInteraction, options: CommandInteractionOptionResolver)} callback
 	 */
@@ -37,12 +40,12 @@ class SlashCommand extends SlashCommandBuilder {
 		return this;
 	}
 
-	/** 
+	/**
 	 * sets the intended usage for a command as a string, which will be grabbed by the `help` command
 	 * syntax: /<commandName> <args?...>
 	 * @param {string} usage
 	 */
-	setUsage(usage = '') {
+	setUsage(usage = "") {
 		this.usage = usage;
 		return this;
 	}
@@ -50,8 +53,8 @@ class SlashCommand extends SlashCommandBuilder {
 	/**
 	 * sets the intended category for the command, useful for finding mismatches
 	 * @param {string} category
-	 */ 
-	setCategory(category = 'misc') {
+	 */
+	setCategory(category = "misc") {
 		this.category = category;
 		return this;
 	}
@@ -73,6 +76,12 @@ class SlashCommand extends SlashCommandBuilder {
 		this.autocompleteOptions = autocompleteOptions;
 		return this;
 	}
+
+	/**
+	 * @discordjs/builders doesn't export SlashSubCommandBuilder class so we can't modify it
+	 * We have to implement subcommand handler in the main class
+	 */
+	handleSubcommandInteraction() {}
 }
 
 module.exports = SlashCommand;
