@@ -14,28 +14,42 @@ module.exports = function controlChannel(baseCommand) {
 			.setDescription(
 				"Set this channel as server control channel, leave empty to reset"
 			)
-			.addChannelTypes(...[
-				ChannelType.GuildText,
-				ChannelType.GuildVoice,
-				ChannelType.GuildStageVoice,
-				ChannelType.PublicThread,
-			])
+			.addChannelTypes(
+				...[
+					ChannelType.GuildText,
+					ChannelType.GuildVoice,
+					ChannelType.GuildStageVoice,
+					ChannelType.PublicThread,
+				]
+			)
 		)
 	);
 
 	return baseCommand.setSubCommandHandler(
 		"control-channel",
 		async function (client, interaction, options) {
-			console.log("control-channel");
 			const channel = options.getChannel("channel", false);
 
-			console.log({
-				channel,
-			});
+			const guildId = interaction.guild.id;
+			const channelId = channel?.id || null;
 
-			if (!channel) {
-				return interaction.reply("Control channel reset!");
+			try {
+				await client.db.guild.upsert({
+					where: {
+						guildId,
+					},
+					create: { controlChannelId: channelId, guildId },
+					update: { controlChannelId: channelId },
+				});
+			} catch (e) {
+				client.error(e);
+
+				return interaction.reply("Error updating config");
 			}
+
+			const reply = !channelId ? "Control channel reset!" : "Control channel set!";
+
+			return interaction.reply(reply);
 		}
 	);
 };

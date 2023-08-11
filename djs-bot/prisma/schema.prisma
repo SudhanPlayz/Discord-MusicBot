@@ -43,7 +43,7 @@ model User {
 }
 
 model Guild {
-  id                String     @id
+  id                Int        @id @default(autoincrement())
   createdAt         DateTime   @default(now())
   updatedAt         DateTime   @updatedAt
   guildId           String     @unique
