@@ -1,6 +1,7 @@
 import type {
   ClientEvents,
   CommandInteractionOptionResolver,
+  PermissionResolvable,
   SlashCommandBuilder,
 } from "discord.js";
 import Bot from "./Bot";
@@ -30,7 +31,8 @@ declare class SlashCommand<T = unknown> extends SlashCommandBuilder {
   usesDb: boolean | undefined;
   usage: string | "" | undefined;
   category: string | "misc" | undefined;
-  permissions: unknown[];
+  permissions: PermissionResolvable[];
+  botPermissions: PermissionResolvable[];
   autocompleteOptions: AutocompleteOptionsCallback | undefined;
   subCommandHandlers: Map<string, this["run"]>;
 
@@ -63,9 +65,14 @@ declare class SlashCommand<T = unknown> extends SlashCommandBuilder {
   setCategory(category?: string): this;
 
   /**
-   * Set permissions for a command
+   * Set user permissions required to run this command
    */
-  setPermissions(permissions?: unknown[]): this;
+  setPermissions(permissions?: this["permissions"]): this;
+
+  /**
+   * Set bot permissions required to run this command
+   */
+  setBotPermissions(permissions?: this["botPermissions"]): this;
 
   /**
    * Set the available autocomplete options for a string command option

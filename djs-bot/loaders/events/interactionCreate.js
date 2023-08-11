@@ -78,28 +78,36 @@ module.exports = async (client, interaction) => {
 			return interaction.reply({ content: "This command uses the database but the bot is not connected to it!", ephemeral: true });
 		}
 
-		if (command.permissions) {
-			let missingUserPerms = [];
-			let missingBotPerms = []
+		const missingUserPerms = [];
+		const missingBotPerms = []
 
-			command.permissions.forEach(permission => {
-				if (!interaction.guild.members.cache.get(interaction.member.user.id).permissions.has(permission))
-					missingUserPerms.push("`" + permission + "`");
-				if (!interaction.guild.me.permissions.has(permission))
-					missingBotPerms.push("`" + permission + "`");
-			});
+		const member = interaction.guild.members.cache.get(interaction.member.user.id);
 
-			let missingPermsEmbed = new MessageEmbed().setColor(client.config.embedColor);
-			if (missingUserPerms.length || missingBotPerms.length) {
-				if (missingUserPerms.length)
-					missingPermsEmbed.addField("You're missing some permissions:", `${missingUserPerms.join(", ")}`)
-				if (missingBotPerms.length)
-					missingPermsEmbed.addField("I'm missing some permissions:", `${missingBotPerms.join(", ")}`)
-				missingPermsEmbed.setFooter({ text: "If you think this is a mistake please contact the manager of this bot in this server." })
-				return interaction.reply({ embeds: [missingPermsEmbed], ephemeral: true })
-			}
+		command.permissions.forEach(permission => {
+			if (!member?.permissions.has(permission))
+				missingUserPerms.push("`" + permission + "`");
+		});
+
+		for (const permission of command.botPermissions)   {
+			if (!interaction.guild.me.permissions.has(permission))
+				missingBotPerms.push("`" + permission + "`");
 		}
 
+		if (missingUserPerms.length || missingBotPerms.length) {
+			const missingPermsEmbed = new MessageEmbed().setColor(client.config.embedColor);
+
+			if (missingUserPerms.length)
+				missingPermsEmbed.addField("You're missing some permissions:", `${missingUserPerms.join(", ")}`)
+
+			if (missingBotPerms.length)
+				missingPermsEmbed.addField("I'm missing some permissions:", `${missingBotPerms.join(", ")}`)
+
+			missingPermsEmbed.setFooter({ text: "If you think this is a mistake please contact the manager of this bot in this server." })
+
+			return interaction.reply({ embeds: [missingPermsEmbed], ephemeral: true })
+		}
+
+		// !TODO: what's this for?
 		const args = [];
 		for (let option of interaction.options.data) {
 			if (option.type === 'SUB_COMMAND') {
@@ -109,6 +117,7 @@ module.exports = async (client, interaction) => {
 				});
 			} else if (option.value) args.push(option.value);
 		}
+
 		try {
 			command.run(client, interaction, interaction.options);
 		} catch (err) {

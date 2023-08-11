@@ -15,7 +15,19 @@ module.exports = function djRole(baseCommand) {
 		)
 	);
 
-	return baseCommand.setSubCommandHandler("dj-role", async function(client, interaction, options) {
-		console.log("dj-role");
-	});
+	return baseCommand.setSubCommandHandler(
+		"dj-role",
+		async function (client, interaction, options) {
+			console.log("dj-role");
+			const role = options.getRole("role", false);
+
+			console.log({
+				role,
+			});
+
+			if (!role) {
+				return interaction.reply("DJ Role reset!");
+			}
+		}
+	);
 };

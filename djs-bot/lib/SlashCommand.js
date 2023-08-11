@@ -13,7 +13,8 @@ class SlashCommand extends SlashCommandBuilder {
 		super();
 		this.type = 1; // "CHAT_INPUT"
 		this.subCommandHandlers = new Map();
-		return this;
+		this.permissions = [];
+		this.botPermissions = [];
 	}
 
 	/**
@@ -66,6 +67,11 @@ class SlashCommand extends SlashCommandBuilder {
 	 */
 	setPermissions(permissions = []) {
 		this.permissions = permissions;
+		return this;
+	}
+
+	setBotPermissions(permissions = []) {
+		this.botPermissions = permissions;
 		return this;
 	}
 

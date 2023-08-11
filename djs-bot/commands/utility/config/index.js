@@ -9,4 +9,5 @@ module.exports = new SlashCommand()
 	.setUsage("/config")
 	.setRun(async function(...args) {
 		return this.handleSubCommandInteraction(...args);
-	});
+	})
+	.setPermissions(["Administrator"]);
