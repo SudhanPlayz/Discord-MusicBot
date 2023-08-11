@@ -78,33 +78,35 @@ module.exports = async (client, interaction) => {
 			return interaction.reply({ content: "This command uses the database but the bot is not connected to it!", ephemeral: true });
 		}
 
-		const missingUserPerms = [];
-		const missingBotPerms = []
+		if (command.permissions?.length || command.botPermissions?.length) {
+			const missingUserPerms = [];
+			const missingBotPerms = []
 
-		const member = interaction.guild.members.cache.get(interaction.member.user.id);
+			const member = interaction.guild.members.cache.get(interaction.member.user.id);
 
-		command.permissions.forEach(permission => {
-			if (!member?.permissions.has(permission))
-				missingUserPerms.push("`" + permission + "`");
-		});
+			command.permissions.forEach(permission => {
+				if (!member?.permissions.has(permission))
+					missingUserPerms.push("`" + permission + "`");
+			});
 
-		for (const permission of command.botPermissions)   {
-			if (!interaction.guild.me.permissions.has(permission))
-				missingBotPerms.push("`" + permission + "`");
-		}
+			for (const permission of command.botPermissions)   {
+				if (!interaction.guild.me.permissions.has(permission))
+					missingBotPerms.push("`" + permission + "`");
+			}
 
-		if (missingUserPerms.length || missingBotPerms.length) {
-			const missingPermsEmbed = new MessageEmbed().setColor(client.config.embedColor);
+			if (missingUserPerms.length || missingBotPerms.length) {
+				const missingPermsEmbed = new MessageEmbed().setColor(client.config.embedColor);
 
-			if (missingUserPerms.length)
-				missingPermsEmbed.addField("You're missing some permissions:", `${missingUserPerms.join(", ")}`)
+				if (missingUserPerms.length)
+					missingPermsEmbed.addField("You're missing some permissions:", `${missingUserPerms.join(", ")}`)
 
-			if (missingBotPerms.length)
-				missingPermsEmbed.addField("I'm missing some permissions:", `${missingBotPerms.join(", ")}`)
+				if (missingBotPerms.length)
+					missingPermsEmbed.addField("I'm missing some permissions:", `${missingBotPerms.join(", ")}`)
 
-			missingPermsEmbed.setFooter({ text: "If you think this is a mistake please contact the manager of this bot in this server." })
+				missingPermsEmbed.setFooter({ text: "If you think this is a mistake please contact the manager of this bot in this server." })
 
-			return interaction.reply({ embeds: [missingPermsEmbed], ephemeral: true })
+				return interaction.reply({ embeds: [missingPermsEmbed], ephemeral: true })
+			}
 		}
 
 		// !TODO: what's this for?

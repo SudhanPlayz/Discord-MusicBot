@@ -1,8 +1,6 @@
 const {
 	MessageEmbed,
 } = require("../../lib/Embed");
-const fs = require("fs");
-const { getCategories } = require("../../util/getDirs");
 const { ComponentType, ActionRowBuilder, StringSelectMenuBuilder } = require("discord.js");
 const { capitalize } = require("../../util/string");
 const SlashCommand = require("../../lib/SlashCommand");
@@ -69,7 +67,21 @@ module.exports = {
 			.setCustomId("helpSelectMenu")
 			.setPlaceholder("No Category Selected")
 			.addOptions([{ label: "Commands Overview", value: "overview" }]);
-		let categories = getCategories();
+
+		const categories = client.slash.reduce((prev, val) => {
+			const foundCategory = prev.find(v=>v.category===val.category);
+			const categoryObject = foundCategory || { category: val.category, commands: [], };
+
+			categoryObject.commands.push({
+				commandName: val.name, 
+				fileObject: val,
+			});
+
+			if (!foundCategory) return [...prev, categoryObject];
+
+			return prev;
+		}, []);
+
 		for (const dir of categories) {
 			const category = categories.find(selected => selected.category === dir.category);
 			const categoryName = dir.category;
@@ -104,9 +116,8 @@ module.exports = {
 				helpCategoryEmbed = initialEmbed;
 				await interaction.editReply({ embeds: [helpCategoryEmbed], components: [helpMenuActionRow] });
 			} else {
-				const commandFiles = fs
-					.readdirSync(`./commands/${category}`)
-					.filter((file) => file.endsWith(".js"));
+				const commandFiles = client.slash.map(slash => slash);
+
 				if (!commandFiles.length) {
 					await interaction.editReply({
 						embeds: [new MessageEmbed()
@@ -126,9 +137,8 @@ module.exports = {
 					let fieldsPerPage = [];
 					
 					for (let command of commandFilesPerPage) {
-						command = command.split(".")[0];
 						/** @type {SlashCommand} */
-						const slashCommand = client.slash.get(command);
+						const slashCommand = command;
 						if (!slashCommand.ownerOnly)
 							fieldsPerPage.push({ name: `${command}`, value: slashCommand.description });
 					}
@@ -152,9 +162,8 @@ module.exports = {
 						commandFilesPerPage = commandFiles.slice(currentPage * 25, (currentPage + 1) * 25);
 						fieldsPerPage = [];
 						for (let command of commandFilesPerPage) {
-							command = command.split(".")[0];
 							/** @type {SlashCommand} */
-							const slashCommand = client.slash.get(command);
+							const slashCommand = command;
 							if (!slashCommand.ownerOnly)
 								fieldsPerPage.push({ name: `${command}`, value: slashCommand.description });
 						}
@@ -168,9 +177,8 @@ module.exports = {
 						.setTitle(`${capitalize(category)} Commands`);
 
 					for (let command of commandFiles) {
-						command = command.split(".")[0];
 						/** @type {SlashCommand} */
-						const slashCommand = client.slash.get(command);
+						const slashCommand = command;
 						if (!slashCommand.ownerOnly)
 							helpCategoryEmbed.addField(`${command}`, slashCommand.description);
 					}

@@ -202,6 +202,7 @@ class Bot extends Client {
 				/** @type {import("./SlashCommand")} */
 				const command = require(commandFilePath);
 
+				if (!command.category) command.setCategory(category);
 				this.registerCommand(command, file, categoryPath);
 			}
 
@@ -255,6 +256,7 @@ class Bot extends Client {
 						break;
 				}
 
+				if (!mainCommand.category) mainCommand.setCategory(category);
 				this.registerCommand(mainCommand, folder, commandFolderPath);
 			}
 		}
