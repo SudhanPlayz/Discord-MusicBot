@@ -5,4 +5,4 @@ dashboard:
 - 'dashboard/**'
 
 context:
-- ['docker/*', 'dc.sh', 'Makefile']
+- 'docker/**'
