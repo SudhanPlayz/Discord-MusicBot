@@ -16,6 +16,9 @@ Please note we have a code of conduct, please follow it in all your interactions
 4. You may merge the Pull Request in once you have the sign-off of two other developers, or if you
    do not have permission to do that, you may request the second reviewer to merge it for you.
 
+> Don't know where to start? Check out the [issues](https://github.com/wtfnotavailable/Discord-MusicBot/issues) tab!
+> If you're just starting out check out the [good first issue](https://github.com/wtfnotavailable/Discord-MusicBot/issues?q=is%3Aopen+is%3Aissue+label%3A"good+first+issue") label!
+
 ## Code of Conduct
 
 ### Our Pledge

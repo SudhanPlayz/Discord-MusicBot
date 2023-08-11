@@ -24,10 +24,12 @@
 
 - Run `make up` to start the docker environment with all services active 
   - If you don't want a particular service to start up on `make up` you can simply add a `no` flag to the command. For example: `make up nodb` will start the docker environment without the DB.
+- Run `make log` to see the logs of all services at once
+  - You can exit them at any time without closing the process by pressing `Ctrl + C` 
 
 #### Local setup
 
-- Run `make up no-docker` to start the bot locally
+- Run `make up no-docker` to start the bot locally (on your maching, without virtualization and thus extended services)
 
 - Run `make up help` to see the list of available commands and options
 - Remember to remove the DB related environment variables from the `./djs-bot/.env` file if you are not using the DB at all.
