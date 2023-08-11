@@ -22,10 +22,25 @@
 
 #### Docker setup
 
-- Run `make up` to start the docker environment with all services active 
-  - If you don't want a particular service to start up on `make up` you can simply add a `no` flag to the command. For example: `make up nodb` will start the docker environment without the DB.
+- Run `make up` to start the docker environment with all services active
+  - Use `make up help` for a list of available sub commands
 - Run `make log` to see the logs of all services at once
-  - You can exit them at any time without closing the process by pressing `Ctrl + C` 
+  - You can exit them at any time without closing the process by pressing `Ctrl + C`
+- If you don't want a particular service to start up on `make up` you can simply add a `no` flag to the command. For example:
+  - `make up nodb` will start the docker environment without the DB.
+  - `make up noll` will start the docker environment without the lavalink server.
+  - `make up nofe` will start the docker environment without the frontend.
+  > Note: you can use any combination of the flags above to start the docker environment with only the services you want.
+
+#### Lite version
+
+The bot also supports a lite version to run the bot without docker. This is useful for development and testing purposes as well as potato machines.
+- Run `make lite help` for a list of available sub commands
+Contrary to the `make up` command, the `make lite` command will only start the bot, without any additional services.
+- To add additional services you can use the `make lite` with the following flags:
+  - `make lite db` to start the DB
+  - `make lite ll` to start the lavalink server
+  - `make lite fe` to start the frontend
 
 #### Local setup
 
