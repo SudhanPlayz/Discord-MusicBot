@@ -1,0 +1,8 @@
+djs-bot:
+- 'djs-bot/**'
+
+dashboard:
+- 'dashboard/**'
+
+context:
+- ['docker/*', 'dc.sh', 'Makefile']
