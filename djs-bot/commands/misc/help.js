@@ -1,7 +1,7 @@
 const {
 	MessageEmbed,
 } = require("../../lib/Embed");
-const { ComponentType, ActionRowBuilder, StringSelectMenuBuilder } = require("discord.js");
+const { ComponentType, ActionRowBuilder, StringSelectMenuBuilder, Message } = require("discord.js");
 const { capitalize } = require("../../util/string");
 const SlashCommand = require("../../lib/SlashCommand");
 const { getClient } = require("../../bot");
@@ -106,27 +106,31 @@ module.exports = {
 		);
 
 		// when defer is active this needs to edit the previous reply instead
+		/**
+		 * @type {Message}
+		 */
 		const menuSelectEmbed = await interaction.reply({ embeds: [initialEmbed], components: [helpMenuActionRow] });
 		const collector = menuSelectEmbed.createMessageComponentCollector({ componentType: ComponentType.StringSelect });
+		let buttonCollector;
+		let currentPage = 0;
 
-		collector.on("collect", async (category) => {
-			category = category.values[0];
+		collector.on("collect", async (collectedInteraction) => {
+			const category = collectedInteraction.values[0];
 			let helpCategoryEmbed = new MessageEmbed();
 			if (category === "overview") {
 				helpCategoryEmbed = initialEmbed;
-				await interaction.editReply({ embeds: [helpCategoryEmbed], components: [helpMenuActionRow] });
+				await collectedInteraction.update({ embeds: [helpCategoryEmbed], components: [helpMenuActionRow] });
 			} else {
-				const commandFiles = client.slash.map(slash => slash);
+				const commandFiles = client.slash.filter(slash => slash.category === category).map(slash => slash);
 
 				if (!commandFiles.length) {
-					await interaction.editReply({
+					await collectedInteraction.update({
 						embeds: [new MessageEmbed()
 							.setDescription(`No commands found for ${category} category...
 					Please select something else.`)]
 					});
 				} else if (commandFiles.length > 25) {
 					const maxPages = Math.ceil(commandFiles.length / 25);
-					let currentPage = 0;
 
 					helpCategoryEmbed = new MessageEmbed()
 						.setColor(client.config.embedColor)
@@ -140,37 +144,40 @@ module.exports = {
 						/** @type {SlashCommand} */
 						const slashCommand = command;
 						if (!slashCommand.ownerOnly)
-							fieldsPerPage.push({ name: `${command}`, value: slashCommand.description });
+							fieldsPerPage.push({ name: `${command.name}`, value: slashCommand.description });
 					}
 					helpCategoryEmbed.addFields(fieldsPerPage);
 
-					const helpCategoryMessage = await interaction.editReply({ embeds: [helpCategoryEmbed], components: [ helpMenuActionRow, helpCategoryEmbed.getButtons(currentPage, maxPages)] });
-					const buttonCollector = helpCategoryMessage.createMessageComponentCollector({ componentType: ComponentType.Button });
+					const helpCategoryMessage = await collectedInteraction.update({ embeds: [helpCategoryEmbed], components: [ helpMenuActionRow, helpCategoryEmbed.getButtons(currentPage, maxPages)] });
 
-					buttonCollector.on("collect", async (button) => {
-						if (button.customId === "previous_page") {
-							currentPage--;
-						} else if (button.customId === "next_page") {
-							currentPage++;
-						}
+					if (!buttonCollector) {
+						buttonCollector = helpCategoryMessage.createMessageComponentCollector({ componentType: ComponentType.Button });
 
-						helpCategoryEmbed = new MessageEmbed()
-							.setColor(client.config.embedColor)
-							.setTitle(`${capitalize(category)} Commands`)
-							.setFooter({ text: `Page ${currentPage + 1} of ${maxPages}` });
+						buttonCollector.on("collect", async (button) => {
+							if (button.customId === "previous_page") {
+								currentPage--;
+							} else if (button.customId === "next_page") {
+								currentPage++;
+							}
 
-						commandFilesPerPage = commandFiles.slice(currentPage * 25, (currentPage + 1) * 25);
-						fieldsPerPage = [];
-						for (let command of commandFilesPerPage) {
-							/** @type {SlashCommand} */
-							const slashCommand = command;
-							if (!slashCommand.ownerOnly)
-								fieldsPerPage.push({ name: `${command}`, value: slashCommand.description });
-						}
-						helpCategoryEmbed.addFields(fieldsPerPage);
+							helpCategoryEmbed = new MessageEmbed()
+								.setColor(client.config.embedColor)
+								.setTitle(`${capitalize(category)} Commands`)
+								.setFooter({ text: `Page ${currentPage + 1} of ${maxPages}` });
 
-						await button.update({ embeds: [helpCategoryEmbed], components: [helpMenuActionRow, helpCategoryEmbed.getButtons(currentPage, maxPages)] });
-					});
+							commandFilesPerPage = commandFiles.slice(currentPage * 25, (currentPage + 1) * 25);
+							fieldsPerPage = [];
+							for (let command of commandFilesPerPage) {
+								/** @type {SlashCommand} */
+								const slashCommand = command;
+								if (!slashCommand.ownerOnly)
+									fieldsPerPage.push({ name: `${command.name}`, value: slashCommand.description });
+							}
+							helpCategoryEmbed.addFields(fieldsPerPage);
+
+							await button.update({ embeds: [helpCategoryEmbed], components: [helpMenuActionRow, helpCategoryEmbed.getButtons(currentPage, maxPages)] });
+						});
+					}
 				} else {
 					helpCategoryEmbed
 						.setColor(client.config.embedColor)
@@ -180,9 +187,9 @@ module.exports = {
 						/** @type {SlashCommand} */
 						const slashCommand = command;
 						if (!slashCommand.ownerOnly)
-							helpCategoryEmbed.addField(`${command}`, slashCommand.description);
+							helpCategoryEmbed.addField(`${command.name}`, slashCommand.description);
 					}
-					await interaction.editReply({ embeds: [helpCategoryEmbed], components: [helpMenuActionRow] });
+					await collectedInteraction.update({ embeds: [helpCategoryEmbed], components: [helpMenuActionRow] });
 				}
 			}
 		});
