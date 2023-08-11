@@ -25,20 +25,21 @@ type AutocompleteOptionsCallback = (
 
 declare class SlashCommand<T = unknown> extends SlashCommandBuilder {
   type: number;
-  run: RunCallback<T> | undefined;
+  run: RunCallback<T>;
   ownerOnly: boolean | undefined;
   usesDb: boolean | undefined;
   usage: string | "" | undefined;
   category: string | "misc" | undefined;
   permissions: unknown[];
   autocompleteOptions: AutocompleteOptionsCallback | undefined;
+  subCommandHandlers: Map<string, this["run"]>;
 
   constructor();
 
   /**
    * sets the command run function
    */
-  setRun(callback: RunCallback<T>): this;
+  setRun(callback: this["run"]): this;
 
   /**
    * sets a command to be owner accessible only
@@ -72,6 +73,16 @@ declare class SlashCommand<T = unknown> extends SlashCommandBuilder {
   setAutocompleteOptions(
     autocompleteOptions: AutocompleteOptionsCallback
   ): this;
+
+  /**
+   * @discordjs/builders doesn't export SlashSubCommandBuilder class so we can't modify it
+   * We have to implement subcommand handler in the main class
+   */
+  handleSubCommandInteraction: this["run"];
+
+  setSubCommandHandler(name: string, cb: this["run"]): this;
+
+  getSubCommandHandler(name: string): this["run"] | undefined;
 }
 
 export = SlashCommand;

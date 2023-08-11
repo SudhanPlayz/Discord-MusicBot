@@ -12,6 +12,7 @@ class SlashCommand extends SlashCommandBuilder {
 	constructor() {
 		super();
 		this.type = 1; // "CHAT_INPUT"
+		this.subCommandHandlers = new Map();
 		return this;
 	}
 
@@ -81,7 +82,22 @@ class SlashCommand extends SlashCommandBuilder {
 	 * @discordjs/builders doesn't export SlashSubCommandBuilder class so we can't modify it
 	 * We have to implement subcommand handler in the main class
 	 */
-	handleSubcommandInteraction() {}
+	handleSubCommandInteraction(client, interaction, options) {
+		const handler = this.getSubCommandHandler(options._subcommand);
+
+		if (!handler) return interaction.reply("Outdated command, run the `deploy` script to update");
+
+		return handler(client, interaction, options);
+	}
+
+	setSubCommandHandler(name, cb) {
+		this.subCommandHandlers.set(name, cb);
+		return this;
+	}
+
+	getSubCommandHandler(name) {
+		return this.subCommandHandlers.get(name);
+	}
 }
 
 module.exports = SlashCommand;

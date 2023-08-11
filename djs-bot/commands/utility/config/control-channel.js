@@ -2,7 +2,7 @@
  * @param {import("../../../lib/SlashCommand")} baseCommand
  */
 module.exports = function controlChannel(baseCommand) {
-	return baseCommand.addSubcommand((command) =>
+	baseCommand.addSubcommand((command) =>
 		command
 		.setName("control-channel")
 		.setDescription("Set server control channel")
@@ -14,4 +14,8 @@ module.exports = function controlChannel(baseCommand) {
 			)
 		)
 	);
+
+	return baseCommand.setSubCommandHandler("control-channel", async function(client, interaction, options) {
+		console.log("control-channel");
+	});
 };

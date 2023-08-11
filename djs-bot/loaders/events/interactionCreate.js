@@ -31,7 +31,11 @@ module.exports = async (client, interaction) => {
 		const index = interaction.options._hoistedOptions.map(option => option.focused).indexOf(true);
 		// Gets the autocomplete options provided by the command
 		/** @type {{name:string, value:string}[]} */
-		let targets = await client.slash.get(interaction.commandName).autocompleteOptions(input, index, interaction, client);
+		let targets = await client.slash.get(interaction.commandName)?.autocompleteOptions?.(input, index, interaction, client);
+
+		// guards for outdated/ex other bot command,
+		// simply don't respond to render error loading message in the discord client
+		if (!targets) return;
 
 		// This should make the algorithm faster by pre preparing the array, but no noticable changes
 		targets.forEach(option => option.filePrepared = fuzzysort.prepare(option.name));

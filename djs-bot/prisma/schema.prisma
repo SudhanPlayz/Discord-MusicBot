@@ -39,8 +39,16 @@ model User {
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
   username  String     @unique
-  DJ        Boolean    @default(false)
   playlists Playlist[]
+}
+
+model GuildConfig {
+  id                String     @id
+  createdAt         DateTime   @default(now())
+  updatedAt         DateTime   @updatedAt
+  guildId           String     @unique
+  djRoleId          String
+  controlChannelId  String
 }
 
 model UserAuth {

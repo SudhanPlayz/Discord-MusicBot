@@ -7,7 +7,6 @@ module.exports = new SlashCommand()
 	.setDescription("Configure various bot settings")
 	// !TODO: complete setUsage ?
 	.setUsage("/config")
-	// !TODO: implement run method
-	.setRun(async (...args) => {
-		console.log(args);
+	.setRun(async function(...args) {
+		return this.handleSubCommandInteraction(...args);
 	});

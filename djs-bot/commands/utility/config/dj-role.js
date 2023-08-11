@@ -2,7 +2,7 @@
  * @param {import("../../../lib/SlashCommand")} baseCommand
  */
 module.exports = function djRole(baseCommand) {
-	return baseCommand.addSubcommand((command) =>
+	baseCommand.addSubcommand((command) =>
 		command
 		.setName("dj-role")
 		.setDescription("Set server DJ role")
@@ -14,4 +14,8 @@ module.exports = function djRole(baseCommand) {
 			)
 		)
 	);
+
+	return baseCommand.setSubCommandHandler("dj-role", async function(client, interaction, options) {
+		console.log("dj-role");
+	});
 };
