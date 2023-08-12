@@ -41,7 +41,7 @@ const rl = readline.createInterface({
 };
 
 const permissionsConfigMessageMapper = (perm) =>
-	typeof perm === "object" ? `${perm.permission}${perm.message?.length? ` (${perm.message})` : ""}` : perm;
+	(typeof perm === "object") ? `${perm.permission}${perm.message?.length ? ` (${perm.message})` : ""}` : perm;
 
 module.exports = {
 	dirExists,

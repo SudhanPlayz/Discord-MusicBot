@@ -244,16 +244,20 @@ class SlashCommand extends SlashCommandBuilder {
 
 		config.permissions?.forEach((permission) => {
 			if (!member?.permissions.has(permission.permission || permission))
-				missingUserPerms.push("`" + permission + "`");
+				missingUserPerms.push(
+					"`" + permissionsConfigMessageMapper(permission) + "`"
+				);
 		});
 
-		for (const permission of (config.botPermissions || [])) {
+		for (const permission of config.botPermissions || []) {
 			if (
-				!interaction.guild.me.permissions.has(
+				!interaction.guild.me?.permissions.has(
 					permission.permission || permission
 				)
 			)
-				missingBotPerms.push("`" + permission + "`");
+				missingBotPerms.push(
+					"`" + permissionsConfigMessageMapper(permission) + "`"
+				);
 		}
 
 		if (!missingUserPerms.length && !missingBotPerms.length) return;
@@ -265,13 +269,13 @@ class SlashCommand extends SlashCommandBuilder {
 		if (missingUserPerms.length)
 			missingPermsEmbed.addField(
 				"You're missing some permissions:",
-				`${missingUserPerms.map(permissionsConfigMessageMapper).join(", ")}`
+				`${missingUserPerms.join(", ")}`
 			);
 
 		if (missingBotPerms.length)
 			missingPermsEmbed.addField(
 				"I'm missing some permissions:",
-				`${missingBotPerms.map(permissionsConfigMessageMapper).join(", ")}`
+				`${missingBotPerms.join(", ")}`
 			);
 
 		missingPermsEmbed.setFooter({
