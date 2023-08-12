@@ -15,7 +15,7 @@ const SlashCommand = require("../../lib/SlashCommand");
  * @returns {Promise<InteractionResponse<boolean>>}
  */
 module.exports = async (client, interaction) => {
-	const isAutocomplete = SlashCommand.checkAutocomplete(interaction);
+	const isAutocomplete = await SlashCommand.checkAutocomplete(interaction);
 	if (isAutocomplete) return isAutocomplete;
 
 	// Gets general info from a command during execution, if sent then check the guards
@@ -27,7 +27,7 @@ module.exports = async (client, interaction) => {
 			return interaction.reply("Sorry the command you used doesn't have any run function");
 		}
 
-		const replied = SlashCommand.checkConfigs(command, interaction);
+		const replied = await SlashCommand.checkConfigs(command, interaction);
 		if (replied) return replied;
 
 		// !TODO: what's this for?
