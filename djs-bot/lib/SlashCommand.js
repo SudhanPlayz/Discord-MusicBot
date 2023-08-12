@@ -242,12 +242,12 @@ class SlashCommand extends SlashCommandBuilder {
 			interaction.member.user.id
 		);
 
-		config.permissions.forEach((permission) => {
+		config.permissions?.forEach((permission) => {
 			if (!member?.permissions.has(permission.permission || permission))
 				missingUserPerms.push("`" + permission + "`");
 		});
 
-		for (const permission of config.botPermissions) {
+		for (const permission of (config.botPermissions || [])) {
 			if (
 				!interaction.guild.me.permissions.has(
 					permission.permission || permission
