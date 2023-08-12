@@ -4,52 +4,67 @@ const { ChannelType } = require("discord.js");
  * @param {import("../../../lib/SlashCommand")} baseCommand
  */
 module.exports = function controlChannel(baseCommand) {
+	const commandName = "control-channel";
+
 	baseCommand.addSubcommand((command) =>
 		command
-		.setName("control-channel")
-		.setDescription("Set server control channel")
-		.addChannelOption((opt) =>
+		.setName(commandName)
+		.setDescription("Create server control channel")
+		.addStringOption((opt) =>
 			opt
 			.setName("channel")
 			.setDescription(
-				"Set this channel as server control channel, leave empty to reset"
+				"Create a channel with this name as server control channel, leave empty to reset"
 			)
-			.addChannelTypes(
-				...[
-					ChannelType.GuildText,
-					ChannelType.GuildVoice,
-					ChannelType.GuildStageVoice,
-					ChannelType.PublicThread,
-				]
-			)
+			.setMaxLength(100)
 		)
 	);
 
-	return baseCommand.setSubCommandHandler(
-		"control-channel",
+	baseCommand.setSubCommandHandler(
+		commandName,
 		async function (client, interaction, options) {
-			const channel = options.getChannel("channel", false);
+			const channel = options.getString("channel", false);
 
 			const guildId = interaction.guild.id;
-			const channelId = channel?.id || null;
+
+			if (!channel?.length)
+				try {
+					await client.db.guild.upsert({
+						where: {
+							guildId,
+						},
+						create: { controlChannelId: null, guildId },
+						update: { controlChannelId: null },
+					});
+
+					return interaction.reply("Control channel reset!");
+				} catch (e) {
+					client.error(
+						"Error removing control channel config in guild:",
+						guildId
+					);
+					client.error(e);
+
+					return interaction.reply("Error updating config");
+				}
 
 			try {
-				await client.db.guild.upsert({
-					where: {
-						guildId,
-					},
-					create: { controlChannelId: channelId, guildId },
-					update: { controlChannelId: channelId },
-				});
 			} catch (e) {
-				client.error(e);
-
-				return interaction.reply("Error updating config");
+				console.error(e);
 			}
 
-			const reply = !channelId ? "Control channel reset!" : "Control channel set!";
+			// just let discord validate the string as some unicode are valid channel name
 
-			return interaction.reply(reply);
+			`Control channel set <#${channelId}>!`;
 		}
 	);
+
+	baseCommand.setSubCommandBotPermissions(commandName, [
+		{
+			permission: "ManageChannels",
+			message: "creating control channel",
+		},
+	]);
+
+	return baseCommand;
 };

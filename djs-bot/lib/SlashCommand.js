@@ -4,6 +4,11 @@ const {
 	CommandInteractionOptionResolver,
 	CommandInteraction,
 } = require("discord.js");
+const { MessageEmbed } = require("./Embed");
+const { getClient } = require("../bot");
+const { permissionsConfigMessageMapper } = require("../util/common");
+const fuzzysort = require("fuzzysort");
+const { levDistance } = require("../util/string");
 // https://discordjs.guide/popular-topics/builders.html#slash-command-builders
 
 // Extending the main discord.js slash command builder class to facilitate the
@@ -12,7 +17,6 @@ class SlashCommand extends SlashCommandBuilder {
 	constructor() {
 		super();
 		this.type = 1; // "CHAT_INPUT"
-		this.subCommandHandlers = new Map();
 		this.permissions = [];
 		this.botPermissions = [];
 	}
@@ -84,25 +88,200 @@ class SlashCommand extends SlashCommandBuilder {
 		return this;
 	}
 
+	setSubCommandConfig(name, key, value) {
+		if (!this.subCommands) this.subCommands = new Map();
+
+		const conf = this.subCommands.get(name) || {};
+
+		conf[key] = value;
+
+		this.subCommands.set(name, conf);
+		return true;
+	}
+
+	getSubCommandConfig(name, key) {
+		const conf = this.subCommands?.get(name);
+		if (key) return conf?.[key];
+		return conf;
+	}
+
 	/**
 	 * @discordjs/builders doesn't export SlashSubCommandBuilder class so we can't modify it
 	 * We have to implement subcommand handler in the main class
 	 */
 	handleSubCommandInteraction(client, interaction, options) {
-		const handler = this.getSubCommandHandler(options._subcommand);
+		const conf = this.getSubCommandConfig(options._subcommand);
 
-		if (!handler) return interaction.reply("Outdated command, run the `deploy` script to update");
+		const replied = SlashCommand.checkConfigs(conf, interaction);
+		if (replied) return replied;
+
+		const handler = conf.run;
+
+		if (!handler)
+			return interaction.reply(
+				"Outdated command, run the `deploy` script to update"
+			);
 
 		return handler(client, interaction, options);
 	}
 
+	handleSubCommandAutocomplete(interaction) {
+		throw new Error("Not yet implemented");
+	}
+
 	setSubCommandHandler(name, cb) {
-		this.subCommandHandlers.set(name, cb);
+		this.setSubCommandConfig(name, "run", cb);
 		return this;
 	}
 
 	getSubCommandHandler(name) {
-		return this.subCommandHandlers.get(name);
+		return this.getSubCommandConfig(name, "run");
+	}
+
+	setSubCommandPermissions(name, permissions = []) {
+		this.setSubCommandConfig(name, "permissions", permissions);
+		return this;
+	}
+
+	getSubCommandPermissions(name) {
+		return this.getSubCommandConfig(name, "permissions");
+	}
+
+	setSubCommandBotPermissions(name, permissions = []) {
+		this.setSubCommandConfig(name, "botPermissions", permissions);
+		return this;
+	}
+
+	getSubCommandBotPermissions(name) {
+		return this.getSubCommandConfig(name, "botPermissions");
+	}
+
+	static checkConfigs(config, interaction) {
+		const client = getClient();
+
+		let errorMessage;
+
+		if (
+			config.ownerOnly === true &&
+			!client.config.ownerId.includes(interaction.user.id)
+		) {
+			errorMessage = "This command is only for the bot developers!";
+		} else if (config.usesDb && !client.db) {
+			errorMessage =
+				"This command uses the database but the bot is not connected to it!";
+		}
+
+		if (errorMessage)
+			return interaction.reply({
+				content: errorMessage,
+				ephemeral: true,
+			});
+
+		return SlashCommand.checkPermission(config, interaction);
+	}
+
+	// Autocomplete handler, takes autocomplete options specified in the command properties
+	// and shows them to the user
+	// node_modules\discord.js\src\structures\AutocompleteInteraction.js
+	static async checkAutocomplete(interaction) {
+		if (!interaction.isAutocomplete()) return;
+
+		const client = getClient();
+
+		// Getting input from user
+		/** @type {string} */
+		let input = interaction.options.getFocused() || " ";
+		// Gets the index of the option in which the user is currently typing
+		/** @type {number} */
+		const index = interaction.options._hoistedOptions
+			.map((option) => option.focused)
+			.indexOf(true);
+		// Gets the autocomplete options provided by the command
+		/** @type {{name:string, value:string}[]} */
+		let targets = await client.slash
+			.get(interaction.commandName)
+			?.autocompleteOptions?.(input, index, interaction, client);
+
+		// guards for outdated/ex other bot command,
+		// simply don't respond to render error loading message in the discord client
+		if (!targets) return;
+
+		// This should make the algorithm faster by pre preparing the array, but no noticable changes
+		targets.forEach(
+			(option) => (option.filePrepared = fuzzysort.prepare(option.name))
+		);
+		targets.map((option) => option.filePrepared);
+
+		fuzzysort.go(input, targets, {
+			threshold: -10000, // Don't return matches worse than this (higher is faster)
+			limit: 30, // Don't return more results than this (lower is faster)
+			all: false, // If true, returns all results for an empty search
+
+			key: "name", // For when targets are objects
+		});
+
+		// Avoiding calculating levenshteing distances if it's not needed
+		if (targets.length > 1) {
+			// Assigns Levenshtein distances for each option based on what the user is currently typing
+			for (let option of targets) {
+				option.levenshteinDistance = levDistance(option.name, input);
+			}
+			// Sorts the array of targets and displays it according to the Levenshtein distance from the typed value
+			targets.sort((a, b) => a.levenshteinDistance - b.levenshteinDistance);
+		}
+		return interaction.respond(targets.slice(0, 24));
+	}
+
+	static checkPermission(config, interaction) {
+		if (!config.permissions?.length && !config.botPermissions?.length) return;
+
+		const missingUserPerms = [];
+		const missingBotPerms = [];
+
+		const member = interaction.guild.members.cache.get(
+			interaction.member.user.id
+		);
+
+		config.permissions.forEach((permission) => {
+			if (!member?.permissions.has(permission.permission || permission))
+				missingUserPerms.push("`" + permission + "`");
+		});
+
+		for (const permission of config.botPermissions) {
+			if (
+				!interaction.guild.me.permissions.has(
+					permission.permission || permission
+				)
+			)
+				missingBotPerms.push("`" + permission + "`");
+		}
+
+		if (!missingUserPerms.length && !missingBotPerms.length) return;
+
+		const missingPermsEmbed = new MessageEmbed().setColor(
+			getClient().config.embedColor
+		);
+
+		if (missingUserPerms.length)
+			missingPermsEmbed.addField(
+				"You're missing some permissions:",
+				`${missingUserPerms.map(permissionsConfigMessageMapper).join(", ")}`
+			);
+
+		if (missingBotPerms.length)
+			missingPermsEmbed.addField(
+				"I'm missing some permissions:",
+				`${missingBotPerms.map(permissionsConfigMessageMapper).join(", ")}`
+			);
+
+		missingPermsEmbed.setFooter({
+			text: "If you think this is a mistake please contact the manager of this bot in this server.",
+		});
+
+		return interaction.reply({
+			embeds: [missingPermsEmbed],
+			ephemeral: true,
+		});
 	}
 }
 

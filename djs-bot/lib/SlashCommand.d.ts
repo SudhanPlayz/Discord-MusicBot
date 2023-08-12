@@ -1,21 +1,24 @@
 import type {
   ClientEvents,
   CommandInteractionOptionResolver,
+  Message,
   PermissionResolvable,
   SlashCommandBuilder,
 } from "discord.js";
 import Bot from "./Bot";
 
+type InteractionEvent = ClientEvents["interactionCreate"][0];
+
 type RunCallback<T> = (
   client: Bot,
-  interaction: ClientEvents["interactionCreate"][0],
+  interaction: InteractionEvent,
   options: CommandInteractionOptionResolver
 ) => T;
 
 type AutocompleteOptionsCallback = (
   input: string,
   index: number,
-  interaction: ClientEvents["interactionCreate"][0],
+  interaction: InteractionEvent,
   client: Bot
 ) => Promise<
   {
@@ -24,6 +27,25 @@ type AutocompleteOptionsCallback = (
   }[]
 >;
 
+type PermissionsConfig = (
+  | {
+      permission: PermissionResolvable;
+      message?: string;
+    }
+  | PermissionResolvable
+)[];
+
+interface SubCommandConfig<T> {
+  run: RunCallback<T>;
+  ownerOnly: boolean | undefined;
+  usesDb: boolean | undefined;
+  usage: string | undefined;
+  permissions: PermissionsConfig | undefined;
+  botPermissions: PermissionsConfig | undefined;
+  autocompleteOptions: AutocompleteOptionsCallback | undefined;
+  subCommands: Map<string, SubCommandConfig<T>> | undefined;
+}
+
 declare class SlashCommand<T = unknown> extends SlashCommandBuilder {
   type: number;
   run: RunCallback<T>;
@@ -31,10 +53,10 @@ declare class SlashCommand<T = unknown> extends SlashCommandBuilder {
   usesDb: boolean | undefined;
   usage: string | "" | undefined;
   category: string | "misc" | undefined;
-  permissions: PermissionResolvable[];
-  botPermissions: PermissionResolvable[];
+  permissions: PermissionsConfig | undefined;
+  botPermissions: PermissionsConfig | undefined;
   autocompleteOptions: AutocompleteOptionsCallback | undefined;
-  subCommandHandlers: Map<string, this["run"]>;
+  subCommands: Map<string, SubCommandConfig<T>> | undefined;
 
   constructor();
 
@@ -81,15 +103,60 @@ declare class SlashCommand<T = unknown> extends SlashCommandBuilder {
     autocompleteOptions: AutocompleteOptionsCallback
   ): this;
 
+  setSubCommandConfig(
+    name: string,
+    key: keyof SubCommandConfig<T>,
+    value: SubCommandConfig<T>[typeof key]
+  ): boolean | undefined;
+
+  getSubCommandConfig<K = undefined>(
+    name: string,
+    key?: K
+  ): K extends keyof SubCommandConfig<T>
+    ? SubCommandConfig<T>[K] | undefined
+    : SubCommandConfig<T> | undefined;
+
   /**
    * @discordjs/builders doesn't export SlashSubCommandBuilder class so we can't modify it
    * We have to implement subcommand handler in the main class
    */
   handleSubCommandInteraction: this["run"];
 
-  setSubCommandHandler(name: string, cb: this["run"]): this;
+  handleSubCommandAutocomplete(interaction: InteractionEvent): void;
 
-  getSubCommandHandler(name: string): this["run"] | undefined;
+  setSubCommandHandler(name: string, cb: SubCommandConfig<T>["run"]): this;
+
+  getSubCommandHandler(name: string): SubCommandConfig<T>["run"] | undefined;
+
+  setSubCommandPermissions(
+    name: string,
+    permissions?: SubCommandConfig<T>["permissions"]
+  ): this;
+
+  getSubCommandPermissions(name: string): SubCommandConfig<T>["permissions"];
+
+  setSubCommandBotPermissions(
+    name: string,
+    permissions?: SubCommandConfig<T>["botPermissions"]
+  ): this;
+
+  getSubCommandBotPermissions(
+    name: string
+  ): SubCommandConfig<T>["botPermissions"];
+
+  static checkConfigs<T = unknown>(
+    config: SlashCommand<T> | SubCommandConfig<T>,
+    interaction: InteractionEvent
+  ): Promise<Message> | undefined;
+
+  static checkAutocomplete(
+    interaction: InteractionEvent
+  ): Promise<void> | undefined;
+
+  static checkPermission<T = unknown>(
+    config: SlashCommand<T> | SubCommandConfig<T>,
+    interaction: InteractionEvent
+  ): Promise<Message> | undefined;
 }
 
 export = SlashCommand;
