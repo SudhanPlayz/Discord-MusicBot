@@ -1,4 +1,16 @@
-const { ChannelType } = require("discord.js");
+const { ChannelType, OverwriteType } = require("discord.js");
+
+/**
+ * @type {import("discord.js").PermissionResolvable}
+ */
+const CONTROL_CHANNEL_PERMISSIONS = [
+	"ViewChannel",
+	"SendMessages",
+	"ManageMessages",
+	"EmbedLinks",
+	"AttachFiles",
+	"ReadMessageHistory",
+];
 
 /**
  * @param {import("../../../lib/SlashCommand")} baseCommand
@@ -35,7 +47,7 @@ module.exports = function controlChannel(baseCommand) {
 					create: { controlChannelId: channelId, guildId },
 					update: { controlChannelId: channelId },
 				});
-			}
+			};
 
 			await interaction.deferReply();
 
@@ -56,23 +68,26 @@ module.exports = function controlChannel(baseCommand) {
 
 			try {
 				// just let discord validate the string as some unicode are valid channel name
-				const existed = interaction.guild.channels.cache.find((c) => c.name === channelName);
-
-				if (existed) return interaction.editReply("A channel with that name already exist!");
-
 				const createdChannel = await interaction.guild.channels.create({
 					name: channelName,
 					position: 0,
 					reason: "Discord Music Bot Control Channel",
 					topic: "Discord Music Bot Control Channel",
 					type: ChannelType.GuildText,
+					permissionOverwrites: CONTROL_CHANNEL_PERMISSIONS.map((perm) => ({
+						allow: perm,
+						id: interaction.guild.members.me.id,
+						type: OverwriteType.Member,
+					})),
 				});
 
 				// construct control message
 
-				const controlMessage = await createdChannel.send("!TODO: control channel message and pin the message");
+				const controlMessage = await createdChannel.send(
+					"!TODO: control channel message and pin the message"
+				);
 
-				// controlMessage.pin()
+				await controlMessage.pin("Discord Music Bot Control Message");
 
 				const channelId = createdChannel.id;
 
@@ -81,6 +96,7 @@ module.exports = function controlChannel(baseCommand) {
 				return interaction.editReply(`Control channel set <#${channelId}>!`);
 			} catch (e) {
 				client.error(e);
+				console.error(e);
 				if (e.message?.length) return interaction.editReply(e.message);
 			}
 		}
@@ -91,6 +107,10 @@ module.exports = function controlChannel(baseCommand) {
 			permission: "ManageChannels",
 			message: "creating control channel",
 		},
+		...CONTROL_CHANNEL_PERMISSIONS.map((perm) => ({
+			permission: perm,
+			message: "control channel management",
+		})),
 	]);
 
 	return baseCommand;
