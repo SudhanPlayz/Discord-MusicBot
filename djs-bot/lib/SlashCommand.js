@@ -109,10 +109,10 @@ class SlashCommand extends SlashCommandBuilder {
 	 * @discordjs/builders doesn't export SlashSubCommandBuilder class so we can't modify it
 	 * We have to implement subcommand handler in the main class
 	 */
-	handleSubCommandInteraction(client, interaction, options) {
+	async handleSubCommandInteraction(client, interaction, options) {
 		const conf = this.getSubCommandConfig(options._subcommand);
 
-		const replied = SlashCommand.checkConfigs(conf, interaction);
+		const replied = await SlashCommand.checkConfigs(conf, interaction);
 		if (replied) return replied;
 
 		const handler = conf.run;
@@ -125,7 +125,7 @@ class SlashCommand extends SlashCommandBuilder {
 		return handler(client, interaction, options);
 	}
 
-	handleSubCommandAutocomplete(interaction) {
+	async handleSubCommandAutocomplete(interaction) {
 		throw new Error("Not yet implemented");
 	}
 
@@ -251,7 +251,7 @@ class SlashCommand extends SlashCommandBuilder {
 
 		for (const permission of config.botPermissions || []) {
 			if (
-				!interaction.guild.me?.permissions.has(
+				!interaction.guild.members.me.permissions.has(
 					permission.permission || permission
 				)
 			)

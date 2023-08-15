@@ -23,21 +23,27 @@ module.exports = function controlChannel(baseCommand) {
 	baseCommand.setSubCommandHandler(
 		commandName,
 		async function (client, interaction, options) {
-			const channel = options.getString("channel", false);
+			const channelName = options.getString("channel", false);
 
 			const guildId = interaction.guild.id;
 
-			if (!channel?.length)
-				try {
-					await client.db.guild.upsert({
-						where: {
-							guildId,
-						},
-						create: { controlChannelId: null, guildId },
-						update: { controlChannelId: null },
-					});
+			const setDbControlChannel = async (channelId) => {
+				await client.db.guild.upsert({
+					where: {
+						guildId,
+					},
+					create: { controlChannelId: channelId, guildId },
+					update: { controlChannelId: channelId },
+				});
+			}
 
-					return interaction.reply("Control channel reset!");
+			await interaction.deferReply();
+
+			if (!channelName?.length)
+				try {
+					await setDbControlChannel(null);
+
+					return interaction.editReply("Control channel reset!");
 				} catch (e) {
 					client.error(
 						"Error removing control channel config in guild:",
@@ -45,17 +51,38 @@ module.exports = function controlChannel(baseCommand) {
 					);
 					client.error(e);
 
-					return interaction.reply("Error updating config");
+					return interaction.editReply("Error updating config");
 				}
 
 			try {
+				// just let discord validate the string as some unicode are valid channel name
+				const existed = interaction.guild.channels.cache.find((c) => c.name === channelName);
+
+				if (existed) return interaction.editReply("A channel with that name already exist!");
+
+				const createdChannel = await interaction.guild.channels.create({
+					name: channelName,
+					position: 0,
+					reason: "Discord Music Bot Control Channel",
+					topic: "Discord Music Bot Control Channel",
+					type: ChannelType.GuildText,
+				});
+
+				// construct control message
+
+				const controlMessage = await createdChannel.send("!TODO: control channel message and pin the message");
+
+				// controlMessage.pin()
+
+				const channelId = createdChannel.id;
+
+				await setDbControlChannel(channelId);
+
+				return interaction.editReply(`Control channel set <#${channelId}>!`);
 			} catch (e) {
-				console.error(e);
+				client.error(e);
+				if (e.message?.length) return interaction.editReply(e.message);
 			}
-
-			// just let discord validate the string as some unicode are valid channel name
-
-			`Control channel set <#${channelId}>!`;
 		}
 	);
 

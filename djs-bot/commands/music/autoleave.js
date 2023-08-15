@@ -34,7 +34,7 @@ const command = new SlashCommand()
 
     let autoLeaveEmbed = new MessageEmbed().setColor(client.config.embedColor);
     const autoLeave = player.get("autoLeave");
-    player.set("requester", interaction.guild.me);
+    player.set("requester", interaction.guild.members.me);
 
     if (!autoLeave || autoLeave === false) {
       player.set("autoLeave", true);
