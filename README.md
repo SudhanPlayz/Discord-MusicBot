@@ -1,5 +1,18 @@
 <h1 align="center"><img src="./assets/logo.gif" width="30px"> Discord Music Bot <img src="./assets/logo.gif" width="30px"></h1>
 
+## ✨Latest Updates
+
+v5.1 Is in development! Go check it out [HERE!](https://github.com/wtfnotavailable/Discord-MusicBot)
+
+What do you gain from it? Let us explain:
+ - Completely modular docker environment for easier development and deployment
+ - A WORKING DASHBOARD!!!
+ - DB Integration for you to save your favorite songs in
+ - Integrated self hosted Lavalink
+ - Dedicated query channel
+ - More commands and functionalities
+ - And so much more to come!
+
 ## 🚧 | Prerequisites
 
 - [Node.js 16+](https://nodejs.org/en/download/)
