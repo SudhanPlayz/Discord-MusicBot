@@ -4,8 +4,9 @@ const Bot = require("../Bot");
 /* Imports */
 const colors = require("colors");
 const { MessageEmbed, MessageActionRow, MessageButton } = require('../Embed');
-const prettyMilliseconds = require("pretty-ms");
 const { Cosmicord, CosmiPlayer, CosmiNode } = require("cosmicord.js");
+const { trackStartedEmbed } = require("../../util/embeds");
+const { updateControlMessage } = require("../../util/controlChannel");
 
 class CosmicordPlayerExtended extends CosmiPlayer {
 	/**
@@ -225,29 +226,21 @@ module.exports = (client) => {
 		.on("trackStart",
 			/** @param {CosmicordPlayerExtended} player */
 			async (player, track) => {
-				let playedTracks = client.playedTracks;
+				const playedTracks = client.playedTracks;
+
 				if (playedTracks.length >= 25)
 					playedTracks.shift();
+
 				if (!playedTracks.includes(track))
 					playedTracks.push(track);
 
-				let trackStartedEmbed = new MessageEmbed()
-					.setColor(client.config.embedColor)
-					.setAuthor({ name: "Now playing", iconURL: client.config.iconURL })
-					.setDescription(`[${track.title}](${track.uri})`)
-					.addField("Requested by", `${track.requester}`, true)
-					.addField("Duration", track.isStream ? `\`LIVE\`` : `\`${prettyMilliseconds(track.duration, { secondsDecimalDigits: 0, })}\``, true);
-
-				try {
-					trackStartedEmbed.setThumbnail(track.displayThumbnail("maxresdefault"));
-				} catch (err) {
-					trackStartedEmbed.setThumbnail(track.thumbnail);
-				}
-
-				let nowPlaying = await client.channels.cache
+				const nowPlaying = await client.channels.cache
 					.get(player.textChannel)
-					.send({ embeds: [trackStartedEmbed] })
+					.send({ embeds: [trackStartedEmbed({track})] })
 					.catch(client.warn);
+
+				updateControlMessage(player.guild, track);
+
 
 				player.setNowplayingMessage(client, nowPlaying);
 				client.warn(`Player: ${player.guildId} | Track has started playing [${colors.blue(track.title)}]`);

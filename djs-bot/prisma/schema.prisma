@@ -43,12 +43,13 @@ model User {
 }
 
 model Guild {
-  id                Int        @id @default(autoincrement())
-  createdAt         DateTime   @default(now())
-  updatedAt         DateTime   @updatedAt
-  guildId           String     @unique
-  DJRole            String?
-  controlChannelId  String?
+  id                       Int        @id @default(autoincrement())
+  createdAt                DateTime   @default(now())
+  updatedAt                DateTime   @updatedAt
+  guildId                  String     @unique
+  DJRole                   String?
+  controlChannelId         String?
+  controlChannelMessageId  String?
 }
 
 model UserAuth {

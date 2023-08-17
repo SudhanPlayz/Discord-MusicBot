@@ -1,4 +1,6 @@
 const { ChannelType, OverwriteType } = require("discord.js");
+const { controlChannelMessage } = require("../../../util/embeds");
+const { setDbControlChannel } = require("../../../util/controlChannel");
 
 /**
  * @type {import("discord.js").PermissionResolvable}
@@ -39,21 +41,11 @@ module.exports = function controlChannel(baseCommand) {
 
 			const guildId = interaction.guild.id;
 
-			const setDbControlChannel = async (channelId) => {
-				await client.db.guild.upsert({
-					where: {
-						guildId,
-					},
-					create: { controlChannelId: channelId, guildId },
-					update: { controlChannelId: channelId },
-				});
-			};
-
 			await interaction.deferReply();
 
 			if (!channelName?.length)
 				try {
-					await setDbControlChannel(null);
+					await setDbControlChannel({guildId, channelId: null, messageId: null});
 
 					return interaction.editReply("Control channel reset!");
 				} catch (e) {
@@ -82,16 +74,16 @@ module.exports = function controlChannel(baseCommand) {
 				});
 
 				// construct control message
+				const msg = controlChannelMessage({ guildId: interaction.guildId });
 
-				const controlMessage = await createdChannel.send(
-					"!TODO: control channel message and pin the message"
-				);
+				const controlMessage = await createdChannel.send(msg);
 
 				await controlMessage.pin("Discord Music Bot Control Message");
 
 				const channelId = createdChannel.id;
+				const messageId = controlMessage.id;
 
-				await setDbControlChannel(channelId);
+				await setDbControlChannel({guildId, channelId, messageId});
 
 				return interaction.editReply(`Control channel set <#${channelId}>!`);
 			} catch (e) {

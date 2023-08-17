@@ -4,13 +4,14 @@ const Bot = require("../Bot");
 /* Imports */
 const colors = require("colors");
 const { MessageEmbed, MessageActionRow, MessageButton } = require('../Embed');
-const prettyMilliseconds = require("pretty-ms");
 
 /* Erela.js - Extension */
 const { Manager, Structure } = require("erela.js"); // <---
 const deezer = require("erela.js-deezer"); // <---
 const spotify = require("better-erela.js-spotify").default; // <---
 const { default: AppleMusic } = require("better-erela.js-apple"); // <---
+const { trackStartedEmbed } = require("../../util/embeds");
+const { updateControlMessage } = require("../../util/controlChannel");
 
 Structure.extend(
 	"Player",
@@ -262,35 +263,20 @@ module.exports = (client) => {
 			client.warn(`Node: ${node.options.identifier} | Failed to load ${type}: ${error.message}`))
 
 		.on("trackStart", async (player, track) => {
-			let playedTracks = client.playedTracks;
+			const playedTracks = client.playedTracks;
+
 			if (playedTracks.length >= 25)
 				playedTracks.shift();
+
 			if (!playedTracks.includes(track))
 				playedTracks.push(track);
 
-			let activeProperties = [
-				player.get("autoQueue") ? "autoqueue" : null,
-				player.get("twentyFourSeven") ? "24/7" : null,
-			]
-
-			let trackStartedEmbed = new MessageEmbed()
-				.setColor(client.config.embedColor)
-				.setAuthor({ name: "Now playing", iconURL: client.config.iconURL })
-				.setDescription(`[${track.title}](${track.uri})`)
-				.addField("Requested by", `${track.requester}`, true)
-				.addField("Duration", track.isStream ? `\`LIVE\`` : `\`${prettyMilliseconds(track.duration, { secondsDecimalDigits: 0, })}\``, true)
-				// .setFooter({ text: `${activeProperties.filter(e => e).join(" • ")}` }); // might error?
-
-			try {
-				trackStartedEmbed.setThumbnail(track.displayThumbnail("maxresdefault"));
-			} catch (err) {
-				trackStartedEmbed.setThumbnail(track.thumbnail);
-			}
-
-			let nowPlaying = await client.channels.cache
+			const nowPlaying = await client.channels.cache
 				.get(player.textChannel)
-				.send({ embeds: [trackStartedEmbed] })
+				.send({ embeds: [trackStartedEmbed({track})] })
 				.catch(client.warn);
+
+			updateControlMessage(player.guild, track);
 
 			player.setNowplayingMessage(client, nowPlaying);
 			client.warn(`Player: ${player.options.guild} | Track has started playing [${colors.blue(track.title)}]`);
