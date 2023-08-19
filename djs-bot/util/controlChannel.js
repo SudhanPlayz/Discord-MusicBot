@@ -149,21 +149,17 @@ const handleMessageCreate = async (message) => {
 	const client = getClient();
 
 	const memberVC = message.member?.voice?.channel;
-  console.log({memberVC:!!memberVC, joinable: memberVC?.joinable})
 	if (!memberVC?.joinable) return retDel();
 
 	const clientVC = message.guild.members.cache.get(client.user.id)?.voice?.channel;
 	const isNotInSameVC = !clientVC?.equals(memberVC);
 
-  console.log({clientVC:!!clientVC, isNotInSameVC})
 	if (clientVC && isNotInSameVC) return retDel();
 
 	const node = await client.getLavalink(client);
-  console.log({node})
 	if (!node) return retDel();
 
 	const query = message.content.trim();
-  console.log({query})
 	if (!query.length) return retDel();
 
 	const player = client.manager.Engine.createPlayer({
