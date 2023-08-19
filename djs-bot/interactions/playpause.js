@@ -39,8 +39,7 @@ const command = new SlashCommand()
 			player.pause(false);
 		} else player.pause(true);
 
-		interaction.deferUpdate();
-		return;
+		return interaction.deferUpdate();
 	});
 
 module.exports = command;
