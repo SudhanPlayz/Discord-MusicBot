@@ -139,7 +139,16 @@ const controlChannelMessage = ({ guildId, track } = {}) => {
 		.setStyle(ButtonStyle.Secondary)
 		.setEmoji("🔊");
 
-	const secondRow = new ActionRowBuilder().addComponents(lowerVolume, louderVolume);
+	const autoqueue = new ButtonBuilder()
+		.setCustomId("cc/autoqueue")
+		.setStyle(ButtonStyle.Secondary)
+		.setEmoji("♾️");
+
+	const secondRow = new ActionRowBuilder().addComponents(
+		lowerVolume,
+		louderVolume,
+		autoqueue
+	);
 
 	const components = [firstRow, secondRow];
 
@@ -240,6 +249,18 @@ const loadedPlaylistEmbed = ({ searchResult, query }) => {
 	return embed;
 };
 
+const autoQueueEmbed = ({ autoQueue }) => {
+	const client = getClient();
+	return new MessageEmbed()
+		.setColor(client.config.embedColor)
+		.setDescription(`**Auto Queue is** \`${!autoQueue ? "ON" : "OFF"}\``)
+		.setFooter({
+			text: `Related music will ${
+				!autoQueue ? "now be automatically" : "no longer be"
+			} added to the queue.`,
+		});
+};
+
 module.exports = {
 	successEmbed,
 	errorEmbed,
@@ -253,4 +274,5 @@ module.exports = {
 	trackStartedEmbed,
 	addQueueEmbed,
 	loadedPlaylistEmbed,
+	autoQueueEmbed,
 };

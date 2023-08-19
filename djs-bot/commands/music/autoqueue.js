@@ -1,6 +1,7 @@
 const colors = require("colors");
 const { MessageEmbed } = require("../../lib/Embed");
 const SlashCommand = require("../../lib/SlashCommand");
+const { autoQueueEmbed } = require("../../util/embeds");
 
 const command = new SlashCommand()
 	.setName("autoqueue")
@@ -35,7 +36,6 @@ const command = new SlashCommand()
 			});
 		}
 		
-		let autoQueueEmbed = new MessageEmbed().setColor(client.config.embedColor);
 		const autoQueue = player.get("autoQueue");
 		player.set("requester", interaction.guild.members.me);
 		
@@ -44,11 +44,7 @@ const command = new SlashCommand()
 		} else {
 			player.set("autoQueue", false);
 		}
-		autoQueueEmbed
-		  .setDescription(`**Auto Queue is** \`${!autoQueue ? "ON" : "OFF"}\``)
-		  .setFooter({
-		    text: `Related music will ${!autoQueue ? "now be automatically" : "no longer be"} added to the queue.`
-      });
+
 		client.warn(
 			`Player: ${ player.options.guild } | [${ colors.blue(
 				"AUTOQUEUE",
@@ -59,7 +55,7 @@ const command = new SlashCommand()
 			}`,
 		);
 		
-		return interaction.reply({ embeds: [autoQueueEmbed] });
+		return interaction.reply({ embeds: [autoQueueEmbed({autoQueue})] });
 	});
 
 module.exports = command;
