@@ -1,9 +1,6 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const Bot = require("./Bot");
-const {
-	CommandInteractionOptionResolver,
-	CommandInteraction,
-} = require("discord.js");
+const { CommandInteractionOptionResolver, CommandInteraction } = require("discord.js");
 const { MessageEmbed } = require("./Embed");
 const { getClient } = require("../bot");
 const { permissionsConfigMessageMapper } = require("../util/common");
@@ -207,9 +204,7 @@ class SlashCommand extends SlashCommandBuilder {
 		if (!targets) return;
 
 		// This should make the algorithm faster by pre preparing the array, but no noticable changes
-		targets.forEach(
-			(option) => (option.filePrepared = fuzzysort.prepare(option.name))
-		);
+		targets.forEach((option) => (option.filePrepared = fuzzysort.prepare(option.name)));
 		targets.map((option) => option.filePrepared);
 
 		fuzzysort.go(input, targets, {
@@ -238,9 +233,7 @@ class SlashCommand extends SlashCommandBuilder {
 		const missingUserPerms = [];
 		const missingBotPerms = [];
 
-		const member = interaction.guild.members.cache.get(
-			interaction.member.user.id
-		);
+		const member = interaction.guild.members.cache.get(interaction.member.user.id);
 
 		config.permissions?.forEach((permission) => {
 			if (!member?.permissions.has(permission.permission || permission))
@@ -286,6 +279,42 @@ class SlashCommand extends SlashCommandBuilder {
 			embeds: [missingPermsEmbed],
 			ephemeral: true,
 		});
+	}
+
+	/**
+	 * @param {import("discord.js").Interaction} interaction
+	 */
+	static handleComponentInteraction(interaction) {
+		if (!interaction.isMessageComponent()) return;
+
+		const replyNoCmd = () => {
+			return interaction.reply(
+				"Sorry the command you used doesn't have any run function",
+				{
+					ephemeral: true,
+				}
+			);
+		};
+
+		const client = getClient();
+
+		const [category, cmd, ...args] = interaction.id?.split("/") || [];
+
+		if (!category?.length || !cmd?.length) return replyNoCmd();
+
+		const command = client.interactionCommands.find(
+			(ic) => ic.category === category && ic.cmd === cmd
+		);
+
+		if (typeof command?.run !== "function") return replyNoCmd();
+
+		try {
+			return command.run(client, interaction, args);
+		} catch (err) {
+			return interaction[interaction.replied ? "editReply" : "reply"]({
+				content: err.message,
+			});
+		}
 	}
 }
 
