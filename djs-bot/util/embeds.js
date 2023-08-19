@@ -2,6 +2,7 @@ const { getClient } = require("../bot");
 const { MessageEmbed } = require("../lib/Embed");
 const prettyMilliseconds = require("pretty-ms");
 const { ButtonBuilder, ButtonStyle, ActionRowBuilder } = require("discord.js");
+const { escapeMarkdown } = require("discord.js");
 
 /**
  * @typedef {object} ColorEmbedParams
@@ -10,19 +11,20 @@ const { ButtonBuilder, ButtonStyle, ActionRowBuilder } = require("discord.js");
  *
  * @param {ColorEmbedParams}
  */
-const colorEmbed = ({ color, desc }) => new MessageEmbed().setColor(color).setDescription(desc);
+const colorEmbed = ({ color, desc }) =>
+	new MessageEmbed().setColor(color || getClient().config.embedColor).setDescription(desc);
 
 /**
  * @param {ColorEmbedParams}
  */
 const successEmbed = ({ color, desc = "Success" } = {}) =>
-	colorEmbed({ color: color || getClient().config.embedColor, desc: `✅ | **${desc}**` });
+	colorEmbed({ color: color, desc: `✅ | **${desc}**` });
 
 /**
  * @param {ColorEmbedParams}
  */
 const errorEmbed = ({ color, desc = "Error" } = {}) =>
-	colorEmbed({ color: color || getClient().config.embedColor, desc: `❌ | **${desc}**` });
+	colorEmbed({ color: color, desc: `❌ | **${desc}**` });
 
 /**
  * @param {ColorEmbedParams} options
@@ -148,6 +150,96 @@ const controlChannelMessage = ({ guildId, track } = {}) => {
 	};
 };
 
+/**
+ * @typedef {object} AddQueueEmbedParams
+ * @property {import("cosmicord.js").CosmiTrack} track
+ * @property {import("../lib/clients/MusicClient").CosmicordPlayerExtended} player
+ * @property {string} requesterId
+ *
+ * @param {AddQueueEmbedParams}
+ */
+const addQueueEmbed = ({ track, player, requesterId }) => {
+	const client = getClient();
+
+	const title = escapeMarkdown(track.title).replace(/\]|\[/g, "");
+
+	const embed = new MessageEmbed()
+		.setColor(client.config.embedColor)
+		.setAuthor({ name: "Added to queue", iconURL: client.config.iconURL })
+		.setDescription(`[${title}](${track.uri})` || "No Title")
+		.setURL(track.uri)
+		.addFields(
+			{
+				name: "Added by",
+				value: `<@${requesterId}>`,
+				inline: true,
+			},
+			{
+				name: "Duration",
+				value: track.isStream
+					? `\`LIVE 🔴 \``
+					: `\`${client.ms(track.duration, {
+							colonNotation: true,
+							secondsDecimalDigits: 0,
+					  })}\``,
+				inline: true,
+			}
+		);
+
+	try {
+		embed.setThumbnail(track.displayThumbnail("maxresdefault"));
+	} catch (err) {
+		embed.setThumbnail(track.thumbnail);
+	}
+
+	if (player.queue.totalSize > 1) {
+		embed.addFields({
+			name: "Position in queue",
+			value: `${player.queue.size}`,
+			inline: true,
+		});
+	}
+
+	return embed;
+};
+
+/**
+ * @typedef {object} LoadedPlaylistEmbedParams
+ * @property {import("cosmicord.js").CosmiLoadedTracks} searchResult
+ * @property {string} query
+ *
+ * @param {LoadedPlaylistEmbedParams}
+ */
+const loadedPlaylistEmbed = ({ searchResult, query }) => {
+	const client = getClient();
+
+	const embed = new MessageEmbed()
+		.setColor(client.config.embedColor)
+		.setAuthor({
+			name: "Playlist added to queue",
+			iconURL: client.config.iconURL,
+		})
+		.setThumbnail(searchResult.tracks[0].thumbnail)
+		.setDescription(`[${searchResult.playlist.name}](${query})`)
+		.addFields(
+			{
+				name: "Enqueued",
+				value: `\`${searchResult.tracks.length}\` songs`,
+				inline: true,
+			},
+			{
+				name: "Playlist duration",
+				value: `\`${client.ms(searchResult.playlist.duration, {
+					colonNotation: true,
+					secondsDecimalDigits: 0,
+				})}\``,
+				inline: true,
+			}
+		);
+
+	return embed;
+};
+
 module.exports = {
 	successEmbed,
 	errorEmbed,
@@ -159,4 +251,6 @@ module.exports = {
 	embedClearedQueue,
 	controlChannelMessage,
 	trackStartedEmbed,
+	addQueueEmbed,
+	loadedPlaylistEmbed,
 };

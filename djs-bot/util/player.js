@@ -47,8 +47,21 @@ const skip = (player) => {
 	return 0;
 };
 
+const joinStageChannelRoutine = (me) => {
+	setTimeout(() => {
+		if (me.voice.suppress == true) {
+			try {
+				me.voice.setSuppressed(false);
+			} catch (e) {
+				me.voice.setRequestToSpeak(true);
+			}
+		}
+	}, 2000); // Need this because discord api is buggy asf, and without this the bot will not request to speak on a stage - Darren
+};
+
 module.exports = {
 	playPrevious,
 	stop,
 	skip,
+	joinStageChannelRoutine,
 };
