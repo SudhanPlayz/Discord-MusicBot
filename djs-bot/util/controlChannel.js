@@ -245,7 +245,15 @@ const handleMessageCreate = async (message) => {
 
 		if (player.queue.totalSize <= 1) player.queue.previous = player.queue.current;
 
-		await editResponse({ embeds: [addQueueEmbed({ track: firstTrack, player, requesterId: message.author.id })] });
+		await editResponse({
+			embeds: [
+				addQueueEmbed({
+					track: firstTrack,
+					player,
+					requesterId: message.author.id,
+				}),
+			],
+		});
 	}
 
 	if (playlistLoaded) {
@@ -255,7 +263,7 @@ const handleMessageCreate = async (message) => {
 
 		await editResponse({
 			embeds: [loadedPlaylistEmbed({ searchResult, query })],
-		}).catch(client.warn);
+		});
 	}
 
 	return retDelAll();
