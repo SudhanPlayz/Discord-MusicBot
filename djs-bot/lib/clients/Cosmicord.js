@@ -6,7 +6,7 @@ const colors = require("colors");
 const { MessageEmbed, MessageActionRow, MessageButton } = require('../Embed');
 const { Cosmicord, CosmiPlayer, CosmiNode } = require("cosmicord.js");
 const { trackStartedEmbed } = require("../../util/embeds");
-const { updateControlMessage } = require("../../util/controlChannel");
+const { updateControlMessage, updateNowPlaying } = require("../../util/controlChannel");
 
 class CosmicordPlayerExtended extends CosmiPlayer {
 	/**
@@ -192,21 +192,24 @@ module.exports = (client) => {
 				.get(player.textChannel)
 				.send({ embeds: [errorEmbed] });
 		})
-		.on("playerMoved", (node, player, oldChannel, newChannel) => {
+		.on("playerMoved", async (node, player, oldChannel, newChannel) => {
 			const guild = client.guilds.cache.get(player.guildId);
 			if (!guild) return;
 			const channel = guild.channels.cache.get(player.textChannel);
 			if (oldChannel === newChannel) return;
 			if (newChannel === null || !newChannel) {
 				if (!player) return;
-				if (channel)
-					channel.send({
+				if (channel) {
+					const msg = await channel.send({
 						embeds: [
 							new MessageEmbed()
-								.setColor(client.config.embedColor)
-								.setDescription(`Disconnected from <#${oldChannel}>`),
+							.setColor(client.config.embedColor)
+							.setDescription(`Disconnected from <#${oldChannel}>`),
 						],
-					});
+					}).catch(client.warn);
+
+					setTimeout(() => msg?.delete().catch(client.warn), 20000);
+				}
 				return player.destroy();
 			} else {
 				player.voiceChannel = newChannel;
@@ -234,15 +237,9 @@ module.exports = (client) => {
 				if (!playedTracks.includes(track))
 					playedTracks.push(track);
 
-				const nowPlaying = await client.channels.cache
-					.get(player.textChannel)
-					.send({ embeds: [trackStartedEmbed({track})] })
-					.catch(client.warn);
-
+				updateNowPlaying(player, track);
 				updateControlMessage(player.guild, track);
 
-
-				player.setNowplayingMessage(client, nowPlaying);
 				client.warn(`Player: ${player.guildId} | Track has started playing [${colors.blue(track.title)}]`);
 			}
 		)
@@ -294,25 +291,32 @@ module.exports = (client) => {
 						.setFooter({ text: "If you wish for the queue to never end use `/autoqueue`" })
 						.setTimestamp();
 
-					client.channels.cache
+					const msg = await client.channels.cache
 						.get(player.textChannel)
-						.send({ embeds: [queueEmbed] });
+						.send({ embeds: [queueEmbed] }).catch(client.warn);
+
+					setTimeout(() => msg?.delete().catch(client.warn), 20000);
 
 					try {
 						if (!player.playing && !twentyFourSeven) {
-							setTimeout(() => {
+							setTimeout(async () => {
 								if (!player.playing && player.state !== "DISCONNECTED") {
-									client.channels.cache.get(player.textChannel)
-										.send({
-											embeds: [new MessageEmbed()
-												.setColor(client.config.embedColor)
-												.setAuthor({
-													name: "Disconnected",
-													iconURL: client.config.iconURL,
-												})
-												.setDescription(`The player has been disconnected due to inactivity.`)
-											]
-										});
+									const payload = {
+										embeds: [new MessageEmbed()
+											.setColor(client.config.embedColor)
+											.setAuthor({
+												name: "Disconnected",
+												iconURL: client.config.iconURL,
+											})
+											.setDescription(`The player has been disconnected due to inactivity.`)
+										]
+									};
+
+									const msg = await client.channels.cache.get(player.textChannel)
+										.send(payload).catch(client.warn);
+
+									setTimeout(() => msg?.delete().catch(client.warn), 20000);
+
 									player.destroy();
 								} else if (player.playing) {
 									client.warn(`Player: ${player.options.guild} | A new song was added during the timeout`);

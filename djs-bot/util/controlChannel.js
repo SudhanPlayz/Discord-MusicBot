@@ -6,6 +6,7 @@ const {
 	redEmbed,
 	addQueueEmbed,
 	loadedPlaylistEmbed,
+	trackStartedEmbed,
 } = require("./embeds");
 const { joinStageChannelRoutine } = require("./player");
 
@@ -269,6 +270,30 @@ const handleMessageCreate = async (message) => {
 	return retDelAll();
 };
 
+const runIfNotControlChannel = async (player, cb) => {
+	const controlMessage = await getControlChannelMessage(player.guild);
+
+	if (player.textChannel !== controlMessage?.channelId) {
+		return cb();
+	}
+};
+
+/**
+ * @param {import("../lib/clients/MusicClient").CosmicordPlayerExtended} player
+ * @param {import("cosmicord.js").CosmiTrack} track
+ */
+const updateNowPlaying = async (player, track) => {
+	return runIfNotControlChannel(player, async () => {
+		const client = getClient();
+		const nowPlaying = await client.channels.cache
+			.get(player.textChannel)
+			.send({ embeds: [trackStartedEmbed({ track })] })
+			.catch(client.warn);
+
+		player.setNowplayingMessage(client, nowPlaying);
+	});
+};
+
 module.exports = {
 	handleMessageDelete,
 	setControlChannelMessage,
@@ -277,4 +302,6 @@ module.exports = {
 	updateControlMessage,
 	setDbControlChannel,
 	handleMessageCreate,
+	updateNowPlaying,
+	runIfNotControlChannel,
 };
