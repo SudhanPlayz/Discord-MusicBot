@@ -3,6 +3,7 @@ const { embedNoLLNode, embedNoTrackPlaying } = require("../util/embeds");
 
 const command = new SlashCommand()
 	.setName("playpause")
+	.setCategory("cc")
 	.setDescription("Play and Pause interaction")
 	.setRun(async (client, interaction, options) => {
 		if (!interaction.isButton()) {
