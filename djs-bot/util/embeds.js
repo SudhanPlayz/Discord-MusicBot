@@ -125,7 +125,21 @@ const controlChannelMessage = ({ guildId, track } = {}) => {
 		.setStyle(ButtonStyle.Primary)
 		.setEmoji("⏭️");
 
-	const components = [new ActionRowBuilder().addComponents(prev, playpause, stop, next)];
+	const firstRow = new ActionRowBuilder().addComponents(prev, playpause, stop, next);
+
+	const lowerVolume = new ButtonBuilder()
+		.setCustomId("cc/vlower")
+		.setStyle(ButtonStyle.Secondary)
+		.setEmoji("🔉");
+
+	const louderVolume = new ButtonBuilder()
+		.setCustomId("cc/vlouder")
+		.setStyle(ButtonStyle.Secondary)
+		.setEmoji("🔊");
+
+	const secondRow = new ActionRowBuilder().addComponents(lowerVolume, louderVolume);
+
+	const components = [firstRow, secondRow];
 
 	return {
 		content: "Join a voice channel and queue songs by name or url in here.",

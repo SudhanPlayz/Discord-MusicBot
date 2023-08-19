@@ -51,6 +51,15 @@ const ccInteractionHook = async (client, interaction) => {
 	return { error: false, data: { channel, sendError, player } };
 };
 
+const checkPlayerVolume = async (player, interaction) => {
+	if (typeof player.volume !== "number")
+		return interaction.reply({
+			content: "Something's wrong",
+			ephemeral: true,
+		});
+};
+
 module.exports = {
 	ccInteractionHook,
+	checkPlayerVolume,
 };
