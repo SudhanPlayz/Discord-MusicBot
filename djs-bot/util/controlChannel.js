@@ -49,7 +49,7 @@ const setDbControlChannel = async ({ guildId, channelId, messageId } = {}) => {
 
 	const client = getClient();
 
-	if (channelId?.length && messageId.length)
+	if (channelId?.length && messageId?.length)
 		setControlChannelMessage(
 			guildId,
 			new Message(client, {
