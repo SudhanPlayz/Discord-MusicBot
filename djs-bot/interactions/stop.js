@@ -2,9 +2,9 @@ const SlashCommand = require("../lib/SlashCommand");
 const { ccInteractionHook } = require("../util/interactions");
 
 const command = new SlashCommand()
-	.setName("playpause")
+	.setName("stop")
 	.setCategory("cc")
-	.setDescription("Play and Pause interaction")
+	.setDescription("Stop interaction")
 	.setRun(async (client, interaction, options) => {
 		const { error, data } = await ccInteractionHook(client, interaction);
 
@@ -12,9 +12,9 @@ const command = new SlashCommand()
 
 		const { player, channel, sendError } = data;
 
-		if (player.paused) {
-			player.pause(false);
-		} else player.pause(true);
+		if (player.playing) {
+			player.stop();
+		}
 
 		return interaction.deferUpdate();
 	});

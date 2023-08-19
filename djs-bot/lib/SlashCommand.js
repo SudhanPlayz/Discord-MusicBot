@@ -288,22 +288,20 @@ class SlashCommand extends SlashCommandBuilder {
 		if (!interaction.isMessageComponent()) return;
 
 		const replyNoCmd = () => {
-			return interaction.reply(
-				"Sorry the command you used doesn't have any run function",
-				{
-					ephemeral: true,
-				}
-			);
+			return interaction.reply({
+				content: "Sorry the command you used doesn't have any run function",
+				ephemeral: true,
+			});
 		};
 
 		const client = getClient();
 
-		const [category, cmd, ...args] = interaction.id?.split("/") || [];
+		const [category, cmd, ...args] = interaction.customId?.split("/") || [];
 
 		if (!category?.length || !cmd?.length) return replyNoCmd();
 
 		const command = client.interactionCommands.find(
-			(ic) => ic.category === category && ic.cmd === cmd
+			(ic) => ic.category === category && ic.name === cmd
 		);
 
 		if (typeof command?.run !== "function") return replyNoCmd();
@@ -313,6 +311,7 @@ class SlashCommand extends SlashCommandBuilder {
 		} catch (err) {
 			return interaction[interaction.replied ? "editReply" : "reply"]({
 				content: err.message,
+				ephemeral: true,
 			});
 		}
 	}
