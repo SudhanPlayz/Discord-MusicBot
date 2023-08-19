@@ -2,7 +2,14 @@ const { Message } = require("discord.js");
 const { getClient } = require("../bot");
 const { controlChannelMessage } = require("./embeds");
 
+/**
+ * @type {Map<string, Message>}
+ */
 const controlChannelMessageCache = new Map();
+
+const setControlChannelMessage = (guildId, message) => {
+	return controlChannelMessageCache.set(guildId, message);
+};
 
 const getControlChannelMessage = async (guildId) => {
 	if (!guildId) throw new Error("No guild Id provided");
@@ -28,19 +35,29 @@ const getControlChannelMessage = async (guildId) => {
 		channel_id: controlChannelId,
 	});
 
-	controlChannelMessageCache.set(guildId, message);
+	setControlChannelMessage(guildId, message);
 
 	return message;
 };
 
-const setDbControlChannel = async ({
-	guildId,
-	channelId,
-	messageId,
-} = {}) => {
+const deleteControlChannelMessage = (guildId) => {
+	return controlChannelMessageCache.delete(guildId);
+};
+
+const setDbControlChannel = async ({ guildId, channelId, messageId } = {}) => {
 	if (!guildId) throw new Error("No guildId provided");
 
 	const client = getClient();
+
+	if (channelId?.length && messageId.length)
+		setControlChannelMessage(
+			guildId,
+			new Message(client, {
+				id: messageId,
+				channel_id: channelId,
+			})
+		);
+	else deleteControlChannelMessage(guildId);
 
 	if (!client.db) throw new Error("No db configured");
 
@@ -68,10 +85,14 @@ const handleMessageDelete = async (message) => {
 
 	const savedMessage = await getControlChannelMessage(guildId);
 
-	if (!savedMessage || (savedMessage.id !== message.id) || ((savedMessage.channelId !== message.channelId)))
+	if (
+		!savedMessage ||
+		savedMessage.id !== message.id ||
+		savedMessage.channelId !== message.channelId
+	)
 		return;
 
-	controlChannelMessageCache.delete(guildId);
+	deleteControlChannelMessage(guildId);
 
 	const client = getClient();
 
@@ -99,7 +120,9 @@ const updateControlMessage = async (guildId, track) => {
 
 module.exports = {
 	handleMessageDelete,
+	setControlChannelMessage,
 	getControlChannelMessage,
+	deleteControlChannelMessage,
 	updateControlMessage,
 	setDbControlChannel,
 };
