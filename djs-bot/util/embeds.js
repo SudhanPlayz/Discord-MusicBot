@@ -3,19 +3,30 @@ const { MessageEmbed } = require("../lib/Embed");
 const prettyMilliseconds = require("pretty-ms");
 const { ButtonBuilder, ButtonStyle, ActionRowBuilder } = require("discord.js");
 
+/**
+ * @typedef {object} ColorEmbedParams
+ * @property {import("discord.js").ColorResolvable} color
+ * @property {string} desc
+ *
+ * @param {ColorEmbedParams}
+ */
+const colorEmbed = ({ color, desc }) => new MessageEmbed().setColor(color).setDescription(desc);
+
+/**
+ * @param {ColorEmbedParams}
+ */
 const successEmbed = ({ color, desc = "Success" } = {}) =>
-	new MessageEmbed()
-		.setColor(color || getClient().config.embedColor)
-		.setDescription(`✅ | **${desc}**`);
+	colorEmbed({ color: color || getClient().config.embedColor, desc: `✅ | **${desc}**` });
 
+/**
+ * @param {ColorEmbedParams}
+ */
 const errorEmbed = ({ color, desc = "Error" } = {}) =>
-	new MessageEmbed()
-		.setColor(color || getClient().config.embedColor)
-		.setDescription(`❌ | **${desc}**`);
+	colorEmbed({ color: color || getClient().config.embedColor, desc: `❌ | **${desc}**` });
 
-const colorEmbed = ({ color, desc }) =>
-	new MessageEmbed().setColor(color).setDescription(desc);
-
+/**
+ * @param {ColorEmbedParams} options
+ */
 const redEmbed = (options = {}) => colorEmbed({ color: "Red", ...options });
 
 const embedNoLLNode = () =>
@@ -38,6 +49,12 @@ const embedClearedQueue = () =>
 		desc: "Cleared the queue!",
 	});
 
+/**
+ * @typedef {object} TrackStartedEmbedParams
+ * @property {import("cosmicord.js").CosmiTrack=} track
+ *
+ * @param {TrackStartedEmbedParams}
+ */
 const trackStartedEmbed = ({ track } = {}) => {
 	const client = getClient();
 
@@ -56,34 +73,43 @@ const trackStartedEmbed = ({ track } = {}) => {
 			.addField(
 				"Duration",
 				track.isStream
-				? `\`LIVE\``
-				: `\`${prettyMilliseconds(track.duration, {
-					secondsDecimalDigits: 0,
-				})}\``,
-					true
-				);
-				// .setFooter({ text: `${activeProperties.filter(e => e).join(" • ")}` }); // might error?
+					? `\`LIVE\``
+					: `\`${prettyMilliseconds(track.duration, {
+							secondsDecimalDigits: 0,
+					  })}\``,
+				true
+			);
+		// .setFooter({ text: `${activeProperties.filter(e => e).join(" • ")}` }); // might error?
 
 		try {
 			embed.setThumbnail(track.displayThumbnail("maxresdefault"));
 		} catch (err) {
 			embed.setThumbnail(track.thumbnail);
 		}
-	}
-	else {
+	} else {
 		// !TODO: finish this
-		embed.setTitle( "No song currently playing")
-			.setImage( "https://cdn.discordapp.com/avatars/788006279837909032/e4cf889f9fe19f9b4dd5301d51bddcb2.webp?size=4096");
+		embed.setTitle("No song currently playing").setImage(
+			"https://cdn.discordapp.com/avatars/788006279837909032/e4cf889f9fe19f9b4dd5301d51bddcb2.webp?size=4096"
+		);
 	}
 
 	return embed;
 };
 
-// !TODO: finish this
 /**
+ * @typedef {object} ControlChannelMessageParams
+ * @property {string} guildId
+ * @property {TrackStartedEmbedParams["track"]} track
+ *
+ * @param {ControlChannelMessageParams}
  * @returns {import("discord.js").MessagePayload | import("discord.js").MessageCreateOptions}
  */
 const controlChannelMessage = ({ guildId, track } = {}) => {
+	const prev = new ButtonBuilder()
+		.setCustomId("cc/prev")
+		.setStyle(ButtonStyle.Primary)
+		.setEmoji("⏮️");
+
 	const playpause = new ButtonBuilder()
 		.setCustomId("cc/playpause")
 		.setStyle(ButtonStyle.Primary)
@@ -91,16 +117,19 @@ const controlChannelMessage = ({ guildId, track } = {}) => {
 
 	const stop = new ButtonBuilder()
 		.setCustomId("cc/stop")
-		.setStyle(ButtonStyle.Secondary)
+		.setStyle(ButtonStyle.Danger)
 		.setEmoji("⏹️");
 
-	const components = [new ActionRowBuilder().addComponents(playpause, stop)];
+	const next = new ButtonBuilder()
+		.setCustomId("cc/next")
+		.setStyle(ButtonStyle.Primary)
+		.setEmoji("⏭️");
+
+	const components = [new ActionRowBuilder().addComponents(prev, playpause, stop, next)];
 
 	return {
 		content: "Join a voice channel and queue songs by name or url in here.",
-		embeds: [
-			trackStartedEmbed({track}),
-		],
+		embeds: [trackStartedEmbed({ track })],
 		components,
 	};
 };

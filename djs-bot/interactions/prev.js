@@ -1,10 +1,12 @@
 const SlashCommand = require("../lib/SlashCommand");
+const { redEmbed } = require("../util/embeds");
 const { ccInteractionHook } = require("../util/interactions");
+const playerUtil = require("../util/player");
 
 const command = new SlashCommand()
-	.setName("stop")
+	.setName("prev")
 	.setCategory("cc")
-	.setDescription("Stop interaction")
+	.setDescription("Prev interaction")
 	.setRun(async (client, interaction, options) => {
 		const { error, data } = await ccInteractionHook(client, interaction);
 
@@ -12,10 +14,12 @@ const command = new SlashCommand()
 
 		const { player, channel, sendError } = data;
 
-		if (player.playing) {
-			player.queue.clear();
-			player.stop();
-		}
+		const { status, previousSong } = playerUtil.playPrevious(player);
+
+		if (status === 1)
+			return interaction.reply({
+				embeds: [redEmbed("There is no previous song in the queue.")],
+			});
 
 		return interaction.deferUpdate();
 	});

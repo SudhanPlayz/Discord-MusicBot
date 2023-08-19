@@ -2,9 +2,9 @@ const SlashCommand = require("../lib/SlashCommand");
 const { ccInteractionHook } = require("../util/interactions");
 
 const command = new SlashCommand()
-	.setName("stop")
+	.setName("next")
 	.setCategory("cc")
-	.setDescription("Stop interaction")
+	.setDescription("Next interaction")
 	.setRun(async (client, interaction, options) => {
 		const { error, data } = await ccInteractionHook(client, interaction);
 
@@ -13,7 +13,6 @@ const command = new SlashCommand()
 		const { player, channel, sendError } = data;
 
 		if (player.playing) {
-			player.queue.clear();
 			player.stop();
 		}
 
