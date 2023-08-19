@@ -33,7 +33,7 @@
     "cors": "^2.8.5",
     "cosmicord.js": "^1.1.0",
     "cron": "^2.3.1",
-    "discord.js": "^14.11.0",
+    "discord.js": "^14.13.0",
     "dotenv": "^16.3.1",
     "erela.js": "^2.4.0",
     "erela.js-deezer": "^1.0.7",
