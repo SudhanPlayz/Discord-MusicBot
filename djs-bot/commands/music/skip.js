@@ -1,5 +1,7 @@
 const SlashCommand = require("../../lib/SlashCommand");
 const { MessageEmbed } = require("../../lib/Embed");
+const playerUtil = require("../../util/player");
+const { redEmbed } = require("../../util/embeds");
 
 const command = new SlashCommand()
 	.setName("skip")
@@ -9,7 +11,7 @@ const command = new SlashCommand()
 		if (!channel) {
 			return;
 		}
-		
+
 		let player;
 		if (client.manager.Engine) {
 			player = client.manager.Engine.players.get(interaction.guild.id);
@@ -22,7 +24,7 @@ const command = new SlashCommand()
 				],
 			});
 		}
-		
+
 		if (!player) {
 			return interaction.reply({
 				embeds: [
@@ -32,21 +34,22 @@ const command = new SlashCommand()
 				],
 				ephemeral: true,
 			});
-		} 
-        	const song = player.queue.current;
-	        const autoQueue = player.get("autoQueue");
-                if (player.queue[0] == undefined && (!autoQueue || autoQueue === false)) {
-		return interaction.reply({
-			embeds: [
-				new MessageEmbed()
-					.setColor("Red")
-					.setDescription(`There is nothing after [${ song.title }](${ song.uri }) in the queue.`),
-			],
-		})}
-		
-		player.queue.previous = player.queue.current;
-		player.stop();
-		
+		}
+
+		const song = player.queue.current;
+
+		const status = playerUtil.skip(player);
+
+		if (status === 1) {
+			return interaction.reply({
+				embeds: [
+					redEmbed(
+						`There is nothing after [${song.title}](${song.uri}) in the queue.`
+					),
+				],
+			});
+		}
+
 		interaction.reply({
 			embeds: [
 				new MessageEmbed()

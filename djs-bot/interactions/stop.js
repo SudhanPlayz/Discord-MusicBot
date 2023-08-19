@@ -1,5 +1,6 @@
 const SlashCommand = require("../lib/SlashCommand");
 const { ccInteractionHook } = require("../util/interactions");
+const playerUtil = require("../util/player");
 
 const command = new SlashCommand()
 	.setName("stop")
@@ -12,10 +13,7 @@ const command = new SlashCommand()
 
 		const { player, channel, sendError } = data;
 
-		if (player.playing) {
-			player.queue.clear();
-			player.stop();
-		}
+		const status = playerUtil.stop(player);
 
 		return interaction.deferUpdate();
 	});

@@ -14,7 +14,7 @@ const command = new SlashCommand()
 
 		const { player, channel, sendError } = data;
 
-		const { status, previousSong } = playerUtil.playPrevious(player);
+		const status = await playerUtil.playPrevious(player);
 
 		if (status === 1)
 			return interaction.reply({
