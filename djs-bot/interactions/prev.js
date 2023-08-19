@@ -18,7 +18,12 @@ const command = new SlashCommand()
 
 		if (status === 1)
 			return interaction.reply({
-				embeds: [redEmbed("There is no previous song in the queue.")],
+				embeds: [
+					redEmbed({
+						desc: "There is no previous song in the queue.",
+					}),
+				],
+				ephemeral: true,
 			});
 
 		return interaction.deferUpdate();
