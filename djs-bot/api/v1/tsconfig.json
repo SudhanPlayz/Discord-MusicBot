@@ -4,5 +4,6 @@
     "outDir": "./dist",
     "allowJs": false
   },
-  "include": ["src/**/*.ts"]
+  "include": ["src/**/*.ts"],
+  "exclude": ["./dist/**/*"]
 }

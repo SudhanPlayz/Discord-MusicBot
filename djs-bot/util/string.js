@@ -63,6 +63,11 @@ function getPosition(string, subString, index = 1) {
 	return string.toString().split(subString, index).join(subString).length;
 }
 
+/**
+ * Capitalizes the first letter of a string (if it is a letter)
+ * @param {String} string 
+ * @returns {String}
+ */
 function capitalize(string) {
 	return string.charAt(0).toUpperCase() + string.substring(1).toLowerCase();
 }

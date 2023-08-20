@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PROJECT_NAME=$(basename $(pwd) | tr  '[:upper:]' '[:lower:]')
+PROJECT_NAME=$(basename $(pwd) | tr '[:upper:]' '[:lower:]')
 
 echo -e "\
     OS: \033[38;5;51m$(uname)\033[0m\n\
@@ -37,34 +37,34 @@ DOCKER="docker compose \
 
 COMPOSE_CONTAINERS=$(${DOCKER} \
     ps --all \
-    --format table | grep -v "NAME" | awk '{print $1}' )
+    --format table | grep -v "NAME" | awk '{print $1}')
 
 COMPOSE_CONTAINERS_RUNNING=$(${DOCKER} \
     ps \
-    --format table | grep -v "NAME" | awk '{print $1}' )
+    --format table | grep -v "NAME" | awk '{print $1}')
 
 # creates 2 files named .SERVICES and .ENABLE
 # used for setting variable for the parent
-parse_start_options () {
-    echo djs-bot dashboard postgres-db lavalink > .SERVICES
-    echo db-start > .ENABLE # Enable the database by default
+parse_start_options() {
+    echo djs-bot dashboard postgres-db lavalink >.SERVICES
+    echo db-start >.ENABLE # Enable the database by default
 
     while [[ "$1" != "" ]]; do
         case $1 in
-            nodb)
-                echo start > .ENABLE # Disable the database startup script from running
-                sed -i "s/postgres-db//" .SERVICES
-                ;;
-            noll) 
-                sed -i "s/lavalink//" .SERVICES
-                ;;
-            nofe) 
-                sed -i "s/dashboard//" .SERVICES
-                ;;
-            *) 
-                echo -e "\033[91mInvalid option: $1\033[0m"
-                return 2
-                ;;
+        nodb)
+            echo start >.ENABLE # Disable the database startup script from running
+            sed -i "s/postgres-db//" .SERVICES
+            ;;
+        noll)
+            sed -i "s/lavalink//" .SERVICES
+            ;;
+        nofe)
+            sed -i "s/dashboard//" .SERVICES
+            ;;
+        *)
+            echo -e "\033[91mInvalid option: $1\033[0m"
+            return 2
+            ;;
         esac
         shift
     done
@@ -74,26 +74,26 @@ parse_start_options () {
 
 # creates 2 files named .SERVICES and .ENABLE
 # used for setting variable for the parent
-parse_lite_options () {
-    echo djs-bot > .SERVICES
-    echo start > .ENABLE # Disable the database by default
+parse_lite_options() {
+    echo djs-bot >.SERVICES
+    echo start >.ENABLE # Disable the database by default
 
     while [[ "$1" != "" ]]; do
         case $1 in
-            db)
-                echo db-start > .ENABLE # Disable the database startup script from running
-                sed -i "s/$/ postgres-db/" .SERVICES
-                ;;
-            ll) 
-                sed -i "s/$/ lavalink/" .SERVICES
-                ;;
-            fe) 
-                sed -i "s/$/ dashboard/" .SERVICES
-                ;;
-            *) 
-                echo -e "\033[91mInvalid option: $1\033[0m"
-                return 2
-                ;;
+        db)
+            echo db-start >.ENABLE # Disable the database startup script from running
+            sed -i "s/$/ postgres-db/" .SERVICES
+            ;;
+        ll)
+            sed -i "s/$/ lavalink/" .SERVICES
+            ;;
+        fe)
+            sed -i "s/$/ dashboard/" .SERVICES
+            ;;
+        *)
+            echo -e "\033[91mInvalid option: $1\033[0m"
+            return 2
+            ;;
         esac
         shift
     done
@@ -101,11 +101,11 @@ parse_lite_options () {
     return 0
 }
 
-create_and_run () {
-    echo -e "\033[92;4mCreating container for: \033[90m$SERVICES\033[0m"
+create_and_run() {
+    echo -e "\n\033[92;4mCreating container for: \033[90m$SERVICES\033[0m"
     ${DOCKER} create --pull never --remove-orphans $@ $SERVICES
 
-    echo -e "\033[92;4mRunning \033[90m$SERVICES\033[0m"
+    echo -e "\n\033[92;4mStarting \033[90m$SERVICES\033[0m"
     ${DOCKER} start $SERVICES
 
     echo -e "\n\033[92;4mProject started: \033[90m$(date)\033[0m"
@@ -114,7 +114,7 @@ create_and_run () {
     echo -e "\033[93;4mType \033[3m$0 help\033[23m\033[93m for more options.\033[0m\n"
 }
 
-cleanup_file_vars () {
+cleanup_file_vars() {
     rm .ENABLE .SERVICES
 }
 
@@ -141,18 +141,20 @@ if [[ "$1" == "up" ]]; then
         shift
         # Run the bot without docker
         cd ./djs-bot && npm run start
-    else 
+    else
         parse_start_options $@
         export ENABLE=$(cat .ENABLE)
         SERVICES=$(cat .SERVICES)
 
-        # Start the project
+        # Pull the required images
+        echo -e "\033[92;4mPulling images for: \033[90m$SERVICES\033[0m"
         ${DOCKER} pull $SERVICES
         create_and_run
 
         cleanup_file_vars
     fi
 
+    echo -e "\033[95mExiting gracefully with code 130\033[0m"
     exit 130
 
 elif [[ "$1" == "lite" ]]; then
@@ -176,7 +178,7 @@ elif [[ "$1" == "lite" ]]; then
     elif [[ "$1" == "" ]]; then
         # Run the bot without docker
         cd ./djs-bot && npm run start
-    else 
+    else
         if [[ "$1" == "docker" ]]; then
             shift
         fi
@@ -185,13 +187,15 @@ elif [[ "$1" == "lite" ]]; then
         export ENABLE=$(cat .ENABLE)
         SERVICES=$(cat .SERVICES)
 
-        # Start the project
+        # Pull the required images
+        echo -e "\033[92;4mPulling images for: \033[90m$SERVICES\033[0m"
         ${DOCKER} pull $SERVICES
         create_and_run
 
         cleanup_file_vars
     fi
 
+    echo -e "\033[95mExiting gracefully with code 130\033[0m"
     exit 130
 
 elif [[ "$1" == "enter" ]]; then
@@ -210,12 +214,13 @@ elif [[ "$1" == "enter" ]]; then
         echo -e "\033[91mNo containers found, make sure the project is running.\033[0m"
         exit 126
     elif [[ "$1" != "" ]]; then
-        CONTAINER=$(docker ps | grep $1 | awk '{print $1}') 
+        CONTAINER=$(docker ps | grep $1 | awk '{print $1}')
         echo -e "\033[93;4mEntering container:\033[0m \033[3m$1\033[23m\n"
 
         # Additional option to enter the container's filesystem
         if [[ "$2" != "" && "$2" == "fs" ]]; then
             docker exec -it "${CONTAINER}" /bin/bash
+            echo -e "\033[95mExiting gracefully with code 130\033[0m"
             exit 130
         elif [[ "$2" != "" ]]; then
             echo -e "\033[91mInvalid option: $2\033[0m"
@@ -224,9 +229,10 @@ elif [[ "$1" == "enter" ]]; then
             # Enter the container's active process
             echo -e "\033[93;4mPress CTRL+P then CTRL+Q to detach from the container.\033[0m\n"
             docker attach ${CONTAINER}
+            echo -e "\033[95mExiting gracefully with code 130\033[0m"
             exit 130
         fi
-    else 
+    else
         echo -e "\033[93;4mPlease specify the container name:\033[0m"
         echo -e "\n\t\033[4mAvailable containers:\033[24m"
         echo -e "\033[3m${COMPOSE_CONTAINERS_RUNNING}\033[23m\n"
@@ -245,9 +251,10 @@ elif [[ "$1" == "rebuild" ]]; then
     ${DOCKER} pull $SERVICES
     ${DOCKER} build --no-cache $SERVICES
 
-    create_and_run --force-recreate 
+    create_and_run --force-recreate
 
     cleanup_file_vars
+    echo -e "\033[95mExiting gracefully with code 130\033[0m"
     exit 130
 
 elif [[ "$1" == "down" ]]; then
@@ -285,25 +292,26 @@ elif [[ "$1" == "del" ]]; then
 
         SERVICE_IS_RUNNING=$(echo $COMPOSE_CONTAINERS_RUNNING | grep $1)
         if [[ $SERVICE_IS_RUNNING != '' ]]; then
-            docker container stop $SERVICE > /dev/null 2>&1
+            docker container stop $SERVICE >/dev/null 2>&1
             echo -e "\033[92;4mContainer stopped: \033[90m$(date)\033[0m"
         fi
 
         CONTAINER_EXIST=$(echo $COMPOSE_CONTAINERS | grep $1)
         if [[ $CONTAINER_EXIST != '' ]]; then
-            docker container rm $SERVICE > /dev/null 2>&1
+            docker container rm $SERVICE >/dev/null 2>&1
             echo -e "\033[92;4mContainer deleted: \033[90m$(date)\033[0m"
         fi
 
         if [[ $SERVICE_IMAGE != '' ]]; then
-            docker rmi $SERVICE_IMAGE > /dev/null 2>&1
+            docker rmi $SERVICE_IMAGE >/dev/null 2>&1
             echo -e "\033[92;4mImage deleted: \033[90m$(date)\033[0m"
         else
             echo -e "\033[93;4mContainer didn't exist, Image not deleted.\033[0m"
         fi
 
+        echo -e "\033[95mExiting gracefully with code 130\033[0m"
         exit 130
-    else 
+    else
         echo -e "\033[93;4mPlease specify the container name:\033[0m"
         echo -e "\n\t\033[4mAvailable containers:\033[24m"
         echo -e "\033[3m${COMPOSE_CONTAINERS}\033[23m\n"
