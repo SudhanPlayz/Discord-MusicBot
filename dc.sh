@@ -14,6 +14,14 @@ if [ ! -d "./docker" ]; then
 elif [ ! -f "docker/docker-compose.yml" ]; then
     echo -e "\033[91mNo docker-compose.yml file found, please create one.\033[0m"
     exit 126
+elif [ ! -f "docker/.env" ]; then
+    if [ -f "djs-bot/.env" ]; then
+        echo -e "\033[93;4mCopying .env file from djs-bot to docker.\033[0m"
+        cp djs-bot/.env docker/.env
+    else
+        echo -e "\033[91mNo .env file found, please create one.\033[0m"
+        exit 126
+    fi
 fi
 
 DOCKER="docker compose \
