@@ -28,10 +28,9 @@ const routesErrorHandler: RouteErrorHandler = (err, request, reply) => {
   if (bot) {
     bot.error('Unhandled server error:');
     bot.error(err);
-  } else {
-    console.error('Unhandled server error:');
-    console.error(err);
   }
+
+  console.error(err);
 
   reply.status(500).send();
 };
