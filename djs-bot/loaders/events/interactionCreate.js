@@ -1,6 +1,7 @@
 const { Interaction } = require("discord.js");
 const Bot = require("../../lib/Bot");
 const SlashCommand = require("../../lib/SlashCommand");
+const controlChannel = require("../../util/controlChannel");
 
 // Defines whenever a "interactionCreate" event is fired, basically whenever a user writes a slash command in
 // a server in which the bot is present
@@ -24,6 +25,9 @@ module.exports = async (client, interaction) => {
 	// Gets general info from a command during execution, if sent then check the guards
 	// run only if everything is valid
 	if (interaction.isCommand()) {
+		const isPrevented = await controlChannel.preventInteraction(interaction);
+		if (isPrevented) return isPrevented;
+
 		/** @type {SlashCommand} */
 		const command = client.slash.get(interaction.commandName);
 		if (!command || !command.run) {

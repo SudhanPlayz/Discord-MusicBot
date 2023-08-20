@@ -319,6 +319,27 @@ const updateNowPlaying = async (player, track) => {
 	});
 };
 
+/**
+ * @param {import("discord.js").Interaction} interaction
+ */
+const preventInteraction = async (interaction) => {
+	if (!interaction.channelId) return;
+
+	const controlChannelMessage = await getControlChannelMessage(interaction.guildId);
+
+	if (!controlChannelMessage || controlChannelMessage.channelId !== interaction.channelId)
+		return;
+
+	return interaction.reply({
+		embeds: [
+			redEmbed({
+				desc: "You can't run commands in dedicated Server Control Channel!",
+			}),
+		],
+		ephemeral: true,
+	});
+};
+
 module.exports = {
 	handleMessageDelete,
 	setControlChannelMessage,
@@ -329,4 +350,5 @@ module.exports = {
 	handleMessageCreate,
 	updateNowPlaying,
 	runIfNotControlChannel,
+	preventInteraction,
 };
