@@ -14,13 +14,20 @@ if [ ! -d "./docker" ]; then
 elif [ ! -f "docker/docker-compose.yml" ]; then
     echo -e "\033[91mNo docker-compose.yml file found, please create one.\033[0m"
     exit 126
-elif [ ! -f "docker/.env" ]; then
+fi
+
+if [ ! -f "docker/.env" ]; then
     if [ -f "djs-bot/.env" ]; then
         echo -e "\033[93;4mCopying .env file from djs-bot to docker.\033[0m"
         cp djs-bot/.env docker/.env
     else
         echo -e "\033[91mNo .env file found, please create one.\033[0m"
         exit 126
+    fi
+else
+    if ! cmp -s docker/.env djs-bot/.env; then
+        echo -e "\033[93;4mCopying .env file from djs-bot to docker.\033[0m"
+        cp djs-bot/.env docker/.env
     fi
 fi
 
@@ -146,10 +153,6 @@ if [[ "$1" == "up" ]]; then
         cleanup_file_vars
     fi
 
-    echo -e "\n\033[92;4mProject started: \033[90m$(date)\033[0m"
-    echo -e "\033[3m${PROJECT_NAME}\033[23m is now running.\n"
-
-    echo -e "\033[93;4mType \033[3m$0 help\033[23m\033[93m for more options.\033[0m\n"
     exit 130
 
 elif [[ "$1" == "lite" ]]; then
