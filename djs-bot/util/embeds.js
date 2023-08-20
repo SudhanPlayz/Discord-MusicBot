@@ -11,8 +11,13 @@ const { escapeMarkdown } = require("discord.js");
  *
  * @param {ColorEmbedParams}
  */
-const colorEmbed = ({ color, desc }) =>
-	new MessageEmbed().setColor(color || getClient().config.embedColor).setDescription(desc);
+const colorEmbed = ({ color, desc }) => {
+	if (!desc?.length) throw new Error("[colorEmbed] No description provided");
+
+	return new MessageEmbed()
+		.setColor(color || getClient().config.embedColor)
+		.setDescription(desc);
+};
 
 /**
  * @param {ColorEmbedParams}
