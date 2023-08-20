@@ -222,9 +222,10 @@ module.exports = (client) => {
 			client.warn(`Player: ${player.guildId} | A music player has been created in ${client.guilds.cache.get(player.guildId) ? client.guilds.cache.get(player.guildId).name : "a guild"}`)
 		)
 
-		.on("playerDestoryed", (node, player) =>
+		.on("playerDestoryed", (node, player) => {
 			client.warn(`Player: ${player.guildId} | A music player has been destroyed in ${client.guilds.cache.get(player.guildId) ? client.guilds.cache.get(player.guildId).name : "a guild"}`)
-		)
+			updateControlMessage(player.guild);
+		})
 
 		.on("trackStart",
 			/** @param {CosmicordPlayerExtended} player */

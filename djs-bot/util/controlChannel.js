@@ -7,6 +7,7 @@ const {
 	addQueueEmbed,
 	loadedPlaylistEmbed,
 	trackStartedEmbed,
+	addPlayerStateFooter,
 } = require("./embeds");
 const { joinStageChannelRoutine } = require("./player");
 
@@ -137,7 +138,7 @@ const updateControlMessage = async (guildId, track) => {
  * @param {import("discord.js").Message} message
  */
 const handleMessageCreate = async (message) => {
-	if (!message?.guildId || message.author.bot) return;
+	if (!message?.guildId) return;
 
 	const controlChannelMessage = await getControlChannelMessage(message.guildId);
 
@@ -149,13 +150,34 @@ const handleMessageCreate = async (message) => {
 
 	const client = getClient();
 
+	if (message.author.bot && message.author.id !== client.user.id) return retDel();
+
+	const returnError = async (desc) => {
+		await message.reply({
+			embeds: [
+				redEmbed({
+					desc,
+				}),
+			],
+			target: message,
+			options: {
+				ephemeral: true,
+			},
+		});
+
+		return retDel();
+	};
+
 	const memberVC = message.member?.voice?.channel;
-	if (!memberVC?.joinable) return retDel();
+	if (!memberVC) return returnError("You're not in a voice channel!");
 
 	const clientVC = message.guild.members.cache.get(client.user.id)?.voice?.channel;
 	const isNotInSameVC = !clientVC?.equals(memberVC);
 
-	if (clientVC && isNotInSameVC) return retDel();
+	if (clientVC && isNotInSameVC) return returnError("You're not in my voice channel!");
+
+	if (!memberVC.joinable)
+		return returnError("I don't have enough permission to join your voice channel");
 
 	const node = await client.getLavalink(client);
 	if (!node) return retDel();
@@ -285,9 +307,12 @@ const runIfNotControlChannel = async (player, cb) => {
 const updateNowPlaying = async (player, track) => {
 	return runIfNotControlChannel(player, async () => {
 		const client = getClient();
+
+		const emb = trackStartedEmbed({ track, player });
+
 		const nowPlaying = await client.channels.cache
 			.get(player.textChannel)
-			.send({ embeds: [trackStartedEmbed({ track })] })
+			.send({ embeds: [emb] })
 			.catch(client.warn);
 
 		player.setNowplayingMessage(client, nowPlaying);

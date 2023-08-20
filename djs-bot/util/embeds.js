@@ -57,18 +57,12 @@ const embedClearedQueue = () =>
  *
  * @param {TrackStartedEmbedParams}
  */
-const trackStartedEmbed = ({ track } = {}) => {
+const trackStartedEmbed = ({ track, player } = {}) => {
 	const client = getClient();
 
 	const embed = new MessageEmbed().setColor(client.config.embedColor);
 
 	if (track) {
-		// whatever this code was for
-		// let activeProperties = [
-		// 	player.get("autoQueue") ? "autoqueue" : null,
-		// 	player.get("twentyFourSeven") ? "24/7" : null,
-		// ]
-
 		embed.setAuthor({ name: "Now playing", iconURL: client.config.iconURL })
 			.setDescription(`[${track.title}](${track.uri})`)
 			.addField("Requested by", `${track.requester}`, true)
@@ -81,13 +75,14 @@ const trackStartedEmbed = ({ track } = {}) => {
 					  })}\``,
 				true
 			);
-		// .setFooter({ text: `${activeProperties.filter(e => e).join(" • ")}` }); // might error?
 
 		try {
 			embed.setThumbnail(track.displayThumbnail("maxresdefault"));
 		} catch (err) {
 			embed.setThumbnail(track.thumbnail);
 		}
+
+		if (player) addPlayerStateFooter(player, embed);
 	} else {
 		// !TODO: finish this
 		embed.setTitle("No song currently playing").setImage(
@@ -107,6 +102,8 @@ const trackStartedEmbed = ({ track } = {}) => {
  * @returns {import("discord.js").MessagePayload | import("discord.js").MessageCreateOptions}
  */
 const controlChannelMessage = ({ guildId, track } = {}) => {
+	const player = guildId ? getClient().manager.Engine.players.get(guildId) : undefined;
+
 	const prev = new ButtonBuilder()
 		.setCustomId("cc/prev")
 		.setStyle(ButtonStyle.Primary)
@@ -154,7 +151,7 @@ const controlChannelMessage = ({ guildId, track } = {}) => {
 
 	return {
 		content: "Join a voice channel and queue songs by name or url in here.",
-		embeds: [trackStartedEmbed({ track })],
+		embeds: [trackStartedEmbed({ track, player })],
 		components,
 	};
 };
@@ -261,6 +258,24 @@ const autoQueueEmbed = ({ autoQueue }) => {
 		});
 };
 
+/**
+ * @param {import("../lib/clients/MusicClient").CosmicordPlayerExtended} player
+ * @param {MessageEmbed} embed
+ */
+const addPlayerStateFooter = (player, embed) => {
+	const states = [
+		["autoqueue", !!player.get("autoQueue")],
+		["24/7", !!player.get("twentyFourSeven")],
+	];
+
+	const shownStates = states.filter((state) => state[1]);
+
+	if (shownStates.length)
+		embed.setFooter({
+			text: shownStates.map((state) => state[0]).join(" • "),
+		});
+};
+
 module.exports = {
 	successEmbed,
 	errorEmbed,
@@ -275,4 +290,5 @@ module.exports = {
 	addQueueEmbed,
 	loadedPlaylistEmbed,
 	autoQueueEmbed,
+	addPlayerStateFooter,
 };

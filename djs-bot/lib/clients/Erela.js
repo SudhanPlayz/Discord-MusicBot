@@ -258,8 +258,10 @@ module.exports = (client) => {
 		.on("playerCreate", (player) =>
 			client.warn(`Player: ${player.options.guild} | A music player has been created in ${client.guilds.cache.get(player.options.guild) ? client.guilds.cache.get(player.options.guild).name : "a guild"}`))
 
-		.on("playerDestroy", (player) =>
-			client.warn(`Player: ${player.options.guild} | A music player has been destroyed in ${client.guilds.cache.get(player.options.guild) ? client.guilds.cache.get(player.options.guild).name : "a guild"}`))
+		.on("playerDestroy", (player) => {
+			client.warn(`Player: ${player.options.guild} | A music player has been destroyed in ${client.guilds.cache.get(player.options.guild) ? client.guilds.cache.get(player.options.guild).name : "a guild"}`)
+			updateControlMessage(player.guild);
+		})
 
 		.on("loadFailed", (node, type, error) =>
 			client.warn(`Node: ${node.options.identifier} | Failed to load ${type}: ${error.message}`))

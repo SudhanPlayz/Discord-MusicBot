@@ -1,6 +1,7 @@
 const SlashCommand = require("../lib/SlashCommand");
 const { ccInteractionHook } = require("../util/interactions");
 const { autoQueueEmbed } = require("../util/embeds");
+const { updateControlMessage } = require("../util/controlChannel");
 
 const command = new SlashCommand()
 	.setName("autoqueue")
@@ -22,13 +23,10 @@ const command = new SlashCommand()
 			player.set("autoQueue", false);
 		}
 
-		const msg = await interaction
-			.reply({ embeds: [autoQueueEmbed({autoQueue})], fetchReply: true })
-			.catch(client.warn);
+		const currentTrack = player.queue.current;
+		if (currentTrack) updateControlMessage(interaction.guildId, currentTrack);
 
-		setTimeout(() => msg?.delete().catch(client.warn), 20000);
-
-		return msg;
+		return interaction.deferUpdate();
 	});
 
 module.exports = command;
