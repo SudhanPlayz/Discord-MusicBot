@@ -7,7 +7,6 @@ const {
 	addQueueEmbed,
 	loadedPlaylistEmbed,
 	trackStartedEmbed,
-	addPlayerStateFooter,
 } = require("./embeds");
 const { joinStageChannelRoutine } = require("./player");
 
@@ -138,7 +137,9 @@ const updateControlMessage = async (guildId, track) => {
  * @param {import("discord.js").Message} message
  */
 const handleMessageCreate = async (message) => {
-	if (!message?.guildId) return;
+	const client = getClient();
+
+	if (!message?.guildId || message.author.id === client.user.id) return;
 
 	const controlChannelMessage = await getControlChannelMessage(message.guildId);
 
@@ -148,22 +149,21 @@ const handleMessageCreate = async (message) => {
 		return message.delete().catch(client.warn);
 	};
 
-	const client = getClient();
-
-	if (message.author.bot && message.author.id !== client.user.id) return retDel();
+	if (message.webhookId || (message.author.bot && message.author.id !== client.user.id))
+		return retDel();
 
 	const returnError = async (desc) => {
-		await message.reply({
+		// message reply can't be ephemeral
+		const msg = await message.reply({
 			embeds: [
 				redEmbed({
 					desc,
 				}),
 			],
 			target: message,
-			options: {
-				ephemeral: true,
-			},
 		});
+
+		setTimeout(async () => await msg.delete().catch(client.warn), 20000);
 
 		return retDel();
 	};
@@ -211,7 +211,7 @@ const handleMessageCreate = async (message) => {
 	const editResponse = async (payload) => responseMessage.edit(payload).catch(client.warn);
 
 	const retDelAll = async () => {
-		setTimeout(async () => await responseMessage.delete(), 20000);
+		setTimeout(async () => await responseMessage.delete().catch(client.warn), 20000);
 
 		return retDel();
 	};
