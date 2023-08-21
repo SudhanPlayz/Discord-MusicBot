@@ -1,8 +1,11 @@
 {
-  "extends": ["../../tsconfig.json"],
+  "extends": ["@tsconfig/node16/tsconfig.json"],
   "compilerOptions": {
-    "outDir": "./dist",
-    "allowJs": false
+    "sourceMap": true,
+    "allowJs": false,
+    "alwaysStrict": true,
+    "strict": true,
+    "outDir": "./dist"
   },
   "include": ["src/**/*.ts"],
   "exclude": ["./dist/**/*"]
