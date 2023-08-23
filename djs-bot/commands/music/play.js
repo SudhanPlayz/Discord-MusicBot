@@ -1,6 +1,7 @@
 const SlashCommand = require("../../lib/SlashCommand");
 const { MessageEmbed } = require("../../lib/Embed");
-const { escapeMarkdown } = require("discord.js");
+const { joinStageChannelRoutine } = require("../../util/player");
+const { addQueueEmbed, loadedPlaylistEmbed } = require("../../util/embeds");
 const yt = require("youtube-sr").default;
 
 async function testUrlRegex(string) {
@@ -71,15 +72,7 @@ const command = new SlashCommand()
 		}
 
 		if (channel.type == "GUILD_STAGE_VOICE") {
-			setTimeout(() => {
-				if (interaction.guild.members.me.voice.suppress == true) {
-					try {
-						interaction.guild.members.me.voice.setSuppressed(false);
-					} catch (e) {
-						interaction.guild.members.me.voice.setRequestToSpeak(true);
-					}
-				}
-			}, 2000); // Need this because discord api is buggy asf, and without this the bot will not request to speak on a stage - Darren
+			joinStageChannelRoutine(interaction.guild.members.me);
 		}
 
 		const ret = await interaction.reply({
@@ -135,50 +128,11 @@ const command = new SlashCommand()
 			if (!player.playing && !player.paused && !player.queue.size) {
 				player.play();
 			}
-			var title = escapeMarkdown(res.tracks[0].title);
-			var title = title.replace(/\]|\[/g, "");
-			let addQueueEmbed = new MessageEmbed()
-				.setColor(client.config.embedColor)
-				.setAuthor({ name: "Added to queue", iconURL: client.config.iconURL })
-				.setDescription(`[${title}](${res.tracks[0].uri})` || "No Title")
-				.setURL(res.tracks[0].uri)
-				.addFields(
-					{
-						name: "Added by",
-						value: `<@${interaction.user.id}>`,
-						inline: true,
-					},
-					{
-						name: "Duration",
-						value: res.tracks[0].isStream
-							? `\`LIVE 🔴 \``
-							: `\`${client.ms(res.tracks[0].duration, {
-								colonNotation: true,
-								secondsDecimalDigits: 0,
-							})}\``,
-						inline: true,
-					}
-				);
 
-			try {
-				addQueueEmbed.setThumbnail(
-					res.tracks[0].displayThumbnail("maxresdefault")
-				);
-			} catch (err) {
-				addQueueEmbed.setThumbnail(res.tracks[0].thumbnail);
-			}
-
-			if (player.queue.totalSize > 1) {
-				addQueueEmbed.addFields({
-					name: "Position in queue",
-					value: `${player.queue.size}`,
-					inline: true,
-				});
-			} else {
+			if (player.queue.totalSize <= 1)
 				player.queue.previous = player.queue.current;
-			}
 
-			await interaction.editReply({ embeds: [addQueueEmbed] }).catch(client.warn);
+			await interaction.editReply({ embeds: [addQueueEmbed({track: res.tracks[0], player, requesterId: interaction.user.id})] }).catch(client.warn);
 		}
 
 		if (res.loadType === "PLAYLIST_LOADED") {
@@ -192,31 +146,7 @@ const command = new SlashCommand()
 				player.play();
 			}
 
-			let playlistEmbed = new MessageEmbed()
-				.setColor(client.config.embedColor)
-				.setAuthor({
-					name: "Playlist added to queue",
-					iconURL: client.config.iconURL,
-				})
-				.setThumbnail(res.tracks[0].thumbnail)
-				.setDescription(`[${res.playlist.name}](${query})`)
-				.addFields(
-					{
-						name: "Enqueued",
-						value: `\`${res.tracks.length}\` songs`,
-						inline: true,
-					},
-					{
-						name: "Playlist duration",
-						value: `\`${client.ms(res.playlist.duration, {
-							colonNotation: true,
-							secondsDecimalDigits: 0,
-						})}\``,
-						inline: true,
-					}
-				);
-
-			await interaction.editReply({ embeds: [playlistEmbed] }).catch(client.warn);
+			await interaction.editReply({ embeds: [loadedPlaylistEmbed({searchResult: res, query,})] }).catch(client.warn);
 		}
 
 		if (ret) setTimeout(() => ret.delete().catch(client.warn), 20000);

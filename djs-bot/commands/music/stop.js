@@ -1,5 +1,6 @@
 const SlashCommand = require("../../lib/SlashCommand");
 const { MessageEmbed } = require("../../lib/Embed");
+const playerUtil = require("../../util/player");
 
 const command = new SlashCommand()
 	.setName("stop")
@@ -35,13 +36,7 @@ const command = new SlashCommand()
 			});
 		}
 		
-		if (player.twentyFourSeven) {
-			player.queue.clear();
-			player.stop();
-			player.set("autoQueue", false);
-		} else {
-			player.destroy();
-		}
+		const status = playerUtil.stop(player);
 		
 		interaction.reply({
 			embeds: [

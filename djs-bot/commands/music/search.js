@@ -1,10 +1,8 @@
 const SlashCommand = require("../../lib/SlashCommand");
 const prettyMilliseconds = require("pretty-ms");
-const {
-  MessageEmbed,
-  MessageActionRow,
-  MessageSelectMenu,
-} = require("discord.js");
+const { ActionRowBuilder, StringSelectMenuBuilder } = require("discord.js");
+const { embedNoLLNode, redEmbed, colorEmbed } = require("../../util/embeds");
+const { MessageEmbed } = require("../../lib/Embed");
 
 const command = new SlashCommand()
   .setName("search")
@@ -30,11 +28,7 @@ const command = new SlashCommand()
       });
     } else {
       return interaction.reply({
-        embeds: [
-          new MessageEmbed()
-            .setColor("Red")
-            .setDescription("Lavalink node is not connected"),
-        ],
+        embeds: [embedNoLLNode()],
       });
     }
     await interaction.deferReply().catch((_) => {});
@@ -46,40 +40,30 @@ const command = new SlashCommand()
     const search = interaction.options.getString("query");
     let res;
 
+    const sendRedEmbed = (
+      desc = "An error occured while searching for the song"
+    ) => {
+      return interaction.reply({
+        embeds: [
+          redEmbed({
+            desc,
+          }),
+        ],
+        ephemeral: true,
+      });
+    };
+
     try {
       res = await player.search(search, interaction.user);
       if (res.loadType === "LOAD_FAILED") {
-        return interaction.reply({
-          embeds: [
-            new MessageEmbed()
-              .setDescription("An error occured while searching for the song")
-              .setColor("Red"),
-          ],
-          ephemeral: true,
-        });
+        return sendRedEmbed();
       }
     } catch (err) {
-      return interaction.reply({
-        embeds: [
-          new MessageEmbed()
-            .setAuthor({
-              name: "An error occured while searching for the song",
-            })
-            .setColor("Red"),
-        ],
-        ephemeral: true,
-      });
+      return sendRedEmbed();
     }
 
     if (res.loadType == "NO_MATCHES") {
-      return interaction.reply({
-        embeds: [
-          new MessageEmbed()
-            .setDescription(`No results found for \`${search}\``)
-            .setColor("Red"),
-        ],
-        ephemeral: true,
-      });
+      return sendRedEmbed(`No results found for \`${search}\``);
     } else {
       let max = 10;
       if (res.tracks.length < max) {
@@ -100,8 +84,8 @@ const command = new SlashCommand()
         });
       });
 
-      const menus = new MessageActionRow().addComponents(
-        new MessageSelectMenu()
+      const menus = new ActionRowBuilder().addComponents(
+        new StringSelectMenuBuilder()
           .setCustomId("select")
           .setPlaceholder("Select a song")
           .addOptions(resultFromSearch)
@@ -109,11 +93,10 @@ const command = new SlashCommand()
 
       let choosenTracks = await interaction.editReply({
         embeds: [
-          new MessageEmbed()
-            .setColor(client.config.embedColor)
-            .setDescription(
-              `Here are some of the results I found for \`${search}\`. Please select track within \`30 seconds\``
-            ),
+          colorEmbed({
+            color: client.config.embedColor,
+            desc: `Here are some of the results I found for \`${search}\`. Please select track within \`30 seconds\``,
+          }),
         ],
         components: [menus],
       });
@@ -178,11 +161,10 @@ const command = new SlashCommand()
           choosenTracks.edit({
             content: null,
             embeds: [
-              new MessageEmbed()
-                .setDescription(
-                  `No track selected. You took too long to select a track.`
-                )
-                .setColor(client.config.embedColor),
+              colorEmbed({
+                color: client.config.embedColor,
+                desc: `No track selected. You took too long to select a track.`,
+              }),
             ],
             components: [],
           });

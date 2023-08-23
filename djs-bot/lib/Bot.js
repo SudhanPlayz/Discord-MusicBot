@@ -1,12 +1,5 @@
-const {
-	Client,
-	Collection,
-	GatewayIntentBits,
-} = require("discord.js");
-const {
-	LoadErrorHandler,
-	LoadDebugListeners,
-} = require("../util/debug");
+const { Client, Collection, GatewayIntentBits } = require("discord.js");
+const { LoadErrorHandler, LoadDebugListeners } = require("../util/debug");
 const fs = require("fs");
 const path = require("path");
 const DBMS = require("./DBMS");
@@ -14,6 +7,8 @@ const Logger = require("./Logger");
 const { app } = require("../api/v1/dist");
 const getConfig = require("../util/getConfig");
 const MusicManager = require("./MusicManager");
+
+let noBoot = false;
 
 /**
  * The class groups some useful functions for the client in order to facilitate expandability, maintenance and manageability
@@ -25,16 +20,20 @@ class Bot extends Client {
 	// all the other methods and functions are for commodity and EoA
 	// https://discordjs.guide/popular-topics/intents.html#privileged-intents
 	// https://discord.com/developers/docs/topics/gateway
-	constructor(clientOptions = {
-		intents: [
-			GatewayIntentBits.Guilds,
-			GatewayIntentBits.GuildMessages,
-			GatewayIntentBits.GuildVoiceStates,
-		]
-	}) {
+	constructor(
+		clientOptions = {
+			intents: [
+				GatewayIntentBits.Guilds,
+				GatewayIntentBits.GuildMessages,
+				GatewayIntentBits.GuildVoiceStates,
+				GatewayIntentBits.MessageContent,
+			],
+		}
+	) {
 		super(clientOptions); //Construct
 
 		this.slash = new Collection();
+		this.interactionCommands = new Collection();
 		this.logger = new Logger(path.join(__dirname, "..", "logs.log"));
 
 		getConfig().then((conf) => {
@@ -42,9 +41,7 @@ class Bot extends Client {
 			this.config = conf;
 			this.boot();
 
-			this.LoadSchedules();
 			this.LoadCommands();
-			this.LoadEvents();
 
 			this.getChannel = require("../util/getChannel");
 			this.getLavalink = require("../util/getLavalink");
@@ -89,7 +86,9 @@ class Bot extends Client {
 
 	printBotInfo() {
 		// Denomination (name) of the bot
-		this.denom = `${this.config.name}/v${require("../package.json").version} (ID: ${this.config.clientId})`;
+		this.denom = `${this.config.name}/v${
+			require("../package.json").version
+		} (ID: ${this.config.clientId})`;
 		this.warn(`Bot running on OPLevel: ${this.OPLevel}`);
 
 		// Operator mode, for debugging purposes
@@ -107,6 +106,12 @@ class Bot extends Client {
 
 	boot() {
 		this.printBotInfo();
+
+		if (noBoot !== false) return;
+
+		this.LoadSchedules();
+		this.LoadEvents();
+
 		this.warn("Booting up the bot...\n\t" + this.denom);
 
 		LoadErrorHandler(this);
@@ -116,7 +121,8 @@ class Bot extends Client {
 		//this should prevent the building process from halting if there are invalid nodes
 		let nodeChecks = [];
 		for (const node of this.config.nodes) {
-			if (!node.host || !node.port) this.warn(node.identifier + " Is not filled in correctly");
+			if (!node.host || !node.port)
+				this.warn(node.identifier + " Is not filled in correctly");
 			else nodeChecks.push(1);
 		}
 		// If all the checks pass (the array is filled only with `1`) then the Music client can be initialized
@@ -147,8 +153,9 @@ class Bot extends Client {
 	LoadEvents() {
 		let EventsDir = path.join(__dirname, "..", "loaders", "events");
 		fs.readdir(EventsDir, (err, files) => {
-			if (err) { return this.error(err); }
-			else
+			if (err) {
+				return this.error(err);
+			} else
 				files.forEach((file) => {
 					/** @type {Function}*/
 					const event = require(EventsDir + "/" + file);
@@ -157,15 +164,16 @@ class Bot extends Client {
 					if (this.OPLevel >= 2)
 						this.log("Event Loaded: " + file.split(".")[0]);
 				});
-			this.info("Event listeners have been loaded.")
+			this.info("Event listeners have been loaded.");
 		});
 	}
 
 	LoadSchedules() {
 		let SchedulesDir = path.join(__dirname, "..", "loaders", "schedules");
 		fs.readdir(SchedulesDir, (err, files) => {
-			if (err) { return this.error(err); }
-			else
+			if (err) {
+				return this.error(err);
+			} else
 				files.forEach((file) => {
 					const schedule = require(SchedulesDir + "/" + file);
 					this.once("ready", schedule.bind(null, this));
@@ -178,29 +186,88 @@ class Bot extends Client {
 	}
 
 	LoadCommands() {
-		let CommandsDir = fs.readdirSync("./commands");
+		const commandPath = path.join(__dirname, "..", "commands");
+
+		const CommandsDir = fs.readdirSync(commandPath);
+
 		for (const category of CommandsDir) {
-			const commandFiles = fs
-				.readdirSync(`./commands/${category}`)
-				.filter((file) => file.endsWith(".js"));
+			const categoryPath = path.join(commandPath, category);
+
+			const files = fs.readdirSync(categoryPath);
+
+			const commandFiles = files.filter((file) => file.endsWith(".js"));
+
 			for (const file of commandFiles) {
+				const commandFilePath = path.join(categoryPath, file);
+
 				/** @type {import("./SlashCommand")} */
-				const command = require(`../commands/${category}/${file}`);
-				if (!command || !command.run || !command.name) {
-					this.error(`Unable to load command: ${file} in [${category.toUpperCase()}] is not a valid command with run function or name`);
-				} else {
-					try {
-						this.slash.set(command.name, command);
-					} catch (err) {
-						return this.error(err);
+				const command = require(commandFilePath);
+
+				if (!command.category) command.setCategory(category);
+				this.registerCommand(command, file, categoryPath);
+			}
+
+			const commandFolders = files.filter(
+				(file) =>
+				!commandFiles.includes(file) &&
+				fs.statSync(path.join(categoryPath, file)).isDirectory()
+			);
+
+			for (const folder of commandFolders) {
+				const { commandFolderPath, indexFilePath, folderFiles } =
+					this.parseCommandFolder(folder, categoryPath);
+
+				if (!indexFilePath) break;
+
+				/** @type {import("./SlashCommand")} */
+				const mainCommand = require(indexFilePath);
+
+				const subFiles = folderFiles.filter((file) => file.endsWith(".js"));
+
+				for (const subFile of subFiles) {
+					const subFilePath = path.join(commandFolderPath, subFile);
+
+					const handler = require(subFilePath);
+
+					if (typeof handler !== "function") {
+						this.error(
+							`Unable to load handler: ${commandFolderPath}, handler isn't a function`
+						);
+
+						continue;
 					}
 
-					if (this.OPLevel >= 2)
-						this.log(`Slash Command Loaded: ${file} from [${category.toUpperCase()}]`);
+					handler(mainCommand);
 				}
+
+				const subCommandFolders = subFiles.filter(
+					(file) =>
+					!subFiles.includes(file) &&
+					fs.statSync(path.join(commandFolderPath, file)).isDirectory()
+				);
+
+				for (const subCommandFolder of subCommandFolders) {
+					if (
+						this.loadSubCommand(
+							mainCommand,
+							commandFolderPath,
+							subCommandFolder
+						) === true
+					)
+						break;
+				}
+
+				if (!mainCommand.category) mainCommand.setCategory(category);
+				this.registerCommand(mainCommand, folder, commandFolderPath);
 			}
 		}
-		this.info("Slash commands have been loaded. Waiting for bot to finish initializing...");
+
+		this.loadInteractionCommands();
+
+		this.info(
+			"Slash commands have been loaded. Waiting for bot to finish initializing..."
+		);
+
 		this.once("ready", async () => {
 			try {
 				await this.application.commands.set(this.slash);
@@ -232,15 +299,127 @@ class Bot extends Client {
 	getInviteLink() {
 		return `https://discord.com/oauth2/authorize?client_id=${
 			this.config.clientId
-		}&permissions=${
-			this.config.permissions
-		}&scope=${this.config.scopes
+		}&permissions=${this.config.permissions}&scope=${this.config.scopes
 				.join()
-				.replace(/,/g, "%20")}`
+				.replace(/,/g, "%20")}`;
 	}
 
 	getOauthScopes() {
 		return this.config.oauth2Scopes.join(" ");
+	}
+
+	loadInteractionCommands() {
+		const folderPath = path.join(__dirname, "..", "interactions");
+
+		const commands = fs
+			.readdirSync(folderPath)
+			.filter((file) => file.endsWith(".js"));
+
+		for (const file of commands) {
+			/** @type {import("./SlashCommand")} */
+			const command = require(path.join(folderPath, file));
+			if (!command || !command.run || !command.name) {
+				this.error(
+					`Unable to load interaction command: ${file} is not a valid command with run function or name`
+				);
+			} else {
+				try {
+					this.interactionCommands.set(command.name, command);
+				} catch (err) {
+					return this.error(err);
+				}
+
+				if (this.OPLevel >= 2) this.log(`Interaction Command Loaded: ${file}`);
+			}
+		}
+	}
+
+	registerCommand(command, file, category) {
+		if (!command || !command.run || !command.name) {
+			this.error(
+				`Unable to load command: ${file} in [${category}] is not a valid command with run function or name`
+			);
+			return;
+		}
+
+		try {
+			this.slash.set(command.name, command);
+		} catch (err) {
+			this.error(`Unable to load command: ${file} in [${category}], error:`);
+
+			this.error(err);
+			return;
+		}
+
+		if (this.OPLevel >= 2)
+			this.log(`Slash Command Loaded: ${file} from [${category}]`);
+	}
+
+	/**
+	 * Load a subcommand or subcommand group
+	 * For loading subcommand group, the handler should have and use its own loader to load its nested subcommand
+	 *
+	 * @returns {boolean | undefined} whether if the caller loop should stop loading next subcommand
+	 */
+	loadSubCommand(mainCommand, categoryPath, folder) {
+		const { commandFolderPath, indexFilePath } = this.parseCommandFolder(
+			folder,
+			categoryPath
+		);
+
+		if (!indexFilePath) {
+			this.error(
+				`Unable to load handler: ${commandFolderPath}, no valid handler index file inside subcommand folder`
+			);
+
+			return;
+		}
+
+		const subCommandHandler = require(indexFilePath);
+
+		if (typeof subCommandHandler !== "function") {
+			this.error(
+				`Unable to load handler: ${commandFolderPath}, handler isn't a function`
+			);
+
+			return;
+		}
+
+		subCommandHandler(mainCommand);
+	}
+
+	parseCommandFolder(folder, categoryPath) {
+		const commandFolderPath = path.join(categoryPath, folder);
+
+		const folderFiles = fs.readdirSync(commandFolderPath);
+
+		let indexFileIdx = folderFiles.findIndex((file) => file === "index.js");
+
+		if (indexFileIdx === -1)
+			indexFileIdx = folderFiles.findIndex((file) => file === folder + ".js");
+
+		if (indexFileIdx === -1) {
+			this.error(
+				`Unable to load command folder: ${commandFolderPath}, main command file not found`
+			);
+
+			return {};
+		}
+
+		const indexFilePath = path.join(
+			commandFolderPath,
+			folderFiles.splice(indexFileIdx, 1)[0]
+		);
+
+		return {
+			commandFolderPath,
+			indexFilePath,
+			folderFiles,
+		};
+	}
+
+	static setNoBoot(val) {
+		noBoot = val;
 	}
 }
 

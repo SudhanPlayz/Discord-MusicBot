@@ -2,7 +2,11 @@ const { rl } = require("../util/common");
 const { REST } = require("@discordjs/rest");
 const getConfig = require("../util/getConfig");
 const { Routes } = require("discord-api-types/v10");
-const getCommands = require("../util/getCommands");
+const Bot = require("../lib/Bot");
+
+Bot.setNoBoot(true);
+
+const { getClient } = require("../bot");
 
 // Posts slash commands to a given guild containing the bot
 // Docs: https://discordjs.guide/interactions/slash-commands.html#guild-commands
@@ -11,9 +15,7 @@ const getCommands = require("../util/getCommands");
 (async () => {
 	const config = await getConfig();
 	const rest = new REST({ version: "10" }).setToken(config.token);
-	const commands = await getCommands().then((cmds) => {
-		return cmds.slash;
-	});
+	const commands = getClient().slash.map(slash => slash);
 	
 	rl.question("Enter the guild id you wanted to deploy commands: ", async (guild) => {
 		console.log("Deploying commands to guild...");

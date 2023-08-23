@@ -1,5 +1,14 @@
 #!/usr/bin/env bash
 
+BOT_ENV_PATH='djs-bot/.env'
+
+if [ -f $BOT_ENV_PATH ]; then
+  cp $BOT_ENV_PATH "docker/"
+else
+    echo -e "\033[91mConfigure your bot .env properly!\033[0m"
+    exit 130
+fi
+
 PROJECT_NAME=$(basename $(pwd) | tr '[:upper:]' '[:lower:]')
 
 echo -e "\

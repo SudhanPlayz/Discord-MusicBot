@@ -39,8 +39,17 @@ model User {
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
   username  String     @unique
-  DJ        Boolean    @default(false)
   playlists Playlist[]
+}
+
+model Guild {
+  id                       Int        @id @default(autoincrement())
+  createdAt                DateTime   @default(now())
+  updatedAt                DateTime   @updatedAt
+  guildId                  String     @unique
+  DJRole                   String?
+  controlChannelId         String?
+  controlChannelMessageId  String?
 }
 
 model UserAuth {

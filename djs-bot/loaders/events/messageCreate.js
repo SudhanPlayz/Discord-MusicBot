@@ -1,6 +1,7 @@
 const { Message } = require("discord.js");
 const { MessageEmbed } = require("../../lib/Embed");
 const Bot = require("../../lib/Bot");
+const controlChannel = require("../../util/controlChannel");
 
 // node_modules\discord.js\typings\index.d.ts:3940
 // @messageCreate: [message: Message];
@@ -31,4 +32,6 @@ module.exports = async (client, message) => {
 		embed.setFooter({ text: `Message will be deleted in ${timeout / 1000} seconds`});
 		return message.channel.send({ embeds: [embed], ephemeral: true }).then(msg => setTimeout(() => msg.delete(), timeout));
 	}
+
+	controlChannel.handleMessageCreate(message);
 };

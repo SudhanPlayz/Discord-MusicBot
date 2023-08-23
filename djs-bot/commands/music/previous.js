@@ -1,5 +1,7 @@
 const SlashCommand = require("../../lib/SlashCommand");
 const { MessageEmbed } = require("../../lib/Embed");
+const playerUtil = require("../../util/player");
+const { redEmbed } = require("../../util/embeds");
 
 const command = new SlashCommand()
 .setName("previous")
@@ -35,24 +37,14 @@ const command = new SlashCommand()
 	}
 
 	const previousSong = player.queue.previous;
-	const currentSong = player.queue.current;
-	const nextSong = player.queue[0]
+	const status = await playerUtil.playPrevious(player);
 
-	if (!previousSong
-		|| previousSong === currentSong
-		|| previousSong === nextSong) {
-		return interaction.reply({
-			embeds: [
-				new MessageEmbed()
-					.setColor("Red")
-					.setDescription("There is no previous song in the queue."),
-			],
-		})}
+	if (status === 1) return interaction.reply({
+		embeds: [
+			redEmbed({desc: "There is no previous song in the queue."}),
+		],
+	})
 
-	if (previousSong !== currentSong && previousSong !== nextSong) {
-		player.queue.splice(0, 0, currentSong)
-		player.play(previousSong);
-	}
 	interaction.reply({
 		embeds: [
 			new MessageEmbed()

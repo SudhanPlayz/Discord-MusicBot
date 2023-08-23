@@ -4,6 +4,8 @@ import Logger from "./Logger";
 import MusicManager from "./MusicManager";
 import DBMS from "./DBMS";
 import prettyMilliseconds from "pretty-ms";
+import getChannel from "../util/getChannel";
+import getLavalink from "../util/getLavalink";
 import { CosmiTrack } from "cosmicord.js";
 import config from "../config";
 import { app } from "../api/v1/src";
@@ -14,9 +16,12 @@ import { app } from "../api/v1/src";
  */
 declare class Bot extends Client {
   slash: Collection<SlashCommand["name"], SlashCommand>;
+  interactionCommands: Collection<SlashCommand["name"], SlashCommand>;
   logger: Logger;
   OPLevel: number;
   config: typeof config;
+  getChannel: typeof getChannel;
+  getLavalink: typeof getLavalink;
   ms: typeof prettyMilliseconds;
   deletedMessages: WeakSet<Message>;
   playedTracks: Array<CosmiTrack>;
@@ -71,6 +76,27 @@ declare class Bot extends Client {
 
   getInviteLink(): string;
   getOauthScopes(): string;
+
+  loadInteractionCommands(): void;
+
+  registerCommand(command: SlashCommand, file: string, category: string): void;
+
+  loadSubCommand(
+    commandIndex: SlashCommand,
+    path: string,
+    level?: number
+  ): boolean | void;
+
+  parseCommandFolder(
+    folder: string,
+    categoryPath: string
+  ): {
+    commandFolderPath: string | undefined;
+    indexFilePath: string | undefined;
+    folderFiles: string | undefined;
+  };
+
+  static setNoBoot(val: boolean): void;
 }
 
 export = Bot;
