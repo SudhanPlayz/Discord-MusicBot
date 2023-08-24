@@ -1,7 +1,7 @@
 const SlashCommand = require("../../lib/SlashCommand");
 const {
 	ActionRowBuilder,
-	SelectMenuBuilder,
+	StringSelectMenuBuilder,
 	ButtonBuilder,
 	ButtonStyle,
 	EmbedBuilder
@@ -83,7 +83,7 @@ const command = new SlashCommand()
 				}
 
 				const menu = new ActionRowBuilder().addComponents(
-					new SelectMenuBuilder()
+					new StringSelectMenuBuilder()
 						.setCustomId("choose-lyrics")
 						.setPlaceholder("Choose a song")
 						.addOptions(lyricsResults),
