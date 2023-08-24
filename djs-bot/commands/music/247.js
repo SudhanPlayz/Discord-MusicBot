@@ -1,5 +1,5 @@
 const colors = require("colors");
-const { EmbedBuilder } = require("../../lib/Embed");
+const { EmbedBuilder } = require("discord.js");
 const SlashCommand = require("../../lib/SlashCommand");
 
 const command = new SlashCommand()
