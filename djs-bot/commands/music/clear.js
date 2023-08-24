@@ -1,5 +1,5 @@
 const SlashCommand = require("../../lib/SlashCommand");
-const { MessageEmbed } = require("../../lib/Embed");
+const { EmbedBuilder } = require("discord.js");
 
 const command = new SlashCommand()
 	.setName("clear")
@@ -16,7 +16,7 @@ const command = new SlashCommand()
 		} else {
 			return interaction.reply({
 				embeds: [
-					new MessageEmbed()
+					new EmbedBuilder()
 						.setColor("Red")
 						.setDescription("Lavalink node is not connected"),
 				],
@@ -26,7 +26,7 @@ const command = new SlashCommand()
 		if (!player) {
 			return interaction.reply({
 				embeds: [
-					new MessageEmbed()
+					new EmbedBuilder()
 						.setColor("Red")
 						.setDescription("Nothing is playing right now."),
 				],
@@ -35,7 +35,7 @@ const command = new SlashCommand()
 		}
 		
 		if (!player.queue || !player.queue.length || player.queue.length === 0) {
-			let cembed = new MessageEmbed()
+			let cembed = new EmbedBuilder()
 				.setColor(client.config.embedColor)
 				.setDescription("❌ | **Invalid, Not enough track to be cleared.**");
 			
@@ -44,7 +44,7 @@ const command = new SlashCommand()
 		
 		player.queue.clear();
 		
-		let clearEmbed = new MessageEmbed()
+		let clearEmbed = new EmbedBuilder()
 			.setColor(client.config.embedColor)
 			.setDescription(`✅ | **Cleared the queue!**`);
 		

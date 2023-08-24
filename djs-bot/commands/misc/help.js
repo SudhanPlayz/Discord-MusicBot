@@ -1,7 +1,4 @@
-const {
-	MessageEmbed,
-} = require("../../lib/Embed");
-const { ComponentType, ActionRowBuilder, StringSelectMenuBuilder, Message } = require("discord.js");
+const { EmbedBuilder,ComponentType, ActionRowBuilder, StringSelectMenuBuilder, Message } = require("discord.js");
 const { capitalize } = require("../../util/string");
 const SlashCommand = require("../../lib/SlashCommand");
 const { getClient } = require("../../bot");
@@ -40,7 +37,7 @@ module.exports = {
 
 		if (commandArg && !client.slash.has(commandArg)) {
 			return interaction.reply({
-				embeds: [new MessageEmbed()
+				embeds: [new EmbedBuilder()
 					.setColor(client.config.embedColor)
 					.setTitle("Are you sure you wrote that correctly?")
 					.setDescription("No command by that name exists\nUse `/help` to get a full list of the commands")],
@@ -48,7 +45,7 @@ module.exports = {
 			})
 		} else if (client.slash.has(commandArg)) {
 			return interaction.reply({
-				embeds: [new MessageEmbed()
+				embeds: [new EmbedBuilder()
 					.setColor(client.config.embedColor)
 					.setTitle(commandArg)
 					.setDescription(`${(client.slash.get(commandArg).ownerOnly ? "**(Owner Only)**" : "")}\n**Description:**\n${client.slash.get(commandArg).description}\n${(client.slash.get(commandArg).usage ? "**Usage:**\n" + client.slash.get(commandArg).usage : "")}`)
@@ -58,7 +55,7 @@ module.exports = {
 
 		//await interaction.deferReply().catch((_) => {});
 
-		let initialEmbed = new MessageEmbed()
+		let initialEmbed = new EmbedBuilder()
 			.setTitle("Slash Commands")
 			.setDescription("Here's a basic list of all the commands to orient yourself on the functionalities of the bot:")
 			.setColor(client.config.embedColor);
@@ -116,7 +113,7 @@ module.exports = {
 
 		collector.on("collect", async (collectedInteraction) => {
 			const category = collectedInteraction.values[0];
-			let helpCategoryEmbed = new MessageEmbed();
+			let helpCategoryEmbed = new EmbedBuilder();
 			if (category === "overview") {
 				helpCategoryEmbed = initialEmbed;
 				await collectedInteraction.update({ embeds: [helpCategoryEmbed], components: [helpMenuActionRow] });
@@ -125,14 +122,14 @@ module.exports = {
 
 				if (!commandFiles.length) {
 					await collectedInteraction.update({
-						embeds: [new MessageEmbed()
+						embeds: [new EmbedBuilder()
 							.setDescription(`No commands found for ${category} category...
 					Please select something else.`)]
 					});
 				} else if (commandFiles.length > 25) {
 					const maxPages = Math.ceil(commandFiles.length / 25);
 
-					helpCategoryEmbed = new MessageEmbed()
+					helpCategoryEmbed = new EmbedBuilder()
 						.setColor(client.config.embedColor)
 						.setTitle(`${capitalize(category)} Commands`)
 						.setFooter({text: `Page ${currentPage + 1} of ${maxPages}`});
@@ -160,7 +157,7 @@ module.exports = {
 								currentPage++;
 							}
 
-							helpCategoryEmbed = new MessageEmbed()
+							helpCategoryEmbed = new EmbedBuilder()
 								.setColor(client.config.embedColor)
 								.setTitle(`${capitalize(category)} Commands`)
 								.setFooter({ text: `Page ${currentPage + 1} of ${maxPages}` });

@@ -1,10 +1,11 @@
 const SlashCommand = require("../../lib/SlashCommand");
 const {
-	MessageActionRow,
-	MessageSelectMenu,
-	MessageButton,
-	MessageEmbed
-} = require("../../lib/Embed");
+	ActionRowBuilder,
+	StringSelectMenuBuilder,
+	ButtonBuilder,
+	ButtonStyle,
+	EmbedBuilder
+} = require("discord.js");
 const { Rlyrics } = require("rlyrics");
 const lyricsApi = new Rlyrics();
 
@@ -20,7 +21,7 @@ const command = new SlashCommand()
 	.setRun(async (client, interaction, options) => {
 		await interaction.reply({
 			embeds: [
-				new MessageEmbed()
+				new EmbedBuilder()
 					.setColor(client.config.embedColor)
 					.setDescription("🔎 | **Searching...**"),
 			],
@@ -32,7 +33,7 @@ const command = new SlashCommand()
 		} else {
 			return interaction.editReply({
 				embeds: [
-					new MessageEmbed()
+					new EmbedBuilder()
 						.setColor("Red")
 						.setDescription("Lavalink node is not connected"),
 				],
@@ -43,7 +44,7 @@ const command = new SlashCommand()
 		if (!args && !player) {
 			return interaction.editReply({
 				embeds: [
-					new MessageEmbed()
+					new EmbedBuilder()
 						.setColor("Red")
 						.setDescription("There's nothing playing"),
 				],
@@ -81,8 +82,8 @@ const command = new SlashCommand()
 					} else { break }
 				}
 
-				const menu = new MessageActionRow().addComponents(
-					new MessageSelectMenu()
+				const menu = new ActionRowBuilder().addComponents(
+					new StringSelectMenuBuilder()
 						.setCustomId("choose-lyrics")
 						.setPlaceholder("Choose a song")
 						.addOptions(lyricsResults),
@@ -90,7 +91,7 @@ const command = new SlashCommand()
 
 				let selectedLyrics = await interaction.editReply({
 					embeds: [
-						new MessageEmbed()
+						new EmbedBuilder()
 							.setColor(client.config.embedColor)
 							.setDescription(
 								`Here are some of the results I found for \`${query}\`. Please choose a song to display lyrics within \`30 seconds\`.`
@@ -119,21 +120,21 @@ const command = new SlashCommand()
 								lyricsText = lyricsText.substring(0, 4045) + "\n\n[...]\nTruncated, the lyrics were too long."
 							}
 
-							const button = new MessageActionRow()
+							const button = new ActionRowBuilder()
 								.addComponents(
-									new MessageButton()
+									new ButtonBuilder()
 										.setCustomId('tipsbutton')
 										.setLabel('Tips')
 										.setEmoji(`📌`)
-										.setStyle('Secondary'),
-									new MessageButton()
+										.setStyle(ButtonStyle.Secondary),
+									new ButtonBuilder()
 										.setLabel('Source')
 										.setURL(url)
-										.setStyle('Link'),
+										.setStyle(ButtonStyle.Link),
 								);
 
 							const musixmatch_icon = 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Musixmatch_logo_icon_only.svg/480px-Musixmatch_logo_icon_only.svg.png';
-							let lyricsEmbed = new MessageEmbed()
+							let lyricsEmbed = new EmbedBuilder()
 								.setColor(client.config.embedColor)
 								.setTitle(`${lyrics.name}`)
 								.setURL(url)
@@ -158,7 +159,7 @@ const command = new SlashCommand()
 						selectedLyrics.edit({
 							content: null,
 							embeds: [
-								new MessageEmbed()
+								new EmbedBuilder()
 									.setDescription(
 										`No song is selected. You took too long to select a track.`
 									)
@@ -169,9 +170,9 @@ const command = new SlashCommand()
 				});
 
 			} else {
-				const button = new MessageActionRow()
+				const button = new ActionRowBuilder()
 					.addComponents(
-						new MessageButton()
+						new ButtonBuilder()
 							.setEmoji(`📌`)
 							.setCustomId('tipsbutton')
 							.setLabel('Tips')
@@ -179,7 +180,7 @@ const command = new SlashCommand()
 					);
 				return interaction.editReply({
 					embeds: [
-						new MessageEmbed()
+						new EmbedBuilder()
 							.setColor("Red")
 							.setDescription(
 								`No results found for \`${query}\`!\nMake sure you typed in your search correctly.`,
@@ -191,7 +192,7 @@ const command = new SlashCommand()
 			console.error(err);
 			return interaction.editReply({
 				embeds: [
-					new MessageEmbed()
+					new EmbedBuilder()
 						.setColor("Red")
 						.setDescription(
 							`An unknown error has occured, please check your console.`,
@@ -209,7 +210,7 @@ const command = new SlashCommand()
 				await interaction.deferUpdate();
 				await interaction.followUp({
 					embeds: [
-						new MessageEmbed()
+						new EmbedBuilder()
 							.setTitle(`Lyrics Tips`)
 							.setColor(client.config.embedColor)
 							.setDescription(

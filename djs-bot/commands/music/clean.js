@@ -1,4 +1,4 @@
-const { MessageEmbed } = require("../../lib/Embed");
+const { EmbedBuilder } = require("discord.js");
 const SlashCommand = require("../../lib/SlashCommand");
 
 const command = new SlashCommand()
@@ -38,7 +38,7 @@ const command = new SlashCommand()
 						}
 					}
 					
-					await interaction.editReply({ embeds: [new MessageEmbed().setDescription(`:white_check_mark: | Deleted ${ botMessages.length } bot messages`)] });
+					await interaction.editReply({ embeds: [new EmbedBuilder().setDescription(`:white_check_mark: | Deleted ${ botMessages.length } bot messages`)] });
 					setTimeout(() => {
 						interaction.deleteReply();
 					}, 5000);

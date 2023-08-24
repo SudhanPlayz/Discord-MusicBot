@@ -1,4 +1,4 @@
-const { MessageEmbed } = require("../../lib/Embed");
+const { EmbedBuilder } = require("discord.js");
 
 module.exports = {
 	name: "ping",
@@ -8,7 +8,7 @@ module.exports = {
 	ownerOnly: false,
 	run: async (client, interaction) => {
 		const msg = await interaction.channel.send(`🏓 Pinging...`);
-		await interaction.reply({ embeds: [new MessageEmbed()
+		await interaction.reply({ embeds: [new EmbedBuilder()
 			.setTitle(':signal_strength: PONG!')
 			.addField("BOT", `\`\`\`yml\n${Math.floor(msg.createdAt - interaction.createdAt)}ms\`\`\``, true)
 			.addField("API", `\`\`\`yml\n${client.ws.ping}ms\`\`\``, true)

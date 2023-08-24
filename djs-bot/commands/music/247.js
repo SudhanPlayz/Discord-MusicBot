@@ -1,5 +1,5 @@
 const colors = require("colors");
-const { MessageEmbed } = require("../../lib/Embed");
+const { EmbedBuilder } = require("discord.js");
 const SlashCommand = require("../../lib/SlashCommand");
 
 const command = new SlashCommand()
@@ -17,7 +17,7 @@ const command = new SlashCommand()
 		} else {
 			return interaction.reply({
 				embeds: [
-					new MessageEmbed()
+					new EmbedBuilder()
 						.setColor("Red")
 						.setDescription("Lavalink node is not connected"),
 				],
@@ -27,7 +27,7 @@ const command = new SlashCommand()
 		if (!player) {
 			return interaction.reply({
 				embeds: [
-					new MessageEmbed()
+					new EmbedBuilder()
 						.setColor("Red")
 						.setDescription("There's nothing to play 24/7."),
 				],
@@ -35,7 +35,7 @@ const command = new SlashCommand()
 			});
 		}
 		
-		let twentyFourSevenEmbed = new MessageEmbed().setColor(
+		let twentyFourSevenEmbed = new EmbedBuilder().setColor(
 			client.config.embedColor,
 		);
 		const twentyFourSeven = player.get("twentyFourSeven");
@@ -70,11 +70,3 @@ const command = new SlashCommand()
 	});
 
 module.exports = command;
-// check above message, it is a little bit confusing. and erros are not handled. probably should be fixed.
-// ok use catch ez kom  follow meh ;_;
-// the above message meaning error, if it cant find it or take too long the bot crashed
-// play commanddddd, if timeout or takes 1000 years to find song it crashed
-// OKIE, leave the comment here for idk
-// Comment very useful, 247 good :+1:
-// twentyFourSeven = best;
-// Funny comment moment

@@ -1,5 +1,5 @@
 const SlashCommand = require("../../lib/SlashCommand");
-const { MessageEmbed } = require("../../lib/Embed");
+const { EmbedBuilder } = require("discord.js");
 const { joinStageChannelRoutine } = require("../../util/player");
 const { addQueueEmbed, loadedPlaylistEmbed } = require("../../util/embeds");
 const yt = require("youtube-sr").default;
@@ -51,7 +51,7 @@ const command = new SlashCommand()
 		let node = await client.getLavalink(client);
 		if (!node) {
 			return interaction.reply({
-				embeds: [new MessageEmbed()
+				embeds: [new EmbedBuilder()
 					.setColor("Red")
 					.setTitle("Node error!")
 					.setDescription(`No available nodes to play music on!`)
@@ -77,7 +77,7 @@ const command = new SlashCommand()
 
 		const ret = await interaction.reply({
 			embeds: [
-				new MessageEmbed()
+				new EmbedBuilder()
 					.setColor(client.config.embedColor)
 					.setDescription(":mag_right: **Searching...**"),
 			],
@@ -99,7 +99,7 @@ const command = new SlashCommand()
 			await interaction
 				.editReply({
 					embeds: [
-						new MessageEmbed()
+						new EmbedBuilder()
 							.setColor("Red")
 							.setDescription("There was an error while searching"),
 					],
@@ -114,7 +114,7 @@ const command = new SlashCommand()
 			await interaction
 				.editReply({
 					embeds: [
-						new MessageEmbed()
+						new EmbedBuilder()
 							.setColor("Red")
 							.setDescription("No results were found"),
 					],

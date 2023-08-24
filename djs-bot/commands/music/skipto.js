@@ -1,5 +1,5 @@
 const SlashCommand = require("../../lib/SlashCommand");
-const { MessageEmbed } = require("../../lib/Embed");
+const { EmbedBuilder } = require("discord.js");
 
 const command = new SlashCommand()
 	.setName("skipto")
@@ -26,7 +26,7 @@ const command = new SlashCommand()
 		} else {
 			return interaction.reply({
 				embeds: [
-					new MessageEmbed()
+					new EmbedBuilder()
 						.setColor("Red")
 						.setDescription("Lavalink node is not connected"),
 				],
@@ -36,7 +36,7 @@ const command = new SlashCommand()
 		if (!player) {
 			return interaction.reply({
 				embeds: [
-					new MessageEmbed()
+					new EmbedBuilder()
 						.setColor("Red")
 						.setDescription("I'm not in a channel."),
 				],
@@ -50,7 +50,7 @@ const command = new SlashCommand()
 		
 		try {
 			if (!position || position < 0 || position > player.queue.size) {
-				let thing = new MessageEmbed()
+				let thing = new EmbedBuilder()
 					.setColor(client.config.embedColor)
 					.setDescription("❌ | Invalid position!");
 				return interaction.editReply({ embeds: [thing] });
@@ -59,7 +59,7 @@ const command = new SlashCommand()
 			player.queue.remove(0, position - 1);
 			player.stop();
 			
-			let thing = new MessageEmbed()
+			let thing = new EmbedBuilder()
 				.setColor(client.config.embedColor)
 				.setDescription("✅ | Skipped to position " + position);
 			
@@ -70,7 +70,7 @@ const command = new SlashCommand()
 			}
 			return interaction.editReply({
 				embeds: [
-					new MessageEmbed()
+					new EmbedBuilder()
 						.setColor(client.config.embedColor)
 						.setDescription("✅ | Skipped to position " + position),
 				],

@@ -1,5 +1,5 @@
 const SlashCommand = require("../../lib/SlashCommand");
-const { MessageEmbed } = require("../../lib/Embed");
+const { EmbedBuilder } = require("discord.js");
 const ms = require("ms");
 
 const command = new SlashCommand()
@@ -23,7 +23,7 @@ const command = new SlashCommand()
 		} else {
 			return interaction.reply({
 				embeds: [
-					new MessageEmbed()
+					new EmbedBuilder()
 						.setColor("Red")
 						.setDescription("Lavalink node is not connected"),
 				],
@@ -33,7 +33,7 @@ const command = new SlashCommand()
 		if (!player) {
 			return interaction.reply({
 				embeds: [
-					new MessageEmbed()
+					new EmbedBuilder()
 						.setColor("Red")
 						.setDescription("There is no music playing."),
 				],
@@ -57,7 +57,7 @@ const command = new SlashCommand()
 			player.seek(time);
 			return interaction.editReply({
 				embeds: [
-					new MessageEmbed()
+					new EmbedBuilder()
 						.setColor(client.config.embedColor)
 						.setDescription(
 							`⏩ | **${ player.queue.current.title }** has been ${
@@ -69,7 +69,7 @@ const command = new SlashCommand()
 		} else {
 			return interaction.editReply({
 				embeds: [
-					new MessageEmbed()
+					new EmbedBuilder()
 						.setColor(client.config.embedColor)
 						.setDescription(
 							`Unable to seek current playing track. This may be due to exceeding track duration or an incorrect time format. Please check and try again`,

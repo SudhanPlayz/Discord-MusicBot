@@ -1,5 +1,5 @@
 const SlashCommand = require("../../lib/SlashCommand");
-const { MessageEmbed } = require("../../lib/Embed");
+const { EmbedBuilder } = require("discord.js");
 
 const command = new SlashCommand()
 	.setName("volume")
@@ -22,7 +22,7 @@ const command = new SlashCommand()
 		} else {
 			return interaction.reply({
 				embeds: [
-					new MessageEmbed()
+					new EmbedBuilder()
 						.setColor("Red")
 						.setDescription("Lavalink node is not connected"),
 				],
@@ -32,7 +32,7 @@ const command = new SlashCommand()
 		if (!player) {
 			return interaction.reply({
 				embeds: [
-					new MessageEmbed()
+					new EmbedBuilder()
 						.setColor("Red")
 						.setDescription("There is no music playing."),
 				],
@@ -44,7 +44,7 @@ const command = new SlashCommand()
 		if (!vol || vol < 1 || vol > 125) {
 			return interaction.reply({
 				embeds: [
-					new MessageEmbed()
+					new EmbedBuilder()
 						.setColor(client.config.embedColor)
 						.setDescription(
 							`:loud_sound: | Current volume **${ player.volume }**`,
@@ -56,7 +56,7 @@ const command = new SlashCommand()
 		player.setVolume(vol);
 		return interaction.reply({
 			embeds: [
-				new MessageEmbed()
+				new EmbedBuilder()
 					.setColor(client.config.embedColor)
 					.setDescription(
 						`:loud_sound: | Successfully set volume to **${ player.volume }**`,
