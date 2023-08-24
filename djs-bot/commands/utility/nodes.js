@@ -1,6 +1,6 @@
 const moment = require("moment");
 require("moment-duration-format");
-const { MessageEmbed } = require("../../lib/Embed")
+const { EmbedBuilder } = require("discord.js")
 const Bot = require("../../lib/Bot");
 
 module.exports = {
@@ -18,7 +18,7 @@ module.exports = {
 	run: async (client, interaction) => {
 		let lavauptime, lavaram, lavaclientstats;
 		
-		const statsEmbed = new MessageEmbed()
+		const statsEmbed = new EmbedBuilder()
 		.setTitle(`${client.user.username} Nodes Information`)
 		.setColor(client.config.embedColor)
 		

@@ -1,5 +1,5 @@
 const SlashCommand = require("../../lib/SlashCommand");
-const { MessageEmbed } = require("../../lib/Embed");
+const { EmbedBuilder } = require("discord.js");
 
 const command = new SlashCommand()
 	.setName("remove")
@@ -25,7 +25,7 @@ const command = new SlashCommand()
 		} else {
 			return interaction.reply({
 				embeds: [
-					new MessageEmbed()
+					new EmbedBuilder()
 						.setColor("Red")
 						.setDescription("Lavalink node is not connected"),
 				],
@@ -35,7 +35,7 @@ const command = new SlashCommand()
 		if (!player) {
 			return interaction.reply({
 				embeds: [
-					new MessageEmbed()
+					new EmbedBuilder()
 						.setColor("Red")
 						.setDescription("There are no songs to remove."),
 				],
@@ -47,7 +47,7 @@ const command = new SlashCommand()
 		
 		const position = Number(args) - 1;
 		if (position > player.queue.size) {
-			let thing = new MessageEmbed()
+			let thing = new EmbedBuilder()
 				.setColor(client.config.embedColor)
 				.setDescription(
 					`Current queue has only **${ player.queue.size }** track`,
@@ -59,7 +59,7 @@ const command = new SlashCommand()
 		player.queue.remove(position);
 		
 		const number = position + 1;
-		let removeEmbed = new MessageEmbed()
+		let removeEmbed = new EmbedBuilder()
 			.setColor(client.config.embedColor)
 			.setDescription(`Removed track number **${ number }** from queue`);
 		return interaction.editReply({ embeds: [removeEmbed] });

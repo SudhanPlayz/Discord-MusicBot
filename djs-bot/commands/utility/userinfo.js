@@ -1,4 +1,4 @@
-const { MessageEmbed } = require("../../lib/Embed");
+const { EmbedBuilder } = require("discord.js");
 
 module.exports = {
 	name: "userinfo",
@@ -28,7 +28,7 @@ module.exports = {
 		// Filtering out @everyone role and getting the roles of roles for the member
 		const roles = member.roles.cache.map(roles => { if (roles.name != "@everyone") return `<@&${roles.id}>` }).join(' ');
 
-		const embed = new MessageEmbed()
+		const embed = new EmbedBuilder()
 			.setColor(client.config.embedColor || member.displayHexColor || 'RANDOM')
 			.setThumbnail(target.displayAvatarURL({ dynamic: true }))
 			.setAuthor({ name: `${target.tag} (${target.id})`, iconURL: target.displayAvatarURL({ dynamic: true })})

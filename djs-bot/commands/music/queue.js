@@ -1,5 +1,5 @@
 const SlashCommand = require("../../lib/SlashCommand");
-const { MessageEmbed, MessageButton, MessageActionRow } = require("../../lib/Embed");
+const { EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder } = require("discord.js");
 const load = require("lodash");
 const pms = require("pretty-ms");
 const { escapeMarkdown } = require("discord.js");
@@ -20,7 +20,7 @@ const command = new SlashCommand()
 		} else {
 			return interaction.reply({
 				embeds: [
-					new MessageEmbed()
+					new EmbedBuilder()
 						.setColor("Red")
 						.setDescription("Lavalink node is not connected"),
 				],
@@ -30,7 +30,7 @@ const command = new SlashCommand()
 		if (!player) {
 			return interaction.reply({
 				embeds: [
-					new MessageEmbed()
+					new EmbedBuilder()
 						.setColor("Red")
 						.setDescription("There are no songs in the queue."),
 				],
@@ -39,7 +39,7 @@ const command = new SlashCommand()
 		}
 		
 		if (!player.playing) {
-			const queueEmbed = new MessageEmbed()
+			const queueEmbed = new EmbedBuilder()
 				.setColor(client.config.embedColor)
 				.setDescription("There's nothing playing.");
 			return interaction.reply({ embeds: [queueEmbed], ephemeral: true });
@@ -54,7 +54,7 @@ const command = new SlashCommand()
             var title = escapeMarkdown(song.title)
             var title = title.replace(/\]/g,"")
             var title = title.replace(/\[/g,"")
-			const queueEmbed = new MessageEmbed()
+			const queueEmbed = new EmbedBuilder()
 				.setColor(client.config.embedColor)
 				.setDescription(`**♪ | Now playing:** [${ title }](${ song.uri })`)
 				.addFields(
@@ -120,7 +120,7 @@ const command = new SlashCommand()
                 var title = escapeMarkdown(song.title)
                 var title = title.replace(/\]/g,"")
                 var title = title.replace(/\[/g,"")
-				const embedTwo = new MessageEmbed()
+				const embedTwo = new EmbedBuilder()
 					.setColor(client.config.embedColor)
 					.setDescription(
 						`**♪ | Now playing:** [${ title }](${ song.uri }) [${ player.queue.current.requester }]\n\n**Queued Tracks**\n${ pages[page] }`,
@@ -165,7 +165,7 @@ const command = new SlashCommand()
                 var title = escapeMarkdown(song.title)
                 var title = title.replace(/\]/g,"")
                 var title = title.replace(/\[/g,"")
-				const embedThree = new MessageEmbed()
+				const embedThree = new EmbedBuilder()
 					.setColor(client.config.embedColor)
 					.setDescription(
 						`**♪ | Now playing:** [${ title }](${ song.uri }) [${ player.queue.current.requester }]\n\n**Queued Tracks**\n${ pages[page] }`,
@@ -199,20 +199,20 @@ const command = new SlashCommand()
 						text: `Page ${ page + 1 }/${ pages.length }`,
 					});
 				
-				const buttonOne = new MessageButton()
+				const buttonOne = new ButtonBuilder()
 					.setCustomId("queue_cmd_but_1_app")
 					.setEmoji("⏭️")
-					.setStyle("Primary");
-				const buttonTwo = new MessageButton()
+					.setStyle(ButtonStyle.Primary);
+				const buttonTwo = new ButtonBuilder()
 					.setCustomId("queue_cmd_but_2_app")
 					.setEmoji("⏮️")
-					.setStyle("Primary");
+					.setStyle(ButtonStyle.Primary);
 				
 				await interaction
 					.editReply({
 						embeds: [embedThree],
 						components: [
-							new MessageActionRow().addComponents([buttonTwo, buttonOne]),
+							new ActionRowBuilder().addComponents([buttonTwo, buttonOne]),
 						],
 					})
 					.catch(() => {
@@ -245,7 +245,7 @@ const command = new SlashCommand()
                         var title = escapeMarkdown(song.title)
                         var title = title.replace(/\]/g,"")
                         var title = title.replace(/\[/g,"")
-						const embedFour = new MessageEmbed()
+						const embedFour = new EmbedBuilder()
 							.setColor(client.config.embedColor)
 							.setDescription(
 								`**♪ | Now playing:** [${ title }](${ song.uri }) [${ player.queue.current.requester }]\n\n**Queued Tracks**\n${ pages[page] }`,
@@ -282,7 +282,7 @@ const command = new SlashCommand()
 						await interaction.editReply({
 							embeds: [embedFour],
 							components: [
-								new MessageActionRow().addComponents([buttonTwo, buttonOne]),
+								new ActionRowBuilder().addComponents([buttonTwo, buttonOne]),
 							],
 						});
 					} else if (button.customId === "queue_cmd_but_2_app") {
@@ -293,7 +293,7 @@ const command = new SlashCommand()
                         var title = escapeMarkdown(song.title)
                         var title = title.replace(/\]/g,"")
                         var title = title.replace(/\[/g,"")
-						const embedFive = new MessageEmbed()
+						const embedFive = new EmbedBuilder()
 							.setColor(client.config.embedColor)
 							.setDescription(
 								`**♪ | Now playing:** [${ title }](${ song.uri }) [${ player.queue.current.requester }]\n\n**Queued Tracks**\n${ pages[page] }`,
@@ -331,7 +331,7 @@ const command = new SlashCommand()
 							.editReply({
 								embeds: [embedFive],
 								components: [
-									new MessageActionRow().addComponents([buttonTwo, buttonOne]),
+									new ActionRowBuilder().addComponents([buttonTwo, buttonOne]),
 								],
 							})
 							.catch(() => {
