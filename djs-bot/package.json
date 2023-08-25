@@ -10,7 +10,7 @@
     "update": "node scripts/update",
     "bot": "npm run api-build && node index.js",
     "start": "npm i && npm run bot",
-    "db-start": "npm i && npx prisma db push && npm run bot",
+    "db-start": "npm i && node lib/DBScript.js && npx prisma db push && npm run bot",
     "api-build": "tsc -p api/v1/tsconfig.json",
     "api-start": "node api/v1/dist/standalone.js"
   },
