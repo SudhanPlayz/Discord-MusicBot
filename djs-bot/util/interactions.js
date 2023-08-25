@@ -29,7 +29,7 @@ const ccInteractionHook = async (client, interaction) => {
 	}
 
 	/**
-	 * @param {import("../lib/Embed").MessageEmbed} embed
+	 * @param {import("discord.js").EmbedBuilder} embed
 	 */
 	const sendError = (embed) => {
 		return interaction.reply({

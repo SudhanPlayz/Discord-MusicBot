@@ -1,5 +1,4 @@
-const { Message } = require("discord.js");
-const { MessageEmbed } = require("../../lib/Embed");
+const { EmbedBuilder, Message } = require("discord.js");
 const Bot = require("../../lib/Bot");
 const controlChannel = require("../../util/controlChannel");
 
@@ -17,7 +16,7 @@ module.exports = async (client, message) => {
 	// determines if it should behave in a manner or another according to if the user is a bot dev or not
 	if (message.content.match(mention)) {
 		let timeout;
-		let embed = new MessageEmbed().setColor(client.config.embedColor);
+		let embed = new EmbedBuilder().setColor(client.config.embedColor);
 		if (client.config.ownerId.includes(message.author.id)) {
 			timeout = 10000;
 			embed

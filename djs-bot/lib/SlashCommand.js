@@ -1,7 +1,6 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const Bot = require("./Bot");
-const { CommandInteractionOptionResolver, CommandInteraction } = require("discord.js");
-const { MessageEmbed } = require("./Embed");
+const { EmbedBuilder, CommandInteractionOptionResolver, CommandInteraction } = require("discord.js");
 const { getClient } = require("../bot");
 const { permissionsConfigMessageMapper } = require("../util/common");
 const fuzzysort = require("fuzzysort");
@@ -255,7 +254,7 @@ class SlashCommand extends SlashCommandBuilder {
 
 		if (!missingUserPerms.length && !missingBotPerms.length) return;
 
-		const missingPermsEmbed = new MessageEmbed().setColor(
+		const missingPermsEmbed = new EmbedBuilder().setColor(
 			getClient().config.embedColor
 		);
 
