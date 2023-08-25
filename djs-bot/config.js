@@ -7,6 +7,10 @@ module.exports = {
 	 * Name of the bot 
 	 * @type {string} */
 	name: "InsertNameHereBot",
+	/**
+	 * Database option (MongoDB, Postgresql, MySQL, SQLite) https://www.prisma.io/docs/reference/database-reference/connection-urls
+	 * @type {string} */
+	database: process.env.DATABSE || "InsertDBOptionHere",
 	/** 
 	 * URL to the preferred database (Prisma ORM)
 	 * @type {string} */
