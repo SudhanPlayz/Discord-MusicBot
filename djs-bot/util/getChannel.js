@@ -1,5 +1,4 @@
 const Bot = require("../lib/Bot");
-const { MessageEmbed } = require("../lib/Embed");
 const { redEmbed } = require("../util/embeds");
 
 // Module checks if you meet the channel requirements to use music commands

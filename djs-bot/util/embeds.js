@@ -1,7 +1,6 @@
 const { getClient } = require("../bot");
-const { MessageEmbed } = require("../lib/Embed");
 const prettyMilliseconds = require("pretty-ms");
-const { ButtonBuilder, ButtonStyle, ActionRowBuilder } = require("discord.js");
+const { EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder } = require("discord.js");
 const { escapeMarkdown } = require("discord.js");
 
 /**
@@ -14,7 +13,7 @@ const { escapeMarkdown } = require("discord.js");
 const colorEmbed = ({ color, desc }) => {
 	if (!desc?.length) throw new Error("[colorEmbed] No description provided");
 
-	return new MessageEmbed()
+	return new EmbedBuilder()
 		.setColor(color || getClient().config.embedColor)
 		.setDescription(desc);
 };
@@ -65,7 +64,7 @@ const embedClearedQueue = () =>
 const trackStartedEmbed = ({ track, player } = {}) => {
 	const client = getClient();
 
-	const embed = new MessageEmbed().setColor(client.config.embedColor);
+	const embed = new EmbedBuilder().setColor(client.config.embedColor);
 
 	if (track) {
 		embed.setAuthor({ name: "Now playing", iconURL: client.config.iconURL })
@@ -174,7 +173,7 @@ const addQueueEmbed = ({ track, player, requesterId }) => {
 
 	const title = escapeMarkdown(track.title).replace(/\]|\[/g, "");
 
-	const embed = new MessageEmbed()
+	const embed = new EmbedBuilder()
 		.setColor(client.config.embedColor)
 		.setAuthor({ name: "Added to queue", iconURL: client.config.iconURL })
 		.setDescription(`[${title}](${track.uri})` || "No Title")
@@ -224,7 +223,7 @@ const addQueueEmbed = ({ track, player, requesterId }) => {
 const loadedPlaylistEmbed = ({ searchResult, query }) => {
 	const client = getClient();
 
-	const embed = new MessageEmbed()
+	const embed = new EmbedBuilder()
 		.setColor(client.config.embedColor)
 		.setAuthor({
 			name: "Playlist added to queue",
@@ -253,7 +252,7 @@ const loadedPlaylistEmbed = ({ searchResult, query }) => {
 
 const autoQueueEmbed = ({ autoQueue }) => {
 	const client = getClient();
-	return new MessageEmbed()
+	return new EmbedBuilder()
 		.setColor(client.config.embedColor)
 		.setDescription(`**Auto Queue is** \`${!autoQueue ? "ON" : "OFF"}\``)
 		.setFooter({
@@ -265,7 +264,7 @@ const autoQueueEmbed = ({ autoQueue }) => {
 
 /**
  * @param {import("../lib/clients/MusicClient").CosmicordPlayerExtended} player
- * @param {MessageEmbed} embed
+ * @param {EmbedBuilder} embed
  */
 const addPlayerStateFooter = (player, embed) => {
 	const states = [

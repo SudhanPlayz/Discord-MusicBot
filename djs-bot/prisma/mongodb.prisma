@@ -1,0 +1,66 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+
+  // Allows the Prisma ORM to be built for your native platform and for docker platform
+  binaryTargets = ["native", "debian-openssl-1.1.x", "debian-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Song {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  name       String
+  link       String
+  artist     String?
+  Playlist   Playlist? @relation(fields: [playlistId], references: [id])
+  playlistId String   @db.ObjectId
+}
+
+model Playlist {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  name      String
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String   @db.ObjectId
+  songs     Song[]
+}
+
+model User {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  username  String   @unique
+  playlists Playlist[]
+}
+
+model Guild {
+  id                       String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt                DateTime @default(now())
+  updatedAt                DateTime @updatedAt
+  guildId                  String   @unique
+  DJRole                   String?
+  controlChannelId         String?
+  controlChannelMessageId  String?
+}
+
+model UserAuth {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  userId        String   @unique
+  access_token  String
+  token_type    String
+  expires_in    Int
+  refresh_token String
+  scope         String
+}
+

@@ -3,7 +3,7 @@ const Bot = require("../Bot");
 
 /* Imports */
 const colors = require("colors");
-const { MessageEmbed, MessageActionRow, MessageButton } = require('../Embed');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const { Cosmicord, CosmiPlayer, CosmiNode } = require("cosmicord.js");
 const { trackStartedEmbed } = require("../../util/embeds");
 const { updateControlMessage, updateNowPlaying } = require("../../util/controlChannel");
@@ -107,24 +107,24 @@ class CosmicordExtended extends Cosmicord {
 	 * @returns 
 	 */
 	createController(guild, player) {
-		return new MessageActionRow().addComponents(
-			new MessageButton()
-				.setStyle("Danger")
+		return new ActionRowBuilder().addComponents(
+			new ButtonBuilder()
+				.setStyle(ButtonStyle.Danger)
 				.setCustomId(`controller:${guild}:Stop`)
 				.setEmoji("⏹️"),
 
-			new MessageButton()
-				.setStyle("Primary")
+			new ButtonBuilder()
+				.setStyle(ButtonStyle.Primary)
 				.setCustomId(`controller:${guild}:Replay`)
 				.setEmoji("⏮️"),
 
-			new MessageButton()
-				.setStyle(player.playing ? "Primary" : "Danger")
+			new ButtonBuilder()
+				.setStyle(player.playing ? ButtonStyle.Primary : ButtonStyle.Danger)
 				.setCustomId(`controller:${guild}:PlayAndPause`)
 				.setEmoji(player.playing ? "⏸️" : "▶️"),
 
-			new MessageButton()
-				.setStyle("Primary")
+			new ButtonBuilder()
+				.setStyle(ButtonStyle.Primary)
 				.setCustomId(`controller:${guild}:Next`)
 				.setEmoji("⏭️")
 		);
@@ -160,7 +160,7 @@ class CosmicordExtended extends Cosmicord {
  * @returns {CosmicordExtended}
 */
 module.exports = (client) => {
-	let errorEmbed = new MessageEmbed()
+	let errorEmbed = new EmbedBuilder()
 		.setColor("Red")
 
 	return new CosmicordExtended(client, {
@@ -202,7 +202,7 @@ module.exports = (client) => {
 				if (channel) {
 					const msg = await channel.send({
 						embeds: [
-							new MessageEmbed()
+							new EmbedBuilder()
 							.setColor(client.config.embedColor)
 							.setDescription(`Disconnected from <#${oldChannel}>`),
 						],
@@ -268,7 +268,7 @@ module.exports = (client) => {
 					if (res.exception) {
 						client.channels.cache.get(player.textChannel)
 							.send({
-								embeds: [new MessageEmbed()
+								embeds: [new EmbedBuilder()
 									.setColor("Red")
 									.setAuthor({
 										name: `${res.exception.severity}`,
@@ -285,7 +285,7 @@ module.exports = (client) => {
 				} else {
 					const twentyFourSeven = player.get("twentyFourSeven");
 
-					let queueEmbed = new MessageEmbed()
+					let queueEmbed = new EmbedBuilder()
 						.setColor(client.config.embedColor)
 						.setAuthor({ name: `The queue has ended ${(twentyFourSeven) ? "but 24/7 is on!" : ""}`, iconURL: client.config.iconURL, })
 						.setDescription(`${(twentyFourSeven) ? "The bot will not exit the VC since 24/7 mode has been enabled" : "24/7 was not set, exiting!"}`)
@@ -303,7 +303,7 @@ module.exports = (client) => {
 							setTimeout(async () => {
 								if (!player.playing && player.state !== "DISCONNECTED") {
 									const payload = {
-										embeds: [new MessageEmbed()
+										embeds: [new EmbedBuilder()
 											.setColor(client.config.embedColor)
 											.setAuthor({
 												name: "Disconnected",
