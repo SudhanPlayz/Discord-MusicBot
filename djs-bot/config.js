@@ -10,7 +10,7 @@ module.exports = {
 	/**
 	 * Database option (MongoDB, Postgresql, MySQL, SQLite) https://www.prisma.io/docs/reference/database-reference/connection-urls
 	 * @type {string} */
-	database: process.env.DATABSE || "InsertDBOptionHere",
+	database: process.env.DATABASE || "InsertDBOptionHere",
 	/** 
 	 * URL to the preferred database (Prisma ORM)
 	 * @type {string} */
