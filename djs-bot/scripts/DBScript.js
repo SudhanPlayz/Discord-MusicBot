@@ -1,22 +1,35 @@
 const fs = require("fs");
 const path = require("path");
+const { execSync } = require("child_process");
 
 const configPath = path.join(__dirname, "..", "config.js");
 const config = require(configPath);
 
-if (!config.database) {
-	console.error("Database choice not specified in config.js");
-	process.exit(1);
-}
+const schemasPath = path.join(__dirname, "..", "prisma");
 
-const chosenSchemaFileName = `${config.database}.prisma`;
-const schemaFilePath = path.join(__dirname, "..", "prisma", chosenSchemaFileName);
-const targetSchemaFilePath = path.join(__dirname, "..", "prisma", "schema.prisma");
+const schemas = fs.readdirSync(schemasPath).filter((file) => file.endsWith(".prisma")).map((file) => file.split(".")[0]);
+const schema = config.database;
 
+// check if the schema is valid
+if (!schema || schema == "") throw new Error("Schema was not specified in the config file");
+if (!schemas.includes(schema)) throw new Error(`Schema "${schema}" does not exist`);
+console.log(`Using "${schema}" as the database schema`);
+
+// execute the generate command 
 try {
-	fs.copyFileSync(schemaFilePath, targetSchemaFilePath);
-	console.log(`Using ${chosenSchemaFileName} as schema.prisma`);
+	console.log("Generating Prisma client...");
+	execSync(`npx prisma generate --schema=${schemasPath}/${schema}.prisma`);
 } catch (error) {
-	console.error("Error copying schema file:", error);
-	process.exit(1);
+	console.error(error);
+	throw new Error("Error generating Prisma client");
 }
+
+// push the schema to the database
+try {
+	console.log("Pushing schema to database...");
+	execSync(`npx prisma db push --schema=${schemasPath}/${schema}.prisma`);
+} catch (error) {
+	console.error(error);
+	throw new Error("Error pushing schema to database");
+}
+console.log("Database schema pushed successfully");
