@@ -1,6 +1,10 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const Bot = require("./Bot");
-const { EmbedBuilder, CommandInteractionOptionResolver, CommandInteraction } = require("discord.js");
+const {
+	EmbedBuilder,
+	CommandInteractionOptionResolver,
+	CommandInteraction,
+} = require("discord.js");
 const { getClient } = require("../bot");
 const { permissionsConfigMessageMapper } = require("../util/common");
 const fuzzysort = require("fuzzysort");
@@ -259,16 +263,20 @@ class SlashCommand extends SlashCommandBuilder {
 		);
 
 		if (missingUserPerms.length)
-			missingPermsEmbed.addField(
-				"You're missing some permissions:",
-				`${missingUserPerms.join(", ")}`
-			);
+			missingPermsEmbed.addFields([
+				{
+					name: "You're missing some permissions:",
+					value: `${missingUserPerms.join(", ")}`,
+				},
+			]);
 
 		if (missingBotPerms.length)
-			missingPermsEmbed.addField(
-				"I'm missing some permissions:",
-				`${missingBotPerms.join(", ")}`
-			);
+			missingPermsEmbed.addFields([
+				{
+					name: "I'm missing some permissions:",
+					value: `${missingBotPerms.join(", ")}`,
+				},
+			]);
 
 		missingPermsEmbed.setFooter({
 			text: "If you think this is a mistake please contact the manager of this bot in this server.",
