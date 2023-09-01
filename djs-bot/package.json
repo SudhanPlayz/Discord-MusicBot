@@ -46,6 +46,7 @@
     "prisma": "^5.0.0",
     "rlyrics": "^2.0.1",
     "shoukaku": "^3.4.0",
+    "songcard": "^1.0.2",
     "winston": "^3.9.0",
     "jsonwebtoken": "^9.0.1",
     "youtube-sr": "^4.3.4"
