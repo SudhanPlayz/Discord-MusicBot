@@ -1,7 +1,6 @@
-const { EmbedBuilder, escapeMarkdown, AttachmentBuilder } = require("discord.js");
+const { EmbedBuilder, escapeMarkdown } = require("discord.js");
 const SlashCommand = require("../../lib/SlashCommand");
-const createCard = require("songcard");
-const path = require("path");
+const prettyMilliseconds = require("pretty-ms");
 
 const command = new SlashCommand()
 	.setName("nowplaying")
@@ -11,7 +10,7 @@ const command = new SlashCommand()
 		if (!channel) {
 			return;
 		}
-
+		
 		let player;
 		if (client.manager.Engine) {
 			player = client.manager.Engine.players.get(interaction.guild.id);
@@ -24,7 +23,7 @@ const command = new SlashCommand()
 				],
 			});
 		}
-
+		
 		if (!player) {
 			return interaction.reply({
 				embeds: [
@@ -35,7 +34,7 @@ const command = new SlashCommand()
 				ephemeral: true,
 			});
 		}
-
+		
 		if (!player.playing) {
 			return interaction.reply({
 				embeds: [
@@ -46,23 +45,11 @@ const command = new SlashCommand()
 				ephemeral: true,
 			});
 		}
-
+		
 		const song = player.queue.current;
-
-		const noBgURL = path.join(__dirname, "..", "..", "assets", "no_bg.png");
-
-		const cardImage = await createCard(
-			(imageBg = song.displayThumbnail("maxresdefault") || noBgURL),
-			(imageText = song.title),
-			(trackStream = song.isStream),
-			(trackDuration = song.duration)
-		);
-
-		const attachment = new AttachmentBuilder(cardImage, { name: "card.png" });
-
-		var title = escapeMarkdown(song.title);
-		var title = title.replace(/\]/g, "");
-		var title = title.replace(/\[/g, "");
+        var title = escapeMarkdown(song.title)
+        var title = title.replace(/\]/g,"")
+        var title = title.replace(/\[/g,"")
 		const embed = new EmbedBuilder()
 			.setColor(client.config.embedColor)
 			.setAuthor({ name: "Now Playing", iconURL: client.config.iconURL })
@@ -70,12 +57,26 @@ const command = new SlashCommand()
 			.setFields([
 				{
 					name: "Requested by",
-					value: `<@${song.requester.id}>`,
+					value: `<@${ song.requester.id }>`,
+					inline: true,
+				},
+				// show duration, if live show live
+				{
+					name: "Duration",
+					value: song.isStream
+						? `\`LIVE\``
+						: `\`${ prettyMilliseconds(player.position, {
+							secondsDecimalDigits: 0,
+						}) } / ${ prettyMilliseconds(song.duration, {
+							secondsDecimalDigits: 0,
+						}) }\``,
 					inline: true,
 				},
 			])
-			.setDescription(`[${title}](${song.uri})`)
-			.setImage("attachment://card.png");
-		return interaction.reply({ embeds: [embed], files: [attachment] });
+			// show the thumbnail of the song using displayThumbnail("maxresdefault")
+			.setThumbnail(song.displayThumbnail("maxresdefault"))
+			// show the title of the song and link to it
+			.setDescription(`[${ title }](${ song.uri })`);
+		return interaction.reply({ embeds: [embed] });
 	});
 module.exports = command;
