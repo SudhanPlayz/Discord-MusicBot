@@ -86,9 +86,9 @@ class Bot extends Client {
 
 	printBotInfo() {
 		// Denomination (name) of the bot
-		this.denom = `${this.config.name}/v${
-			require("../package.json").version
-		} (ID: ${this.config.clientId})`;
+		this.denom = `${this.config.name}/v${require("../package.json").version} (ID: ${
+			this.config.clientId
+		})`;
 		this.warn(`Bot running on OPLevel: ${this.OPLevel}`);
 
 		// Operator mode, for debugging purposes
@@ -131,6 +131,15 @@ class Bot extends Client {
 		} else this.error("Invalid nodes specified in config.json");
 
 		this.login(this.config.token);
+
+		// usually you can connect sucessfully within 10 to 15 seconds
+		this.loginTimer = setTimeout(() => {
+			this.error(
+				"Login timeout exceeded, your IP address might have been banned from connecting to " +
+					"discord API and the request was ignored. Try not to use sketchy and shitty free " +
+					"hosting services. Use trusted and appropriate services such as AWS."
+			);
+		}, 30 * 1000);
 
 		// API initialization (done after the login to prevent lack of info)
 		this.api = app(this);
@@ -209,8 +218,8 @@ class Bot extends Client {
 
 			const commandFolders = files.filter(
 				(file) =>
-				!commandFiles.includes(file) &&
-				fs.statSync(path.join(categoryPath, file)).isDirectory()
+					!commandFiles.includes(file) &&
+					fs.statSync(path.join(categoryPath, file)).isDirectory()
 			);
 
 			for (const folder of commandFolders) {
@@ -242,8 +251,12 @@ class Bot extends Client {
 
 				const subCommandFolders = subFiles.filter(
 					(file) =>
-					!subFiles.includes(file) &&
-					fs.statSync(path.join(commandFolderPath, file)).isDirectory()
+						!subFiles.includes(file) &&
+						fs
+							.statSync(
+								path.join(commandFolderPath, file)
+							)
+							.isDirectory()
 				);
 
 				for (const subCommandFolder of subCommandFolders) {
@@ -300,8 +313,8 @@ class Bot extends Client {
 		return `https://discord.com/oauth2/authorize?client_id=${
 			this.config.clientId
 		}&permissions=${this.config.permissions}&scope=${this.config.scopes
-				.join()
-				.replace(/,/g, "%20")}`;
+			.join()
+			.replace(/,/g, "%20")}`;
 	}
 
 	getOauthScopes() {
@@ -311,9 +324,7 @@ class Bot extends Client {
 	loadInteractionCommands() {
 		const folderPath = path.join(__dirname, "..", "interactions");
 
-		const commands = fs
-			.readdirSync(folderPath)
-			.filter((file) => file.endsWith(".js"));
+		const commands = fs.readdirSync(folderPath).filter((file) => file.endsWith(".js"));
 
 		for (const file of commands) {
 			/** @type {import("./SlashCommand")} */
@@ -329,7 +340,8 @@ class Bot extends Client {
 					return this.error(err);
 				}
 
-				if (this.OPLevel >= 2) this.log(`Interaction Command Loaded: ${file}`);
+				if (this.OPLevel >= 2)
+					this.log(`Interaction Command Loaded: ${file}`);
 			}
 		}
 	}
@@ -351,8 +363,7 @@ class Bot extends Client {
 			return;
 		}
 
-		if (this.OPLevel >= 2)
-			this.log(`Slash Command Loaded: ${file} from [${category}]`);
+		if (this.OPLevel >= 2) this.log(`Slash Command Loaded: ${file} from [${category}]`);
 	}
 
 	/**
