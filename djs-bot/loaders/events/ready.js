@@ -4,10 +4,13 @@ const Bot = require("../../lib/Bot");
 // this fires once on the bot being launched, sets the presence for the bot
 
 /**
- * 
- * @param {Bot} client 
+ *
+ * @param {Bot} client
  */
 module.exports = (client) => {
+	clearTimeout(client.loginTimer);
+	client.loginTimer = null;
+
 	const activities = client.config.presence.activities;
 	setInterval(() => {
 		const index = Math.floor(Math.random() * activities.length);
@@ -24,7 +27,7 @@ module.exports = (client) => {
 	}, 10000);
 
 	// Express API
-	client.api.listen({ host: '0.0.0.0', port: client.config.api.port }, (err, address) => {
+	client.api.listen({ host: "0.0.0.0", port: client.config.api.port }, (err, address) => {
 		if (err) {
 			client.error("Can't start API:");
 			client.error(err);
