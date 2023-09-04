@@ -32,7 +32,25 @@ What do you gain from it? Let us explain:
 
 ## 📝 | Tutorial
 
-Soon
+### 🐳 Docker
+> The `config.js` file should be configured with the host `"lavalink"`, and you should use the same `password` as in `docker/application.yml`.
+
+Build and start bot and lavalink
+```sh
+docker-compose up -d --build
+```
+### 💪🏻 Non-Docker
+> The `config.js` file should be configured first. Don't forget to add a lavalink host
+
+Install all dependencies and deploy Slash Commands
+```sh
+npm install
+npm run deploy
+```
+Start the bot
+```sh
+node index.js
+```
 
 ## 📝 | [Support Server](https://discord.gg/sbySMS7m3v)
 
