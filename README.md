@@ -40,7 +40,7 @@ Build and start bot and lavalink
 docker-compose up -d --build
 ```
 ### 💪🏻 Non-Docker
-> The `config.js` file should be configured first.
+> The `config.js` file should be configured first. Don't forget to add a lavalink host
 
 Install all dependencies and deploy Slash Commands
 ```sh
