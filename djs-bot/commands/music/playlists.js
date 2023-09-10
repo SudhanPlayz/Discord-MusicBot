@@ -1,5 +1,6 @@
-const { EmbedBuilder, ComponentType } = require("discord.js");
+const { EmbedBuilder } = require("discord.js");
 const SlashCommand = require("../../lib/SlashCommand");
+const { joinStageChannelRoutine } = require("../../util/player");
 const { capitalize } = require("../../util/string");
 const yt = require("youtube-sr").default;
 
@@ -24,6 +25,7 @@ module.exports = new SlashCommand()
 		.setRequired(true)
 		.setChoices(
 			{ name: "View", value: "view" },
+			{ name: "Play", value: "play"},
 			{ name: "Create", value: "create" },
 			{ name: "Delete", value: "delete" },
 			{ name: "Add", value: "add" },
@@ -46,7 +48,7 @@ module.exports = new SlashCommand()
 		if (client.db) {
 			if (index == 1) {
 				const operation = interaction.options.getString("operation");
-				if (operation === 'delete' || operation === 'view' || operation === 'add' || operation === 'remove') {
+				if (operation === 'delete' || operation === 'view' || operation === 'add' || operation === 'remove' || operation === 'play') {
 					const playlists = await client.db.playlist.findMany({
 						where: {
 							user: {
@@ -262,6 +264,82 @@ module.exports = new SlashCommand()
 			});
 
 			return interaction.reply({ embeds: [new EmbedBuilder().setColor(client.config.embedColor).setDescription(`Removed **${songData.name}** from **${playlist.name}**`)], ephemeral: true });
-		}
+		} else if (operation === "play") {
+			const playlistName = options.getString("playlist_name");
+			const playlist = await client.db.playlist.findFirst({
+				where: {
+					name: playlistName,
+					userId: interaction.user.id
+				}
+			});
 
+			if (!playlist) return interaction.reply({ embeds: [new EmbedBuilder().setColor(client.config.embedColor).setDescription("I couldn't find a playlist with that name")], ephemeral: true });
+			if (playlist.userId !== interaction.user.id) return interaction.reply({ embeds: [new EmbedBuilder().setColor(client.config.embedColor).setDescription("You can't play a playlist that isn't yours")], ephemeral: true });
+
+			const songs = await client.db.song.findMany({
+				where: {
+					playlistId: playlist.id
+				}
+			});
+
+			if (!songs.length) return interaction.reply({ embeds: [new EmbedBuilder().setColor(client.config.embedColor).setDescription("That playlist is empty")], ephemeral: true });
+
+			let player;
+			if (client.manager.Engine) {
+				player = client.manager.Engine;
+			} else {
+				return interaction.reply({
+					embeds: [
+						new EmbedBuilder()
+							.setColor("Red")
+							.setDescription("Lavalink node is not connected"),
+					],
+				});
+			}
+
+			let node = await client.getLavalink(client);
+			if (!node) {
+				return interaction.reply({
+					embeds: [new EmbedBuilder()
+						.setColor("Red")
+						.setTitle("Node error!")
+						.setDescription(`No available nodes to play music on!`)
+						.setFooter({
+							text: "Oops! something went wrong but it's not your fault!",
+						})],
+				});
+			}
+
+			let channel = await client.getChannel(client, interaction);
+			if (!channel) {
+				return;
+			}
+
+			if (!player.players.get(interaction.guild.id)) {
+			 	client.manager.Engine.createPlayer({
+					guildId: interaction.guild.id,
+					voiceChannel: channel.id,
+					textChannel: interaction.channel.id,
+				});
+			}
+
+			if (player.players.get(interaction.guild.id).state !== "CONNECTED") {
+				player.players.get(interaction.guild.id).connect();
+			}
+
+			for (const song of songs) {
+				const songSearch = await player.search(song.link, interaction.user.id);
+				player.players.get(interaction.guild.id).queue.add(songSearch.tracks[0]);
+			}
+
+			if (channel.type == "GUILD_STAGE_VOICE") {
+				joinStageChannelRoutine(interaction.guild.members.me);
+			}
+			
+			if (!player.players.get(interaction.guild.id).playing) {
+				player.players.get(interaction.guild.id).play();
+			}
+
+			return interaction.reply({ embeds: [new EmbedBuilder().setColor(client.config.embedColor).setDescription(`Playing **${playlist.name}**`)], ephemeral: true });
+		}
 	});
