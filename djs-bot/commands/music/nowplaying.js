@@ -1,6 +1,5 @@
 const { EmbedBuilder, escapeMarkdown, AttachmentBuilder } = require("discord.js");
 const SlashCommand = require("../../lib/SlashCommand");
-const prettyMilliseconds = require("pretty-ms");
 const createCard = require("songcard");
 const path = require("path");
 
@@ -56,7 +55,8 @@ const command = new SlashCommand()
 			(imageBg = song.displayThumbnail("maxresdefault") || noBgURL),
 			(imageText = song.title),
 			(trackStream = song.isStream),
-			(trackDuration = song.duration)
+			(trackDuration = player.position),
+			(trackTotalDuration = song.duration)
 		);
 
 		const attachment = new AttachmentBuilder(cardImage, { name: "card.png" });
