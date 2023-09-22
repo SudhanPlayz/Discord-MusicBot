@@ -13,6 +13,7 @@ const command = new SlashCommand()
       .setDescription("Enter the guild id to leave (type `list` for guild ids)")
       .setRequired(true)
   )
+  .setOwnerOnly()
   .setRun(async (client, interaction, options) => {
 		if (interaction.user.id === client.config.adminId) {
 		    try{
