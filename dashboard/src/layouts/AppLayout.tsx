@@ -6,6 +6,12 @@ const AppLayout: PageLayout = ({ children }) => {
         <NextUIProvider
             theme={createTheme({
                 type: 'dark',
+                theme: {
+                    colors: {
+                        serverCardGray: '#C3C3C5',
+                        gray4: '#E2DEE9',
+                    },
+                },
             })}
         >
             <div

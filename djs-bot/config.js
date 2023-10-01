@@ -70,7 +70,7 @@ module.exports = {
 			retryDelay: 6000, // Delay between reconnect attempts if connection is lost.
 			secure: false, // if lavalink is running SSL
 		},
-		/* {
+		{
 			identifier: "LocalNode", // log id string
 			host: "localhost",
 			port: 2333,
@@ -78,7 +78,7 @@ module.exports = {
 			retryAmount: 15, // for lavalink connection attempts
 			retryDelay: 6000, // Delay between reconnect attempts if connection is lost.
 			secure: false, // if lavalink is running SSL
-		}, */
+		},
 	],
 
 	/** 
