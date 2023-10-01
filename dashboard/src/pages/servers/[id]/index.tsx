@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { Avatar, Button } from '@nextui-org/react';
+import { Avatar, Button, Container, Text } from '@nextui-org/react';
 import DashboardLayout from '@/layouts/DashboardLayout';
 import { NextPageWithLayout } from '@/interfaces/layouts';
 import { useGetServer } from '@/services/api';
@@ -67,48 +67,92 @@ const Server: NextPageWithLayout = () => {
             <Head>
                 <title>{name} | Discord Music Bot</title>
             </Head>
-            <Avatar src={icon} size="xl" color="gradient" bordered pointer />
-            <h1>{name}</h1>
-            <h2>Server ID: {id}</h2>
-            <h2>Server Owner: {owner}</h2>
-            <h2>
-                Server Roles:
-                <div
-                    style={{
-                        display: 'flex',
-                        flexWrap: 'wrap',
-                        justifyContent: 'space-between',
-                    }}
-                >
-                    {roles?.map(
-                        (role: { id: string; name: string; color: string }) => {
-                            return (
-                                <div
-                                    key={role.id}
-                                    style={{
-                                        color: 'white',
-                                        backgroundColor: role.color,
-                                        padding: '5px',
-                                        borderRadius: '5px',
-                                        margin: '5px',
-                                    }}
-                                >
-                                    {role.name}
-                                </div>
-                            );
-                        },
-                    )}
+            <Container
+                css={{
+                    paddingTop: '10px',
+                    paddingBottom: '20px',
+                    paddingLeft: '20px',
+                    paddingRight: '20px',
+                    backgroundColor: '$primary',
+                    display: 'flex',
+                    gap: '20px',
+                }}
+            >
+                <div>
+                    <Avatar
+                        src={icon}
+                        css={{
+                            size: 90,
+                        }}
+                        color="gradient"
+                        bordered
+                        pointer
+                    />
                 </div>
-            </h2>
-            <h2>Server Members: {members?.length}</h2>
-            <h2>Server Channels: {channels?.length}</h2>
-            {/* Player */}
-            <h2>Server Queue: {player?.queue?.length || 0}</h2>
-            <h2>Server Now Playing: {player?.playing?.title || 'Nothing'}</h2>
+
+                <Text
+                    css={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                    }}
+                    size={40}
+                    weight="semibold"
+                >
+                    {name}
+                </Text>
+            </Container>
+            <div>
+                <h1>{name}</h1>
+                <h2>Server ID: {id}</h2>
+                <h2>Server Owner: {owner}</h2>
+                <h2>
+                    Server Roles:
+                    <div
+                        style={{
+                            display: 'flex',
+                            flexWrap: 'wrap',
+                            justifyContent: 'space-between',
+                        }}
+                    >
+                        {roles?.map(
+                            (role: {
+                                id: string;
+                                name: string;
+                                color: string;
+                            }) => {
+                                return (
+                                    <div
+                                        key={role.id}
+                                        style={{
+                                            color: 'white',
+                                            backgroundColor: role.color,
+                                            padding: '5px',
+                                            borderRadius: '5px',
+                                            margin: '5px',
+                                        }}
+                                    >
+                                        {role.name}
+                                    </div>
+                                );
+                            },
+                        )}
+                    </div>
+                </h2>
+                <h2>Server Members: {members?.length}</h2>
+                <h2>Server Channels: {channels?.length}</h2>
+                {/* Player */}
+                <h2>Server Queue: {player?.queue?.length || 0}</h2>
+                <h2>
+                    Server Now Playing: {player?.playing?.title || 'Nothing'}
+                </h2>
+            </div>
         </ProcessData>
     );
 };
 
-Server.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
+Server.getLayout = (page) => (
+    <DashboardLayout contentContainerStyle={{}}>{page}</DashboardLayout>
+);
 
 export default Server;

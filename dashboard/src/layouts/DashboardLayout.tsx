@@ -2,7 +2,15 @@ import { PageLayout } from '@/interfaces/layouts';
 import Navbar from '@/components/navbar';
 import useAuthGuard from '@/hooks/useAuthGuard';
 
-const DashboardLayout: PageLayout = ({ children }) => {
+const DashboardLayout: PageLayout = ({
+    children,
+    contentContainerStyle = {
+        paddingLeft: '50px',
+        paddingRight: '50px',
+        paddingTop: '30px',
+        paddingBottom: '50px',
+    },
+}) => {
     useAuthGuard();
 
     return (
@@ -14,16 +22,7 @@ const DashboardLayout: PageLayout = ({ children }) => {
             }}
         >
             <Navbar />
-            <div
-                style={{
-                    paddingLeft: '50px',
-                    paddingRight: '50px',
-                    paddingTop: '30px',
-                    paddingBottom: '50px',
-                }}
-            >
-                {children}
-            </div>
+            <div style={contentContainerStyle}>{children}</div>
         </div>
     );
 };
