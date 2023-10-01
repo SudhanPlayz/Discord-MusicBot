@@ -93,9 +93,12 @@ export default function Server({ name, icon, id, mutual }: IProps) {
                             size={16}
                             weight="semibold"
                             css={{
+                                overflow: 'hidden',
                                 textAlign: 'center',
                                 textOverflow: 'ellipsis',
-                                whiteSpace: 'nowrap',
+                                '-webkit-line-clamp': 2,
+                                display: '-webkit-box',
+                                '-webkit-box-orient': 'vertical',
                             }}
                         >
                             {name}
