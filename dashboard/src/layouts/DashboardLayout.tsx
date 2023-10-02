@@ -1,8 +1,13 @@
 import { PageLayout } from '@/interfaces/layouts';
 import Navbar from '@/components/navbar';
 import useAuthGuard from '@/hooks/useAuthGuard';
+import { INavbarProps } from '@/interfaces/components/Navbar';
 
-const DashboardLayout: PageLayout = ({
+interface IDashboardLayoutProps {
+    navbarProps?: INavbarProps;
+}
+
+const DashboardLayout: PageLayout<IDashboardLayoutProps> = ({
     children,
     contentContainerStyle = {
         paddingLeft: '50px',
@@ -10,6 +15,7 @@ const DashboardLayout: PageLayout = ({
         paddingTop: '30px',
         paddingBottom: '50px',
     },
+    navbarProps = {},
 }) => {
     useAuthGuard();
 
@@ -21,7 +27,7 @@ const DashboardLayout: PageLayout = ({
                 overflow: 'auto',
             }}
         >
-            <Navbar />
+            <Navbar {...navbarProps} />
             <div style={contentContainerStyle}>{children}</div>
         </div>
     );

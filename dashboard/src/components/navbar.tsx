@@ -1,32 +1,21 @@
+import { INavbarProps } from '@/interfaces/components/Navbar';
 import { Button, Link, Spacer } from '@nextui-org/react';
 import { useRouter } from 'next/router';
 
-export default function Navbar() {
+export default function Navbar({ show = true }: INavbarProps) {
     const router = useRouter();
 
     const pathIs = (path: string) => router.pathname === path;
 
     return (
-        <div
-            style={{
-                height: '100%',
-                width: '250px',
-                minWidth: '250px',
-                backgroundColor: '#16181A',
-                display: 'flex',
-                alignItems: 'center',
-                flexDirection: 'column',
-                paddingTop: '50px',
-                position: 'sticky',
-                top: 0,
-            }}
-        >
+        <div className={'navbar-container' + (!show ? ' hide' : '')}>
             <Link
                 css={{
                     fontSize: '$xl2',
                     fontWeight: 'bold',
                     marginBottom: '30px',
                     color: '#fff',
+                    whiteSpace: 'nowrap',
                 }}
                 onClick={() => router.push('/')}
             >

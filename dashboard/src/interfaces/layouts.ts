@@ -13,4 +13,4 @@ export interface IPageLayoutProps {
     contentContainerStyle?: React.HTMLAttributes<HTMLDivElement>['style'];
 }
 
-export type PageLayout = React.FC<IPageLayoutProps>;
+export type PageLayout<T = {}> = React.FC<IPageLayoutProps & T>;

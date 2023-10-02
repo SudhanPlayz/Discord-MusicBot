@@ -33,13 +33,15 @@ function MainButton({ children, tooltipContent, onClick }: IMainButtonProps) {
                 width: '100px',
                 height: '100px',
             }}
+            onClick={onClick}
         >
             <Tooltip
                 content={tooltipContent}
                 style={{
                     width: '100%',
                 }}
-                color="primary"
+                color="invert"
+                placement="bottom"
             >
                 <Card
                     css={{
@@ -51,7 +53,6 @@ function MainButton({ children, tooltipContent, onClick }: IMainButtonProps) {
                             backgroundColor: '$primary',
                         },
                     }}
-                    onClick={onClick}
                 >
                     {children}
                 </Card>
@@ -73,6 +74,8 @@ function HalfContainer({ children, containerProps = {} }: IHalfContainerProps) {
                 gap: '28px',
                 height: '50%',
                 padding: 0,
+                fontSize: '14px',
+                fontWeight: 600,
                 ...containerProps,
             }}
         >
@@ -155,8 +158,9 @@ const Server: NextPageWithLayout = () => {
         getQueryData(data) || {};
 
     const handlePlayerClick = () => {
-        // router.push somewhere
+        router.push('/servers/' + serverId + '/player');
     };
+
     const handleConfigClick = () => {
         // router.push somewhere
     };
@@ -268,6 +272,8 @@ Server.getLayout = (page) => (
             width: '100%',
             display: 'flex',
             flexDirection: 'column',
+            zIndex: 0,
+            backgroundColor: 'black',
         }}
     >
         {page}

@@ -1,0 +1,21 @@
+body {
+    .navbar-container {
+        height: 100%;
+        width: 250px;
+        min-width: 250px;
+        background-color: #16181a;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        padding-top: 50px;
+        position: sticky;
+        top: 0;
+        transition-duration: 1s;
+        overflow: hidden;
+
+        &.hide {
+            min-width: 0;
+            width: 0;
+        }
+    }
+}

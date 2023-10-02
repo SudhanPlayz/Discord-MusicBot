@@ -1,7 +1,18 @@
 import { PageLayout } from '@/interfaces/layouts';
 import { createTheme, NextUIProvider } from '@nextui-org/react';
 
-const AppLayout: PageLayout = ({ children }) => {
+const AppLayout: PageLayout = ({
+    children,
+    contentContainerStyle = {
+        display: 'flex',
+        flexDirection: 'column',
+        maxWidth: '100vw',
+        maxHeight: '100vh',
+        width: '100vw',
+        height: '100vh',
+        overflow: 'hidden',
+    },
+}) => {
     return (
         <NextUIProvider
             theme={createTheme({
@@ -14,19 +25,7 @@ const AppLayout: PageLayout = ({ children }) => {
                 },
             })}
         >
-            <div
-                style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    maxWidth: '100vw',
-                    maxHeight: '100vh',
-                    width: '100vw',
-                    height: '100vh',
-                    overflow: 'hidden',
-                }}
-            >
-                {children}
-            </div>
+            <div style={contentContainerStyle}>{children}</div>
         </NextUIProvider>
     );
 };
