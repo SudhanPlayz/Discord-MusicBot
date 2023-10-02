@@ -8,3 +8,5 @@ export interface ISharedState {
     navbarAbsolute?: IBooleanStateRT[0];
     setNavbarAbsolute?: IBooleanStateRT[1];
 }
+
+export type IUpdateListener = (states: ISharedState) => void;

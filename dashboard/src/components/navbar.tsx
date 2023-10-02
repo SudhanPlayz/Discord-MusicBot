@@ -8,7 +8,7 @@ import { useState } from 'react';
 export default function Navbar({}: INavbarProps) {
     const router = useRouter();
     const [show, setShow] = useState<boolean | undefined>(true);
-    const [absolute, setAbsolute] = useState<boolean | undefined>(true);
+    const [absolute, setAbsolute] = useState<boolean | undefined>(false);
 
     useSharedStateSetter(
         ['navbarShow', show],

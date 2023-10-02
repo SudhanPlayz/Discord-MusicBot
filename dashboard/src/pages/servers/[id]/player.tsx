@@ -1,15 +1,17 @@
 import { NextPageWithLayout } from '@/interfaces/layouts';
 import DashboardLayout from '@/layouts/DashboardLayout';
-import { getSharedState } from '@/libs/sharedState';
 import { Button, Container } from '@nextui-org/react';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
+import NavbarIcon from '@/assets/icons/navbar-icon.svg';
+import classNames from 'classnames';
+import useSharedStateGetter from '@/hooks/useSharedStateGetter';
 
 const Player: NextPageWithLayout = () => {
     const router = useRouter();
     const serverId = router.query.id;
 
-    const sharedState = getSharedState();
+    const sharedState = useSharedStateGetter();
 
     useEffect(() => {
         if (sharedState.navbarShow && sharedState.setNavbarShow) {
@@ -20,6 +22,7 @@ const Player: NextPageWithLayout = () => {
             if (!sharedState.navbarShow && sharedState.setNavbarShow) {
                 sharedState.setNavbarShow(true);
             }
+
             if (sharedState.navbarAbsolute && sharedState.setNavbarAbsolute) {
                 sharedState.setNavbarAbsolute(false);
             }
@@ -38,13 +41,35 @@ const Player: NextPageWithLayout = () => {
 
     return (
         <Container
+            className="player-page-container"
             css={{
                 display: 'flex',
                 justifyContent: 'center',
                 padding: 0,
             }}
         >
-            <Button onClick={handleNavbarToggle}>Buffon</Button>
+            <div
+                className={classNames(
+                    'btn-navbar-toggle-container',
+                    sharedState.navbarShow && sharedState.navbarAbsolute
+                        ? 'follow-navbar'
+                        : '',
+                )}
+            >
+                <Button
+                    onClick={handleNavbarToggle}
+                    className={classNames('btn-navbar-toggle')}
+                    css={{
+                        backgroundColor: 'black',
+                        '&:hover': {
+                            backgroundColor: '$primary',
+                        },
+                    }}
+                    color="default"
+                >
+                    <NavbarIcon />
+                </Button>
+            </div>
             <h1>Player {serverId}</h1>
         </Container>
     );

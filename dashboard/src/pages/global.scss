@@ -29,4 +29,24 @@ body {
             z-index: 1;
         }
     }
+
+    .player-page-container {
+        .btn-navbar-toggle-container {
+            position: absolute;
+            left: 0;
+            top: 0;
+            transition-duration: 0.5s;
+
+            &.follow-navbar {
+                left: 250px;
+            }
+
+            .btn-navbar-toggle {
+                padding: 10px;
+                min-width: 0;
+                height: fit-content;
+                display: block;
+            }
+        }
+    }
 }
