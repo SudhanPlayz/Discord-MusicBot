@@ -20,11 +20,18 @@ const Player: NextPageWithLayout = () => {
             if (!sharedState.navbarShow && sharedState.setNavbarShow) {
                 sharedState.setNavbarShow(true);
             }
+            if (sharedState.navbarAbsolute && sharedState.setNavbarAbsolute) {
+                sharedState.setNavbarAbsolute(false);
+            }
         };
     }, []);
 
     const handleNavbarToggle = () => {
         if (!sharedState.setNavbarShow) return;
+        if (!sharedState.navbarAbsolute) {
+            if (!sharedState.setNavbarAbsolute) return;
+            sharedState.setNavbarAbsolute(true);
+        }
 
         sharedState.setNavbarShow((v) => !v);
     };

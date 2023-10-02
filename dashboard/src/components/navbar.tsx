@@ -1,19 +1,32 @@
 import useSharedStateSetter from '@/hooks/useSharedStateSetter';
 import { INavbarProps } from '@/interfaces/components/Navbar';
 import { Button, Link, Spacer } from '@nextui-org/react';
+import classNames from 'classnames';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 export default function Navbar({}: INavbarProps) {
     const router = useRouter();
     const [show, setShow] = useState<boolean | undefined>(true);
+    const [absolute, setAbsolute] = useState<boolean | undefined>(true);
 
-    useSharedStateSetter(['navbarShow', show], ['setNavbarShow', setShow]);
+    useSharedStateSetter(
+        ['navbarShow', show],
+        ['setNavbarShow', setShow],
+        ['navbarAbsolute', absolute],
+        ['setNavbarAbsolute', setAbsolute],
+    );
 
     const pathIs = (path: string) => router.pathname === path;
 
     return (
-        <div className={'navbar-container' + (!show ? ' hide' : '')}>
+        <div
+            className={classNames(
+                'navbar-container',
+                !show ? 'hide' : '',
+                absolute ? 'absolute' : '',
+            )}
+        >
             <Link
                 css={{
                     fontSize: '$xl2',
