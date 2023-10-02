@@ -1,5 +1,6 @@
 import { ISharedState, IUpdateListener } from '@/interfaces/sharedState';
 
+// !TODO: refactor to use map when state might be too large and causes many unnecessary rerender
 const states: ISharedState = {};
 const updateHandlers: IUpdateListener[] = [];
 
