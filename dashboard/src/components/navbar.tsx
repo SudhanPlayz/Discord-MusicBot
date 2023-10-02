@@ -1,9 +1,14 @@
+import useSharedStateSetter from '@/hooks/useSharedStateSetter';
 import { INavbarProps } from '@/interfaces/components/Navbar';
 import { Button, Link, Spacer } from '@nextui-org/react';
 import { useRouter } from 'next/router';
+import { useState } from 'react';
 
-export default function Navbar({ show = true }: INavbarProps) {
+export default function Navbar({}: INavbarProps) {
     const router = useRouter();
+    const [show, setShow] = useState<boolean | undefined>(true);
+
+    useSharedStateSetter(['navbarShow', show], ['setNavbarShow', setShow]);
 
     const pathIs = (path: string) => router.pathname === path;
 

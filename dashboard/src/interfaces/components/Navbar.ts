@@ -1,3 +1,1 @@
-export interface INavbarProps {
-    show?: boolean;
-}
+export interface INavbarProps {}
