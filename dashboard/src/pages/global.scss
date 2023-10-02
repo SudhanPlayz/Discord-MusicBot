@@ -37,6 +37,7 @@ body {
             top: 0;
             transition-duration: 0.5s;
             padding: 20px;
+            animation: in-opacity 2s;
 
             &.follow-navbar {
                 left: 250px;
@@ -49,5 +50,15 @@ body {
                 display: block;
             }
         }
+    }
+}
+
+@keyframes in-opacity {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
     }
 }

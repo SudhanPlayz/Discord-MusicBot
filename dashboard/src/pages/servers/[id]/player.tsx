@@ -60,7 +60,7 @@ const Player: NextPageWithLayout = () => {
                     onClick={handleNavbarToggle}
                     className={classNames('btn-navbar-toggle')}
                     css={{
-                        backgroundColor: 'black',
+                        backgroundColor: 'transparent',
                         '&:hover': {
                             backgroundColor: '$primary',
                         },
