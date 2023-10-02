@@ -14,8 +14,14 @@ body {
         overflow: hidden;
 
         &.hide {
-            min-width: 0;
-            width: 0;
+            &:not(.absolute) {
+                min-width: 0;
+                width: 0;
+            }
+
+            &.absolute {
+                transform: translateX(-100%);
+            }
         }
 
         &.absolute {
