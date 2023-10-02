@@ -1,5 +1,5 @@
 import { ISharedState } from '@/interfaces/sharedState';
-import { setSharedState } from '@/libs/sharedState';
+import { setSharedState, updateListener } from '@/libs/sharedState';
 import { useEffect } from 'react';
 
 interface IUseSharedStateSetterParam {
@@ -15,6 +15,8 @@ export default function useSharedStateSetter(
             for (const v of args) {
                 setSharedState(v[0], v[1]);
             }
+
+            if (args.length) updateListener();
 
             return () => {
                 for (const v of args) {

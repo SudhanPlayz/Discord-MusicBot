@@ -18,7 +18,6 @@ export function setSharedState<T extends keyof ISharedState>(
     value: ISharedState[T],
 ) {
     states[key] = value;
-    updateListener();
 }
 
 export function registerListener(handler: IUpdateListener) {
