@@ -2,14 +2,18 @@ import { NextPageWithLayout } from '@/interfaces/layouts';
 import DashboardLayout from '@/layouts/DashboardLayout';
 import { Button, Container } from '@nextui-org/react';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import NavbarIcon from '@/assets/icons/navbar-icon.svg';
 import classNames from 'classnames';
 import useSharedStateGetter from '@/hooks/useSharedStateGetter';
+import CaretIconLeft from '@/assets/icons/caret-outline-left.svg';
+import CaretIconRight from '@/assets/icons/caret-outline-right.svg';
 
 const Player: NextPageWithLayout = () => {
     const router = useRouter();
     const serverId = router.query.id;
+
+    const [playlistShow, setPlaylistShow] = useState(false);
 
     const sharedState = useSharedStateGetter();
 
@@ -39,6 +43,10 @@ const Player: NextPageWithLayout = () => {
         sharedState.setNavbarShow((v) => !v);
     };
 
+    const handlePlaylistToggle = () => {
+        setPlaylistShow((v) => !v);
+    };
+
     return (
         <Container
             className="player-page-container"
@@ -50,7 +58,7 @@ const Player: NextPageWithLayout = () => {
         >
             <div
                 className={classNames(
-                    'btn-navbar-toggle-container',
+                    'btn-navbar-toggle-container btn-toggle-container',
                     sharedState.navbarShow && sharedState.navbarAbsolute
                         ? 'follow-navbar'
                         : '',
@@ -58,7 +66,7 @@ const Player: NextPageWithLayout = () => {
             >
                 <Button
                     onClick={handleNavbarToggle}
-                    className={classNames('btn-navbar-toggle')}
+                    className={classNames('btn-navbar-toggle btn-toggle')}
                     css={{
                         backgroundColor: 'transparent',
                         '&:hover': {
@@ -70,6 +78,32 @@ const Player: NextPageWithLayout = () => {
                     <NavbarIcon />
                 </Button>
             </div>
+
+            <div
+                className={classNames(
+                    'btn-playlist-toggle-container btn-toggle-container',
+                    playlistShow ? 'follow-navbar' : '',
+                )}
+            >
+                <Button
+                    onClick={handlePlaylistToggle}
+                    className={classNames('btn-playlist-toggle btn-toggle')}
+                    css={{
+                        backgroundColor: 'transparent',
+                        '&:hover': {
+                            backgroundColor: '$primary',
+                        },
+                    }}
+                    color="default"
+                >
+                    {playlistShow ? (
+                        <CaretIconRight className="icon-right" />
+                    ) : (
+                        <CaretIconLeft className="icon-left" />
+                    )}
+                </Button>
+            </div>
+
             <h1>Player {serverId}</h1>
         </Container>
     );

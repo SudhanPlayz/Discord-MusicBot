@@ -31,23 +31,45 @@ body {
     }
 
     .player-page-container {
-        .btn-navbar-toggle-container {
+        .btn-toggle-container {
             position: absolute;
-            left: 0;
-            top: 0;
             transition-duration: 0.5s;
             padding: 20px;
             animation: in-opacity 2s;
 
-            &.follow-navbar {
-                left: 250px;
-            }
-
-            .btn-navbar-toggle {
+            .btn-toggle {
                 padding: 16px;
                 min-width: 0;
                 height: fit-content;
                 display: block;
+            }
+
+            &.btn-navbar-toggle-container {
+                left: 0;
+                top: 0;
+
+                &.follow-navbar {
+                    left: 250px;
+                }
+            }
+
+            &.btn-playlist-toggle-container {
+                right: 0;
+                top: 0;
+
+                &.follow-navbar {
+                    right: 250px;
+                }
+
+                svg {
+                    height: 40px;
+                    fill: white;
+
+                    &.icon-left,
+                    &.icon-right {
+                        animation: rotate-180 0.5s reverse, btn-scale 0.5s;
+                    }
+                }
             }
         }
     }
@@ -60,5 +82,29 @@ body {
 
     to {
         opacity: 1;
+    }
+}
+
+@keyframes rotate-180 {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(180deg);
+    }
+}
+
+@keyframes btn-scale {
+    0% {
+        scale: 100%;
+    }
+
+    50% {
+        scale: 125%;
+    }
+
+    100% {
+        scale: 100%;
     }
 }
