@@ -138,6 +138,7 @@ body {
                 flex-direction: column;
                 flex-grow: 1;
                 gap: 20px;
+                padding-bottom: 20px;
 
                 .thumbnail-container {
                     display: flex;
@@ -146,7 +147,7 @@ body {
                     align-items: center;
                     object-fit: cover;
                     overflow: hidden;
-                    filter: drop-shadow(0 0 20px lightgray);
+                    filter: drop-shadow(0 0 30px blue);
                     flex-grow: 1;
 
                     img {
