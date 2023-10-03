@@ -1,6 +1,6 @@
 import { NextPageWithLayout } from '@/interfaces/layouts';
 import DashboardLayout from '@/layouts/DashboardLayout';
-import { Button, Container } from '@nextui-org/react';
+import { Button } from '@nextui-org/react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import NavbarIcon from '@/assets/icons/navbar-icon.svg';
@@ -51,7 +51,7 @@ const Player: NextPageWithLayout = () => {
     };
 
     return (
-        <Container className="player-page-container">
+        <div className="player-page-container">
             <div
                 className={classNames(
                     'btn-navbar-toggle-container btn-toggle-container',
@@ -107,7 +107,7 @@ const Player: NextPageWithLayout = () => {
             </div>
 
             <PlaylistBar hide={!playlistShow} />
-        </Container>
+        </div>
     );
 };
 
