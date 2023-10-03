@@ -22,7 +22,7 @@ export default function Navbar({}: INavbarProps) {
     return (
         <div
             className={classNames(
-                'navbar-container',
+                'navbar-container bar-container',
                 !show ? 'hide' : '',
                 absolute ? 'absolute' : '',
             )}

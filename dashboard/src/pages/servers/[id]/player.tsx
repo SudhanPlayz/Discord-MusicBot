@@ -8,6 +8,7 @@ import classNames from 'classnames';
 import useSharedStateGetter from '@/hooks/useSharedStateGetter';
 import CaretIconLeft from '@/assets/icons/caret-outline-left.svg';
 import CaretIconRight from '@/assets/icons/caret-outline-right.svg';
+import PlaylistBar from '@/components/PlaylistBar';
 
 const Player: NextPageWithLayout = () => {
     const router = useRouter();
@@ -105,6 +106,7 @@ const Player: NextPageWithLayout = () => {
             </div>
 
             <h1>Player {serverId}</h1>
+            <PlaylistBar hide={!playlistShow} />
         </Container>
     );
 };
