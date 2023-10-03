@@ -126,36 +126,55 @@ body {
             display: flex;
             flex-direction: column;
             flex-grow: 1;
-            padding-top: 40px;
-            gap: 20px;
-            max-height: 85%;
 
-            .thumbnail-container {
+            .top-container {
+                background: linear-gradient(
+                    153deg,
+                    rgba(255, 255, 255, 0.2) 0%,
+                    rgba(255, 255, 255, 0) 100%
+                );
+                padding-top: 40px;
                 display: flex;
                 flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                max-height: 70%;
-                object-fit: cover;
-                overflow: hidden;
-                filter: drop-shadow(0 0 10px lightgray);
                 flex-grow: 1;
-            }
+                gap: 20px;
 
-            .track-info-container {
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
+                .thumbnail-container {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                    object-fit: cover;
+                    overflow: hidden;
+                    filter: drop-shadow(0 0 20px lightgray);
+                    flex-grow: 1;
 
-                h1 {
-                    margin-bottom: 0;
+                    img {
+                        position: absolute;
+                    }
+                }
+
+                .track-info-container {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+
+                    h1 {
+                        margin-bottom: 0;
+                        font-size: 24px;
+                    }
+
+                    p {
+                        color: rgba(165, 192, 255, 0.7);
+                        font-size: 16px;
+                    }
                 }
             }
-        }
 
-        .player-control-container {
-            max-height: 15%;
+            .player-control-container {
+                height: 10%;
+            }
         }
     }
 }

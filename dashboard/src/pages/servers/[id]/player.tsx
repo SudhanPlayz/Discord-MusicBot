@@ -93,15 +93,17 @@ const Player: NextPageWithLayout = () => {
             </div>
 
             <div className="main-player-content-container">
-                <div className="thumbnail-container">
-                    <img src={SampleThumb.src} alt="Thumbnail" />
-                </div>
-                <div className="track-info-container">
-                    <h1>Player {serverId}</h1>
-                    <p>Player {serverId}</p>
+                <div className="top-container">
+                    <div className="thumbnail-container">
+                        <img src={SampleThumb.src} alt="Thumbnail" />
+                    </div>
+                    <div className="track-info-container">
+                        <h1>Player {serverId}</h1>
+                        <p>Player {serverId}</p>
+                    </div>
                 </div>
 
-                <div className="player-control-container"></div>
+                <div className="player-control-container">Control</div>
             </div>
 
             <PlaylistBar hide={!playlistShow} />
