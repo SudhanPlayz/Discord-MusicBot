@@ -9,6 +9,7 @@ import useSharedStateGetter from '@/hooks/useSharedStateGetter';
 import CaretIconLeft from '@/assets/icons/caret-outline-left.svg';
 import CaretIconRight from '@/assets/icons/caret-outline-right.svg';
 import PlaylistBar from '@/components/PlaylistBar';
+import XIcon from '@/assets/icons/x-solid.svg';
 
 const Player: NextPageWithLayout = () => {
     const router = useRouter();
@@ -68,15 +69,13 @@ const Player: NextPageWithLayout = () => {
                 <Button
                     onClick={handleNavbarToggle}
                     className={classNames('btn-navbar-toggle btn-toggle')}
-                    css={{
-                        backgroundColor: 'transparent',
-                        '&:hover': {
-                            backgroundColor: '$primary',
-                        },
-                    }}
                     color="default"
                 >
-                    <NavbarIcon />
+                    {sharedState.navbarShow ? (
+                        <XIcon className="x-icon" />
+                    ) : (
+                        <NavbarIcon className="navbar-icon" />
+                    )}
                 </Button>
             </div>
 
@@ -89,12 +88,6 @@ const Player: NextPageWithLayout = () => {
                 <Button
                     onClick={handlePlaylistToggle}
                     className={classNames('btn-playlist-toggle btn-toggle')}
-                    css={{
-                        backgroundColor: 'transparent',
-                        '&:hover': {
-                            backgroundColor: '$primary',
-                        },
-                    }}
                     color="default"
                 >
                     {playlistShow ? (

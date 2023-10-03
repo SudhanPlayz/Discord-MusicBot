@@ -53,12 +53,39 @@ body {
             transition-duration: 0.5s;
             padding: 20px;
             animation: in-opacity 2s;
+            width: 100px;
+            height: 100px;
+            display: flex;
 
             .btn-toggle {
-                padding: 16px;
+                padding: 0;
                 min-width: 0;
-                height: fit-content;
-                display: block;
+                height: 100%;
+                width: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-grow: 1;
+                overflow: visible;
+                background: none;
+                transition-duration: 0.5s;
+
+                svg.x-icon {
+                    fill: white;
+                    height: 40px;
+                }
+
+                svg {
+                    &.x-icon,
+                    &.navbar-icon {
+                        animation: in-opacity 0.5s;
+                    }
+                }
+
+                &:hover {
+                    background-color: rgba(255, 255, 255, 0.4);
+                    box-shadow: 0 0 10px 4px rgba(255, 255, 255, 0.5);
+                }
             }
 
             &.btn-navbar-toggle-container {
