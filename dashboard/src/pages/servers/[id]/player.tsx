@@ -10,6 +10,7 @@ import CaretIconLeft from '@/assets/icons/caret-outline-left.svg';
 import CaretIconRight from '@/assets/icons/caret-outline-right.svg';
 import PlaylistBar from '@/components/PlaylistBar';
 import XIcon from '@/assets/icons/x-solid.svg';
+import SampleThumb from '@/assets/images/sample-thumbnail.png';
 
 const Player: NextPageWithLayout = () => {
     const router = useRouter();
@@ -50,14 +51,7 @@ const Player: NextPageWithLayout = () => {
     };
 
     return (
-        <Container
-            className="player-page-container"
-            css={{
-                display: 'flex',
-                justifyContent: 'center',
-                padding: 0,
-            }}
-        >
+        <Container className="player-page-container">
             <div
                 className={classNames(
                     'btn-navbar-toggle-container btn-toggle-container',
@@ -98,7 +92,18 @@ const Player: NextPageWithLayout = () => {
                 </Button>
             </div>
 
-            <h1>Player {serverId}</h1>
+            <div className="main-player-content-container">
+                <div className="thumbnail-container">
+                    <img src={SampleThumb.src} alt="Thumbnail" />
+                </div>
+                <div className="track-info-container">
+                    <h1>Player {serverId}</h1>
+                    <p>Player {serverId}</p>
+                </div>
+
+                <div className="player-control-container"></div>
+            </div>
+
             <PlaylistBar hide={!playlistShow} />
         </Container>
     );

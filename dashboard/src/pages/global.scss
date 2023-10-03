@@ -1,4 +1,6 @@
 body {
+    overflow: hidden;
+
     .bar-container {
         height: 100%;
         width: 250px;
@@ -17,6 +19,7 @@ body {
         }
 
         &.playlistbar-container {
+            position: fixed;
             padding: 20px;
             right: 0;
         }
@@ -40,14 +43,16 @@ body {
             }
         }
 
-        &.absolute,
-        &.playlistbar-container {
+        &.absolute {
             position: absolute;
             z-index: 1;
         }
     }
 
     .player-page-container {
+        display: flex;
+        padding: 0;
+
         .btn-toggle-container {
             position: absolute;
             transition-duration: 0.5s;
@@ -115,6 +120,42 @@ body {
                     }
                 }
             }
+        }
+
+        .main-player-content-container {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            padding-top: 40px;
+            gap: 20px;
+            max-height: 85%;
+
+            .thumbnail-container {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                max-height: 70%;
+                object-fit: cover;
+                overflow: hidden;
+                filter: drop-shadow(0 0 10px lightgray);
+                flex-grow: 1;
+            }
+
+            .track-info-container {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+
+                h1 {
+                    margin-bottom: 0;
+                }
+            }
+        }
+
+        .player-control-container {
+            max-height: 15%;
         }
     }
 }
