@@ -177,7 +177,31 @@ body {
             }
 
             .player-control-container {
-                height: 10%;
+                display: flex;
+                flex-direction: column;
+                height: 15%;
+
+                progress {
+                    width: 100%;
+                }
+
+                .control-duration-container {
+                    display: flex;
+                    position: relative;
+                    justify-content: center;
+                    align-items: center;
+                    flex-grow: 1;
+
+                    .control-container {
+                        display: flex;
+                        gap: 40px;
+                    }
+
+                    .duration-container {
+                        position: absolute;
+                        right: 5%;
+                    }
+                }
             }
         }
     }

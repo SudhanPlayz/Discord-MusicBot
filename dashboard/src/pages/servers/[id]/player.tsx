@@ -17,6 +17,7 @@ const Player: NextPageWithLayout = () => {
     const serverId = router.query.id;
 
     const [playlistShow, setPlaylistShow] = useState(false);
+    const [progressValue, setProgressValue] = useState(0);
 
     const sharedState = useSharedStateGetter();
 
@@ -103,7 +104,17 @@ const Player: NextPageWithLayout = () => {
                     </div>
                 </div>
 
-                <div className="player-control-container">Control</div>
+                <div className="player-control-container">
+                    <progress value={progressValue} />
+                    <div className="control-duration-container">
+                        <div className="control-container">
+                            <div>Left</div>
+                            <div>Control</div>
+                            <div>Right</div>
+                        </div>
+                        <div className="duration-container">Duration</div>
+                    </div>
+                </div>
             </div>
 
             <PlaylistBar hide={!playlistShow} />
@@ -115,6 +126,7 @@ Player.getLayout = (page) => (
     <DashboardLayout
         contentContainerStyle={{
             width: '100%',
+            height: '100%',
             display: 'flex',
             zIndex: 0,
             backgroundColor: 'black',
