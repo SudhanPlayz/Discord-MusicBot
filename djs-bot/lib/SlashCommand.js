@@ -294,24 +294,18 @@ class SlashCommand extends SlashCommandBuilder {
 	static handleComponentInteraction(interaction) {
 		if (!interaction.isMessageComponent()) return;
 
-		const replyNoCmd = () => {
-			return interaction.reply({
-				content: "Sorry the command you used doesn't have any run function",
-				ephemeral: true,
-			});
-		};
-
 		const client = getClient();
 
 		const [category, cmd, ...args] = interaction.customId?.split("/") || [];
 
-		if (!category?.length || !cmd?.length) return replyNoCmd();
+		if (!category?.length || !cmd?.length) return;
 
 		const command = client.interactionCommands.find(
 			(ic) => ic.category === category && ic.name === cmd
 		);
 
-		if (typeof command?.run !== "function") return replyNoCmd();
+		// simply return undefined to pass it to slash handler
+		if (typeof command?.run !== "function") return;
 
 		try {
 			return command.run(client, interaction, args);
