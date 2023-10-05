@@ -182,7 +182,21 @@ body {
                 height: 15%;
 
                 progress {
+                    -webkit-appearance: none;
+                    appearance: none;
+
                     width: 100%;
+                    border: 0px;
+                    border-radius: 0px;
+                    height: 6px;
+
+                    &::-webkit-progress-bar {
+                        background-color: white;
+                    }
+
+                    &::-webkit-progress-value {
+                        // background-color: red;
+                    }
                 }
 
                 .control-duration-container {

@@ -17,7 +17,9 @@ const Player: NextPageWithLayout = () => {
     const serverId = router.query.id;
 
     const [playlistShow, setPlaylistShow] = useState(false);
-    const [progressValue, setProgressValue] = useState(0);
+    const [progressValue, setProgressValue] = useState(50);
+    const [maxProgressValue, setMaxProgressValue] = useState(100);
+    const [socketLoading, setSocketLoading] = useState(false);
 
     const sharedState = useSharedStateGetter();
 
@@ -105,8 +107,16 @@ const Player: NextPageWithLayout = () => {
                 </div>
 
                 <div className="player-control-container">
-                    <progress value={progressValue} />
-                    <div className="control-duration-container">
+                    <progress
+                        id="player-progress-bar"
+                        max={socketLoading ? undefined : maxProgressValue}
+                        value={socketLoading ? undefined : progressValue}
+                    />
+                    <div
+                        aria-busy={socketLoading}
+                        aria-describedby="player-progress-bar"
+                        className="control-duration-container"
+                    >
                         <div className="control-container">
                             <div>Left</div>
                             <div>Control</div>
