@@ -55,14 +55,10 @@ const Player: NextPageWithLayout = () => {
     };
 
     const seekerMouseMoveHandler = (e: MouseEvent) => {
-        const el = e.target as HTMLDivElement | null;
-        const progressEl = document.getElementById('player-progress-bar');
-        if (!el || !progressEl) return;
-
         e.preventDefault();
 
         setProgressValue(
-            (e.clientX / progressEl.clientWidth) * maxProgressValue,
+            (e.clientX / document.body.clientWidth) * maxProgressValue,
         );
     };
 
@@ -140,6 +136,14 @@ const Player: NextPageWithLayout = () => {
         setPlaylistShow((v) => !v);
     };
 
+    const handleProgressClick = (
+        e: React.MouseEvent<HTMLDivElement, MouseEvent>,
+    ) => {
+        e.preventDefault();
+
+        // !TODO: sendSeek((e.clientX / document.body.clientWidth) * maxProgressValue);
+    };
+
     return (
         <div className="player-page-container">
             <div
@@ -194,7 +198,7 @@ const Player: NextPageWithLayout = () => {
                 </div>
 
                 <div className="player-control-container">
-                    <div id="player-progress-bar">
+                    <div id="player-progress-bar" onClick={handleProgressClick}>
                         <div
                             className="progress-value"
                             style={{

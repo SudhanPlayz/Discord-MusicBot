@@ -204,6 +204,9 @@ body {
                     align-items: center;
                     position: absolute;
                     top: 0;
+                    height: 4px;
+                    cursor: pointer;
+                    z-index: 1;
 
                     .progress-value {
                         position: relative;
