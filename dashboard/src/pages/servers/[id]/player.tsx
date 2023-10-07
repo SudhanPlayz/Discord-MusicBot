@@ -12,9 +12,8 @@ import PlaylistBar from '@/components/PlaylistBar';
 import XIcon from '@/assets/icons/x-solid.svg';
 import SampleThumb from '@/assets/images/sample-thumbnail.png';
 import { ISharedState } from '@/interfaces/sharedState';
-
-const halfSeekHandlerX = 100,
-    halfSeekHandlerY = 100;
+import NextIcon from '@/assets/icons/next.svg';
+import PauseIcon from '@/assets/icons/pause.svg';
 
 const sharedStateMount = (sharedState: ISharedState) => {
     if (sharedState.navbarShow && sharedState.setNavbarShow) {
@@ -218,11 +217,27 @@ const Player: NextPageWithLayout = () => {
                         className="control-duration-container"
                     >
                         <div className="control-container">
-                            <div>Left</div>
-                            <div>Control</div>
-                            <div>Right</div>
+                            <div className="btn-toggle-container">
+                                <Button className="btn-toggle">
+                                    <NextIcon
+                                        style={{
+                                            transform: 'rotate(180deg)',
+                                        }}
+                                    />
+                                </Button>
+                            </div>
+                            <div className="btn-toggle-container">
+                                <Button className="btn-toggle">
+                                    <PauseIcon />
+                                </Button>
+                            </div>
+                            <div className="btn-toggle-container">
+                                <Button className="btn-toggle">
+                                    <NextIcon />
+                                </Button>
+                            </div>
                         </div>
-                        <div className="duration-container">Duration</div>
+                        <div className="duration-container">03:01 / 03:54</div>
                     </div>
                 </div>
             </div>
@@ -240,6 +255,11 @@ Player.getLayout = (page) => (
             display: 'flex',
             zIndex: 0,
             backgroundColor: 'black',
+        }}
+        layoutContainerProps={{
+            display: 'flex',
+            height: '100%',
+            overflow: 'hidden',
         }}
     >
         {page}

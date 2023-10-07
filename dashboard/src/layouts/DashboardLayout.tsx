@@ -5,6 +5,7 @@ import { INavbarProps } from '@/interfaces/components/Navbar';
 
 interface IDashboardLayoutProps {
     navbarProps?: INavbarProps;
+    layoutContainerProps?: React.HTMLAttributes<HTMLDivElement>['style'];
 }
 
 const DashboardLayout: PageLayout<IDashboardLayoutProps> = ({
@@ -16,18 +17,16 @@ const DashboardLayout: PageLayout<IDashboardLayoutProps> = ({
         paddingBottom: '50px',
     },
     navbarProps = {},
+    layoutContainerProps = {
+        display: 'flex',
+        height: '100%',
+        overflow: 'auto',
+    },
 }) => {
     useAuthGuard();
 
     return (
-        <div
-            style={{
-                display: 'flex',
-                height: '100%',
-                overflowY: 'auto',
-                overflowX: 'hidden',
-            }}
-        >
+        <div style={layoutContainerProps}>
             <Navbar {...navbarProps} />
             <div style={contentContainerStyle}>{children}</div>
         </div>
