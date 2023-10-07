@@ -29,7 +29,7 @@ class MyDocument extends Document {
                     />
                 </Head>
                 <body>
-                    <div id="seek-handler" />
+                    <div id="drag-handler" />
                     <Main />
                     <NextScript />
                 </body>

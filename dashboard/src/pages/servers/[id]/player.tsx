@@ -79,7 +79,7 @@ const Player: NextPageWithLayout = () => {
     };
 
     const seekerMouseDownHandler = (e: MouseEvent) => {
-        const el = document.getElementById('seek-handler');
+        const el = document.getElementById('drag-handler');
         const seekerEl = document.getElementById('seeker');
         if (!el || !seekerEl) return;
 
