@@ -24,7 +24,8 @@ const DashboardLayout: PageLayout<IDashboardLayoutProps> = ({
             style={{
                 display: 'flex',
                 height: '100%',
-                overflow: 'auto',
+                overflowY: 'auto',
+                overflowX: 'hidden',
             }}
         >
             <Navbar {...navbarProps} />

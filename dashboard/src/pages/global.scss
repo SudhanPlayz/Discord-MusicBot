@@ -1,6 +1,19 @@
 body {
     overflow: hidden;
 
+    #seek-handler {
+        position: fixed;
+        cursor: pointer;
+        width: 100%;
+        height: 100%;
+        top: 0px;
+        left: 0px;
+
+        &.active {
+            z-index: 10000;
+        }
+    }
+
     .bar-container {
         height: 100%;
         width: 250px;
@@ -178,24 +191,51 @@ body {
 
             .player-control-container {
                 display: flex;
+                position: relative;
                 flex-direction: column;
                 height: 15%;
 
-                progress {
-                    -webkit-appearance: none;
-                    appearance: none;
-
+                #player-progress-bar {
                     width: 100%;
                     border: 0px;
                     border-radius: 0px;
-                    height: 6px;
+                    background-color: transparent;
+                    display: flex;
+                    align-items: center;
+                    position: absolute;
+                    top: 0;
 
-                    &::-webkit-progress-bar {
-                        background-color: white;
+                    .progress-value {
+                        position: relative;
+                        background-color: red;
+                        display: flex;
+                        align-items: center;
+                        height: 4px;
+
+                        #seeker {
+                            border-radius: 100%;
+                            width: 20px;
+                            height: 20px;
+                            position: absolute;
+                            right: 0;
+                            transform: translateX(50%);
+                            background-color: red;
+                            z-index: 100;
+                            transition-duration: 0.2s;
+                            overflow: visible;
+                            cursor: pointer;
+
+                            &:hover {
+                                scale: 120%;
+                            }
+                        }
                     }
 
-                    &::-webkit-progress-value {
-                        // background-color: red;
+                    .remaining-progress {
+                        background-color: green;
+                        flex-grow: 1;
+                        height: 1px;
+                        opacity: 0.3;
                     }
                 }
 

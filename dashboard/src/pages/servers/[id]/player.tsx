@@ -2,7 +2,7 @@ import { NextPageWithLayout } from '@/interfaces/layouts';
 import DashboardLayout from '@/layouts/DashboardLayout';
 import { Button } from '@nextui-org/react';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import NavbarIcon from '@/assets/icons/navbar-icon.svg';
 import classNames from 'classnames';
 import useSharedStateGetter from '@/hooks/useSharedStateGetter';
@@ -11,31 +11,111 @@ import CaretIconRight from '@/assets/icons/caret-outline-right.svg';
 import PlaylistBar from '@/components/PlaylistBar';
 import XIcon from '@/assets/icons/x-solid.svg';
 import SampleThumb from '@/assets/images/sample-thumbnail.png';
+import { ISharedState } from '@/interfaces/sharedState';
+
+const halfSeekHandlerX = 100,
+    halfSeekHandlerY = 100;
+
+const sharedStateMount = (sharedState: ISharedState) => {
+    if (sharedState.navbarShow && sharedState.setNavbarShow) {
+        sharedState.setNavbarShow(false);
+    }
+};
+
+const sharedStateUnmount = (sharedState: ISharedState) => {
+    if (!sharedState.navbarShow && sharedState.setNavbarShow) {
+        sharedState.setNavbarShow(true);
+    }
+
+    if (sharedState.navbarAbsolute && sharedState.setNavbarAbsolute) {
+        sharedState.setNavbarAbsolute(false);
+    }
+};
 
 const Player: NextPageWithLayout = () => {
     const router = useRouter();
     const serverId = router.query.id;
 
     const [playlistShow, setPlaylistShow] = useState(false);
-    const [progressValue, setProgressValue] = useState(50);
-    const [maxProgressValue, setMaxProgressValue] = useState(100);
+    const [progressValue, setProgressValue] = useState(0);
+    const [maxProgressValue, setMaxProgressValue] = useState(100000);
     const [socketLoading, setSocketLoading] = useState(false);
+
+    const toSeekProgressValue = useRef<number | undefined>();
 
     const sharedState = useSharedStateGetter();
 
+    const handleSeek = () => {
+        if (toSeekProgressValue.current == undefined) return;
+
+        // !TODO: send seek event to socket
+
+        setProgressValue(toSeekProgressValue.current);
+        toSeekProgressValue.current = undefined;
+    };
+
+    const seekerMouseMoveHandler = (e: MouseEvent) => {
+        const el = e.target as HTMLDivElement | null;
+        const progressEl = document.getElementById('player-progress-bar');
+        if (!el || !progressEl) return;
+
+        e.preventDefault();
+
+        setProgressValue(
+            (e.clientX / progressEl.clientWidth) * maxProgressValue,
+        );
+    };
+
+    const seekerMouseUpHandler = (e: MouseEvent) => {
+        const el = e.target as HTMLDivElement | null;
+        if (!el) return;
+
+        e.preventDefault();
+
+        el.removeEventListener('mousemove', seekerMouseMoveHandler);
+        el.removeEventListener('mouseup', seekerMouseUpHandler);
+
+        el.classList.remove('active');
+
+        handleSeek();
+    };
+
+    const seekerMouseDownHandler = (e: MouseEvent) => {
+        const el = document.getElementById('seek-handler');
+        if (!el) return;
+
+        e.preventDefault();
+
+        toSeekProgressValue.current = progressValue;
+
+        el.addEventListener('mousemove', seekerMouseMoveHandler);
+        el.addEventListener('mouseup', seekerMouseUpHandler);
+        el.classList.add('active');
+    };
+
+    const seekerMount = () => {
+        const el = document.getElementById('seeker');
+
+        if (!el) return;
+
+        el.addEventListener('mousedown', seekerMouseDownHandler);
+    };
+
+    const seekerUnmount = () => {
+        const el = document.getElementById('seeker');
+
+        if (!el) return;
+
+        el.removeEventListener('mousedown', seekerMouseDownHandler);
+    };
+
     useEffect(() => {
-        if (sharedState.navbarShow && sharedState.setNavbarShow) {
-            sharedState.setNavbarShow(false);
-        }
+        sharedStateMount(sharedState);
+        seekerMount();
 
         return () => {
-            if (!sharedState.navbarShow && sharedState.setNavbarShow) {
-                sharedState.setNavbarShow(true);
-            }
-
-            if (sharedState.navbarAbsolute && sharedState.setNavbarAbsolute) {
-                sharedState.setNavbarAbsolute(false);
-            }
+            sharedStateUnmount(sharedState);
+            seekerUnmount();
         };
     }, []);
 
@@ -107,11 +187,20 @@ const Player: NextPageWithLayout = () => {
                 </div>
 
                 <div className="player-control-container">
-                    <progress
-                        id="player-progress-bar"
-                        max={socketLoading ? undefined : maxProgressValue}
-                        value={socketLoading ? undefined : progressValue}
-                    />
+                    <div id="player-progress-bar">
+                        <div
+                            className="progress-value"
+                            style={{
+                                width: `${
+                                    (progressValue / maxProgressValue) * 100
+                                }%`,
+                            }}
+                        >
+                            <div id="seeker"></div>
+                        </div>
+
+                        <div className="remaining-progress"></div>
+                    </div>
                     <div
                         aria-busy={socketLoading}
                         aria-describedby="player-progress-bar"
