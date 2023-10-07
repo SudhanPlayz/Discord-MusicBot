@@ -11,17 +11,19 @@ import CaretIconRight from '@/assets/icons/caret-outline-right.svg';
 import PlaylistBar from '@/components/PlaylistBar';
 import XIcon from '@/assets/icons/x-solid.svg';
 import SampleThumb from '@/assets/images/sample-thumbnail.png';
-import { ISharedState } from '@/interfaces/sharedState';
 import NextIcon from '@/assets/icons/next.svg';
 import PauseIcon from '@/assets/icons/pause.svg';
+import { playerSocket } from '@/libs/sockets';
+import { IGlobalState } from '@/interfaces/globalState';
+import globalState from '@/sharedStates/globalState';
 
-const sharedStateMount = (sharedState: ISharedState) => {
+const sharedStateMount = (sharedState: IGlobalState) => {
     if (sharedState.navbarShow && sharedState.setNavbarShow) {
         sharedState.setNavbarShow(false);
     }
 };
 
-const sharedStateUnmount = (sharedState: ISharedState) => {
+const sharedStateUnmount = (sharedState: IGlobalState) => {
     if (!sharedState.navbarShow && sharedState.setNavbarShow) {
         sharedState.setNavbarShow(true);
     }
@@ -38,11 +40,11 @@ const Player: NextPageWithLayout = () => {
     const [playlistShow, setPlaylistShow] = useState(false);
     const [progressValue, setProgressValue] = useState(0);
     const [maxProgressValue, setMaxProgressValue] = useState(100000);
-    const [socketLoading, setSocketLoading] = useState(false);
+    const [socketLoading, setSocketLoading] = useState(true);
 
     const toSeekProgressValue = useRef<number | undefined>();
 
-    const sharedState = useSharedStateGetter();
+    const sharedState = useSharedStateGetter(globalState);
 
     const handleSeek = () => {
         if (toSeekProgressValue.current == undefined) return;
@@ -114,10 +116,12 @@ const Player: NextPageWithLayout = () => {
     useEffect(() => {
         sharedStateMount(sharedState);
         seekerMount();
+        playerSocket.mount(serverId as string);
 
         return () => {
             sharedStateUnmount(sharedState);
             seekerUnmount();
+            playerSocket.unmount(serverId as string);
         };
     }, []);
 

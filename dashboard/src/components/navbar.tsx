@@ -1,5 +1,6 @@
 import useSharedStateSetter from '@/hooks/useSharedStateSetter';
 import { INavbarProps } from '@/interfaces/components/Navbar';
+import globalState from '@/sharedStates/globalState';
 import { Button, Link, Spacer } from '@nextui-org/react';
 import classNames from 'classnames';
 import { useRouter } from 'next/router';
@@ -11,6 +12,7 @@ export default function Navbar({}: INavbarProps) {
     const [absolute, setAbsolute] = useState<boolean | undefined>(false);
 
     useSharedStateSetter(
+        globalState,
         ['navbarShow', show],
         ['setNavbarShow', setShow],
         ['navbarAbsolute', absolute],

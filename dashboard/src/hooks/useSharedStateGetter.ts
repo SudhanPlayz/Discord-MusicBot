@@ -1,24 +1,18 @@
-import { ISharedState } from '@/interfaces/sharedState';
-import {
-    copySharedState,
-    getSharedState,
-    registerListener,
-    removeListener,
-} from '@/libs/sharedState';
+import SharedState from '@/libs/sharedState';
 import { useCallback, useEffect, useState } from 'react';
 
-export default function useSharedStateGetter() {
-    const [state, setState] = useState(getSharedState());
+export default function useSharedStateGetter<K>(stateManager: SharedState<K>) {
+    const [state, setState] = useState(stateManager.get());
 
-    const handler = useCallback((newState: ISharedState) => {
-        setState(copySharedState(newState));
+    const handler = useCallback((newState: K) => {
+        setState(stateManager.copy(newState));
     }, []);
 
     useEffect(() => {
-        registerListener(handler);
+        stateManager.registerListener(handler);
 
         return () => {
-            removeListener(handler);
+            stateManager.removeListener(handler);
         };
     }, []);
 

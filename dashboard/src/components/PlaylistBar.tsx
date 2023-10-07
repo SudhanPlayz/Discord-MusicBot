@@ -57,6 +57,13 @@ function Track({ idx, onDrop, onDragOver, onDragStart, dragIdx }: ITrackProps) {
 
 export default function PlaylistBar({ hide }: IPlaylistBarProps) {
     // const router = useRouter();
+    const [queueList, setQueueList] = useState<{ dummy?: boolean }[]>([
+        {},
+        {},
+        {},
+        {},
+        {},
+    ]);
 
     const [dragIdx, setDragIdx] = useState<number | undefined>();
 
@@ -123,11 +130,9 @@ export default function PlaylistBar({ hide }: IPlaylistBarProps) {
                 Up Next
             </Container>
             <div className="tracks-container">
-                <Track idx={0} {...trackEvents} />
-                <Track idx={1} {...trackEvents} />
-                <Track idx={2} {...trackEvents} />
-                <Track idx={3} {...trackEvents} />
-                <Track idx={4} {...trackEvents} />
+                {queueList.map((v, i) => {
+                    return <Track key={i} idx={i} {...trackEvents} />;
+                })}
             </div>
         </div>
     );

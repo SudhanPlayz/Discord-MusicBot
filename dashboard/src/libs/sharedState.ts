@@ -1,42 +1,43 @@
-import { ISharedState, IUpdateListener } from '@/interfaces/sharedState';
+import { IUpdateListener } from '@/interfaces/sharedState';
 
-// !TODO: refactor to use map when state might be too large and causes many unnecessary rerender
-const states: ISharedState = {};
-const updateHandlers: IUpdateListener[] = [];
+export default abstract class SharedState<T> {
+    states: T;
+    updateHandlers: IUpdateListener<T>[];
 
-export function getSharedState() {
-    return states;
-}
-
-export function updateListener() {
-    for (const handler of updateHandlers) {
-        handler(states);
-    }
-}
-
-export function setSharedState<T extends keyof ISharedState>(
-    key: T,
-    value: ISharedState[T],
-) {
-    states[key] = value;
-}
-
-export function registerListener(handler: IUpdateListener) {
-    if (updateHandlers.includes(handler)) return -1;
-
-    updateHandlers.push(handler);
-}
-
-export function removeListener(handler: IUpdateListener) {
-    const idx = updateHandlers.findIndex((h) => h === handler);
-
-    if (idx !== -1) {
-        updateHandlers.splice(idx, 1);
+    constructor() {
+        this.states = {} as T;
+        this.updateHandlers = [];
     }
 
-    return idx;
-}
+    get() {
+        return this.states;
+    }
 
-export function copySharedState(state: ISharedState) {
-    return { ...state };
+    updateListener() {
+        for (const handler of this.updateHandlers) {
+            handler(this.states);
+        }
+    }
+
+    set<KT extends keyof T>(key: KT, value: T[KT]) {
+        this.states[key] = value;
+    }
+
+    registerListener(handler: this['updateHandlers'][number]) {
+        if (this.updateHandlers.includes(handler)) return -1;
+
+        this.updateHandlers.push(handler);
+    }
+
+    removeListener(handler: this['updateHandlers'][number]) {
+        const idx = this.updateHandlers.findIndex((h) => h === handler);
+
+        if (idx !== -1) {
+            this.updateHandlers.splice(idx, 1);
+        }
+
+        return idx;
+    }
+
+    abstract copy(state: T): T;
 }
