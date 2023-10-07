@@ -3,14 +3,14 @@ import { Container } from '@nextui-org/react';
 import classNames from 'classnames';
 import SampleThumb from '@/assets/images/sample-thumbnail.png';
 import DragHandleIcon from '@/assets/icons/drag-handle.svg';
-import { DragEvent, useRef } from 'react';
+import { DragEvent, useState } from 'react';
 // import { useRouter } from 'next/router';
 
 type DragHandler = (event: DragEvent<HTMLDivElement>, idx: number) => void;
 
 interface ITrackProps {
     idx: number;
-    dragIdx: ReturnType<typeof useRef<number | undefined>>;
+    dragIdx: number | undefined;
 
     onDrop?: DragHandler;
     onDragOver?: DragHandler;
@@ -18,7 +18,7 @@ interface ITrackProps {
 }
 
 function Track({ idx, onDrop, onDragOver, onDragStart, dragIdx }: ITrackProps) {
-    const isDragging = dragIdx.current !== undefined;
+    const isDragging = dragIdx !== undefined;
 
     return (
         <div
@@ -30,7 +30,10 @@ function Track({ idx, onDrop, onDragOver, onDragStart, dragIdx }: ITrackProps) {
             <div
                 onDrop={(e) => onDrop?.(e, idx)}
                 onDragOver={(e) => onDragOver?.(e, idx)}
-                className={classNames(isDragging ? 'drag-overlay' : '')}
+                className={classNames(
+                    'drag-overlay',
+                    isDragging ? 'active' : '',
+                )}
             ></div>
             <div className={classNames('thumb', isDragging ? 'hidden' : '')}>
                 <img src={SampleThumb.src} alt="Thumb" />
@@ -55,25 +58,25 @@ function Track({ idx, onDrop, onDragOver, onDragStart, dragIdx }: ITrackProps) {
 export default function PlaylistBar({ hide }: IPlaylistBarProps) {
     // const router = useRouter();
 
-    const dragIdx = useRef<number | undefined>();
+    const [dragIdx, setDragIdx] = useState<number | undefined>();
 
     const handleDrop: DragHandler = (e, idx) => {
         console.log({
             drop: e,
             idx,
-            dragIdx: dragIdx.current,
+            dragIdx: dragIdx,
         });
 
         e.preventDefault();
 
-        dragIdx.current = undefined;
+        setDragIdx(undefined);
     };
 
     const handlerDragOver: DragHandler = (e, idx) => {
         console.log({
             dragover: e,
             idx,
-            dragIdx: dragIdx.current,
+            dragIdx: dragIdx,
         });
 
         e.preventDefault();
@@ -83,12 +86,12 @@ export default function PlaylistBar({ hide }: IPlaylistBarProps) {
         console.log({
             dragstart: e,
             idx,
-            dragIdx: dragIdx.current,
+            dragIdx: dragIdx,
         });
 
         e.dataTransfer.setData('text', (e.target as HTMLDivElement).id);
 
-        dragIdx.current = idx;
+        setDragIdx(idx);
     };
 
     const trackEvents = {
