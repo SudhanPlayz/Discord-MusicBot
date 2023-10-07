@@ -68,7 +68,8 @@ const Player: NextPageWithLayout = () => {
 
     const seekerMouseUpHandler = (e: MouseEvent) => {
         const el = e.target as HTMLDivElement | null;
-        if (!el) return;
+        const seekerEl = document.getElementById('seeker');
+        if (!el || !seekerEl) return;
 
         e.preventDefault();
 
@@ -76,13 +77,16 @@ const Player: NextPageWithLayout = () => {
         el.removeEventListener('mouseup', seekerMouseUpHandler);
 
         el.classList.remove('active');
+        seekerEl.classList.remove('active');
+        seekerEl.parentElement?.classList.remove('active');
 
         handleSeek();
     };
 
     const seekerMouseDownHandler = (e: MouseEvent) => {
         const el = document.getElementById('seek-handler');
-        if (!el) return;
+        const seekerEl = document.getElementById('seeker');
+        if (!el || !seekerEl) return;
 
         e.preventDefault();
 
@@ -90,7 +94,10 @@ const Player: NextPageWithLayout = () => {
 
         el.addEventListener('mousemove', seekerMouseMoveHandler);
         el.addEventListener('mouseup', seekerMouseUpHandler);
+
         el.classList.add('active');
+        seekerEl.classList.add('active');
+        seekerEl.parentElement?.classList.add('active');
     };
 
     const seekerMount = () => {

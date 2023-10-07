@@ -211,6 +211,11 @@ body {
                         display: flex;
                         align-items: center;
                         height: 4px;
+                        transition-duration: 0.5s;
+
+                        &.active {
+                            transition-duration: 0.1s;
+                        }
 
                         #seeker {
                             border-radius: 100%;
@@ -225,7 +230,8 @@ body {
                             overflow: visible;
                             cursor: pointer;
 
-                            &:hover {
+                            &:hover,
+                            &.active {
                                 scale: 120%;
                             }
                         }
