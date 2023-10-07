@@ -4,6 +4,10 @@ body {
 
     overflow: hidden;
 
+    .hidden {
+        display: hidden;
+    }
+
     #drag-handler {
         position: fixed;
         cursor: pointer;
@@ -109,8 +113,71 @@ body {
         &.playlistbar-container {
             width: var(--playlistbar-width);
             position: fixed;
-            padding: 20px;
+            padding: 8px;
+            padding-top: 30px;
             right: 0;
+
+            .tracks-container {
+                display: flex;
+                flex-direction: column;
+                flex-grow: 1;
+                width: 100%;
+                overflow: auto;
+
+                .track-container {
+                    padding: 8px;
+                    display: flex;
+                    gap: 12px;
+                    border-radius: 4px;
+                    transition-duration: 0.1s;
+                    cursor: pointer;
+                    position: relative;
+
+                    &:hover {
+                        background-color: rgba(255, 255, 255, 0.1);
+                    }
+
+                    .thumb {
+                        max-width: 50px;
+                        max-height: 50px;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+
+                        img {
+                            flex-grow: 1;
+                        }
+                    }
+
+                    > .info {
+                        flex-grow: 1;
+                        display: flex;
+                        flex-direction: column;
+                        gap: 4px;
+
+                        .title {
+                            font-size: 16px;
+                        }
+
+                        .info {
+                            font-size: 14px;
+                            color: rgba(255, 255, 255, 0.75);
+                        }
+                    }
+
+                    .drag-container {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                    }
+
+                    .drag-overlay {
+                        position: absolute;
+                        width: 100%;
+                        height: 100%;
+                    }
+                }
+            }
         }
 
         &.hide {
