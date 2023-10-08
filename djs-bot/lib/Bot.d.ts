@@ -94,6 +94,8 @@ declare class Bot extends Client {
 		folderFiles: string | undefined;
 	};
 
+	serverExist(serverId: string): boolean;
+
 	static setNoBoot(val: boolean): void;
 }
 

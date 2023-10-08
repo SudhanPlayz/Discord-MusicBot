@@ -430,6 +430,14 @@ class Bot extends Client {
 		};
 	}
 
+	serverExist(serverId) {
+		if (!serverId?.length) return false;
+
+		const g = this.guilds.resolve(serverId);
+
+		return !!g;
+	}
+
 	static setNoBoot(val) {
 		noBoot = val;
 	}
