@@ -1,5 +1,5 @@
 const SlashCommand = require("../../lib/SlashCommand");
-const { EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder, escapeMarkdown, AttachmentBuilder } = require("discord.js");
+const { EmbedBuilder, Message, escapeMarkdown, AttachmentBuilder } = require("discord.js");
 const load = require("lodash");
 const pms = require("pretty-ms");
 const createCard = require("songcard");
@@ -137,6 +137,9 @@ const command = new SlashCommand()
 			)
 			.setFooter({ text: `Page ${currentPage + 1} of ${maxPage}` });
 
+		/**
+		 * @type {Message}
+		 */
 		const queueMessage = await interaction.editReply({
 			embeds: [embed, queueEmbed],
 			files: [attachment],
