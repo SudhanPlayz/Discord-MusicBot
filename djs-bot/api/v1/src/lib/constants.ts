@@ -20,3 +20,5 @@ export const ERROR_CODES = Object.freeze({
 export const DISCORD_API_URL = 'https://discord.com/api/v10';
 
 export const API_ROUTES_PREFIX = '/api/v1';
+
+export const WS_ROUTES_PREFIX = '/ws/v1';
