@@ -8,6 +8,7 @@ const {
 const { capitalize } = require("../../util/string");
 const SlashCommand = require("../../lib/SlashCommand");
 const { getClient } = require("../../bot");
+const { getButtons } = require("../../util/embeds");
 
 /** @type {SlashCommand} */
 module.exports = {
@@ -233,7 +234,7 @@ module.exports = {
 							embeds: [helpCategoryEmbed],
 							components: [
 								helpMenuActionRow,
-								helpCategoryEmbed.getButtons(
+								getButtons(
 									currentPage,
 									maxPages
 								),
@@ -291,7 +292,7 @@ module.exports = {
 								embeds: [helpCategoryEmbed],
 								components: [
 									helpMenuActionRow,
-									helpCategoryEmbed.getButtons(
+									getButtons(
 										currentPage,
 										maxPages
 									),

@@ -78,7 +78,7 @@ const trackStartedEmbed = ({ track, player } = {}) => {
       .addFields([
         {
           name: "Requested by",
-          value: `${track.requester}`,
+          value: `<@${track.requester}>`,
           inline: true,
         },
         {
@@ -303,6 +303,21 @@ const addPlayerStateFooter = (player, embed) => {
     });
 };
 
+function getButtons (pageNo, maxPages) {
+  return new ActionRowBuilder().addComponents(
+    new ButtonBuilder()
+      .setCustomId("previous_page")
+      .setEmoji("◀️")
+      .setStyle("Primary")
+      .setDisabled(pageNo == 0),
+    new ButtonBuilder()
+      .setCustomId("next_page")
+      .setEmoji("▶️")
+      .setStyle("Primary")
+      .setDisabled(pageNo == (maxPages - 1)),
+  );
+}
+
 module.exports = {
   successEmbed,
   errorEmbed,
@@ -318,4 +333,5 @@ module.exports = {
   loadedPlaylistEmbed,
   autoQueueEmbed,
   addPlayerStateFooter,
+  getButtons,
 };

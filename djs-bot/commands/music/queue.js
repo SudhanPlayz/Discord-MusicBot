@@ -1,19 +1,21 @@
 const SlashCommand = require("../../lib/SlashCommand");
-const { EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder } = require("discord.js");
+const { EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder, escapeMarkdown, AttachmentBuilder } = require("discord.js");
 const load = require("lodash");
 const pms = require("pretty-ms");
-const { escapeMarkdown } = require("discord.js");
+const createCard = require("songcard");
+const path = require("path");
+const { getButtons } = require("../../util/embeds");
 
 const command = new SlashCommand()
 	.setName("queue")
 	.setDescription("Shows the current queue")
-	
+
 	.setRun(async (client, interaction, options) => {
 		let channel = await client.getChannel(client, interaction);
 		if (!channel) {
 			return;
 		}
-		
+
 		let player;
 		if (client.manager.Engine) {
 			player = client.manager.Engine.players.get(interaction.guild.id);
@@ -26,322 +28,161 @@ const command = new SlashCommand()
 				],
 			});
 		}
-		
+
 		if (!player) {
 			return interaction.reply({
 				embeds: [
 					new EmbedBuilder()
 						.setColor("Red")
-						.setDescription("There are no songs in the queue."),
+						.setDescription("The bot isn't in a channel."),
 				],
 				ephemeral: true,
 			});
 		}
-		
+
 		if (!player.playing) {
-			const queueEmbed = new EmbedBuilder()
-				.setColor(client.config.embedColor)
-				.setDescription("There's nothing playing.");
-			return interaction.reply({ embeds: [queueEmbed], ephemeral: true });
+			return interaction.reply({
+				embeds: [
+					new EmbedBuilder()
+						.setColor("Red")
+						.setDescription("There's nothing playing."),
+				],
+				ephemeral: true,
+			});
 		}
-		
+
 		await interaction.deferReply().catch(() => {
 		});
-        
-		
-		if (!player.queue.size || player.queue.size === 0) {
-            let song = player.queue.current;
-            var title = escapeMarkdown(song.title)
-            var title = title.replace(/\]/g,"")
-            var title = title.replace(/\[/g,"")
-			const queueEmbed = new EmbedBuilder()
-				.setColor(client.config.embedColor)
-				.setDescription(`**♪ | Now playing:** [${ title }](${ song.uri })`)
-				.addFields(
-					{
-						name: "Duration",
-						value: song.isStream
-							? `\`LIVE\``
-							: `\`${ pms(player.position, { colonNotation: true }) } / ${ pms(
-								player.queue.current.duration,
-								{ colonNotation: true },
-							) }\``,
-						inline: true,
-					},
-					{
-						name: "Volume",
-						value: `\`${ player.volume }\``,
-						inline: true,
-					},
-					{
-						name: "Total Tracks",
-						value: `\`${ player.queue.totalSize - 1 }\``,
-						colonNotation: true,
-						inline: true,
-					},
-				);
-			
-			await interaction.editReply({
-				embeds: [queueEmbed],
-			});
-		} else {
-			let queueDuration = player.queue.duration.valueOf()
-			if (player.queue.current.isStream) {
-				queueDuration -= player.queue.current.duration
-			}
-			for (let i = 0; i < player.queue.length; i++) {
-				if (player.queue[i].isStream) {
-					queueDuration -= player.queue[i].duration
-				}
-			}
-			
-			const mapping = player.queue.map(
-				(t, i) => `\` ${ ++i } \` [${ t.title }](${ t.uri }) [${ t.requester }]`,
+
+		const queue = player.queue;
+		if (!queue.length) {
+			const song = player.queue.current;
+			const noBgURL = path.join(__dirname, "..", "..", "assets", "no_bg.png");
+
+			const cardImage = await createCard(
+				(imageBg = song.displayThumbnail("maxresdefault") || noBgURL),
+				(imageText = song.title),
+				(trackStream = song.isStream),
+				(trackDuration = player.position),
+				(trackTotalDuration = song.duration)
 			);
-			
-			const chunk = load.chunk(mapping, 10);
-			const pages = chunk.map((s) => s.join("\n"));
-			let page = interaction.options.getNumber("page");
-			if (!page) {
-				page = 0;
-			}
-			if (page) {
-				page = page - 1;
-			}
-			if (page > pages.length) {
-				page = 0;
-			}
-			if (page < 0) {
-				page = 0;
-			}
-			
-			if (player.queue.size < 11 || player.queue.totalSize < 11) {
-                let song = player.queue.current;
-                var title = escapeMarkdown(song.title)
-                var title = title.replace(/\]/g,"")
-                var title = title.replace(/\[/g,"")
-				const embedTwo = new EmbedBuilder()
-					.setColor(client.config.embedColor)
-					.setDescription(
-						`**♪ | Now playing:** [${ title }](${ song.uri }) [${ player.queue.current.requester }]\n\n**Queued Tracks**\n${ pages[page] }`,
-					)
-					.addFields(
-						{
-							name: "Track Duration",
-							value: song.isStream
-								? `\`LIVE\``
-								: `\`${ pms(player.position, { colonNotation: true }) } / ${ pms(
-									player.queue.current.duration,
-									{ colonNotation: true },
-								) }\``,
-							inline: true,
-						},
-						{
-							name: "Total Tracks Duration",
-							value: `\`${ pms(queueDuration, {
-								colonNotation: true,
-							}) }\``,
-							inline: true,
-						},
-						{
-							name: "Total Tracks",
-							value: `\`${ player.queue.totalSize - 1 }\``,
-							colonNotation: true,
-							inline: true,
-						},
-					)
-					.setFooter({
-						text: `Page ${ page + 1 }/${ pages.length }`,
-					});
-				
-				await interaction
-					.editReply({
-						embeds: [embedTwo],
-					})
-					.catch(() => {
-					});
-			} else {
-				let song = player.queue.current;
-                var title = escapeMarkdown(song.title)
-                var title = title.replace(/\]/g,"")
-                var title = title.replace(/\[/g,"")
-				const embedThree = new EmbedBuilder()
-					.setColor(client.config.embedColor)
-					.setDescription(
-						`**♪ | Now playing:** [${ title }](${ song.uri }) [${ player.queue.current.requester }]\n\n**Queued Tracks**\n${ pages[page] }`,
-					)
-					.addFields(
-						{
-							name: "Track Duration",
-							value: song.isStream
-								? `\`LIVE\``
-								: `\`${ pms(player.position, { colonNotation: true }) } / ${ pms(
-									player.queue.current.duration,
-									{ colonNotation: true },
-								) }\``,
-							inline: true,
-						},
-						{
-							name: "Total Tracks Duration",
-							value: `\`${ pms(queueDuration, {
-								colonNotation: true,
-							}) }\``,
-							inline: true,
-						},
-						{
-							name: "Total Tracks",
-							value: `\`${ player.queue.totalSize - 1 }\``,
-							colonNotation: true,
-							inline: true,
-						},
-					)
-					.setFooter({
-						text: `Page ${ page + 1 }/${ pages.length }`,
-					});
-				
-				const buttonOne = new ButtonBuilder()
-					.setCustomId("queue_cmd_but_1_app")
-					.setEmoji("⏭️")
-					.setStyle(ButtonStyle.Primary);
-				const buttonTwo = new ButtonBuilder()
-					.setCustomId("queue_cmd_but_2_app")
-					.setEmoji("⏮️")
-					.setStyle(ButtonStyle.Primary);
-				
-				await interaction
-					.editReply({
-						embeds: [embedThree],
-						components: [
-							new ActionRowBuilder().addComponents([buttonTwo, buttonOne]),
-						],
-					})
-					.catch(() => {
-					});
-				
-				const collector = interaction.channel.createMessageComponentCollector({
-					filter: (b) => {
-						if (b.user.id === interaction.user.id) {
-							return true;
-						} else {
-							return b
-								.reply({
-									content: `Only **${ interaction.user.tag }** can use this button.`,
-									ephemeral: true,
-								})
-								.catch(() => {
-								});
-						}
+
+			const attachment = new AttachmentBuilder(cardImage, { name: "card.png" });
+
+			var title = escapeMarkdown(song.title);
+			var title = title.replace(/\]/g, "");
+			var title = title.replace(/\[/g, "");
+			const embed = new EmbedBuilder()
+				.setColor(client.config.embedColor)
+				.setAuthor({ name: "Now Playing", iconURL: client.config.iconURL })
+				.setFields([
+					{
+						name: "Requested by",
+						value: `<@${song.requester}>`,
+						inline: true,
 					},
-					time: 60000 * 5,
-					idle: 30e3,
-				});
-				
-				collector.on("collect", async (button) => {
-					if (button.customId === "queue_cmd_but_1_app") {
-						await button.deferUpdate().catch(() => {
-						});
-						page = page + 1 < pages.length? ++page : 0;
-                        let song = player.queue.current;
-                        var title = escapeMarkdown(song.title)
-                        var title = title.replace(/\]/g,"")
-                        var title = title.replace(/\[/g,"")
-						const embedFour = new EmbedBuilder()
-							.setColor(client.config.embedColor)
-							.setDescription(
-								`**♪ | Now playing:** [${ title }](${ song.uri }) [${ player.queue.current.requester }]\n\n**Queued Tracks**\n${ pages[page] }`,
-							)
-							.addFields(
-								{
-									name: "Track Duration",
-									value: song.isStream
-										? `\`LIVE\``
-										: `\`${ pms(player.position, { colonNotation: true }) } / ${ pms(
-											player.queue.current.duration,
-											{ colonNotation: true },
-										) }\``,
-									inline: true,
-								},
-								{
-									name: "Total Tracks Duration",
-									value: `\`${ pms(queueDuration, {
-										colonNotation: true,
-									}) }\``,
-									inline: true,
-								},
-								{
-									name: "Total Tracks",
-									value: `\`${ player.queue.totalSize - 1 }\``,
-									colonNotation: true,
-									inline: true,
-								},
-							)
-							.setFooter({
-								text: `Page ${ page + 1 }/${ pages.length }`,
-							});
-						
-						await interaction.editReply({
-							embeds: [embedFour],
-							components: [
-								new ActionRowBuilder().addComponents([buttonTwo, buttonOne]),
-							],
-						});
-					} else if (button.customId === "queue_cmd_but_2_app") {
-						await button.deferUpdate().catch(() => {
-						});
-						page = page > 0? --page : pages.length - 1;
-                        let song = player.queue.current;
-                        var title = escapeMarkdown(song.title)
-                        var title = title.replace(/\]/g,"")
-                        var title = title.replace(/\[/g,"")
-						const embedFive = new EmbedBuilder()
-							.setColor(client.config.embedColor)
-							.setDescription(
-								`**♪ | Now playing:** [${ title }](${ song.uri }) [${ player.queue.current.requester }]\n\n**Queued Tracks**\n${ pages[page] }`,
-							)
-							.addFields(
-								{
-									name: "Track Duration",
-									value: song.isStream
-										? `\`LIVE\``
-										: `\`${ pms(player.position, { colonNotation: true }) } / ${ pms(
-											player.queue.current.duration,
-											{ colonNotation: true },
-										) }\``,
-									inline: true,
-								},
-								{
-									name: "Total Tracks Duration",
-									value: `\`${ pms(queueDuration, {
-										colonNotation: true,
-									}) }\``,
-									inline: true,
-								},
-								{
-									name: "Total Tracks",
-									value: `\`${ player.queue.totalSize - 1 }\``,
-									colonNotation: true,
-									inline: true,
-								},
-							)
-							.setFooter({
-								text: `Page ${ page + 1 }/${ pages.length }`,
-							});
-						
-						await interaction
-							.editReply({
-								embeds: [embedFive],
-								components: [
-									new ActionRowBuilder().addComponents([buttonTwo, buttonOne]),
-								],
-							})
-							.catch(() => {
-							});
-					} else {
-						return;
-					}
-				});
-			}
+				])
+				.setDescription(`[${title}](${song.uri})`)
+				.setImage("attachment://card.png");
+			return interaction.editReply({ embeds: [embed], files: [attachment] });
 		}
+
+		const queueGroups = load.chunk(queue, 10);
+		const maxPage = queueGroups.length;
+		let currentPage = 0;
+		let currentGroup = queueGroups[currentPage];
+
+		const song = player.queue.current;
+		const noBgURL = path.join(__dirname, "..", "..", "assets", "no_bg.png");
+
+		const cardImage = await createCard(
+			(imageBg = song.displayThumbnail("maxresdefault") || noBgURL),
+			(imageText = song.title),
+			(trackStream = song.isStream),
+			(trackDuration = player.position),
+			(trackTotalDuration = song.duration)
+		);
+
+		const attachment = new AttachmentBuilder(cardImage, { name: "card.png" });
+
+		var title = escapeMarkdown(song.title);
+		var title = title.replace(/\]/g, "");
+		var title = title.replace(/\[/g, "");
+
+		const embed = new EmbedBuilder()
+			.setColor(client.config.embedColor)
+			.setAuthor({ name: "Now Playing", iconURL: client.config.iconURL })
+			.setFields([
+				{
+					name: "Requested by",
+					value: `<@${song.requester}>`,
+					inline: true,
+				},
+			])
+			.setDescription(`[${title}](${song.uri})`)
+			.setImage("attachment://card.png");
+
+		const queueEmbed = new EmbedBuilder()
+			.setColor(client.config.embedColor)
+			.setAuthor({ name: "Queue", iconURL: client.config.iconURL })
+			.setDescription(
+				currentGroup
+					.map(
+						(song, index) =>
+							`**${currentPage * 10 + index + 1}**. [${escapeMarkdown(
+								song.title
+							)}](${song.uri}) \`[${pms(song.duration)}]\` | <@${song.requester}>`
+					)
+					.join("\n")
+			)
+			.setFooter({ text: `Page ${currentPage + 1} of ${maxPage}` });
+
+		const queueMessage = await interaction.editReply({
+			embeds: [embed, queueEmbed],
+			files: [attachment],
+			components: [
+				getButtons(currentPage, maxPage)
+			],
+		});
+
+		const filter = (i) => i.user.id === interaction.user.id;
+		const collector = queueMessage.createMessageComponentCollector({
+			filter,
+			time: 30000,
+		});
+
+		collector.on("collect", async (button) => {
+			if (button.customID === "previous_page") {
+				currentPage--;
+				if (currentPage < 0) currentPage = maxPage - 1;
+			} else if (button.customID === "next_page") {
+				currentPage++;
+				if (currentPage > maxPage - 1) currentPage = 0;
+			}
+
+			currentGroup = queueGroups[currentPage];
+			let queueEmbed = new EmbedBuilder()
+				.setColor(client.config.embedColor)
+				.setTitle("Song Queue")
+				.setDescription(
+					currentGroup
+						.map(
+							(song, index) =>
+								`**${currentPage * 10 + index + 1}**. [${escapeMarkdown(
+									song.title
+								)}](${song.uri}) \`[${pms(song.duration)}]\` | <@${song.requester}>`
+						)
+						.join("\n")
+				)
+				.setFooter({ text: `Page ${currentPage + 1} of ${maxPage}` });
+
+			await button.update({
+				embeds: [embed, queueEmbed],
+				components: [
+					getButtons(currentPage, maxPage)
+				],
+			});
+		});
 	});
 
 module.exports = command;
