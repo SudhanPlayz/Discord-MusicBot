@@ -1,7 +1,7 @@
 {
   "description": "",
   "main": "index.js",
-  "version": "5.2.1-beta",
+  "version": "5.2.2-beta",
   "name": "discord-musicbot",
   "scripts": {
     "guild": "node scripts/guild",
