@@ -154,10 +154,8 @@ const command = new SlashCommand()
 		collector.on("collect", async (button) => {
 			if (button.customID === "previous_page") {
 				currentPage--;
-				if (currentPage < 0) currentPage = maxPage - 1;
 			} else if (button.customID === "next_page") {
 				currentPage++;
-				if (currentPage > maxPage - 1) currentPage = 0;
 			}
 
 			currentGroup = queueGroups[currentPage];
