@@ -152,9 +152,9 @@ const command = new SlashCommand()
 		});
 
 		collector.on("collect", async (button) => {
-			if (button.customID === "previous_page") {
+			if (button.customId === "previous_page") {
 				currentPage--;
-			} else if (button.customID === "next_page") {
+			} else if (button.customId === "next_page") {
 				currentPage++;
 			}
 
