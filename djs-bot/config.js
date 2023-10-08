@@ -43,7 +43,17 @@ module.exports = {
 		/**
 		 * Port to run the API on
 		 * @type {number} */
-		port: parseInt(process.env.API_PORT) || 8080,
+		port: parseInt(process.env.API_PORT) || 3000,
+	},
+
+	/**
+	 * WS configuration
+	 */
+	ws: {
+		/**
+		 * Port to run WS on
+		 * @type {number} */
+		port: parseInt(process.env.WS_PORT) || 8080,
 	},
 
 	/**

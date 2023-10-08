@@ -8,7 +8,7 @@ import getChannel from "../util/getChannel";
 import getLavalink from "../util/getLavalink";
 import { CosmiTrack } from "cosmicord.js";
 import config from "../config";
-import { app } from "../api/v1/src";
+import { app, wsApp } from "../api/v1/src";
 
 /**
  * The class groups some useful functions for the client in order to facilitate expandability, maintenance and manageability
@@ -32,6 +32,7 @@ declare class Bot extends Client {
 	denom: string | undefined;
 	manager: MusicManager | undefined;
 	api: ReturnType<typeof app>;
+	wsServer: ReturnType<typeof wsApp>;
 	db: DBMS | undefined;
 	commandsRan: number;
 	songsPlayed: number;

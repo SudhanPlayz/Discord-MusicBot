@@ -1,6 +1,6 @@
 import { WSApp } from '../interfaces/common';
 import { wsLog } from '../utils/log';
-import { createWsRoute } from '../utils/ws';
+import { bufferToString, createWsRoute } from '../utils/ws';
 import { getPkg } from '../';
 
 export function setupWsServer(wsServer: WSApp) {
@@ -14,18 +14,27 @@ export function setupWsServer(wsServer: WSApp) {
       // pong: (ws, message) => {},
 
       open: (ws) => {
-        wsLog('log', 'echo: Connected:', ws.getRemoteAddressAsText.toString());
+        wsLog(
+          'log',
+          'echo: Connected:',
+          bufferToString(ws.getRemoteAddressAsText()),
+        );
       },
       message: (ws, message, isBinary) => {
-        wsLog('log', 'echo: Message:', ws.getRemoteAddressAsText.toString());
+        wsLog(
+          'log',
+          'echo: From:',
+          bufferToString(ws.getRemoteAddressAsText()),
+        );
+
+        wsLog('log', 'echo: Message:', bufferToString(message));
 
         let ok = ws.send(message, isBinary);
 
         wsLog('log', 'echo: Status:', ok);
       },
       close: (ws, code, message) => {
-        wsLog('log', 'echo: Close:', ws.getRemoteAddressAsText.toString());
-        wsLog('log', 'echo: Message:', message.toString());
+        wsLog('log', 'echo: Message:', bufferToString(message));
         wsLog('log', 'echo: Code:', code);
       },
     })
