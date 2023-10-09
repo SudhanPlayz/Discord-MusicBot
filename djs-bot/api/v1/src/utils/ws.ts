@@ -1,6 +1,12 @@
 import { HttpResponse, WebSocket } from 'uWebSockets.js';
 import { WS_ROUTES_PREFIX } from '../lib/constants';
-import { ESocketEventType, IPlayerSocket, ISocketData } from '../interfaces/ws';
+import {
+  ESocketEventType,
+  IPlayerSocket,
+  ISocketData,
+  ISocketEvent,
+} from '../interfaces/ws';
+import { getBot } from '..';
 
 export function createWsRoute(route: string) {
   return WS_ROUTES_PREFIX + route;
@@ -40,4 +46,16 @@ export function wsPlayerSubscribe(ws: WebSocket<IPlayerSocket>) {
   const wsData = ws.getUserData();
 
   ws.subscribe('player/' + wsData.serverId);
+}
+
+export function wsPublish<K extends ESocketEventType>(
+  topic: string,
+  e: ISocketEvent<K>,
+) {
+  const bot = getBot(true);
+
+  // silently fail if server isn't initialized
+  if (!bot) return;
+
+  bot.wsServer?.publish(topic, JSON.stringify(e));
 }

@@ -12,7 +12,8 @@ export const enum ESocketEventType {
   PAUSE,
 }
 
-export interface ITrack {
+// these 2 interface are just dumb
+export interface ICosmiTrack {
   duration: number;
   requesterId?: string | undefined;
   encoded?: string | undefined;
@@ -26,6 +27,22 @@ export interface ITrack {
   sourceName: string;
   uri?: string | undefined;
 }
+
+// !TODO: Need to unify these, or maybe just use the common prop between both
+export interface IErelaTrack {
+  track: string;
+  title: string;
+  identifier: string;
+  author: string;
+  duration: number;
+  isSeekable: boolean;
+  isStream: boolean;
+  uri: string;
+  thumbnail: string | null;
+  requester: unknown;
+}
+
+export type ITrack = ICosmiTrack | IErelaTrack;
 
 export interface ISocketData {
   [ESocketEventType.SEEK]: {
@@ -48,5 +65,5 @@ export interface ISocketData {
 
 export interface ISocketEvent<K extends ESocketEventType> {
   e: K;
-  d: ISocketData[K];
+  d: ISocketData[K] | null;
 }
