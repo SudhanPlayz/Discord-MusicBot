@@ -1,12 +1,21 @@
 import { WebSocket } from 'uWebSockets.js';
-import { IPlayerSocket } from '../../interfaces/ws';
+import { ESocketEventType, IPlayerSocket } from '../../interfaces/ws';
 import { getBot } from '../..';
-import { createErrPayload, wsSendJson } from '../../utils/ws';
+import {
+  createErrPayload,
+  createEventPayload,
+  wsPlayerSubscribe,
+  wsSendJson,
+} from '../../utils/ws';
+import { CosmiPlayer } from 'cosmicord.js';
+
+function getPlayerQueue(player: CosmiPlayer) {
+  return player.queue.map((t) => ({
+    ...t,
+  }));
+}
 
 export default function handleOpen(ws: WebSocket<IPlayerSocket>) {
-  // !TODO: immediately send bot state, playing track, queue etc.
-  //
-  // get guild data
   const bot = getBot();
   const wsData = ws.getUserData();
   //            !TODO: WTF IS A `bot.manager`
@@ -17,4 +26,19 @@ export default function handleOpen(ws: WebSocket<IPlayerSocket>) {
 
     return;
   }
+
+  const playing = player.queue.current;
+
+  if (playing)
+    wsSendJson(
+      ws,
+      createEventPayload(ESocketEventType.PLAYING, { ...playing }),
+    );
+
+  wsSendJson(
+    ws,
+    createEventPayload(ESocketEventType.GET_QUEUE, getPlayerQueue(player)),
+  );
+
+  wsPlayerSubscribe(ws);
 }

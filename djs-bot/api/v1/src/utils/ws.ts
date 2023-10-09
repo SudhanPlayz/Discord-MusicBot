@@ -1,6 +1,6 @@
 import { HttpResponse, WebSocket } from 'uWebSockets.js';
 import { WS_ROUTES_PREFIX } from '../lib/constants';
-import { ESocketEventType, ISocketData } from '../interfaces/ws';
+import { ESocketEventType, IPlayerSocket, ISocketData } from '../interfaces/ws';
 
 export function createWsRoute(route: string) {
   return WS_ROUTES_PREFIX + route;
@@ -34,4 +34,10 @@ export function createEventPayload<K extends ESocketEventType>(
     e,
     d,
   };
+}
+
+export function wsPlayerSubscribe(ws: WebSocket<IPlayerSocket>) {
+  const wsData = ws.getUserData();
+
+  ws.subscribe('player/' + wsData.serverId);
 }
