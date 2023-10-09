@@ -28,12 +28,27 @@ async function handleAddTrackEvent(
   ev: ISocketEvent<ESocketEventType.ADD_TRACK>,
 ) {}
 
+async function handlePlayEvent(
+  ws: WebSocket<IPlayerSocket>,
+  ev: ISocketEvent<ESocketEventType.PLAY>,
+) {}
+
+async function handlePauseEvent(
+  ws: WebSocket<IPlayerSocket>,
+  ev: ISocketEvent<ESocketEventType.PAUSE>,
+) {}
+
 const handlers = {
   // whether these should been fastify endpoints are up for debate
   [ESocketEventType.SEEK]: handleSeekEvent,
   [ESocketEventType.GET_QUEUE]: handleGetQueueEvent,
   [ESocketEventType.SEARCH]: handleSearchEvent,
   [ESocketEventType.ADD_TRACK]: handleAddTrackEvent,
+  [ESocketEventType.PLAY]: handlePlayEvent,
+  [ESocketEventType.PAUSE]: handlePauseEvent,
+
+  // only here to silence typescript error
+  [ESocketEventType.PLAYING]: undefined,
 };
 
 export default function handleMessage(

@@ -8,6 +8,8 @@ export const enum ESocketEventType {
   SEARCH,
   ADD_TRACK,
   PLAYING,
+  PLAY,
+  PAUSE,
 }
 
 export interface ITrack {
@@ -39,6 +41,8 @@ export interface ISocketData {
     // !TODO: track data
   };
   [ESocketEventType.PLAYING]: ITrack;
+  [ESocketEventType.PLAY]: null;
+  [ESocketEventType.PAUSE]: null;
   // !TODO: other events
 }
 
