@@ -33,6 +33,12 @@ const sharedStateUnmount = (sharedState: IGlobalState) => {
     }
 };
 
+export const getServerSideProps = () => {
+    return {
+        props: {},
+    };
+};
+
 const Player: NextPageWithLayout = () => {
     const router = useRouter();
     const serverId = router.query.id;
@@ -113,10 +119,16 @@ const Player: NextPageWithLayout = () => {
         el.removeEventListener('mousedown', seekerMouseDownHandler);
     };
 
+    const handleSocketClose = (e: CloseEvent) => {
+        playerSocket.unmount(serverId as string);
+        console.log('Reconnecting...');
+        playerSocket.mount(serverId as string, handleSocketClose);
+    };
+
     useEffect(() => {
         sharedStateMount(sharedState);
         seekerMount();
-        playerSocket.mount(serverId as string);
+        playerSocket.mount(serverId as string, handleSocketClose);
 
         return () => {
             sharedStateUnmount(sharedState);

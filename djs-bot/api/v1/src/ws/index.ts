@@ -1,5 +1,5 @@
 import { WSApp } from '../interfaces/common';
-import { wsLog } from '../utils/log';
+import { playerLog, wsLog } from '../utils/log';
 import { bufferToString, createWsRoute, resEndJson } from '../utils/ws';
 import { getBot, getPkg } from '../';
 import handleOpen from './openHandler';
@@ -49,15 +49,19 @@ export function setupWsServer(wsServer: WSApp) {
 
         const bot = getBot(true);
 
+        const resErr = (message: string) => {
+          resEndJson(res, {
+            success: false,
+            message,
+            data: null,
+          });
+        };
+
         if (!bot) {
           // how? this should never happen!
           res.writeStatus('500 Internal Server Error');
 
-          resEndJson(res, {
-            success: false,
-            message: 'Bot offline',
-            data: null,
-          });
+          resErr('Bot offline');
 
           return;
         }
@@ -66,11 +70,7 @@ export function setupWsServer(wsServer: WSApp) {
         if (!bot.serverExist(serverId)) {
           res.writeStatus('404 Not Found');
 
-          resEndJson(res, {
-            success: false,
-            message: 'Invalid server',
-            data: null,
-          });
+          resErr('Invalid server');
 
           return;
         }
@@ -93,6 +93,13 @@ export function setupWsServer(wsServer: WSApp) {
         if (isBinary) {
           // what nasty stuff are you sending me?
           ws.close();
+
+          playerLog(
+            'error',
+            ws,
+            new Error('Message: Invalid format: binary\nConnection closed'),
+          );
+
           return;
         }
 

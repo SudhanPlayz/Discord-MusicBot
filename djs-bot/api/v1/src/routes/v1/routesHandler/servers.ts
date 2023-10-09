@@ -43,7 +43,7 @@ const handler: RouteHandler = async (request, reply) => {
       })),
       // !TODO: typing is missing here, add typing for MusicManager
       player: {
-        queue: bot.manager.Engine.players
+        queue: bot.manager?.Engine.players
           .get(guild.id)
           ?.queue.map((track: any) => ({
             title: track.title,
@@ -51,10 +51,11 @@ const handler: RouteHandler = async (request, reply) => {
             duration: track.duration,
           })),
         playing: {
-          title: bot.manager.Engine.players.get(guild.id)?.queue.current?.title,
-          author: bot.manager.Engine.players.get(guild.id)?.queue.current
+          title: bot.manager?.Engine.players.get(guild.id)?.queue.current
+            ?.title,
+          author: bot.manager?.Engine.players.get(guild.id)?.queue.current
             ?.author,
-          duration: bot.manager.Engine.players.get(guild.id)?.queue.current
+          duration: bot.manager?.Engine.players.get(guild.id)?.queue.current
             ?.duration,
         },
       },
