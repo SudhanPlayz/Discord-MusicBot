@@ -5,6 +5,7 @@ import {
   IPlayerSocket,
   ISocketEvent,
 } from '../../interfaces/ws';
+import { createErrPayload, wsSendJson } from '../../utils/ws';
 
 // !TODOS
 async function handleSeekEvent(
@@ -40,8 +41,8 @@ export default function handleMessage(
   message: string,
 ) {
   // handle ping, keeping the connection alive is client responsibility
-  if (message === '0') {
-    return ws.send('1');
+  if (message === '1') {
+    return ws.send('0');
   }
 
   try {
@@ -51,14 +52,12 @@ export default function handleMessage(
 
     if (!handler) {
       // !TODO: limit number of invalid event? probably by remote address whatever uws provides
+      // if (invalidEventLimitHit(ws)) {
+      // ws.close();
+      // return;
+      // }
 
-      ws.send(
-        JSON.stringify({
-          error: true,
-          message: 'Invalid event: ' + data?.e,
-          data: null,
-        }),
-      );
+      wsSendJson(ws, createErrPayload('Invalid event: ' + data?.e));
 
       return;
     }

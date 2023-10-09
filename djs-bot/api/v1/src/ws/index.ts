@@ -42,7 +42,8 @@ export function setupWsServer(wsServer: WSApp) {
       },
     })
     .ws<IPlayerSocket>(createWsRoute('/player/:serverId'), {
-      idleTimeout: 32,
+      // client should ping at least every 10 seconds
+      idleTimeout: 15,
       upgrade: (res, req, ctx) => {
         const serverId = req.getParameter(0);
 

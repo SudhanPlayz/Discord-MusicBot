@@ -1,7 +1,7 @@
 import { Client, Message, ClientOptions, Collection } from "discord.js";
 import SlashCommand from "./SlashCommand";
 import Logger from "./Logger";
-import MusicManager from "./MusicManager";
+import { MusicClient } from "./clients/MusicClient.d";
 import DBMS from "./DBMS";
 import prettyMilliseconds from "pretty-ms";
 import getChannel from "../util/getChannel";
@@ -30,7 +30,7 @@ declare class Bot extends Client {
 	 * Denomination (name) of the bot
 	 */
 	denom: string | undefined;
-	manager: MusicManager | undefined;
+	manager: MusicClient | undefined;
 	api: ReturnType<typeof app>;
 	wsServer: ReturnType<typeof wsApp>;
 	db: DBMS | undefined;
