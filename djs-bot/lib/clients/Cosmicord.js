@@ -227,6 +227,7 @@ module.exports = (client) => {
 			updateControlMessage(player.guild);
 		})
 
+                  // !TODO: integrate events with socket
 		.on("trackStart",
 			/** @param {CosmicordPlayerExtended} player */
 			async (player, track) => {

@@ -266,6 +266,7 @@ module.exports = (client) => {
 		.on("loadFailed", (node, type, error) =>
 			client.warn(`Node: ${node.options.identifier} | Failed to load ${type}: ${error.message}`))
 
+                  // !TODO: integrate events with socket
 		.on("trackStart", async (player, track) => {
 			const playedTracks = client.playedTracks;
 
