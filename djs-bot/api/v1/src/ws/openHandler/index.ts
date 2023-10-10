@@ -1,5 +1,5 @@
 import { WebSocket } from 'uWebSockets.js';
-import { ESocketEventType, IPlayerSocket } from '../../interfaces/ws';
+import { ESocketEventType } from '../../interfaces/wsShared';
 import { getBot } from '../..';
 import {
   createErrPayload,
@@ -8,6 +8,7 @@ import {
   wsSendJson,
 } from '../../utils/ws';
 import { CosmiPlayer } from 'cosmicord.js';
+import { IPlayerSocket } from '../../interfaces/ws';
 
 function getPlayerQueue(player: CosmiPlayer) {
   return player.queue.map((t) => ({

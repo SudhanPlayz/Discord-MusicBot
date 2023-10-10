@@ -1,4 +1,4 @@
-import { ESocketEventType } from '../../interfaces/ws';
+import { ESocketEventType } from '../../interfaces/wsShared';
 import { createEventPayload, wsPublish } from '../../utils/ws';
 
 // this is hilarious

@@ -1,11 +1,11 @@
 import { HttpResponse, WebSocket } from 'uWebSockets.js';
 import { WS_ROUTES_PREFIX } from '../lib/constants';
+import { IPlayerSocket } from '../interfaces/ws';
 import {
   ESocketEventType,
-  IPlayerSocket,
   ISocketData,
   ISocketEvent,
-} from '../interfaces/ws';
+} from '../interfaces/wsShared';
 import { getBot } from '..';
 
 export function createWsRoute(route: string) {

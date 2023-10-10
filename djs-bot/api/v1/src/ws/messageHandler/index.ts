@@ -1,10 +1,7 @@
 import { WebSocket } from 'uWebSockets.js';
 import { playerLog } from '../../utils/log';
-import {
-  ESocketEventType,
-  IPlayerSocket,
-  ISocketEvent,
-} from '../../interfaces/ws';
+import { IPlayerSocket } from '../../interfaces/ws';
+import { ESocketEventType, ISocketEvent } from '../../interfaces/wsShared';
 import { createErrPayload, wsSendJson } from '../../utils/ws';
 
 // !TODOS
