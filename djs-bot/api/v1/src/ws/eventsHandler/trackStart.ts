@@ -10,8 +10,11 @@ export default function handleTrackStart({
 }: IHandleTrackStartParams) {
   if (!player?.guild?.length) throw new TypeError('Missing guildId');
 
-  wsPublish(
-    'player/' + player.guild,
-    createEventPayload(ESocketEventType.PLAYING, { ...track }),
-  );
+  const to = 'player/' + player.guild;
+  const d = createEventPayload(ESocketEventType.PLAYING, { ...track });
+
+  // !TODO: debug log, remove when done
+  console.log({ publish: to, d });
+
+  wsPublish(to, d);
 }

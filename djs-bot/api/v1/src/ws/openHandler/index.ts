@@ -23,23 +23,24 @@ export default function handleOpen(ws: WebSocket<IPlayerSocket>) {
   const player = bot.manager?.Engine.players.get(wsData.serverId);
 
   if (!player) {
-    wsSendJson(ws, createErrPayload('No active player'));
+    const d = createErrPayload('No active player');
+    wsSendJson(ws, d);
 
     return;
   }
 
   const playing = player.queue.current;
 
-  if (playing)
-    wsSendJson(
-      ws,
-      createEventPayload(ESocketEventType.PLAYING, { ...playing }),
-    );
+  if (playing) {
+    const d = createEventPayload(ESocketEventType.PLAYING, { ...playing });
+    wsSendJson(ws, d);
+  }
 
-  wsSendJson(
-    ws,
-    createEventPayload(ESocketEventType.GET_QUEUE, getPlayerQueue(player)),
+  const d = createEventPayload(
+    ESocketEventType.GET_QUEUE,
+    getPlayerQueue(player),
   );
+  wsSendJson(ws, d);
 
   wsPlayerSubscribe(ws);
 }

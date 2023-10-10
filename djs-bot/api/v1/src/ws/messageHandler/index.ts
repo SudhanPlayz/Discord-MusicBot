@@ -69,7 +69,12 @@ export default function handleMessage(
       // return;
       // }
 
-      wsSendJson(ws, createErrPayload('Invalid event: ' + data?.e));
+      const d = createErrPayload('Invalid event: ' + data?.e);
+
+      // !TODO: debug log, remove when done
+      playerLog('error', ws, { invalidEvent: d, ws });
+
+      wsSendJson(ws, d);
 
       return;
     }
