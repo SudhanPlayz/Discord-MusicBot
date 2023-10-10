@@ -1,35 +1,52 @@
 import { WS_URL } from '@/configs/constants';
 
+export interface IPlayerSocketHandlers {
+    close?: typeof closeHandler;
+    open?: typeof openHandler;
+    message?: typeof messageHandler;
+    error?: typeof errorHandler;
+}
+
 let socket: WebSocket | undefined;
 let connURL: string | undefined;
-let handleClose: typeof closeHandler | undefined;
+
+const handlers: IPlayerSocketHandlers = {};
 
 function openHandler(e: Event) {
     console.log('Connection established:', connURL);
+
+    if (handlers.open) handlers.open(e);
 }
 
 function messageHandler(e: MessageEvent<string>) {
     console.log('MESSAGE');
     console.log({ event: e, data: e.data });
     // !TODO
+
+    if (handlers.message) handlers.message(e);
 }
 
 function closeHandler(e: CloseEvent) {
     console.log('Connection closed:', connURL);
 
-    if (handleClose) handleClose(e);
+    if (handlers.close) handlers.close(e);
 }
 
 function errorHandler(...args: any[]) {
     console.error('ERROR:', connURL);
     console.error(...args);
+
+    if (handlers.error) handlers.error(...args);
 }
 
-export function mount(serverId: string, onClose?: typeof closeHandler) {
+export function mount(serverId: string, mountHandler: IPlayerSocketHandlers) {
     if (!serverId?.length) return;
 
     connURL = `${WS_URL}/player/${serverId}`;
-    handleClose = onClose;
+    handlers.close = mountHandler.close;
+    handlers.open = mountHandler.open;
+    handlers.message = mountHandler.message;
+    handlers.error = mountHandler.error;
 
     console.log('Connecting:', connURL);
     socket = new WebSocket(connURL);
@@ -51,7 +68,11 @@ export function unmount(serverId: string) {
 
     socket = undefined;
 
-    handleClose = undefined;
+    handlers.close = undefined;
+    handlers.open = undefined;
+    handlers.message = undefined;
+    handlers.error = undefined;
+
     connURL = undefined;
 }
 
