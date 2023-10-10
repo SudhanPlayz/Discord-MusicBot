@@ -25,3 +25,7 @@ export function handleTrackStart({ player, track }) {
 		)}]`
 	);
 }
+
+export function handleQueueUpdate({ guildId, player }) {
+	socket.handleQueueUpdate({ guildId, player });
+}

@@ -4,17 +4,11 @@ import { getBot } from '../..';
 import {
   createErrPayload,
   createEventPayload,
+  getPlayerQueue,
   wsPlayerSubscribe,
   wsSendJson,
 } from '../../utils/ws';
-import { CosmiPlayer } from 'cosmicord.js';
 import { IPlayerSocket } from '../../interfaces/ws';
-
-function getPlayerQueue(player: CosmiPlayer) {
-  return player.queue.map((t) => ({
-    ...t,
-  }));
-}
 
 export default function handleOpen(ws: WebSocket<IPlayerSocket>) {
   const bot = getBot();

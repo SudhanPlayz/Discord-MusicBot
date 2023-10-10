@@ -7,6 +7,7 @@ import {
   ISocketEvent,
 } from '../interfaces/wsShared';
 import { getBot } from '..';
+import { CosmiPlayer } from 'cosmicord.js';
 
 export function createWsRoute(route: string) {
   return WS_ROUTES_PREFIX + route;
@@ -58,4 +59,10 @@ export function wsPublish<K extends ESocketEventType>(
   if (!bot) return;
 
   bot.wsServer?.publish(topic, JSON.stringify(e));
+}
+
+export function getPlayerQueue(player: CosmiPlayer) {
+  return player.queue.map((t) => ({
+    ...t,
+  }));
 }
