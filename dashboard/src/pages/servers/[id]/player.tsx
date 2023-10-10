@@ -122,13 +122,13 @@ const Player: NextPageWithLayout = () => {
     const handleSocketClose = (e: CloseEvent) => {
         playerSocket.unmount(serverId as string);
         console.log('Reconnecting...');
-        playerSocket.mount(serverId as string, handleSocketClose);
+        playerSocket.mount(serverId as string, { close: handleSocketClose });
     };
 
     useEffect(() => {
         sharedStateMount(sharedState);
         seekerMount();
-        playerSocket.mount(serverId as string, handleSocketClose);
+        playerSocket.mount(serverId as string, { close: handleSocketClose });
 
         return () => {
             sharedStateUnmount(sharedState);
