@@ -1,4 +1,5 @@
 import { WS_URL } from '@/configs/constants';
+import { ESocketEventType, ISocketEvent } from '@/interfaces/wsShared';
 
 export interface IPlayerSocketHandlers {
     close?: typeof closeHandler;
@@ -12,6 +13,23 @@ let connURL: string | undefined;
 
 const handlers: IPlayerSocketHandlers = {};
 
+function eventHandler<T extends ESocketEventType>(e: ISocketEvent<T>) {
+    switch (e.e) {
+        // !TODO
+        case ESocketEventType.GET_QUEUE:
+            // handleGetQueue
+            break;
+        case ESocketEventType.PLAYING:
+            break;
+        case ESocketEventType.SEARCH:
+            break;
+        case ESocketEventType.SEEK:
+            break;
+        default:
+        // log error
+    }
+}
+
 function openHandler(e: Event) {
     console.log('Connection established:', connURL);
 
@@ -21,9 +39,27 @@ function openHandler(e: Event) {
 function messageHandler(e: MessageEvent<string>) {
     console.log('MESSAGE');
     console.log({ event: e, data: e.data });
-    // !TODO
 
     if (handlers.message) handlers.message(e);
+
+    if (e.data === '0') {
+        // ping reply, do nothig
+        return;
+    }
+
+    try {
+        const payload = JSON.parse(e.data);
+
+        if (typeof payload?.e !== 'number') {
+            console.error(new TypeError('Unexpected event payload received:'));
+            console.error(payload);
+            return;
+        }
+
+        eventHandler(payload);
+    } catch (e) {
+        console.error(e);
+    }
 }
 
 function closeHandler(e: CloseEvent) {
