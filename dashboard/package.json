@@ -26,10 +26,10 @@
   },
   "devDependencies": {
     "@svgr/webpack": "^8.1.0",
-    "eslint": "8.50.0",
+    "eslint": "8.51.0",
     "typescript": "5.2.2",
-    "@types/node": "20.8.2",
-    "@types/react": "18.2.25",
+    "@types/node": "20.8.4",
+    "@types/react": "18.2.28",
     "eslint-config-next": "13.5.4"
   }
 }
