@@ -1,11 +1,11 @@
 "use strict";
 
 const colors = require("colors");
-import { getClient } from "../bot";
-import * as socket from "../api/v1/dist/ws/eventsHandler";
-const { updateControlMessage, updateNowPlaying } = require("../../util/controlChannel");
+const getClient = require("../bot");
+const socket = require("../api/v1/dist/ws/eventsHandler");
+const { updateControlMessage, updateNowPlaying } = require("../util/controlChannel");
 
-export function handleTrackStart({ player, track }) {
+function handleTrackStart({ player, track }) {
 	const client = getClient();
 
 	const playedTracks = client.playedTracks;
@@ -26,6 +26,11 @@ export function handleTrackStart({ player, track }) {
 	);
 }
 
-export function handleQueueUpdate({ guildId, player }) {
+function handleQueueUpdate({ guildId, player }) {
 	socket.handleQueueUpdate({ guildId, player });
 }
+
+module.exports = {
+	handleTrackStart,
+	handleQueueUpdate,
+};
