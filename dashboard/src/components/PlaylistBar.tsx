@@ -4,6 +4,11 @@ import classNames from 'classnames';
 import SampleThumb from '@/assets/images/sample-thumbnail.png';
 import DragHandleIcon from '@/assets/icons/drag-handle.svg';
 import { DragEvent, useState } from 'react';
+import {
+    getDocumentDragHandler,
+    setElementActive,
+    setElementInactive,
+} from '@/utils/common';
 // import { useRouter } from 'next/router';
 
 type DragHandler = (event: DragEvent<HTMLDivElement>, idx: number) => void;
@@ -12,13 +17,11 @@ interface ITrackProps {
     idx: number;
     dragIdx: number | undefined;
 
-    onDrop?: DragHandler;
-    onDragOver?: DragHandler;
     onDragStart?: DragHandler;
 }
 
-function Track({ idx, onDrop, onDragOver, onDragStart, dragIdx }: ITrackProps) {
-    const isDragging = dragIdx !== undefined;
+function Track({ idx, onDragStart, dragIdx }: ITrackProps) {
+    const isDragging = dragIdx === idx;
 
     return (
         <div
@@ -28,8 +31,6 @@ function Track({ idx, onDrop, onDragOver, onDragStart, dragIdx }: ITrackProps) {
             onDragStart={(e) => onDragStart?.(e, idx)}
         >
             <div
-                onDrop={(e) => onDrop?.(e, idx)}
-                onDragOver={(e) => onDragOver?.(e, idx)}
                 className={classNames(
                     'drag-overlay',
                     isDragging ? 'active' : '',
@@ -67,34 +68,49 @@ export default function PlaylistBar({ hide }: IPlaylistBarProps) {
 
     const [dragIdx, setDragIdx] = useState<number | undefined>();
 
-    const handleDrop: DragHandler = (e, idx) => {
+    const handleDragOver = (e: Event) => {
+        e.preventDefault();
+
         console.log({
-            drop: e,
-            idx,
+            over: e,
             dragIdx: dragIdx,
         });
+    };
+
+    const handleDragDrop = (e: Event) => {
+        const el = getDocumentDragHandler();
+
+        if (!el) return;
+
+        console.log({ drop: e });
 
         e.preventDefault();
+
+        el.removeEventListener('dragover', handleDragOver);
+        el.removeEventListener('drop', handleDragDrop);
+        el.removeEventListener('click', handleDragDrop);
+
+        setElementInactive(el);
 
         setDragIdx(undefined);
     };
 
-    const handlerDragOver: DragHandler = (e, idx) => {
-        console.log({
-            dragover: e,
-            idx,
-            dragIdx: dragIdx,
-        });
-
-        e.preventDefault();
-    };
-
     const handleDragStart: DragHandler = (e, idx) => {
+        const el = getDocumentDragHandler();
+
+        if (!el) return;
+
         console.log({
             dragstart: e,
             idx,
             dragIdx: dragIdx,
         });
+
+        el.addEventListener('dragover', handleDragOver);
+        el.addEventListener('drop', handleDragDrop);
+        el.addEventListener('click', handleDragDrop);
+
+        setElementActive(el);
 
         e.dataTransfer.setData('text', (e.target as HTMLDivElement).id);
 
@@ -103,8 +119,6 @@ export default function PlaylistBar({ hide }: IPlaylistBarProps) {
 
     const trackEvents = {
         onDragStart: handleDragStart,
-        onDragOver: handlerDragOver,
-        onDrop: handleDrop,
         dragIdx,
     };
 

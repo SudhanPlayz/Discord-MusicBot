@@ -5,7 +5,8 @@ body {
     overflow: hidden;
 
     .hidden {
-        display: hidden;
+        transition-duration: 0.5s;
+        opacity: 0;
     }
 
     #drag-handler {
@@ -132,6 +133,7 @@ body {
                     transition-duration: 0.1s;
                     cursor: pointer;
                     position: relative;
+                    overflow: hidden;
 
                     &:hover {
                         background-color: rgba(255, 255, 255, 0.1);
@@ -178,6 +180,10 @@ body {
                         height: 100%;
                         top: 0;
                         left: 0;
+
+                        &.active {
+                            background-color: rgba(255, 255, 255, 0.1);
+                        }
                     }
                 }
             }

@@ -16,6 +16,11 @@ import PauseIcon from '@/assets/icons/pause.svg';
 import { playerSocket } from '@/libs/sockets';
 import { IGlobalState } from '@/interfaces/globalState';
 import globalState from '@/sharedStates/globalState';
+import {
+    getDocumentDragHandler,
+    setElementActive,
+    setElementInactive,
+} from '@/utils/common';
 
 const sharedStateMount = (sharedState: IGlobalState) => {
     if (sharedState.navbarShow && sharedState.setNavbarShow) {
@@ -79,15 +84,15 @@ const Player: NextPageWithLayout = () => {
         el.removeEventListener('mousemove', seekerMouseMoveHandler);
         el.removeEventListener('mouseup', seekerMouseUpHandler);
 
-        el.classList.remove('active');
-        seekerEl.classList.remove('active');
-        seekerEl.parentElement?.classList.remove('active');
+        setElementInactive(el);
+        setElementInactive(seekerEl);
+        if (seekerEl.parentElement) setElementInactive(seekerEl.parentElement);
 
         handleSeek();
     };
 
     const seekerMouseDownHandler = (e: MouseEvent) => {
-        const el = document.getElementById('drag-handler');
+        const el = getDocumentDragHandler();
         const seekerEl = document.getElementById('seeker');
         if (!el || !seekerEl) return;
 
@@ -98,9 +103,11 @@ const Player: NextPageWithLayout = () => {
         el.addEventListener('mousemove', seekerMouseMoveHandler);
         el.addEventListener('mouseup', seekerMouseUpHandler);
 
-        el.classList.add('active');
-        seekerEl.classList.add('active');
-        seekerEl.parentElement?.classList.add('active');
+        setElementActive(el);
+        setElementActive(seekerEl);
+        if (seekerEl.parentElement) {
+            setElementActive(seekerEl.parentElement);
+        }
     };
 
     const seekerMount = () => {
@@ -122,13 +129,23 @@ const Player: NextPageWithLayout = () => {
     const handleSocketClose = (e: CloseEvent) => {
         playerSocket.unmount(serverId as string);
         console.log('Reconnecting...');
-        playerSocket.mount(serverId as string, { close: handleSocketClose });
+
+        playerSocket.mount(serverId as string, {
+            mountHandler: {
+                close: handleSocketClose,
+            },
+        });
     };
 
     useEffect(() => {
         sharedStateMount(sharedState);
         seekerMount();
-        playerSocket.mount(serverId as string, { close: handleSocketClose });
+
+        playerSocket.mount(serverId as string, {
+            mountHandler: {
+                close: handleSocketClose,
+            },
+        });
 
         return () => {
             sharedStateUnmount(sharedState);
