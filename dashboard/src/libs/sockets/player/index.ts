@@ -1,42 +1,47 @@
 import { WS_URL } from '@/configs/constants';
+import { IPlayerWSMountOptions } from '@/interfaces/ws';
 import { ESocketEventType, ISocketEvent } from '@/interfaces/wsShared';
-
-export interface IPlayerSocketHandlers {
-    close?: typeof closeHandler;
-    open?: typeof openHandler;
-    message?: typeof messageHandler;
-    error?: typeof errorHandler;
-}
-
-let socket: WebSocket | undefined;
-let connURL: string | undefined;
-
-const handlers: IPlayerSocketHandlers = {};
+import {
+    eventHandlersMount,
+    getEventHandlers,
+    getHandlers,
+    getOptions,
+    getSocket,
+    handlersMount,
+    optionsMount,
+    setSocket,
+    statesUnmount,
+} from './states';
 
 function eventHandler<T extends ESocketEventType>(e: ISocketEvent<T>) {
-    switch (e.e) {
-        // !TODO
-        case ESocketEventType.GET_QUEUE:
-            // handleGetQueue
-            break;
-        case ESocketEventType.PLAYING:
-            break;
-        case ESocketEventType.SEARCH:
-            break;
-        case ESocketEventType.SEEK:
-            break;
-        default:
-        // log error
+    const eventHandlers = getEventHandlers();
+    const opt = getOptions();
+
+    const handler = eventHandlers[e.e];
+
+    if (!handler) {
+        if (opt.logUnhandledEvent) {
+            console.error(new TypeError('No handler defined for payload:'));
+            console.error(e);
+        }
+        return;
     }
+
+    handler(e);
 }
 
 function openHandler(e: Event) {
-    console.log('Connection established:', connURL);
+    const handlers = getHandlers();
+    const opt = getOptions();
+
+    console.log('Connection established:', opt.connURL);
 
     if (handlers.open) handlers.open(e);
 }
 
 function messageHandler(e: MessageEvent<string>) {
+    const handlers = getHandlers();
+
     console.log('MESSAGE');
     console.log({ event: e, data: e.data });
 
@@ -63,29 +68,49 @@ function messageHandler(e: MessageEvent<string>) {
 }
 
 function closeHandler(e: CloseEvent) {
-    console.log('Connection closed:', connURL);
+    const handlers = getHandlers();
+    const opt = getOptions();
+
+    console.log('Connection closed:', opt.connURL);
 
     if (handlers.close) handlers.close(e);
 }
 
-function errorHandler(...args: any[]) {
-    console.error('ERROR:', connURL);
-    console.error(...args);
+function errorHandler(e: Event) {
+    const handlers = getHandlers();
+    const opt = getOptions();
 
-    if (handlers.error) handlers.error(...args);
+    console.error('ERROR:', opt.connURL);
+    console.error(e);
+
+    if (handlers.error) handlers.error(e);
 }
 
-export function mount(serverId: string, mountHandler: IPlayerSocketHandlers) {
+export function mount(
+    serverId: string,
+    {
+        mountHandler = {},
+        eventHandler = {},
+        logUnhandledEvent,
+    }: IPlayerWSMountOptions = {},
+) {
     if (!serverId?.length) return;
 
-    connURL = `${WS_URL}/player/${serverId}`;
-    handlers.close = mountHandler.close;
-    handlers.open = mountHandler.open;
-    handlers.message = mountHandler.message;
-    handlers.error = mountHandler.error;
+    const opt = getOptions();
 
-    console.log('Connecting:', connURL);
-    socket = new WebSocket(connURL);
+    optionsMount({
+        connURL: `${WS_URL}/player/${serverId}`,
+        logUnhandledEvent,
+    });
+
+    handlersMount(mountHandler);
+    eventHandlersMount(eventHandler);
+
+    console.log('Connecting:', opt.connURL);
+    if (!opt.connURL?.length) throw new TypeError('Invalid connURL');
+
+    const socket = new WebSocket(opt.connURL);
+    setSocket(socket);
 
     socket.addEventListener('open', openHandler);
     socket.addEventListener('message', messageHandler);
@@ -94,6 +119,8 @@ export function mount(serverId: string, mountHandler: IPlayerSocketHandlers) {
 }
 
 export function unmount(serverId: string) {
+    const socket = getSocket();
+
     if (!serverId?.length || !socket) return;
 
     socket.removeEventListener('close', closeHandler);
@@ -102,16 +129,7 @@ export function unmount(serverId: string) {
     socket.close();
     socket.removeEventListener('error', errorHandler);
 
-    socket = undefined;
+    setSocket(undefined);
 
-    handlers.close = undefined;
-    handlers.open = undefined;
-    handlers.message = undefined;
-    handlers.error = undefined;
-
-    connURL = undefined;
-}
-
-export function getSocket() {
-    return socket;
+    statesUnmount();
 }
