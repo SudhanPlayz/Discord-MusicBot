@@ -2,6 +2,7 @@ import { HttpResponse, WebSocket } from 'uWebSockets.js';
 import { WS_ROUTES_PREFIX } from '../lib/constants';
 import { IPlayerSocket } from '../interfaces/ws';
 import {
+  ESocketErrorCode,
   ESocketEventType,
   ISocketData,
   ISocketEvent,
@@ -25,11 +26,13 @@ export function wsSendJson<T = {}>(ws: WebSocket<T>, json: object) {
   ws.send(JSON.stringify(json));
 }
 
-export function createErrPayload<T = {}>(message?: string, d: T | null = null) {
+export function createErrPayload<K extends ESocketErrorCode>(
+  code: K,
+  message?: string,
+): ISocketEvent<ESocketEventType.ERROR> {
   return {
-    err: true,
-    message,
-    d,
+    e: ESocketEventType.ERROR,
+    d: { code, message },
   };
 }
 

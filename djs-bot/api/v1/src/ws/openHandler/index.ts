@@ -1,5 +1,5 @@
 import { WebSocket } from 'uWebSockets.js';
-import { ESocketEventType } from '../../interfaces/wsShared';
+import { ESocketErrorCode, ESocketEventType } from '../../interfaces/wsShared';
 import { getBot } from '../..';
 import {
   createErrPayload,
@@ -16,9 +16,16 @@ export default function handleOpen(ws: WebSocket<IPlayerSocket>) {
   //            !TODO: WTF IS A `bot.manager`
   const player = bot.manager?.Engine.players.get(wsData.serverId);
 
+  const sendDEmpty = () => {
+    const dEmpty = createEventPayload(ESocketEventType.PLAYING);
+    wsSendJson(ws, dEmpty);
+  };
+
   if (!player) {
-    const d = createErrPayload('No active player');
-    wsSendJson(ws, d);
+    sendDEmpty();
+
+    const d2 = createErrPayload(ESocketErrorCode.NOTHING, 'No active player');
+    wsSendJson(ws, d2);
 
     return;
   }
@@ -28,7 +35,7 @@ export default function handleOpen(ws: WebSocket<IPlayerSocket>) {
   if (playing) {
     const d = createEventPayload(ESocketEventType.PLAYING, { ...playing });
     wsSendJson(ws, d);
-  }
+  } else sendDEmpty();
 
   const d = createEventPayload(
     ESocketEventType.GET_QUEUE,

@@ -3,7 +3,7 @@ import { Container } from '@nextui-org/react';
 import classNames from 'classnames';
 import SampleThumb from '@/assets/images/sample-thumbnail.png';
 import DragHandleIcon from '@/assets/icons/drag-handle.svg';
-import { DragEvent, useState } from 'react';
+import { DragEvent, useRef, useState } from 'react';
 import {
     getDocumentDragHandler,
     setElementActive,
@@ -56,24 +56,18 @@ function Track({ idx, onDragStart, dragIdx }: ITrackProps) {
     );
 }
 
-export default function PlaylistBar({ hide }: IPlaylistBarProps) {
+export default function PlaylistBar({ queue, hide }: IPlaylistBarProps) {
     // const router = useRouter();
-    const [queueList, setQueueList] = useState<{ dummy?: boolean }[]>([
-        {},
-        {},
-        {},
-        {},
-        {},
-    ]);
-
-    const [dragIdx, setDragIdx] = useState<number | undefined>();
+    const dragIdx = useRef<number>();
+    const [stateDragIdx, setStateDragIdx] = useState<number>();
 
     const handleDragOver = (e: Event) => {
         e.preventDefault();
 
         console.log({
             over: e,
-            dragIdx: dragIdx,
+            dragIdx: dragIdx.current,
+            stateDragIdx,
         });
     };
 
@@ -82,7 +76,11 @@ export default function PlaylistBar({ hide }: IPlaylistBarProps) {
 
         if (!el) return;
 
-        console.log({ drop: e });
+        console.log({
+            drop: e,
+            dragIdx: dragIdx.current,
+            stateDragIdx,
+        });
 
         e.preventDefault();
 
@@ -92,7 +90,8 @@ export default function PlaylistBar({ hide }: IPlaylistBarProps) {
 
         setElementInactive(el);
 
-        setDragIdx(undefined);
+        dragIdx.current = undefined;
+        setStateDragIdx(undefined);
     };
 
     const handleDragStart: DragHandler = (e, idx) => {
@@ -103,8 +102,12 @@ export default function PlaylistBar({ hide }: IPlaylistBarProps) {
         console.log({
             dragstart: e,
             idx,
-            dragIdx: dragIdx,
+            dragIdx: dragIdx.current,
+            stateDragIdx,
         });
+
+        dragIdx.current = idx;
+        setStateDragIdx(idx);
 
         el.addEventListener('dragover', handleDragOver);
         el.addEventListener('drop', handleDragDrop);
@@ -113,13 +116,11 @@ export default function PlaylistBar({ hide }: IPlaylistBarProps) {
         setElementActive(el);
 
         e.dataTransfer.setData('text', (e.target as HTMLDivElement).id);
-
-        setDragIdx(idx);
     };
 
     const trackEvents = {
         onDragStart: handleDragStart,
-        dragIdx,
+        dragIdx: stateDragIdx,
     };
 
     return (
@@ -144,7 +145,7 @@ export default function PlaylistBar({ hide }: IPlaylistBarProps) {
                 Up Next
             </Container>
             <div className="tracks-container">
-                {queueList.map((v, i) => {
+                {queue.map((v, i) => {
                     return <Track key={i} idx={i} {...trackEvents} />;
                 })}
             </div>

@@ -1,7 +1,11 @@
 import { WebSocket } from 'uWebSockets.js';
 import { playerLog } from '../../utils/log';
 import { IPlayerSocket } from '../../interfaces/ws';
-import { ESocketEventType, ISocketEvent } from '../../interfaces/wsShared';
+import {
+  ESocketErrorCode,
+  ESocketEventType,
+  ISocketEvent,
+} from '../../interfaces/wsShared';
 import { createErrPayload, wsSendJson } from '../../utils/ws';
 
 // !TODOS
@@ -46,6 +50,7 @@ const handlers = {
 
   // only here to silence typescript error
   [ESocketEventType.PLAYING]: undefined,
+  [ESocketEventType.ERROR]: undefined,
 };
 
 export default function handleMessage(
@@ -69,7 +74,10 @@ export default function handleMessage(
       // return;
       // }
 
-      const d = createErrPayload('Invalid event: ' + data?.e);
+      const d = createErrPayload(
+        ESocketErrorCode.INVALID_EVENT,
+        'Invalid event: ' + data?.e,
+      );
 
       // !TODO: debug log, remove when done
       playerLog('error', ws, { invalidEvent: d, ws });

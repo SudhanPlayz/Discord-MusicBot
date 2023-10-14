@@ -263,6 +263,10 @@ body {
                     h1 {
                         margin-bottom: 0;
                         font-size: 24px;
+
+                        &.no-track {
+                            font-size: 40px;
+                        }
                     }
 
                     p {

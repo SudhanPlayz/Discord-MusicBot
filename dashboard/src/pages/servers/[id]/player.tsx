@@ -21,6 +21,8 @@ import {
     setElementActive,
     setElementInactive,
 } from '@/utils/common';
+import { IPlayerEventHandlers } from '@/interfaces/ws';
+import { ITrack, ESocketEventType } from '@/interfaces/wsShared';
 
 const sharedStateMount = (sharedState: IGlobalState) => {
     if (sharedState.navbarShow && sharedState.setNavbarShow) {
@@ -52,6 +54,14 @@ const Player: NextPageWithLayout = () => {
     const [progressValue, setProgressValue] = useState(0);
     const [maxProgressValue, setMaxProgressValue] = useState(100000);
     const [socketLoading, setSocketLoading] = useState(true);
+    const [playing, setPlaying] = useState<ITrack | null>(null);
+    const [queue, setQueue] = useState<ITrack[] | { dummy?: boolean }[]>([
+        {},
+        {},
+        {},
+        {},
+        {},
+    ]);
 
     const toSeekProgressValue = useRef<number | undefined>();
 
@@ -126,6 +136,31 @@ const Player: NextPageWithLayout = () => {
         el.removeEventListener('mousedown', seekerMouseDownHandler);
     };
 
+    const handleQueueUpdateEvent: IPlayerEventHandlers[ESocketEventType.GET_QUEUE] =
+        (e) => {
+            console.log({ handleQueueUpdateEvent: e });
+            setQueue(e.d || []);
+        };
+
+    const handlePlayingEvent: IPlayerEventHandlers[ESocketEventType.PLAYING] = (
+        e,
+    ) => {
+        console.log({ handlePlayingEvent: e });
+        setPlaying(e.d);
+    };
+
+    const handleErrorEvent: IPlayerEventHandlers[ESocketEventType.ERROR] = (
+        e,
+    ) => {
+        console.error({ handleErrorEvent: e });
+    };
+
+    const socketEventHandlers: IPlayerEventHandlers = {
+        [ESocketEventType.GET_QUEUE]: handleQueueUpdateEvent,
+        [ESocketEventType.ERROR]: handleErrorEvent,
+        [ESocketEventType.PLAYING]: handlePlayingEvent,
+    };
+
     const handleSocketClose = (e: CloseEvent) => {
         playerSocket.unmount(serverId as string);
         console.log('Reconnecting...');
@@ -134,6 +169,7 @@ const Player: NextPageWithLayout = () => {
             mountHandler: {
                 close: handleSocketClose,
             },
+            eventHandler: socketEventHandlers,
         });
     };
 
@@ -145,6 +181,7 @@ const Player: NextPageWithLayout = () => {
             mountHandler: {
                 close: handleSocketClose,
             },
+            eventHandler: socketEventHandlers,
         });
 
         return () => {
@@ -221,11 +258,26 @@ const Player: NextPageWithLayout = () => {
             <div className="main-player-content-container">
                 <div className="top-container">
                     <div className="thumbnail-container">
-                        <img src={SampleThumb.src} alt="Thumbnail" />
+                        <img
+                            src={
+                                !playing?.thumbnail?.length
+                                    ? SampleThumb.src
+                                    : playing.thumbnail
+                            }
+                            alt="Thumbnail"
+                        />
                     </div>
                     <div className="track-info-container">
-                        <h1>Player {serverId}</h1>
-                        <p>Player {serverId}</p>
+                        {!playing ? (
+                            <h1 className="no-track">
+                                Nothing playing in this server
+                            </h1>
+                        ) : (
+                            <>
+                                <h1>{playing.title}</h1>
+                                <p>{playing.author}</p>
+                            </>
+                        )}
                     </div>
                 </div>
 
@@ -275,7 +327,7 @@ const Player: NextPageWithLayout = () => {
                 </div>
             </div>
 
-            <PlaylistBar hide={!playlistShow} />
+            <PlaylistBar queue={queue as ITrack[]} hide={!playlistShow} />
         </div>
     );
 };
