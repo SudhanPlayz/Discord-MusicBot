@@ -3,7 +3,7 @@ import { Container } from '@nextui-org/react';
 import classNames from 'classnames';
 import SampleThumb from '@/assets/images/sample-thumbnail.png';
 import DragHandleIcon from '@/assets/icons/drag-handle.svg';
-import { ClassAttributes, DragEvent, useEffect, useRef, useState } from 'react';
+import { ClassAttributes, DragEvent, useRef, useState } from 'react';
 import {
     getDocumentDragHandler,
     setElementActive,
@@ -68,21 +68,23 @@ export default function PlaylistBar({ queue, hide }: IPlaylistBarProps) {
     // const router = useRouter();
     const dragIdx = useRef<number>();
     const [stateDragIdx, setStateDragIdx] = useState<number>();
-    const [enableDragThresholdHandler, setEnableDragThresholdHandler] =
-        useState<boolean>(false);
 
     const clientY = useRef<number>(-1);
-
     const playlistBarQueueScroll = useRef<HTMLDivElement>(null);
     const playlistBarQueueContainer = useRef<HTMLDivElement>(null);
     const dragRef = useRef<HTMLDivElement>(null);
 
+    const dragHandlerEnabled = useRef(false);
+
     const disableDragThresholdHandler = () => {
-        setEnableDragThresholdHandler(false);
+        dragHandlerEnabled.current = false;
         clientY.current = -1;
     };
 
     const handleDragThreshold = async () => {
+        if (dragHandlerEnabled.current) return;
+        dragHandlerEnabled.current = true;
+
         const dragRects = dragRef.current?.getClientRects()[0];
         /**
          * how far from edge to start scrolling in pixel
@@ -133,18 +135,12 @@ export default function PlaylistBar({ queue, hide }: IPlaylistBarProps) {
         disableDragThresholdHandler();
     };
 
-    useEffect(() => {
-        if (!enableDragThresholdHandler) return;
-
-        handleDragThreshold();
-    }, [enableDragThresholdHandler]);
-
     const handleDragOver = (e: MouseEvent) => {
         e.preventDefault();
 
-        if (clientY.current === -1) setEnableDragThresholdHandler(true);
-
         clientY.current = e.clientY;
+
+        handleDragThreshold();
     };
 
     const handleDragDrop = (e: MouseEvent) => {
