@@ -144,10 +144,12 @@ export default function PlaylistBar({ queue, hide }: IPlaylistBarProps) {
             >
                 Up Next
             </Container>
-            <div className="tracks-container">
-                {queue.map((v, i) => {
-                    return <Track key={i} idx={i} {...trackEvents} />;
-                })}
+            <div className="tracks-overflow-container">
+                <div className="tracks-container">
+                    {queue.map((v, i) => {
+                        return <Track key={i} idx={i} {...trackEvents} />;
+                    })}
+                </div>
             </div>
         </div>
     );
