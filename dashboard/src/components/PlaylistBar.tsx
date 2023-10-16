@@ -3,7 +3,7 @@ import { Container } from '@nextui-org/react';
 import classNames from 'classnames';
 import SampleThumb from '@/assets/images/sample-thumbnail.png';
 import DragHandleIcon from '@/assets/icons/drag-handle.svg';
-import { DragEvent, useRef, useState } from 'react';
+import { ClassAttributes, DragEvent, useRef, useState } from 'react';
 import {
     getDocumentDragHandler,
     setElementActive,
@@ -18,9 +18,10 @@ interface ITrackProps {
     dragIdx: number | undefined;
 
     onDragStart?: DragHandler;
+    dragRef: ClassAttributes<HTMLDivElement>['ref'];
 }
 
-function Track({ idx, onDragStart, dragIdx }: ITrackProps) {
+function Track({ idx, onDragStart, dragIdx, dragRef }: ITrackProps) {
     const isDragging = dragIdx === idx;
 
     return (
@@ -29,6 +30,7 @@ function Track({ idx, onDragStart, dragIdx }: ITrackProps) {
             className="track-container"
             id={`track-${idx}`}
             onDragStart={(e) => onDragStart?.(e, idx)}
+            ref={isDragging ? dragRef : undefined}
         >
             <div
                 className={classNames(
@@ -63,25 +65,55 @@ export default function PlaylistBar({ queue, hide }: IPlaylistBarProps) {
 
     const playlistBarQueueScroll = useRef<HTMLDivElement>(null);
     const playlistBarQueueContainer = useRef<HTMLDivElement>(null);
+    const dragRef = useRef<HTMLDivElement>(null);
 
     const handleDragOver = (e: MouseEvent) => {
         e.preventDefault();
+
+        const clientX = e.clientX;
+        const clientY = e.clientY;
 
         console.log({
             over: e,
             dragIdx: dragIdx.current,
             stateDragIdx,
-            clientX: e.clientX,
-            clientY: e.clientY,
+            clientX,
+            clientY,
             clientHeight: e.target.clientHeight,
             // parentRects: e.target.getClientRects()[0],
         });
+
+        const rc = playlistBarQueueContainer.current?.getClientRects()[0];
+        const rs = playlistBarQueueScroll.current?.getClientRects()[0];
+
         console.log({
-            playlistBarQueueContainer:
-                playlistBarQueueContainer.current?.getClientRects()[0],
-            playlistBarQueueScroll:
-                playlistBarQueueScroll.current?.getClientRects()[0],
+            playlistBarQueueContainer: rc,
+            playlistBarQueueScroll: rs,
+            // dragRects: dragRef.current?.getClientRects(),
         });
+
+        const hThres = 20;
+
+        console.log({ clientY, rctop: rc?.top, rstop: rs?.top });
+
+        if (
+            typeof rs?.top === 'number' &&
+            clientY < rs.top + hThres &&
+            typeof rc?.top === 'number' &&
+            rs.top > rc.top
+        ) {
+            const diff = rs.top - rc.top;
+            playlistBarQueueScroll.current?.scroll(0, diff - 10);
+        } else if (
+            typeof rs?.height === 'number' &&
+            clientY > rs.height - hThres &&
+            typeof rc?.height === 'number' &&
+            // !TODO
+            rs.height > rc.height
+        ) {
+            const diff = rs.top - rc.top;
+            playlistBarQueueScroll.current?.scroll(0, diff + 10);
+        }
     };
 
     const handleDragDrop = (e: MouseEvent) => {
@@ -154,6 +186,7 @@ export default function PlaylistBar({ queue, hide }: IPlaylistBarProps) {
     const trackEvents = {
         onDragStart: handleDragStart,
         dragIdx: stateDragIdx,
+        dragRef,
     };
 
     return (
