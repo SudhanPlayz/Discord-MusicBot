@@ -51,7 +51,6 @@ const Player: NextPageWithLayout = () => {
     const serverId = router.query.id;
 
     const [playlistShow, setPlaylistShow] = useState(false);
-    const [progressValue, setProgressValue] = useState(0);
     const [maxProgressValue, setMaxProgressValue] = useState(100000);
     const [socketLoading, setSocketLoading] = useState(true);
     const [playing, setPlaying] = useState<ITrack | null>(null);
@@ -83,9 +82,26 @@ const Player: NextPageWithLayout = () => {
         {},
     ]);
 
+    const sharedState = useSharedStateGetter(globalState);
+
+    const progressbarRef = useRef<HTMLDivElement>(null);
+    const progressValueRef = useRef<number>(0);
     const toSeekProgressValue = useRef<number | undefined>();
 
-    const sharedState = useSharedStateGetter(globalState);
+    const setProgressValue = (progressValue: number) => {
+        if (progressbarRef.current) {
+            progressbarRef.current.style.width = `${
+                (progressValue / maxProgressValue) * 100
+            }%`;
+        }
+
+        progressValueRef.current = progressValue;
+    };
+
+    useEffect(
+        () => setProgressValue(progressValueRef.current || 0),
+        [maxProgressValue],
+    );
 
     const handleSeek = () => {
         if (toSeekProgressValue.current == undefined) return;
@@ -128,7 +144,7 @@ const Player: NextPageWithLayout = () => {
 
         e.preventDefault();
 
-        toSeekProgressValue.current = progressValue;
+        toSeekProgressValue.current = progressValueRef.current;
 
         el.addEventListener('mousemove', seekerMouseMoveHandler);
         el.addEventListener('mouseup', seekerMouseUpHandler);
@@ -303,14 +319,7 @@ const Player: NextPageWithLayout = () => {
 
                 <div className="player-control-container">
                     <div id="player-progress-bar" onClick={handleProgressClick}>
-                        <div
-                            className="progress-value"
-                            style={{
-                                width: `${
-                                    (progressValue / maxProgressValue) * 100
-                                }%`,
-                            }}
-                        >
+                        <div ref={progressbarRef} className="progress-value">
                             <div id="seeker"></div>
                         </div>
 
