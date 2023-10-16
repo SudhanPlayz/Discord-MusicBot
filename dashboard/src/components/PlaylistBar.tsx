@@ -61,25 +61,33 @@ export default function PlaylistBar({ queue, hide }: IPlaylistBarProps) {
     const dragIdx = useRef<number>();
     const [stateDragIdx, setStateDragIdx] = useState<number>();
 
-    const handleDragOver = (e: Event) => {
+    const handleDragOver = (e: MouseEvent) => {
         e.preventDefault();
 
+        // e.target.clientHeight
+        // e.target.parentElement
         console.log({
             over: e,
             dragIdx: dragIdx.current,
             stateDragIdx,
+            clientX: e.clientX,
+            clientY: e.clientY,
         });
     };
 
-    const handleDragDrop = (e: Event) => {
+    const handleDragDrop = (e: MouseEvent) => {
         const el = getDocumentDragHandler();
 
         if (!el) return;
 
+        // e.target.clientHeight
+        // e.target.parentElement
         console.log({
             drop: e,
             dragIdx: dragIdx.current,
             stateDragIdx,
+            clientX: e.clientX,
+            clientY: e.clientY,
         });
 
         e.preventDefault();
@@ -99,11 +107,15 @@ export default function PlaylistBar({ queue, hide }: IPlaylistBarProps) {
 
         if (!el) return;
 
+        // e.target.clientHeight
+        // e.target.parentElement
         console.log({
             dragstart: e,
             idx,
             dragIdx: dragIdx.current,
             stateDragIdx,
+            clientX: e.clientX,
+            clientY: e.clientY,
         });
 
         dragIdx.current = idx;
