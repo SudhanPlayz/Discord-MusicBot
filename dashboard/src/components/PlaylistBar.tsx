@@ -3,13 +3,17 @@ import { Container } from '@nextui-org/react';
 import classNames from 'classnames';
 import SampleThumb from '@/assets/images/sample-thumbnail.png';
 import DragHandleIcon from '@/assets/icons/drag-handle.svg';
-import { ClassAttributes, DragEvent, useRef, useState } from 'react';
+import { ClassAttributes, DragEvent, useEffect, useRef, useState } from 'react';
 import {
     getDocumentDragHandler,
     setElementActive,
     setElementInactive,
 } from '@/utils/common';
 // import { useRouter } from 'next/router';
+
+function isNumber(v: any): v is number {
+    return typeof v === 'number';
+}
 
 type DragHandler = (event: DragEvent<HTMLDivElement>, idx: number) => void;
 
@@ -58,62 +62,89 @@ function Track({ idx, onDragStart, dragIdx, dragRef }: ITrackProps) {
     );
 }
 
+const sleep = (ms: number) => new Promise((r, j) => setTimeout(r, ms));
+
 export default function PlaylistBar({ queue, hide }: IPlaylistBarProps) {
     // const router = useRouter();
     const dragIdx = useRef<number>();
     const [stateDragIdx, setStateDragIdx] = useState<number>();
+    const [enableDragThresholdHandler, setEnableDragThresholdHandler] =
+        useState<boolean>(false);
+
+    const clientY = useRef<number>(-1);
 
     const playlistBarQueueScroll = useRef<HTMLDivElement>(null);
     const playlistBarQueueContainer = useRef<HTMLDivElement>(null);
     const dragRef = useRef<HTMLDivElement>(null);
 
-    const handleDragOver = (e: MouseEvent) => {
-        e.preventDefault();
+    const disableDragThresholdHandler = () => {
+        setEnableDragThresholdHandler(false);
+        clientY.current = -1;
+    };
 
-        const clientX = e.clientX;
-        const clientY = e.clientY;
+    const handleDragThreshold = async () => {
+        const dragRects = dragRef.current?.getClientRects()[0];
+        /**
+         * how far from edge to start scrolling in pixel
+         * 40 is fallback value
+         */
+        const hThres = dragRects?.height || 40;
+        /**
+         * scroll step in pixel
+         */
+        const scrollStep = 12;
+        /**
+         * sleep time in ms before continue scrolling
+         */
+        const st = 20;
 
-        console.log({
-            over: e,
-            dragIdx: dragIdx.current,
-            stateDragIdx,
-            clientX,
-            clientY,
-            clientHeight: e.target.clientHeight,
-            // parentRects: e.target.getClientRects()[0],
-        });
+        let rc, rs;
 
-        const rc = playlistBarQueueContainer.current?.getClientRects()[0];
-        const rs = playlistBarQueueScroll.current?.getClientRects()[0];
-
-        console.log({
-            playlistBarQueueContainer: rc,
-            playlistBarQueueScroll: rs,
-            // dragRects: dragRef.current?.getClientRects(),
-        });
-
-        const hThres = 20;
-
-        console.log({ clientY, rctop: rc?.top, rstop: rs?.top });
-
-        if (
-            typeof rs?.top === 'number' &&
-            clientY < rs.top + hThres &&
-            typeof rc?.top === 'number' &&
+        // scroll up on top threshold
+        while (
+            clientY.current !== -1 &&
+            (rc = playlistBarQueueContainer.current?.getClientRects()[0]) &&
+            (rs = playlistBarQueueScroll.current?.getClientRects()[0]) &&
+            clientY.current < rs.top + hThres &&
             rs.top > rc.top
         ) {
             const diff = rs.top - rc.top;
-            playlistBarQueueScroll.current?.scroll(0, diff - 10);
-        } else if (
-            typeof rs?.height === 'number' &&
-            clientY > rs.height - hThres &&
-            typeof rc?.height === 'number' &&
-            // !TODO
-            rs.height > rc.height
+            playlistBarQueueScroll.current?.scroll(0, diff - scrollStep);
+
+            await sleep(st);
+        }
+
+        // scroll down on bottom threshold
+        while (
+            clientY.current !== -1 &&
+            (rc = playlistBarQueueContainer.current?.getClientRects()[0]) &&
+            (rs = playlistBarQueueScroll.current?.getClientRects()[0]) &&
+            isNumber(rs.height) &&
+            clientY.current > rs.height + rs.top - hThres &&
+            isNumber(rc.height) &&
+            rc.height > rs.height - (rc.top - rs.top)
         ) {
             const diff = rs.top - rc.top;
-            playlistBarQueueScroll.current?.scroll(0, diff + 10);
+            playlistBarQueueScroll.current?.scroll(0, diff + scrollStep);
+
+            await sleep(st);
         }
+
+        disableDragThresholdHandler();
+    };
+
+    useEffect(() => {
+        if (!enableDragThresholdHandler) return;
+
+        handleDragThreshold();
+    }, [enableDragThresholdHandler]);
+
+    const handleDragOver = (e: MouseEvent) => {
+        e.preventDefault();
+
+        if (clientY.current === -1) setEnableDragThresholdHandler(true);
+
+        clientY.current = e.clientY;
     };
 
     const handleDragDrop = (e: MouseEvent) => {
@@ -121,13 +152,15 @@ export default function PlaylistBar({ queue, hide }: IPlaylistBarProps) {
 
         if (!el) return;
 
+        const eTarget = e.target as HTMLDivElement;
+
         console.log({
             drop: e,
             dragIdx: dragIdx.current,
             stateDragIdx,
             clientX: e.clientX,
             clientY: e.clientY,
-            clientHeight: e.target.clientHeight,
+            clientHeight: eTarget.clientHeight,
             // parentRects: e.target.getClientRects()[0],
         });
         console.log({
@@ -138,6 +171,8 @@ export default function PlaylistBar({ queue, hide }: IPlaylistBarProps) {
         });
 
         e.preventDefault();
+
+        disableDragThresholdHandler();
 
         el.removeEventListener('dragover', handleDragOver);
         el.removeEventListener('drop', handleDragDrop);
@@ -154,6 +189,8 @@ export default function PlaylistBar({ queue, hide }: IPlaylistBarProps) {
 
         if (!el) return;
 
+        const eTarget = e.target as HTMLDivElement;
+
         console.log({
             dragstart: e,
             idx,
@@ -161,8 +198,8 @@ export default function PlaylistBar({ queue, hide }: IPlaylistBarProps) {
             stateDragIdx,
             clientX: e.clientX,
             clientY: e.clientY,
-            clientHeight: e.target.clientHeight,
-            parentEl: e.target.parentElement,
+            clientHeight: eTarget.clientHeight,
+            parentEl: eTarget.parentElement,
         });
         console.log({
             playlistBarQueueContainer:
