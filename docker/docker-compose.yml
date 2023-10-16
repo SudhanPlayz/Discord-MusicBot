@@ -17,6 +17,7 @@ services:
       - ../djs-bot:/djs-bot
     ports:
       - "8080:8080"
+      - "3001:3001"
     working_dir: /djs-bot
     command: ["npm", "run", "${ENABLE:-start}"]
 

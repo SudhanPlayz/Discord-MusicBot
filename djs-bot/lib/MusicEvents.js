@@ -1,7 +1,7 @@
 "use strict";
 
 const colors = require("colors");
-const getClient = require("../bot");
+const { getClient } = require("../bot");
 const socket = require("../api/v1/dist/ws/eventsHandler");
 const { updateControlMessage, updateNowPlaying } = require("../util/controlChannel");
 
