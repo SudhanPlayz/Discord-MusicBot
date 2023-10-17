@@ -356,7 +356,11 @@ const Player: NextPageWithLayout = () => {
                 </div>
             </div>
 
-            <PlaylistBar queue={queue as ITrack[]} hide={!playlistShow} />
+            <PlaylistBar
+                queue={queue as ITrack[]}
+                setQueue={setQueue as ReturnType<typeof useState<ITrack[]>>[1]}
+                hide={!playlistShow}
+            />
         </div>
     );
 };
