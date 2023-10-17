@@ -24,11 +24,12 @@ body {
 
     .btn-toggle-container {
         transition-duration: 0.5s;
-        padding: 20px;
         animation: in-opacity 2s;
         width: 100px;
         height: 100px;
         display: flex;
+        justify-content: center;
+        align-items: center;
 
         .btn-toggle {
             padding: 0;
@@ -43,6 +44,8 @@ body {
             background: none;
             transition-duration: 0.5s;
             cursor: pointer;
+            max-width: 60px;
+            max-height: 60px;
 
             svg.x-icon {
                 fill: white;
