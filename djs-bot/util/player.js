@@ -3,7 +3,7 @@ const { handleQueueUpdate, handleStop } = require("../lib/MusicEvents");
 
 const triggerSocketQueueUpdate = (player) => {
 	handleQueueUpdate({
-		guildId: player.guildId,
+		guildId: player.guild,
 		player,
 	});
 };

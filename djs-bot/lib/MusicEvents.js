@@ -6,7 +6,7 @@ const socket = require("../api/v1/dist/ws/eventsHandler");
 const { updateControlMessage, updateNowPlaying } = require("../util/controlChannel");
 
 function handleStop({ player }) {
-	socket.handleStop({ guildId: player.guildId });
+	socket.handleStop({ guildId: player.guild });
 }
 
 function handleQueueUpdate({ guildId, player }) {
@@ -26,12 +26,10 @@ function handleTrackStart({ player, track }) {
 	updateControlMessage(player.guild, track);
 
 	socket.handleTrackStart({ player, track });
-	handleQueueUpdate({ guildId: player.guildId, player });
+	handleQueueUpdate({ guildId: player.guild, player });
 
 	client.warn(
-		`Player: ${player.guildId} | Track has started playing [${colors.blue(
-			track.title
-		)}]`
+		`Player: ${player.guild} | Track has started playing [${colors.blue(track.title)}]`
 	);
 }
 

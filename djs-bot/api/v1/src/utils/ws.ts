@@ -64,7 +64,9 @@ export function wsPublish<K extends ESocketEventType>(
   bot.wsServer?.publish(topic, JSON.stringify(e));
 }
 
-export function getPlayerQueue(player: CosmiPlayer) {
+export function getPlayerQueue(player?: CosmiPlayer) {
+  if (!player) return [];
+
   return player.queue.map((t) => ({
     ...t,
   }));
