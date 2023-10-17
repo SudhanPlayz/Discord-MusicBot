@@ -1,6 +1,6 @@
 const SlashCommand = require("../../lib/SlashCommand");
 const { EmbedBuilder } = require("discord.js");
-const { joinStageChannelRoutine } = require("../../util/player");
+const { joinStageChannelRoutine, addTrack } = require("../../util/player");
 const { addQueueEmbed, loadedPlaylistEmbed } = require("../../util/embeds");
 const yt = require("youtube-sr").default;
 
@@ -10,7 +10,7 @@ async function testUrlRegex(string) {
 		/^(?:spotify:|https:\/\/[a-z]+\.spotify\.com\/(track\/|user\/(.*)\/playlist\/|playlist\/))(.*)$/,
 		/^https?:\/\/(?:www\.)?deezer\.com\/[a-z]+\/(track|album|playlist)\/(\d+)$/,
 		/^(?:(https?):\/\/)?(?:(?:www|m)\.)?(soundcloud\.com|snd\.sc)\/(.*)$/,
-		/(?:https:\/\/music\.apple\.com\/)(?:.+)?(artist|album|music-video|playlist)\/([\w\-\.]+(\/)+[\w\-\.]+|[^&]+)\/([\w\-\.]+(\/)+[\w\-\.]+|[^&]+)/
+		/(?:https:\/\/music\.apple\.com\/)(?:.+)?(artist|album|music-video|playlist)\/([\w\-\.]+(\/)+[\w\-\.]+|[^&]+)\/([\w\-\.]+(\/)+[\w\-\.]+|[^&]+)/,
 	].some((regex) => {
 		return regex.test(string);
 	});
@@ -51,13 +51,17 @@ const command = new SlashCommand()
 		let node = await client.getLavalink(client);
 		if (!node) {
 			return interaction.reply({
-				embeds: [new EmbedBuilder()
-					.setColor("Red")
-					.setTitle("Node error!")
-					.setDescription(`No available nodes to play music on!`)
-					.setFooter({
-						text: "Oops! something went wrong but it's not your fault!",
-					})],
+				embeds: [
+					new EmbedBuilder()
+						.setColor("Red")
+						.setTitle("Node error!")
+						.setDescription(
+							`No available nodes to play music on!`
+						)
+						.setFooter({
+							text: "Oops! something went wrong but it's not your fault!",
+						}),
+				],
 			});
 		}
 
@@ -101,7 +105,9 @@ const command = new SlashCommand()
 					embeds: [
 						new EmbedBuilder()
 							.setColor("Red")
-							.setDescription("There was an error while searching"),
+							.setDescription(
+								"There was an error while searching"
+							),
 					],
 				})
 				.catch(client.warn);
@@ -123,7 +129,7 @@ const command = new SlashCommand()
 		}
 
 		if (res.loadType === "TRACK_LOADED" || res.loadType === "SEARCH_RESULT") {
-			player.queue.add(res.tracks[0]);
+			addTrack(player, res.tracks[0]);
 
 			if (!player.playing && !player.paused && !player.queue.size) {
 				player.play();
@@ -132,11 +138,21 @@ const command = new SlashCommand()
 			if (player.queue.totalSize <= 1)
 				player.queue.previous = player.queue.current;
 
-			await interaction.editReply({ embeds: [addQueueEmbed({track: res.tracks[0], player, requesterId: interaction.user.id})] }).catch(client.warn);
+			await interaction
+				.editReply({
+					embeds: [
+						addQueueEmbed({
+							track: res.tracks[0],
+							player,
+							requesterId: interaction.user.id,
+						}),
+					],
+				})
+				.catch(client.warn);
 		}
 
 		if (res.loadType === "PLAYLIST_LOADED") {
-			player.queue.add(res.tracks);
+			addTrack(res.tracks);
 
 			if (
 				!player.playing &&
@@ -146,7 +162,11 @@ const command = new SlashCommand()
 				player.play();
 			}
 
-			await interaction.editReply({ embeds: [loadedPlaylistEmbed({searchResult: res, query,})] }).catch(client.warn);
+			await interaction
+				.editReply({
+					embeds: [loadedPlaylistEmbed({ searchResult: res, query })],
+				})
+				.catch(client.warn);
 		}
 
 		if (ret) setTimeout(() => ret.delete().catch(client.warn), 20000);

@@ -1,5 +1,44 @@
 const { GuildMember } = require("discord.js");
-const { handleQueueUpdate } = require("../lib/MusicEvents");
+const { handleQueueUpdate, handleStop } = require("../lib/MusicEvents");
+
+const triggerSocketQueueUpdate = (player) => {
+	handleQueueUpdate({
+		guildId: player.guildId,
+		player,
+	});
+};
+
+const spliceQueue = (player, ...restArgs) => {
+	const ret = player.queue.splice(...restArgs);
+
+	triggerSocketQueueUpdate(player);
+
+	return ret;
+};
+
+const clearQueue = (player) => {
+	const ret = player.queue.clear();
+
+	triggerSocketQueueUpdate(player);
+
+	return ret;
+};
+
+const removeTrack = (player, ...restArgs) => {
+	const ret = player.queue.remove(...restArgs);
+
+	triggerSocketQueueUpdate(player);
+
+	return ret;
+};
+
+const shuffleQueue = (player) => {
+	const ret = player.queue.shuffle();
+
+	triggerSocketQueueUpdate(player);
+
+	return ret;
+};
 
 /**
  * @param {import("cosmicord.js").CosmiPlayer} player
@@ -14,7 +53,7 @@ const playPrevious = async (player) => {
 	}
 
 	if (previousSong !== currentSong && previousSong !== nextSong) {
-		player.queue.splice(0, 0, currentSong);
+		spliceQueue(player, 0, 0, currentSong);
 		await player.play(previousSong);
 	}
 
@@ -33,6 +72,12 @@ const stop = (player) => {
 		player.destroy();
 	}
 
+	// !TODO: test if need to empty queue manually here,
+	// does destroy also clears queue?
+
+	handleStop({ player });
+	triggerSocketQueueUpdate(player);
+
 	return 0;
 };
 
@@ -47,6 +92,9 @@ const skip = (player) => {
 
 	player.queue.previous = player.queue.current;
 	player.stop();
+
+	handleStop({ player });
+
 	return 0;
 };
 
@@ -70,10 +118,7 @@ const joinStageChannelRoutine = (me) => {
 const addTrack = (player, tracks) => {
 	const ret = player.queue.add(tracks);
 
-	handleQueueUpdate({
-		guildId: player.guildId,
-		player,
-	});
+	triggerSocketQueueUpdate(player);
 
 	return ret;
 };
@@ -84,4 +129,9 @@ module.exports = {
 	skip,
 	joinStageChannelRoutine,
 	addTrack,
+	spliceQueue,
+	triggerSocketQueueUpdate,
+	clearQueue,
+	removeTrack,
+	shuffleQueue,
 };

@@ -1,16 +1,24 @@
-import { CosmiPlayer, CosmiTrack } from "cosmicord.js";
-import { Player, Track } from "erela.js";
-import { CosmicordPlayerExtended } from "./clients/MusicClient";
+import { CosmiTrack } from "cosmicord.js";
+import { Track } from "erela.js";
+import { CosmicordPlayerExtended } from "../lib/clients/MusicClient";
+
+export type IUsingPlayer = CosmicordPlayerExtended;
+
+export interface IHandleStopParams {
+	player: IUsingPlayer;
+}
 
 export interface IHandleTrackStartParams {
-	player: CosmicordPlayerExtended | Player;
+	player: IUsingPlayer;
 	track: CosmiTrack | Track;
 }
 
 export interface IHandleQueueUpdateParams {
 	guildId: string;
-	player: CosmiPlayer;
+	player: IUsingPlayer;
 }
+
+export function handleStop(params: IHandleStopParams): void;
 
 export function handleTrackStart(params: IHandleTrackStartParams): void;
 
