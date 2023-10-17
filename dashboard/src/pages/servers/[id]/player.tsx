@@ -24,6 +24,40 @@ import {
 import { IPlayerEventHandlers } from '@/interfaces/ws';
 import { ITrack, ESocketEventType } from '@/interfaces/wsShared';
 
+function randomEntry(arr: any[]) {
+    return arr[Math.floor(Math.random() * arr.length)];
+}
+
+function randomTrack() {
+    const titles = [
+        'Quacking Duck',
+        'EarthQuake',
+        'Fish In A Barrel',
+        'Shotgun Soy Gun',
+        'Bean',
+        'The Church',
+    ];
+    const authors = [
+        'Goose',
+        'In The Name Of',
+        'RTMF',
+        'LGTM',
+        'Test Author',
+        'GSI MS',
+    ];
+    const durations = [333364, 234423, 13212, 3242533, 2342453, 121231];
+    return {
+        title: randomEntry(titles),
+        author: randomEntry(authors),
+        duration: randomEntry(durations),
+    };
+}
+
+const dummyQueue: ITrack[] = [];
+for (let i = 0; i < 25; i++) {
+    dummyQueue.push(randomTrack());
+}
+
 const sharedStateMount = (sharedState: IGlobalState) => {
     if (sharedState.navbarShow && sharedState.setNavbarShow) {
         sharedState.setNavbarShow(false);
@@ -54,33 +88,9 @@ const Player: NextPageWithLayout = () => {
     const [maxProgressValue, setMaxProgressValue] = useState(100000);
     const [socketLoading, setSocketLoading] = useState(true);
     const [playing, setPlaying] = useState<ITrack | null>(null);
-    const [queue, setQueue] = useState<ITrack[] | { dummy?: boolean }[]>([
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-    ]);
+    const [queue, setQueue] = useState<ITrack[] | { dummy?: boolean }[]>(
+        dummyQueue,
+    );
 
     const sharedState = useSharedStateGetter(globalState);
 
