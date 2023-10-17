@@ -1,3 +1,6 @@
+const { GuildMember } = require("discord.js");
+const { handleQueueUpdate } = require("../lib/MusicEvents");
+
 /**
  * @param {import("cosmicord.js").CosmiPlayer} player
  */
@@ -48,6 +51,8 @@ const skip = (player) => {
 };
 
 const joinStageChannelRoutine = (me) => {
+	if (!(me instanceof GuildMember)) throw new TypeError("me is not GuildMember");
+
 	setTimeout(() => {
 		if (me.voice.suppress == true) {
 			try {
@@ -59,9 +64,24 @@ const joinStageChannelRoutine = (me) => {
 	}, 2000); // Need this because discord api is buggy asf, and without this the bot will not request to speak on a stage - Darren
 };
 
+/**
+ * @type {(player: import("../lib/clients/MusicClient").CosmicordPlayerExtended, track: import("cosmicord.js").CosmiTrack|import("cosmicord.js").CosmiTrack[]):any}
+ */
+const addTrack = (player, tracks) => {
+	const ret = player.queue.add(tracks);
+
+	handleQueueUpdate({
+		guildId: player.guildId,
+		player,
+	});
+
+	return ret;
+};
+
 module.exports = {
 	playPrevious,
 	stop,
 	skip,
 	joinStageChannelRoutine,
+	addTrack,
 };

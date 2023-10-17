@@ -8,7 +8,7 @@ const {
 	loadedPlaylistEmbed,
 	trackStartedEmbed,
 } = require("./embeds");
-const { joinStageChannelRoutine } = require("./player");
+const { joinStageChannelRoutine, addTrack } = require("./player");
 
 /**
  * @type {Map<string, Message>}
@@ -262,7 +262,7 @@ const handleMessageCreate = async (message) => {
 	const firstTrack = searchResult.tracks[0];
 
 	if (trackLoaded) {
-		player.queue.add(firstTrack);
+		addTrack(player, firstTrack);
 
 		triggerPlay();
 
@@ -280,7 +280,7 @@ const handleMessageCreate = async (message) => {
 	}
 
 	if (playlistLoaded) {
-		player.queue.add(searchResult.tracks);
+		addTrack(player, searchResult.tracks);
 
 		triggerPlay();
 
