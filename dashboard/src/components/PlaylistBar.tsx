@@ -1,7 +1,6 @@
 import { IPlaylistBarProps } from '@/interfaces/components/PlaylistBar';
 import { Container } from '@nextui-org/react';
 import classNames from 'classnames';
-import SampleThumb from '@/assets/images/sample-thumbnail.png';
 import DragHandleIcon from '@/assets/icons/drag-handle.svg';
 import { ClassAttributes, DragEvent, useRef, useState } from 'react';
 import {
@@ -10,10 +9,33 @@ import {
     setElementInactive,
 } from '@/utils/common';
 import { ITrack } from '@/interfaces/wsShared';
+import Image from 'next/image';
 // import { useRouter } from 'next/router';
 
 function isNumber(v: any): v is number {
     return typeof v === 'number';
+}
+
+function pad2digit(d: number) {
+    if (d < 10) {
+        return `0${d}`;
+    }
+
+    return `${d}`;
+}
+
+function formatDuration(dur: number) {
+    const minuteMs = 60 * 1000;
+    const hourMs = 60 * minuteMs;
+
+    const hour = Math.floor(dur / hourMs);
+    const minute = Math.floor(dur / minuteMs);
+    const second = (dur % minuteMs) / 1000;
+
+    return (
+        (hour > 0 ? `${pad2digit(hour)}:` : '') +
+        `${pad2digit(minute)}:${pad2digit(second)}`
+    );
 }
 
 type DragHandler = (event: DragEvent<HTMLDivElement>, idx: number) => void;
@@ -28,8 +50,9 @@ interface ITrackProps {
 }
 
 function Track({ idx, onDragStart, dragIdx, dragRef, track }: ITrackProps) {
-    console.log(track);
     const isDragging = dragIdx === idx;
+
+    const { title, thumbnail, author, duration } = track;
 
     return (
         <div
@@ -46,12 +69,24 @@ function Track({ idx, onDragStart, dragIdx, dragRef, track }: ITrackProps) {
                 )}
             ></div>
             <div className={classNames('thumb', isDragging ? 'hidden' : '')}>
-                <img src={SampleThumb.src} alt="Thumb" />
+                <Image
+                    src={thumbnail as string}
+                    width={120}
+                    height={90}
+                    alt="Thumb"
+                    style={{
+                        objectFit: 'cover',
+                        maxHeight: '50px',
+                    }}
+                />
             </div>
             <div className={classNames('info', isDragging ? 'hidden' : '')}>
-                <div className="title">Moment Apart</div>
+                <div className="title">{title}</div>
 
-                <div className="info">ODESZA • 3:54</div>
+                <div className="info">
+                    {author} •{' '}
+                    {duration ? formatDuration(duration) : 'Unknown Duration'}
+                </div>
             </div>
             <div
                 className={classNames(
@@ -83,6 +118,7 @@ export default function PlaylistBar({
 
     const dragHandlerEnabled = useRef(false);
     const originalQueue = useRef<ITrack[]>([]);
+    const currentQueue = useRef<ITrack[]>([]);
 
     const disableDragThresholdHandler = () => {
         dragHandlerEnabled.current = false;
@@ -182,14 +218,14 @@ export default function PlaylistBar({
 
             // move track to next position
             else if (
-                dragIdx.current < queue.length - 1 && // can go to next
+                dragIdx.current < currentQueue.current.length - 1 && // can go to next
                 absY + dragRects.height + hThres < clientY.current // should go to next
             ) {
                 decide = 2;
             }
 
             if (decide !== 0) {
-                const newQueue = queue.slice();
+                const newQueue = currentQueue.current.slice();
                 const move = newQueue.splice(dragIdx.current, 1)[0];
 
                 if (move) {
@@ -202,6 +238,7 @@ export default function PlaylistBar({
                             break;
                     }
 
+                    currentQueue.current = newQueue;
                     setQueue(newQueue);
                     setStateDragIdx(dragIdx.current);
                 }
@@ -234,6 +271,7 @@ export default function PlaylistBar({
 
         setQueue(originalQueue.current);
         originalQueue.current = [];
+        currentQueue.current = [];
     };
 
     const handleDragStart: DragHandler = (e, idx) => {
@@ -244,6 +282,7 @@ export default function PlaylistBar({
         dragIdx.current = idx;
         setStateDragIdx(idx);
         originalQueue.current = queue;
+        currentQueue.current = queue;
 
         el.addEventListener('dragover', handleDragOver);
         el.addEventListener('drop', handleDragDrop);

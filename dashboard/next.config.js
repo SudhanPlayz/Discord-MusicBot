@@ -10,6 +10,9 @@ const nextConfig = {
 
         return config;
     },
+    images: {
+        domains: ['img.youtube.com'],
+    },
 };
 
 module.exports = nextConfig;
