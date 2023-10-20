@@ -1,5 +1,4 @@
 const moment = require("moment");
-require("moment-duration-format");
 const { EmbedBuilder } = require("discord.js")
 const Bot = require("../../lib/Bot");
 
@@ -30,7 +29,7 @@ module.exports = {
 				lavauptime = moment.duration(lavaclientstats.uptime).format("d[ Days]・h[ Hrs]・m[ Mins]・s[ Secs]");
 				lavaram = (lavaclientstats.memory.used / 1024 / 1024).toFixed(2);
 				lavalloc = (lavaclientstats.memory.allocated / 1024 / 1024).toFixed(2);
-				statsEmbed.setFields([{
+				statsEmbed.addFields([{
 					name: `${index}`,
 					value: `\`\`\`yml\nUptime: ${lavauptime}\nRAM: ${lavaram} / ${lavalloc}MB\nCPU: ${(lavacores === 1) ? "1 Core" : `${lavacores} Cores`}\nPlaying: ${lavaclientstats.playingPlayers} out of ${lavaclientstats.players}\n\`\`\``,
 				}])

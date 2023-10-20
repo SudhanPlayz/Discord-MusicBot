@@ -3,7 +3,7 @@ version: '3.8'
 services:
   djs-bot:
     container_name: djs-bot
-    image: node:latest
+    image: node:20
     restart: "unless-stopped"
     environment:
       - TOKEN=${TOKEN}
@@ -23,7 +23,7 @@ services:
 
   dashboard:
     container_name: dashboard
-    image: node:latest
+    image: node:20
     restart: "unless-stopped"
     stdin_open: true
     tty: true

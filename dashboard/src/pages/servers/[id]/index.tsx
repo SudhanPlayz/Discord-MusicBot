@@ -154,7 +154,7 @@ const Server: NextPageWithLayout = () => {
 
     console.log('server:', data);
 
-    const { id, name, icon, owner, roles, channels, members, player } =
+    const { id, name, icon, owner, roles, channels, members, player, nodes } =
         getQueryData(data) || {};
 
     const handlePlayerClick = () => {
@@ -246,10 +246,62 @@ const Server: NextPageWithLayout = () => {
                 </HalfContainer>
                 <HalfContainer>
                     <HalfContainerCard>
-                        <div>Stats</div>
+                        <span style={{
+                            fontSize: '16px',
+                            fontWeight: 600,
+                        }}>Node Information</span>
                         <div>
-                            Node Information (From the /stats and/or /nodes
-                            command)
+                            <div
+                                style={{
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    gap: '10px',
+                                }}
+                            >
+                                {
+                                    nodes &&
+                                    Object.entries(nodes).map(
+                                        ([nodeId, node]) => (
+                                            <div key={nodeId}
+                                            style={{
+                                                display: 'flex',
+                                                flexDirection: 'column',
+                                                justifyContent: 'center',
+                                            }}
+                                            >
+                                                <span style={{fontSize: '16px', fontWeight: 600}}>{nodeId}</span>
+                                                <div
+                                                    style={{
+                                                        backgroundColor: '#121212',
+                                                        borderRadius: '5px',
+                                                        width: '100%',
+                                                    }}
+                                                >
+                                                    <pre
+                                                        style={{
+                                                            fontSize: '12px',
+                                                            color: node.connected ? 'green' : 'red',
+                                                        }}
+                                                    >
+                                                        <div>
+                                                            Uptime: {node.stats.uptime}
+                                                        </div>
+                                                        <div>
+                                                            RAM: {node.stats.ramUsage} MB / {node.stats.ramTotal} MB
+                                                        </div>
+                                                        <div>
+                                                            CPU: {node.stats.cores === 1 ? '1 Core' : `${node.stats.cores} Cores`}
+                                                        </div>
+                                                        <div>
+                                                            Players: {node.nodeStats.playingPlayers}/{node.nodeStats.players}
+                                                        </div>
+                                                    </pre>
+                                                </div>
+                                            </div>
+                                        )
+                                    )
+                                }
+                            </div>
                         </div>
                     </HalfContainerCard>
                     <HalfContainerCard>
