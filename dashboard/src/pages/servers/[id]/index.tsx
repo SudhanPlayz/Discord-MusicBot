@@ -3,7 +3,6 @@ import { useRouter } from 'next/router';
 import {
     Avatar,
     Button,
-    CSS,
     Card,
     Container,
     Text,
@@ -18,6 +17,7 @@ import type { AxiosError } from 'axios';
 import Image from 'next/image';
 import PlayerIcon from '@/assets/icons/play-button.png';
 import ConfigIcon from '@/assets/icons/config-button.png';
+import { HalfContainer, HalfContainerCard } from '@/components/containers';
 
 interface IMainButtonProps {
     children: React.ReactNode;
@@ -57,52 +57,6 @@ function MainButton({ children, tooltipContent, onClick }: IMainButtonProps) {
                     {children}
                 </Card>
             </Tooltip>
-        </div>
-    );
-}
-
-interface IHalfContainerProps {
-    children: React.ReactNode;
-    containerProps?: CSS;
-}
-
-function HalfContainer({ children, containerProps = {} }: IHalfContainerProps) {
-    return (
-        <Container
-            css={{
-                display: 'flex',
-                gap: '28px',
-                height: '50%',
-                padding: 0,
-                fontSize: '14px',
-                fontWeight: 600,
-                ...containerProps,
-            }}
-        >
-            {children}
-        </Container>
-    );
-}
-
-function HalfContainerCard({ children }: IHalfContainerProps) {
-    return (
-        <div
-            style={{
-                display: 'flex',
-                flexDirection: 'column',
-                maxWidth: '50%',
-                flexGrow: 1,
-            }}
-        >
-            <Card
-                css={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    padding: '20px',
-                }}
-            >
-                {children}
-            </Card>
         </div>
     );
 }
@@ -154,7 +108,7 @@ const Server: NextPageWithLayout = () => {
 
     console.log('server:', data);
 
-    const { id, name, icon, owner, roles, channels, members, player, nodes } =
+    const { id, name, icon, owner, roles, channels, members, player } =
         getQueryData(data) || {};
 
     const handlePlayerClick = () => {
@@ -245,65 +199,6 @@ const Server: NextPageWithLayout = () => {
                     </MainButton>
                 </HalfContainer>
                 <HalfContainer>
-                    <HalfContainerCard>
-                        <span style={{
-                            fontSize: '16px',
-                            fontWeight: 600,
-                        }}>Node Information</span>
-                        <div>
-                            <div
-                                style={{
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    gap: '10px',
-                                }}
-                            >
-                                {
-                                    nodes &&
-                                    Object.entries(nodes).map(
-                                        ([nodeId, node]) => (
-                                            <div key={nodeId}
-                                            style={{
-                                                display: 'flex',
-                                                flexDirection: 'column',
-                                                justifyContent: 'center',
-                                            }}
-                                            >
-                                                <span style={{fontSize: '16px', fontWeight: 600}}>{nodeId}</span>
-                                                <div
-                                                    style={{
-                                                        backgroundColor: '#121212',
-                                                        borderRadius: '5px',
-                                                        width: '100%',
-                                                    }}
-                                                >
-                                                    <pre
-                                                        style={{
-                                                            fontSize: '12px',
-                                                            color: node.connected ? 'green' : 'red',
-                                                        }}
-                                                    >
-                                                        <div>
-                                                            Uptime: {node.stats.uptime}
-                                                        </div>
-                                                        <div>
-                                                            RAM: {node.stats.ramUsage} MB / {node.stats.ramTotal} MB
-                                                        </div>
-                                                        <div>
-                                                            CPU: {node.stats.cores === 1 ? '1 Core' : `${node.stats.cores} Cores`}
-                                                        </div>
-                                                        <div>
-                                                            Players: {node.nodeStats.playingPlayers}/{node.nodeStats.players}
-                                                        </div>
-                                                    </pre>
-                                                </div>
-                                            </div>
-                                        )
-                                    )
-                                }
-                            </div>
-                        </div>
-                    </HalfContainerCard>
                     <HalfContainerCard>
                         <div>Queue Stats</div>
                         <div>
