@@ -3,7 +3,9 @@ version: '3.8'
 services:
   djs-bot:
     container_name: djs-bot
-    image: node:20
+    build:
+      context: ..
+      dockerfile: ./docker/djs-bot/Dockerfile
     restart: "unless-stopped"
     environment:
       - TOKEN=${TOKEN}
