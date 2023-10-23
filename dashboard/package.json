@@ -25,6 +25,7 @@
     "sass": "^1.68.0"
   },
   "devDependencies": {
+    "@svgr/webpack": "^8.1.0",
     "eslint": "8.52.0",
     "typescript": "5.2.2",
     "@types/node": "20.8.7",
