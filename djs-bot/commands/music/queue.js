@@ -78,7 +78,7 @@ const command = new SlashCommand()
 				.setFields([
 					{
 						name: "Requested by",
-						value: `<@${song.requester}>`,
+						value: `${song.requester}`,
 						inline: true,
 					},
 				])
@@ -115,7 +115,7 @@ const command = new SlashCommand()
 			.setFields([
 				{
 					name: "Requested by",
-					value: `<@${song.requester}>`,
+					value: `${song.requester}`,
 					inline: true,
 				},
 			])

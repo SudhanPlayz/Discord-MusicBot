@@ -78,7 +78,7 @@ const trackStartedEmbed = ({ track, player } = {}) => {
       .addFields([
         {
           name: "Requested by",
-          value: `<@${track.requester}>`,
+          value: `${track.requester}`,
           inline: true,
         },
         {
