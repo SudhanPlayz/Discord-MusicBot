@@ -205,6 +205,7 @@ const Player: NextPageWithLayout = () => {
         console.log({ handlePlayingEvent: e });
         setPlaying(e.d);
         maxProgressValue.current = e.d?.duration ?? 1;
+        setProgressValue(0);
     };
 
     const handleProgressEvent: IPlayerEventHandlers[ESocketEventType.PROGRESS] =
