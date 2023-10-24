@@ -19,6 +19,8 @@ function stopProgressUpdater(guildId) {
 
 function updateProgress({ player, track }) {
 	const gid = player.guild;
+	if (!gid?.length) return;
+
 	stopProgressUpdater(gid);
 
 	progressUpdater.set(
@@ -34,6 +36,11 @@ function updateProgress({ player, track }) {
 				guild: player.guild,
 				position: player.position,
 			});
+
+			socket.handleProgressUpdate({
+				guildId: player.guild,
+				position: player.position,
+			});
 		}, 1000)
 	);
 }
@@ -45,7 +52,10 @@ function handleVoiceStateUpdate(oldState, newState) {
 	// not client user
 	if (newState.member.id !== newState.client.user.id) return;
 
-	stopProgressUpdater(newState.guild.id);
+	const gid = newState.guild.id;
+
+	stopProgressUpdater(gid);
+	socket.handleStop({ guildId: gid });
 }
 
 function handleStop({ player }) {

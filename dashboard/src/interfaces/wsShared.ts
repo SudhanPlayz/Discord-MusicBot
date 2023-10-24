@@ -44,6 +44,7 @@ export const enum ESocketEventType {
     PLAYING,
     PLAY,
     PAUSE,
+    PROGRESS,
 }
 
 export const enum ESocketErrorCode {
@@ -68,6 +69,7 @@ export interface ISocketData {
     [ESocketEventType.PLAYING]: ITrack;
     [ESocketEventType.PLAY]: null;
     [ESocketEventType.PAUSE]: null;
+    [ESocketEventType.PROGRESS]: number;
     // !TODO: other events
 }
 

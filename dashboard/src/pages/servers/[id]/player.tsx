@@ -85,7 +85,6 @@ const Player: NextPageWithLayout = () => {
     const serverId = router.query.id;
 
     const [playlistShow, setPlaylistShow] = useState(false);
-    const [maxProgressValue, setMaxProgressValue] = useState(100000);
     const [socketLoading, setSocketLoading] = useState(true);
     const [playing, setPlaying] = useState<ITrack | null>(null);
     const [queue, setQueue] = useState<ITrack[] | { dummy?: boolean }[]>(
@@ -98,10 +97,14 @@ const Player: NextPageWithLayout = () => {
     const progressValueRef = useRef<number>(0);
     const toSeekProgressValue = useRef<number | undefined>();
 
+    const maxProgressValue = useRef<number>(1);
+
     const setProgressValue = (progressValue: number) => {
         if (progressbarRef.current) {
             progressbarRef.current.style.width = `${
-                (progressValue / maxProgressValue) * 100
+                progressValue && maxProgressValue.current
+                    ? (progressValue / maxProgressValue.current) * 100
+                    : 0
             }%`;
         }
 
@@ -126,7 +129,7 @@ const Player: NextPageWithLayout = () => {
         e.preventDefault();
 
         setProgressValue(
-            (e.clientX / document.body.clientWidth) * maxProgressValue,
+            (e.clientX / document.body.clientWidth) * maxProgressValue.current,
         );
     };
 
@@ -193,7 +196,14 @@ const Player: NextPageWithLayout = () => {
     ) => {
         console.log({ handlePlayingEvent: e });
         setPlaying(e.d);
+        maxProgressValue.current = e.d?.duration ?? 1;
     };
+
+    const handleProgressEvent: IPlayerEventHandlers[ESocketEventType.PROGRESS] =
+        (e) => {
+            console.log({ handleProgressEvent: e });
+            setProgressValue(e.d ?? 0);
+        };
 
     const handleErrorEvent: IPlayerEventHandlers[ESocketEventType.ERROR] = (
         e,
@@ -205,6 +215,7 @@ const Player: NextPageWithLayout = () => {
         [ESocketEventType.GET_QUEUE]: handleQueueUpdateEvent,
         [ESocketEventType.ERROR]: handleErrorEvent,
         [ESocketEventType.PLAYING]: handlePlayingEvent,
+        [ESocketEventType.PROGRESS]: handleProgressEvent,
     };
 
     const handleSocketClose = (e: CloseEvent) => {

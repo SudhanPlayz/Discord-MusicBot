@@ -51,6 +51,7 @@ const handlers = {
   // only here to silence typescript error
   [ESocketEventType.PLAYING]: undefined,
   [ESocketEventType.ERROR]: undefined,
+  [ESocketEventType.PROGRESS]: undefined,
 };
 
 export default function handleMessage(

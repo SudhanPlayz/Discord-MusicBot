@@ -18,7 +18,10 @@ export default function handleOpen(ws: WebSocket<IPlayerSocket>) {
 
   const sendDEmpty = () => {
     const dEmpty = createEventPayload(ESocketEventType.PLAYING);
+    const dEmpty2 = createEventPayload(ESocketEventType.PROGRESS, 0);
+
     wsSendJson(ws, dEmpty);
+    wsSendJson(ws, dEmpty2);
   };
 
   wsPlayerSubscribe(ws);
@@ -41,7 +44,12 @@ export default function handleOpen(ws: WebSocket<IPlayerSocket>) {
   const playing = player.queue.current;
 
   if (playing) {
+    // track payload
     const d = createEventPayload(ESocketEventType.PLAYING, { ...playing });
+    // progress payload
+    const d2 = createEventPayload(ESocketEventType.PROGRESS, player.position);
+
     wsSendJson(ws, d);
+    wsSendJson(ws, d2);
   } else sendDEmpty();
 }
