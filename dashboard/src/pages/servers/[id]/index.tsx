@@ -1,12 +1,65 @@
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { Avatar, Button } from '@nextui-org/react';
+import {
+    Avatar,
+    Button,
+    Card,
+    Container,
+    Text,
+    Tooltip,
+} from '@nextui-org/react';
 import DashboardLayout from '@/layouts/DashboardLayout';
 import { NextPageWithLayout } from '@/interfaces/layouts';
 import { useGetServer } from '@/services/api';
 import { getQueryData } from '@/utils/query';
 import ProcessData from '@/components/ProcessData';
 import type { AxiosError } from 'axios';
+import Image from 'next/image';
+import PlayerIcon from '@/assets/icons/play-button.png';
+import ConfigIcon from '@/assets/icons/config-button.png';
+import { HalfContainer, HalfContainerCard } from '@/components/containers';
+
+interface IMainButtonProps {
+    children: React.ReactNode;
+    tooltipContent: React.ReactNode;
+    onClick?: () => void;
+}
+
+function MainButton({ children, tooltipContent, onClick }: IMainButtonProps) {
+    return (
+        <div
+            style={{
+                display: 'flex',
+                width: '100px',
+                height: '100px',
+            }}
+            onClick={onClick}
+        >
+            <Tooltip
+                content={tooltipContent}
+                style={{
+                    width: '100%',
+                }}
+                color="invert"
+                placement="bottom"
+            >
+                <Card
+                    css={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        cursor: 'pointer',
+                        '&:hover': {
+                            backgroundColor: '$primary',
+                        },
+                    }}
+                >
+                    {children}
+                </Card>
+            </Tooltip>
+        </div>
+    );
+}
 
 function Loading() {
     return (
@@ -58,6 +111,14 @@ const Server: NextPageWithLayout = () => {
     const { id, name, icon, owner, roles, channels, members, player } =
         getQueryData(data) || {};
 
+    const handlePlayerClick = () => {
+        router.push('/servers/' + serverId + '/player');
+    };
+
+    const handleConfigClick = () => {
+        // router.push somewhere
+    };
+
     return (
         <ProcessData
             {...{ data, isLoading }}
@@ -67,48 +128,103 @@ const Server: NextPageWithLayout = () => {
             <Head>
                 <title>{name} | Discord Music Bot</title>
             </Head>
-            <Avatar src={icon} size="xl" color="gradient" bordered pointer />
-            <h1>{name}</h1>
-            <h2>Server ID: {id}</h2>
-            <h2>Server Owner: {owner}</h2>
-            <h2>
-                Server Roles:
-                <div
-                    style={{
-                        display: 'flex',
-                        flexWrap: 'wrap',
-                        justifyContent: 'space-between',
-                    }}
-                >
-                    {roles?.map(
-                        (role: { id: string; name: string; color: string }) => {
-                            return (
-                                <div
-                                    key={role.id}
-                                    style={{
-                                        color: 'white',
-                                        backgroundColor: role.color,
-                                        padding: '5px',
-                                        borderRadius: '5px',
-                                        margin: '5px',
-                                    }}
-                                >
-                                    {role.name}
-                                </div>
-                            );
-                        },
-                    )}
+            <Container
+                css={{
+                    paddingTop: '10px',
+                    paddingBottom: '20px',
+                    paddingLeft: '20px',
+                    paddingRight: '20px',
+                    backgroundColor: '$primary',
+                    display: 'flex',
+                    gap: '20px',
+                }}
+            >
+                <div>
+                    <Avatar
+                        src={icon}
+                        css={{
+                            size: 90,
+                        }}
+                        color="gradient"
+                        bordered
+                        pointer
+                    />
                 </div>
-            </h2>
-            <h2>Server Members: {members?.length}</h2>
-            <h2>Server Channels: {channels?.length}</h2>
-            {/* Player */}
-            <h2>Server Queue: {player?.queue?.length || 0}</h2>
-            <h2>Server Now Playing: {player?.playing?.title || 'Nothing'}</h2>
+
+                <Text
+                    css={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                    }}
+                    size={40}
+                    weight="semibold"
+                >
+                    {name}
+                </Text>
+            </Container>
+            <Container
+                css={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    flexGrow: 1,
+                    paddingLeft: '50px',
+                    paddingRight: '50px',
+                    paddingTop: '30px',
+                    paddingBottom: '50px',
+                }}
+            >
+                <HalfContainer>
+                    <MainButton
+                        tooltipContent="Player"
+                        onClick={handlePlayerClick}
+                    >
+                        <Image
+                            src={PlayerIcon}
+                            alt="Player Icon"
+                            width={53}
+                            height={53}
+                        />
+                    </MainButton>
+                    <MainButton
+                        tooltipContent="Config"
+                        onClick={handleConfigClick}
+                    >
+                        <Image
+                            src={ConfigIcon}
+                            alt="Config Icon"
+                            width={53}
+                            height={53}
+                        />
+                    </MainButton>
+                </HalfContainer>
+                <HalfContainer>
+                    <HalfContainerCard>
+                        <div>Queue Stats</div>
+                        <div>
+                            {
+                                'Currently playing song, it’s cover image, how many songs are currently in the queue (Take from the /nowplaying, /queue commands), When this card is clicked on -> send to the player'
+                            }
+                        </div>
+                    </HalfContainerCard>
+                </HalfContainer>
+            </Container>
         </ProcessData>
     );
 };
 
-Server.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
+Server.getLayout = (page) => (
+    <DashboardLayout
+        contentContainerStyle={{
+            width: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            zIndex: 0,
+            backgroundColor: 'black',
+        }}
+    >
+        {page}
+    </DashboardLayout>
+);
 
 export default Server;

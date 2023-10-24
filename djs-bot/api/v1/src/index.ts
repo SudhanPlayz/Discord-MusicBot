@@ -1,16 +1,20 @@
 import fastify from 'fastify';
-import type { Bot } from './interfaces/common';
+import * as uws from 'uWebSockets.js';
+import type { Bot, WSApp } from './interfaces/common';
 import routes from './routes/v1';
 import routesErrorHandler from './routes/v1/errorHandler';
 import APIError from './lib/APIError';
 import cors from '@fastify/cors';
 import { API_ROUTES_PREFIX } from './lib/constants';
+import { setupWsServer } from './ws';
 
 const pkg = require('../../../package.json');
 
 const server = fastify({
   logger: false, // true,
 });
+
+const wsServer: WSApp = uws.App();
 
 let bot: Bot | undefined;
 
@@ -28,6 +32,8 @@ const getBot = (noThrow: boolean = false) => {
 
   return bot as Bot;
 };
+
+const getPkg = () => pkg;
 
 const corsOpts = {
   origin: true,
@@ -60,4 +66,10 @@ const app = (djsBot?: Bot) => {
   return server;
 };
 
-export { app, getBot, pkg };
+const wsApp = () => {
+  setupWsServer(wsServer);
+
+  return wsServer;
+};
+
+export { app, getBot, getPkg, wsApp };

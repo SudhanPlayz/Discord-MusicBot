@@ -4,7 +4,7 @@ const fs = require("fs");
 const path = require("path");
 const DBMS = require("./DBMS");
 const Logger = require("./Logger");
-const { app } = require("../api/v1/dist");
+const { app, wsApp } = require("../api/v1/dist");
 const getConfig = require("../util/getConfig");
 const MusicManager = require("./MusicManager");
 
@@ -143,6 +143,7 @@ class Bot extends Client {
 
 		// API initialization (done after the login to prevent lack of info)
 		this.api = app(this);
+		this.wsServer = wsApp();
 
 		// DBMS initialization (done after the login to prevent lack of info)
 		if (this.config.db_url && this.config.db_url !== "") {
@@ -427,6 +428,14 @@ class Bot extends Client {
 			indexFilePath,
 			folderFiles,
 		};
+	}
+
+	serverExist(serverId) {
+		if (!serverId?.length) return false;
+
+		const g = this.guilds.resolve(serverId);
+
+		return !!g;
 	}
 
 	static setNoBoot(val) {

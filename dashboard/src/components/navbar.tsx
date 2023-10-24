@@ -1,25 +1,33 @@
+import useSharedStateSetter from '@/hooks/useSharedStateSetter';
+import { INavbarProps } from '@/interfaces/components/Navbar';
+import globalState from '@/sharedStates/globalState';
 import { Button, Link, Spacer } from '@nextui-org/react';
+import classNames from 'classnames';
 import { useRouter } from 'next/router';
+import { useState } from 'react';
 
-export default function Navbar() {
+export default function Navbar({}: INavbarProps) {
     const router = useRouter();
+    const [show, setShow] = useState<boolean | undefined>(true);
+    const [absolute, setAbsolute] = useState<boolean | undefined>(false);
+
+    useSharedStateSetter(
+        globalState,
+        ['navbarShow', show],
+        ['setNavbarShow', setShow],
+        ['navbarAbsolute', absolute],
+        ['setNavbarAbsolute', setAbsolute],
+    );
 
     const pathIs = (path: string) => router.pathname === path;
 
     return (
         <div
-            style={{
-                height: '100%',
-                width: '250px',
-                minWidth: '250px',
-                backgroundColor: '#16181A',
-                display: 'flex',
-                alignItems: 'center',
-                flexDirection: 'column',
-                paddingTop: '50px',
-                position: 'sticky',
-                top: 0,
-            }}
+            className={classNames(
+                'navbar-container bar-container',
+                !show ? 'hide' : '',
+                absolute ? 'absolute' : '',
+            )}
         >
             <Link
                 css={{
@@ -27,6 +35,7 @@ export default function Navbar() {
                     fontWeight: 'bold',
                     marginBottom: '30px',
                     color: '#fff',
+                    whiteSpace: 'nowrap',
                 }}
                 onClick={() => router.push('/')}
             >

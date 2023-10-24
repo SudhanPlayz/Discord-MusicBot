@@ -33,7 +33,13 @@ const Servers: NextPageWithLayout = () => {
     const { servers } = getQueryData(data) || {};
 
     return (
-        <>
+        <div
+            style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '20px',
+            }}
+        >
             <Head>
                 <title>Servers | Discord Music Bot</title>
             </Head>
@@ -42,6 +48,7 @@ const Servers: NextPageWithLayout = () => {
                 style={{
                     display: 'flex',
                     flexWrap: 'wrap',
+                    gap: '40px',
                 }}
             >
                 {processData(() =>
@@ -50,7 +57,7 @@ const Servers: NextPageWithLayout = () => {
                     )),
                 )}
             </div>
-        </>
+        </div>
     );
 };
 

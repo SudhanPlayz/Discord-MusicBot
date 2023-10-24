@@ -1,5 +1,6 @@
-import { ERROR_CODES, STATUS_CODES } from '../lib/constants';
 import fastify from 'fastify';
+import * as uws from 'uWebSockets.js';
+import { ERROR_CODES, STATUS_CODES } from '../lib/constants';
 import type DJSBot from '../../../../lib/Bot';
 
 export type Bot = DJSBot;
@@ -45,3 +46,5 @@ export type RouteErrorHandler = Parameters<
 
 export type IErrorCode = (typeof ERROR_CODES)[keyof typeof ERROR_CODES];
 export type IStatusCode = (typeof STATUS_CODES)[keyof typeof STATUS_CODES];
+
+export type WSApp = ReturnType<typeof uws.App>;

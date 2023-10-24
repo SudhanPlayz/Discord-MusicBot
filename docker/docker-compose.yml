@@ -19,12 +19,13 @@ services:
       - ../djs-bot:/djs-bot
     ports:
       - "8080:8080"
+      - "3001:3001"
     working_dir: /djs-bot
     command: ["npm", "run", "${ENABLE:-start}"]
 
   dashboard:
     container_name: dashboard
-    image: node:latest
+    image: node:20
     restart: "unless-stopped"
     stdin_open: true
     tty: true

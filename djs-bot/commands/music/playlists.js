@@ -1,7 +1,7 @@
 "use strict";
 
 const SlashCommand = require("../../lib/SlashCommand");
-const { joinStageChannelRoutine } = require("../../util/player");
+const { joinStageChannelRoutine, addTrack } = require("../../util/player");
 const { capitalize } = require("../../util/string");
 const { colorEmbed, redEmbed } = require("../../util/embeds");
 const yt = require("youtube-sr").default;
@@ -302,7 +302,7 @@ async function runPlay(client, interaction, options) {
 
 	for (const song of songs) {
 		const songSearch = await player.search(song.link, interaction.user.id);
-		player.queue.add(songSearch.tracks[0]);
+		addTrack(player, songSearch.tracks[0]);
 	}
 
 	if (channel.type == "GUILD_STAGE_VOICE") {

@@ -43,7 +43,17 @@ module.exports = {
 		/**
 		 * Port to run the API on
 		 * @type {number} */
-		port: parseInt(process.env.API_PORT) || 8080,
+		port: parseInt(process.env.API_PORT) || 3000,
+	},
+
+	/**
+	 * WS configuration
+	 */
+	ws: {
+		/**
+		 * Port to run WS on
+		 * @type {number} */
+		port: parseInt(process.env.WS_PORT) || 8080,
 	},
 
 	/**
@@ -70,7 +80,7 @@ module.exports = {
 			retryDelay: 6000, // Delay between reconnect attempts if connection is lost.
 			secure: false, // if lavalink is running SSL
 		},
-		/* {
+		{
 			identifier: "LocalNode", // log id string
 			host: "localhost",
 			port: 2333,
@@ -78,7 +88,7 @@ module.exports = {
 			retryAmount: 15, // for lavalink connection attempts
 			retryDelay: 6000, // Delay between reconnect attempts if connection is lost.
 			secure: false, // if lavalink is running SSL
-		}, */
+		},
 	],
 
 	/** 

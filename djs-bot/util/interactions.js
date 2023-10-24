@@ -54,7 +54,7 @@ const ccInteractionHook = async (client, interaction) => {
 const checkPlayerVolume = async (player, interaction) => {
 	if (typeof player.volume !== "number")
 		return interaction.reply({
-			content: "Something's wrong",
+			content: "Something's wrong: volume is not a number",
 			ephemeral: true,
 		});
 };

@@ -5,8 +5,8 @@ const Bot = require("../Bot");
 const colors = require("colors");
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const { Cosmicord, CosmiPlayer, CosmiNode } = require("cosmicord.js");
-const { trackStartedEmbed } = require("../../util/embeds");
-const { updateControlMessage, updateNowPlaying } = require("../../util/controlChannel");
+const { updateControlMessage } = require("../../util/controlChannel");
+const { handleTrackStart } = require("../MusicEvents");
 
 class CosmicordPlayerExtended extends CosmiPlayer {
 	/**
@@ -227,21 +227,13 @@ module.exports = (client) => {
 			updateControlMessage(player.guild);
 		})
 
+                  // !TODO: integrate events with socket
 		.on("trackStart",
 			/** @param {CosmicordPlayerExtended} player */
 			async (player, track) => {
-				const playedTracks = client.playedTracks;
-
-				if (playedTracks.length >= 25)
-					playedTracks.shift();
-
-				if (!playedTracks.includes(track))
-					playedTracks.push(track);
-
-				updateNowPlaying(player, track);
-				updateControlMessage(player.guild, track);
-
-				client.warn(`Player: ${player.guildId} | Track has started playing [${colors.blue(track.title)}]`);
+				handleTrackStart({
+					player, track
+				});
 			}
 		)
 

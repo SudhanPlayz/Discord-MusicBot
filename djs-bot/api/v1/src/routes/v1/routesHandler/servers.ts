@@ -8,6 +8,13 @@ import { Guild } from 'discord.js';
 const handler: RouteHandler = async (request, reply) => {
   const bot = getBot();
 
+  if (!bot)
+    throw new APIError(
+      'Bot not found',
+      APIError.STATUS_CODES.NOT_FOUND,
+      APIError.ERROR_CODES.NOT_FOUND,
+    );
+
   const id = (request.query as { id: string | undefined }).id;
   if (id) {
     const guild = bot.guilds.cache.get(id);
@@ -43,7 +50,7 @@ const handler: RouteHandler = async (request, reply) => {
       })),
       // !TODO: typing is missing here, add typing for MusicManager
       player: {
-        queue: bot.manager.Engine.players
+        queue: bot.manager?.Engine.players
           .get(guild.id)
           ?.queue.map((track: any) => ({
             title: track.title,
@@ -51,10 +58,11 @@ const handler: RouteHandler = async (request, reply) => {
             duration: track.duration,
           })),
         playing: {
-          title: bot.manager.Engine.players.get(guild.id)?.queue.current?.title,
-          author: bot.manager.Engine.players.get(guild.id)?.queue.current
+          title: bot.manager?.Engine.players.get(guild.id)?.queue.current
+            ?.title,
+          author: bot.manager?.Engine.players.get(guild.id)?.queue.current
             ?.author,
-          duration: bot.manager.Engine.players.get(guild.id)?.queue.current
+          duration: bot.manager?.Engine.players.get(guild.id)?.queue.current
             ?.duration,
         },
       },

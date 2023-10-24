@@ -1,5 +1,6 @@
 const SlashCommand = require("../../lib/SlashCommand");
 const { EmbedBuilder } = require("discord.js");
+const { removeTrack } = require("../../util/player");
 
 const command = new SlashCommand()
 	.setName("skipto")
@@ -8,18 +9,18 @@ const command = new SlashCommand()
 		option
 			.setName("number")
 			.setDescription("The number of tracks to skipto")
-			.setRequired(true),
+			.setRequired(true)
 	)
-	
+
 	.setRun(async (client, interaction, options) => {
 		const args = interaction.options.getNumber("number");
 		//const duration = player.queue.current.duration
-		
+
 		let channel = await client.getChannel(client, interaction);
 		if (!channel) {
 			return;
 		}
-		
+
 		let player;
 		if (client.manager.Engine) {
 			player = client.manager.Engine.players.get(interaction.guild.id);
@@ -32,7 +33,7 @@ const command = new SlashCommand()
 				],
 			});
 		}
-		
+
 		if (!player) {
 			return interaction.reply({
 				embeds: [
@@ -43,11 +44,11 @@ const command = new SlashCommand()
 				ephemeral: true,
 			});
 		}
-		
+
 		await interaction.deferReply();
-		
+
 		const position = Number(args);
-		
+
 		try {
 			if (!position || position < 0 || position > player.queue.size) {
 				let thing = new EmbedBuilder()
@@ -55,14 +56,14 @@ const command = new SlashCommand()
 					.setDescription("❌ | Invalid position!");
 				return interaction.editReply({ embeds: [thing] });
 			}
-			
-			player.queue.remove(0, position - 1);
+
+			removeTrack(player, 0, position - 1);
 			player.stop();
-			
+
 			let thing = new EmbedBuilder()
 				.setColor(client.config.embedColor)
 				.setDescription("✅ | Skipped to position " + position);
-			
+
 			return interaction.editReply({ embeds: [thing] });
 		} catch {
 			if (position === 1) {
@@ -72,7 +73,9 @@ const command = new SlashCommand()
 				embeds: [
 					new EmbedBuilder()
 						.setColor(client.config.embedColor)
-						.setDescription("✅ | Skipped to position " + position),
+						.setDescription(
+							"✅ | Skipped to position " + position
+						),
 				],
 			});
 		}

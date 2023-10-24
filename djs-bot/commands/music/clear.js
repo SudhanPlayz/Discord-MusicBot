@@ -1,5 +1,6 @@
 const SlashCommand = require("../../lib/SlashCommand");
 const { EmbedBuilder } = require("discord.js");
+const { clearQueue } = require("../../util/player");
 
 const command = new SlashCommand()
 	.setName("clear")
@@ -9,7 +10,7 @@ const command = new SlashCommand()
 		if (!channel) {
 			return;
 		}
-		
+
 		let player;
 		if (client.manager.Engine) {
 			player = client.manager.Engine.players.get(interaction.guild.id);
@@ -22,7 +23,7 @@ const command = new SlashCommand()
 				],
 			});
 		}
-		
+
 		if (!player) {
 			return interaction.reply({
 				embeds: [
@@ -33,21 +34,23 @@ const command = new SlashCommand()
 				ephemeral: true,
 			});
 		}
-		
+
 		if (!player.queue || !player.queue.length || player.queue.length === 0) {
 			let cembed = new EmbedBuilder()
 				.setColor(client.config.embedColor)
-				.setDescription("❌ | **Invalid, Not enough track to be cleared.**");
-			
+				.setDescription(
+					"❌ | **Invalid, Not enough track to be cleared.**"
+				);
+
 			return interaction.reply({ embeds: [cembed], ephemeral: true });
 		}
-		
-		player.queue.clear();
-		
+
+		clearQueue(player);
+
 		let clearEmbed = new EmbedBuilder()
 			.setColor(client.config.embedColor)
 			.setDescription(`✅ | **Cleared the queue!**`);
-		
+
 		return interaction.reply({ embeds: [clearEmbed] });
 	});
 
