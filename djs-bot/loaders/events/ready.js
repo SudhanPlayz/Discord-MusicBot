@@ -37,5 +37,14 @@ module.exports = (client) => {
 		client.info(`API is now listening on port ${client.config.api.port}`);
 	});
 
+	client.wsServer.listen(client.config.ws.port, (sock) => {
+		if (sock) {
+			client.info(`WS is now listening on port ${client.config.ws.port}`);
+			return;
+		}
+
+		client.error(new Error("Can't start WS"));
+	});
+
 	client.info("Successfully logged in as " + client.user.tag);
 };

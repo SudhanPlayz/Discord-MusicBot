@@ -10,7 +10,8 @@ const { Manager, Structure } = require("erela.js"); // <---
 const deezer = require("erela.js-deezer"); // <---
 const spotify = require("better-erela.js-spotify").default; // <---
 const { default: AppleMusic } = require("better-erela.js-apple"); // <---
-const { updateControlMessage, updateNowPlaying, runIfNotControlChannel } = require("../../util/controlChannel");
+const { updateControlMessage } = require("../../util/controlChannel");
+const { handleTrackStart } = require("../MusicEvents");
 
 Structure.extend(
 	"Player",
@@ -266,19 +267,11 @@ module.exports = (client) => {
 		.on("loadFailed", (node, type, error) =>
 			client.warn(`Node: ${node.options.identifier} | Failed to load ${type}: ${error.message}`))
 
+                  // !TODO: integrate events with socket
 		.on("trackStart", async (player, track) => {
-			const playedTracks = client.playedTracks;
-
-			if (playedTracks.length >= 25)
-				playedTracks.shift();
-
-			if (!playedTracks.includes(track))
-				playedTracks.push(track);                     
-
-			updateNowPlaying(player, track);
-			updateControlMessage(player.guild, track);
-
-			client.warn(`Player: ${player.options.guild} | Track has started playing [${colors.blue(track.title)}]`);
+			handleTrackStart({
+				player, track
+			});
 		})
 
 		.on("queueEnd", async (player, track) => {

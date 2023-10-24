@@ -1,24 +1,22 @@
 const SlashCommand = require("../../lib/SlashCommand");
 const { EmbedBuilder } = require("discord.js");
+const { removeTrack } = require("../../util/player");
 
 const command = new SlashCommand()
 	.setName("remove")
 	.setDescription("Remove track you don't want from queue")
 	.addNumberOption((option) =>
-		option
-			.setName("number")
-			.setDescription("Enter track number.")
-			.setRequired(true),
+		option.setName("number").setDescription("Enter track number.").setRequired(true)
 	)
-	
+
 	.setRun(async (client, interaction) => {
 		const args = interaction.options.getNumber("number");
-		
+
 		let channel = await client.getChannel(client, interaction);
 		if (!channel) {
 			return;
 		}
-		
+
 		let player;
 		if (client.manager.Engine) {
 			player = client.manager.Engine.players.get(interaction.guild.id);
@@ -31,7 +29,7 @@ const command = new SlashCommand()
 				],
 			});
 		}
-		
+
 		if (!player) {
 			return interaction.reply({
 				embeds: [
@@ -42,26 +40,26 @@ const command = new SlashCommand()
 				ephemeral: true,
 			});
 		}
-		
+
 		await interaction.deferReply();
-		
+
 		const position = Number(args) - 1;
 		if (position > player.queue.size) {
 			let thing = new EmbedBuilder()
 				.setColor(client.config.embedColor)
 				.setDescription(
-					`Current queue has only **${ player.queue.size }** track`,
+					`Current queue has only **${player.queue.size}** track`
 				);
 			return interaction.editReply({ embeds: [thing] });
 		}
-		
-		const song = player.queue[position];
-		player.queue.remove(position);
-		
+
+		removeTrack(player, position);
+
 		const number = position + 1;
 		let removeEmbed = new EmbedBuilder()
 			.setColor(client.config.embedColor)
-			.setDescription(`Removed track number **${ number }** from queue`);
+			.setDescription(`Removed track number **${number}** from queue`);
+
 		return interaction.editReply({ embeds: [removeEmbed] });
 	});
 

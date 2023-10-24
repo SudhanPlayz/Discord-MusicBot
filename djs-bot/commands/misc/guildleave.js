@@ -1,8 +1,5 @@
 const { EmbedBuilder } = require("discord.js");
 const SlashCommand = require("../../lib/SlashCommand");
-const fs = require("fs");
-const path = require("path");
-const { forEach } = require("lodash");
 
 const command = new SlashCommand()
 	.setName("guildleave")

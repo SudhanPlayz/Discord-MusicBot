@@ -10,6 +10,7 @@ export type AppPropsWithLayout = AppProps & {
 
 export interface IPageLayoutProps {
     children: React.ReactNode;
+    contentContainerStyle?: React.HTMLAttributes<HTMLDivElement>['style'];
 }
 
-export type PageLayout = React.FC<IPageLayoutProps>;
+export type PageLayout<T = {}> = React.FC<IPageLayoutProps & T>;

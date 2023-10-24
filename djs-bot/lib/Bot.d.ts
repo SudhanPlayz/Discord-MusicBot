@@ -1,14 +1,14 @@
 import { Client, Message, ClientOptions, Collection } from "discord.js";
 import SlashCommand from "./SlashCommand";
 import Logger from "./Logger";
-import MusicManager from "./MusicManager";
+import { MusicClient } from "./clients/MusicClient.d";
 import DBMS from "./DBMS";
 import prettyMilliseconds from "pretty-ms";
 import getChannel from "../util/getChannel";
 import getLavalink from "../util/getLavalink";
 import { CosmiTrack } from "cosmicord.js";
 import config from "../config";
-import { app } from "../api/v1/src";
+import { app, wsApp } from "../api/v1/src";
 
 /**
  * The class groups some useful functions for the client in order to facilitate expandability, maintenance and manageability
@@ -30,8 +30,9 @@ declare class Bot extends Client {
 	 * Denomination (name) of the bot
 	 */
 	denom: string | undefined;
-	manager: MusicManager | undefined;
+	manager: MusicClient | undefined;
 	api: ReturnType<typeof app>;
+	wsServer: ReturnType<typeof wsApp>;
 	db: DBMS | undefined;
 	commandsRan: number;
 	songsPlayed: number;
@@ -92,6 +93,8 @@ declare class Bot extends Client {
 		indexFilePath: string | undefined;
 		folderFiles: string | undefined;
 	};
+
+	serverExist(serverId: string): boolean;
 
 	static setNoBoot(val: boolean): void;
 }

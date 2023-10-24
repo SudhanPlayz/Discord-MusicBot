@@ -5,8 +5,7 @@ module.exports = new SlashCommand()
 	.setCategory("utility")
 	.setDBMS()
 	.setDescription("Configure various bot settings")
-	// !TODO: complete setUsage ?
-	.setUsage("/config")
+	.setUsage("/config [dj-role | control-channel]")
 	.setRun(async function(...args) {
 		return this.handleSubCommandInteraction(...args);
 	})

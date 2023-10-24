@@ -1,5 +1,6 @@
 const SlashCommand = require("../../lib/SlashCommand");
 const { EmbedBuilder } = require("discord.js");
+const { shuffleQueue } = require("../../util/player");
 
 const command = new SlashCommand()
 	.setName("shuffle")
@@ -9,7 +10,7 @@ const command = new SlashCommand()
 		if (!channel) {
 			return;
 		}
-		
+
 		let player;
 		if (client.manager.Engine) {
 			player = client.manager.Engine.players.get(interaction.guild.id);
@@ -22,7 +23,7 @@ const command = new SlashCommand()
 				],
 			});
 		}
-		
+
 		if (!player) {
 			return interaction.reply({
 				embeds: [
@@ -33,25 +34,29 @@ const command = new SlashCommand()
 				ephemeral: true,
 			});
 		}
-		
+
 		if (!player.queue || !player.queue.length || player.queue.length === 0) {
 			return interaction.reply({
 				embeds: [
 					new EmbedBuilder()
 						.setColor("Red")
-						.setDescription("There are not enough songs in the queue."),
+						.setDescription(
+							"There are not enough songs in the queue."
+						),
 				],
 				ephemeral: true,
 			});
 		}
-		
+
 		//  if the queue is not empty, shuffle the entire queue
-		player.queue.shuffle();
+		shuffleQueue(player);
 		return interaction.reply({
 			embeds: [
 				new EmbedBuilder()
 					.setColor(client.config.embedColor)
-					.setDescription("🔀 | **Successfully shuffled the queue.**"),
+					.setDescription(
+						"🔀 | **Successfully shuffled the queue.**"
+					),
 			],
 		});
 	});

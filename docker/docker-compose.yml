@@ -19,12 +19,13 @@ services:
       - ../djs-bot:/djs-bot
     ports:
       - "8080:8080"
+      - "3001:3001"
     working_dir: /djs-bot
     command: ["npm", "run", "${ENABLE:-start}"]
 
   dashboard:
     container_name: dashboard
-    image: node:latest
+    image: node:20
     restart: "unless-stopped"
     stdin_open: true
     tty: true
@@ -34,9 +35,6 @@ services:
       - "3000:3000"
     working_dir: /dashboard
     command: ["npm", "run", "build-and-start"]
-    depends_on:
-      djs-bot:
-        condition: service_started
 
   postgres-db:
     image: postgres:15.2-alpine
@@ -49,11 +47,6 @@ services:
       PGPORT:             5432
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "sh -c 'pg_isready -U root -d base'"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
 
   lavalink:
     image: fredboat/lavalink:latest

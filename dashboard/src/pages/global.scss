@@ -1,0 +1,404 @@
+body {
+    --navbar-width: 250px;
+    --playlistbar-width: 25%;
+
+    overflow: hidden;
+
+    .hidden {
+        transition-duration: 0.5s;
+        opacity: 0;
+    }
+
+    #drag-handler {
+        position: fixed;
+        cursor: pointer;
+        width: 100%;
+        height: 100%;
+        top: 0px;
+        left: 0px;
+
+        &.active {
+            z-index: 10000;
+        }
+    }
+
+    .btn-toggle-container {
+        transition-duration: 0.5s;
+        animation: in-opacity 2s;
+        width: 100px;
+        height: 100px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .btn-toggle {
+            padding: 0;
+            min-width: 0;
+            height: 100%;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-grow: 1;
+            overflow: visible;
+            background: none;
+            transition-duration: 0.5s;
+            cursor: pointer;
+            max-width: 60px;
+            max-height: 60px;
+
+            svg.x-icon {
+                fill: white;
+                height: 40px;
+            }
+
+            svg {
+                &.x-icon,
+                &.navbar-icon {
+                    animation: in-opacity 0.5s;
+                }
+            }
+
+            &:hover {
+                background-color: rgba(255, 255, 255, 0.4);
+                box-shadow: 0 0 10px 4px rgba(255, 255, 255, 0.5);
+            }
+        }
+
+        &.btn-navbar-toggle-container {
+            position: absolute;
+            left: 0;
+            top: 0;
+
+            &.follow-navbar {
+                left: var(--navbar-width);
+            }
+        }
+
+        &.btn-playlist-toggle-container {
+            position: absolute;
+            right: 0;
+            top: 0;
+
+            &.follow-navbar {
+                right: var(--playlistbar-width);
+            }
+
+            svg {
+                height: 40px;
+                fill: white;
+
+                &.icon-left,
+                &.icon-right {
+                    animation: rotate-180 0.5s reverse, btn-scale 0.5s;
+                }
+            }
+        }
+    }
+
+    .bar-container {
+        height: 100%;
+        width: var(--navbar-width);
+        min-width: var(--navbar-width);
+        background-color: #16181a;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        position: sticky;
+        top: 0;
+        transition-duration: 0.5s;
+        overflow: hidden;
+        z-index: 10;
+
+        &.navbar-container {
+            padding-top: 50px;
+        }
+
+        &.playlistbar-container {
+            width: var(--playlistbar-width);
+            position: fixed;
+            padding: 8px;
+            padding-top: 30px;
+            right: 0;
+
+            .tracks-overflow-container {
+                width: 100%;
+                overflow: auto;
+
+                .tracks-container {
+                    display: flex;
+                    flex-direction: column;
+                    flex-grow: 1;
+                    width: 100%;
+
+                    .track-container {
+                        padding: 8px;
+                        display: flex;
+                        gap: 12px;
+                        border-radius: 4px;
+                        transition-duration: 0.1s;
+                        cursor: pointer;
+                        position: relative;
+                        overflow: hidden;
+
+                        &:hover {
+                            background-color: rgba(255, 255, 255, 0.1);
+                        }
+
+                        .thumb {
+                            min-width: 50px;
+                            min-height: 50px;
+                            max-width: 50px;
+                            max-height: 50px;
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+
+                            img {
+                                flex-grow: 1;
+                            }
+                        }
+
+                        > .info {
+                            flex-grow: 1;
+                            display: flex;
+                            flex-direction: column;
+                            gap: 4px;
+
+                            .title {
+                                font-size: 16px;
+                            }
+
+                            .info {
+                                font-size: 14px;
+                                color: rgba(255, 255, 255, 0.75);
+                            }
+                        }
+
+                        .drag-container {
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                        }
+
+                        .drag-overlay {
+                            display: flex;
+                            position: absolute;
+                            width: 100%;
+                            height: 100%;
+                            top: 0;
+                            left: 0;
+
+                            &.active {
+                                background-color: rgba(255, 255, 255, 0.1);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        &.hide {
+            &.playlistbar-container {
+                transform: translateX(100%);
+            }
+
+            &:not(.absolute) {
+                &.navbar-container {
+                    min-width: 0;
+                    width: 0;
+                }
+            }
+
+            &.absolute {
+                &.navbar-container {
+                    transform: translateX(-100%);
+                }
+            }
+        }
+
+        &.absolute {
+            position: absolute;
+            z-index: 1;
+        }
+    }
+
+    .player-page-container {
+        display: flex;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-grow: 1;
+
+        .main-player-content-container {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+
+            .top-container {
+                background: linear-gradient(
+                    153deg,
+                    rgba(255, 255, 255, 0.2) 0%,
+                    rgba(255, 255, 255, 0) 100%
+                );
+                padding-top: 40px;
+                display: flex;
+                flex-direction: column;
+                flex-grow: 1;
+                gap: 20px;
+                padding-bottom: 20px;
+
+                .thumbnail-container {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                    object-fit: cover;
+                    overflow: hidden;
+                    filter: drop-shadow(0 0 30px blue);
+                    flex-grow: 1;
+
+                    img {
+                        position: absolute;
+                    }
+                }
+
+                .track-info-container {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+
+                    h1 {
+                        margin-bottom: 0;
+                        font-size: 24px;
+
+                        &.no-track {
+                            font-size: 40px;
+                        }
+                    }
+
+                    p {
+                        color: rgba(165, 192, 255, 0.7);
+                        font-size: 16px;
+                    }
+                }
+            }
+
+            .player-control-container {
+                display: flex;
+                position: relative;
+                flex-direction: column;
+                height: 15%;
+
+                #player-progress-bar {
+                    width: 100%;
+                    border: 0px;
+                    border-radius: 0px;
+                    background-color: transparent;
+                    display: flex;
+                    align-items: center;
+                    position: absolute;
+                    top: 0;
+                    height: 4px;
+                    cursor: pointer;
+                    z-index: 1;
+
+                    .progress-value {
+                        position: relative;
+                        background-color: red;
+                        display: flex;
+                        align-items: center;
+                        height: 4px;
+                        transition-duration: 0.5s;
+
+                        &.active {
+                            transition-duration: 0.1s;
+                        }
+
+                        #seeker {
+                            border-radius: 100%;
+                            width: 20px;
+                            height: 20px;
+                            position: absolute;
+                            right: 0;
+                            transform: translateX(50%);
+                            background-color: red;
+                            z-index: 8;
+                            transition-duration: 0.2s;
+                            overflow: visible;
+                            cursor: pointer;
+
+                            &:hover,
+                            &.active {
+                                scale: 120%;
+                            }
+                        }
+                    }
+
+                    .remaining-progress {
+                        background-color: green;
+                        flex-grow: 1;
+                        height: 1px;
+                        opacity: 0.3;
+                    }
+                }
+
+                .control-duration-container {
+                    display: flex;
+                    position: relative;
+                    justify-content: center;
+                    align-items: center;
+                    flex-grow: 1;
+
+                    .control-container {
+                        display: flex;
+                        gap: 40px;
+                        align-items: center;
+                    }
+
+                    .duration-container {
+                        position: absolute;
+                        right: 5%;
+                        color: #ae9b9b;
+                        font-size: 20px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@keyframes in-opacity {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes rotate-180 {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(180deg);
+    }
+}
+
+@keyframes btn-scale {
+    0% {
+        scale: 100%;
+    }
+
+    50% {
+        scale: 125%;
+    }
+
+    100% {
+        scale: 100%;
+    }
+}
