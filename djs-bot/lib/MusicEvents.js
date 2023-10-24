@@ -5,6 +5,49 @@ const { getClient } = require("../bot");
 const socket = require("../api/v1/dist/ws/eventsHandler");
 const { updateControlMessage, updateNowPlaying } = require("../util/controlChannel");
 
+// entries in this map should be removed when bot disconnected from vc
+const progressUpdater = new Map();
+
+function stopProgressUpdater(guildId) {
+	const prevInterval = progressUpdater.get(guildId);
+
+	if (prevInterval) {
+		clearInterval(prevInterval);
+		progressUpdater.delete(guildId);
+	}
+}
+
+function updateProgress({ player, track }) {
+	const gid = player.guild;
+	stopProgressUpdater(gid);
+
+	progressUpdater.set(
+		gid,
+		setInterval(() => {
+			if (!player.playing || player.paused) return;
+
+			player.position += 1000;
+
+			// !TODO: send to socket
+			console.log({
+				title: track.title,
+				guild: player.guild,
+				position: player.position,
+			});
+		}, 1000)
+	);
+}
+
+function handleVoiceStateUpdate(oldState, newState) {
+	// not leaving vc
+	if (newState.channelId) return;
+
+	// not client user
+	if (newState.member.id !== newState.client.user.id) return;
+
+	stopProgressUpdater(newState.guild.id);
+}
+
 function handleStop({ player }) {
 	socket.handleStop({ guildId: player.guild });
 }
@@ -13,6 +56,9 @@ function handleQueueUpdate({ guildId, player }) {
 	socket.handleQueueUpdate({ guildId, player });
 }
 
+/**
+ * @param {import("./MusicEvents").IHandleTrackStartParams}
+ */
 function handleTrackStart({ player, track }) {
 	const client = getClient();
 
@@ -28,6 +74,8 @@ function handleTrackStart({ player, track }) {
 	socket.handleTrackStart({ player, track });
 	handleQueueUpdate({ guildId: player.guild, player });
 
+	updateProgress({ player, track });
+
 	client.warn(
 		`Player: ${player.guild} | Track has started playing [${colors.blue(track.title)}]`
 	);
@@ -37,4 +85,7 @@ module.exports = {
 	handleTrackStart,
 	handleQueueUpdate,
 	handleStop,
+	updateProgress,
+	stopProgressUpdater,
+	handleVoiceStateUpdate,
 };

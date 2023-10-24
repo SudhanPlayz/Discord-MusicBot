@@ -1,6 +1,7 @@
 import { CosmiTrack } from "cosmicord.js";
 import { Track } from "erela.js";
 import { CosmicordPlayerExtended } from "../lib/clients/MusicClient";
+import { VoiceState } from "discord.js";
 
 export type IUsingPlayer = CosmicordPlayerExtended;
 
@@ -23,3 +24,9 @@ export function handleStop(params: IHandleStopParams): void;
 export function handleTrackStart(params: IHandleTrackStartParams): void;
 
 export function handleQueueUpdate(params: IHandleQueueUpdateParams): void;
+
+export function updateProgress(params: IHandleTrackStartParams): void;
+
+export function stopProgressUpdater(guildId: string): void;
+
+export function handleVoiceStateUpdate(oldState: VoiceState, newState: VoiceState): void;
