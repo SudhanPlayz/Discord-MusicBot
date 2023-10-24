@@ -18,7 +18,7 @@ console.log(`Using "${schema}" as the database schema`);
 // execute the generate command 
 try {
 	console.log("Generating Prisma client...");
-	execSync(`npx prisma generate --schema=${schemasPath}/${schema}.prisma`);
+	execSync(`npx prisma generate --schema=${path.join(__dirname, "..", "prisma", `${schema}.prisma`)}`);
 } catch (error) {
 	console.error(error);
 	throw new Error("Error generating Prisma client");
@@ -27,7 +27,7 @@ try {
 // push the schema to the database
 try {
 	console.log("Pushing schema to database...");
-	execSync(`npx prisma db push --schema=${schemasPath}/${schema}.prisma`);
+	execSync(`npx prisma db push --schema=${path.join(__dirname, "..", "prisma", `${schema}.prisma`)}`);
 } catch (error) {
 	console.error(error);
 	throw new Error("Error pushing schema to database");
