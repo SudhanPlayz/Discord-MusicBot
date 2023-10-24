@@ -10,33 +10,8 @@ import {
 } from '@/utils/common';
 import { ITrack } from '@/interfaces/wsShared';
 import Image from 'next/image';
+import { formatDuration, isNumber } from '@/utils/formatting';
 // import { useRouter } from 'next/router';
-
-function isNumber(v: any): v is number {
-    return typeof v === 'number';
-}
-
-function pad2digit(d: number) {
-    if (d < 10) {
-        return `0${d}`;
-    }
-
-    return `${d}`;
-}
-
-function formatDuration(dur: number) {
-    const minuteMs = 60 * 1000;
-    const hourMs = 60 * minuteMs;
-
-    const hour = Math.floor(dur / hourMs);
-    const minute = Math.floor(dur / minuteMs);
-    const second = (dur % minuteMs) / 1000;
-
-    return (
-        (hour > 0 ? `${pad2digit(hour)}:` : '') +
-        `${pad2digit(minute)}:${pad2digit(second)}`
-    );
-}
 
 type DragHandler = (event: DragEvent<HTMLDivElement>, idx: number) => void;
 

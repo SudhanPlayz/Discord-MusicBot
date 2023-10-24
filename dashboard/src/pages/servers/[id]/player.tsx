@@ -23,6 +23,7 @@ import {
 } from '@/utils/common';
 import { IPlayerEventHandlers } from '@/interfaces/ws';
 import { ITrack, ESocketEventType } from '@/interfaces/wsShared';
+import { formatDuration } from '@/utils/formatting';
 
 function randomEntry(arr: any[]) {
     return arr[Math.floor(Math.random() * arr.length)];
@@ -85,13 +86,14 @@ const Player: NextPageWithLayout = () => {
     const serverId = router.query.id;
 
     const [playlistShow, setPlaylistShow] = useState(false);
-    const [socketLoading, setSocketLoading] = useState(true);
     const [playing, setPlaying] = useState<ITrack | null>(null);
     const [queue, setQueue] = useState<ITrack[] | { dummy?: boolean }[]>(
         dummyQueue,
     );
 
     const sharedState = useSharedStateGetter(globalState);
+
+    const durationDisplayRef = useRef<HTMLDivElement>(null);
 
     const progressbarRef = useRef<HTMLDivElement>(null);
     const progressValueRef = useRef<number>(0);
@@ -108,11 +110,17 @@ const Player: NextPageWithLayout = () => {
             }%`;
         }
 
+        if (durationDisplayRef.current) {
+            durationDisplayRef.current.textContent = `${formatDuration(
+                progressValue ?? 0,
+            )} / ${formatDuration(maxProgressValue.current ?? 0)}`;
+        }
+
         progressValueRef.current = progressValue;
     };
 
     useEffect(
-        () => setProgressValue(progressValueRef.current || 0),
+        () => setProgressValue(progressValueRef.current ?? 0),
         [maxProgressValue],
     );
 
@@ -202,7 +210,21 @@ const Player: NextPageWithLayout = () => {
     const handleProgressEvent: IPlayerEventHandlers[ESocketEventType.PROGRESS] =
         (e) => {
             console.log({ handleProgressEvent: e });
+
+            if (toSeekProgressValue.current !== undefined) return;
+
             setProgressValue(e.d ?? 0);
+
+            // deploy timeouts to "smooth" the progress move until the next progress event
+            // for 2K monitors, value above 3 are a waste of computing power imo
+            // significantly higher resolution monitor might benefit with higher value
+            const smoothLevel = 3;
+            for (let i = 1; i < smoothLevel; i++) {
+                const ts = i * (1000 / smoothLevel);
+                setTimeout(() => {
+                    setProgressValue((e.d && e.d + ts) ?? 0);
+                }, ts);
+            }
         };
 
     const handleErrorEvent: IPlayerEventHandlers[ESocketEventType.ERROR] = (
@@ -347,7 +369,7 @@ const Player: NextPageWithLayout = () => {
                         <div className="remaining-progress"></div>
                     </div>
                     <div
-                        aria-busy={socketLoading}
+                        // aria-busy={socketLoading}
                         aria-describedby="player-progress-bar"
                         className="control-duration-container"
                     >
@@ -372,7 +394,10 @@ const Player: NextPageWithLayout = () => {
                                 </Button>
                             </div>
                         </div>
-                        <div className="duration-container">03:01 / 03:54</div>
+                        <div
+                            ref={durationDisplayRef}
+                            className="duration-container"
+                        ></div>
                     </div>
                 </div>
             </div>

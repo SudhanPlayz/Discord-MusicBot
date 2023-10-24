@@ -30,13 +30,6 @@ function updateProgress({ player, track }) {
 
 			player.position += 1000;
 
-			// !TODO: send to socket
-			console.log({
-				title: track.title,
-				guild: player.guild,
-				position: player.position,
-			});
-
 			socket.handleProgressUpdate({
 				guildId: player.guild,
 				position: player.position,
