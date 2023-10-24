@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require("@discordjs/builders");
+const { SlashCommandBuilder, SlashCommandSubcommandBuilder } = require("@discordjs/builders");
 const Bot = require("./Bot");
 const {
 	EmbedBuilder,
@@ -9,8 +9,23 @@ const { getClient } = require("../bot");
 const { permissionsConfigMessageMapper } = require("../util/common");
 const fuzzysort = require("fuzzysort");
 const { levDistance } = require("../util/string");
-// https://discordjs.guide/popular-topics/builders.html#slash-command-builders
 
+class SubSlashCommand extends SlashCommandSubcommandBuilder {
+	constructor() {
+		super();
+	}
+
+	/**
+	 * Set the available autocomplete options for a string command option
+	 * @param {(input: string, index: number, interaction: CommandInteraction, client:Bot) => Promise<{name:string, value:string}[]>} autocompleteOptions a function that returns an array of autocomplete options
+	 */
+	setAutocompleteOptions(autocompleteOptions) {
+		this.autocompleteOptions = autocompleteOptions;
+		return this;
+	}
+}
+
+// https://discordjs.guide/popular-topics/builders.html#slash-command-builders
 // Extending the main discord.js slash command builder class to facilitate the
 // construction of commands using methods instead of properties
 class SlashCommand extends SlashCommandBuilder {
@@ -19,6 +34,17 @@ class SlashCommand extends SlashCommandBuilder {
 		this.type = 1; // "CHAT_INPUT"
 		this.permissions = [];
 		this.botPermissions = [];
+	}
+
+	/**
+	 * Overrides the Builder class' addSubcommand method to return a SubSlashCommand 
+	 * @override
+	 * @param {SubSlashCommand | ((SubSlashCommand) => SubSlashCommand)} subcommand
+	 */
+	addSubSlashCommand(subcommand) {
+		const sub = typeof subcommand === "function" ? subcommand(new SubSlashCommand()) : subcommand;
+		this.addSubcommand(sub);
+		return sub;
 	}
 
 	/**
@@ -180,9 +206,13 @@ class SlashCommand extends SlashCommandBuilder {
 		return SlashCommand.checkPermission(config, interaction);
 	}
 
-	// Autocomplete handler, takes autocomplete options specified in the command properties
-	// and shows them to the user
-	// node_modules\discord.js\src\structures\AutocompleteInteraction.js
+	/**
+	 * Autocomplete handler, takes autocomplete options specified in the command properties
+	 * and shows them to the user
+	 * node_modules\discord.js\src\structures\AutocompleteInteraction.js
+	 * @param {import("discord.js").Interaction} interaction 
+	 * @returns 
+	 */
 	static async checkAutocomplete(interaction) {
 		if (!interaction.isAutocomplete()) return;
 
@@ -198,9 +228,15 @@ class SlashCommand extends SlashCommandBuilder {
 			.indexOf(true);
 		// Gets the autocomplete options provided by the command
 		/** @type {{name:string, value:string}[]} */
-		let targets = await client.slash
-			.get(interaction.commandName)
-			?.autocompleteOptions?.(input, index, interaction, client);
+		let targets = interaction.options._subcommand ?
+			await client.slash
+				.get(interaction.commandName)
+				?.options.find(
+					(option) => option.name === interaction.options._subcommand)
+				.autocompleteOptions(input, index, interaction, client) :
+			await client.slash
+				.get(interaction.commandName)
+				?.autocompleteOptions?.(input, index, interaction, client);
 
 		// guards for outdated/ex other bot command,
 		// simply don't respond to render error loading message in the discord client

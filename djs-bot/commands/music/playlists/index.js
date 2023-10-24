@@ -1,12 +1,11 @@
 const SlashCommand = require("../../../lib/SlashCommand");
 
 module.exports = new SlashCommand()
-	.setName("config")
-	.setCategory("utility")
+	.setName("playlists")
+	.setCategory("music")
 	.setDBMS()
-	.setDescription("Configure various bot settings")
-	.setUsage("/config [dj-role | control-channel]")
+	.setDescription("Playlist management")
+	.setUsage("/playlists [view | create | delete | add | remove | play]")
 	.setRun(async function(...args) {
 		return this.handleSubCommandInteraction(...args);
 	})
-	.setPermissions(["Administrator"]);

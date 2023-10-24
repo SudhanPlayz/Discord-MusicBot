@@ -4,6 +4,7 @@ import type {
 	Message,
 	PermissionResolvable,
 	SlashCommandBuilder,
+	SlashCommandSubcommandBuilder,
 } from "discord.js";
 import Bot from "./Bot";
 
@@ -46,6 +47,19 @@ interface SubCommandConfig<T> {
 	subCommands: Map<string, SubCommandConfig<T>> | undefined;
 }
 
+declare class SubSlashCommand<T = unknown> extends SlashCommandSubcommandBuilder {
+	
+	autocompleteOptions: AutocompleteOptionsCallback | undefined;
+
+
+	constructor();
+
+	/**
+	 * Set the available autocomplete options for a string command option
+	 */
+	setAutocompleteOptions(autocompleteOptions: AutocompleteOptionsCallback): this;
+}
+
 declare class SlashCommand<T = unknown> extends SlashCommandBuilder {
 	type: number;
 	run: RunCallback<T>;
@@ -59,6 +73,11 @@ declare class SlashCommand<T = unknown> extends SlashCommandBuilder {
 	subCommands: Map<string, SubCommandConfig<T>> | undefined;
 
 	constructor();
+
+	/**
+	 * Overrides the Builder class' addSubcommand method to return a SubSlashCommand
+	 */
+	addSubSlashCommand(input: SubSlashCommand | ((subcommandGroup: SubSlashCommand) => SubSlashCommand)): SubSlashCommand<T>;
 
 	/**
 	 * sets the command run function
