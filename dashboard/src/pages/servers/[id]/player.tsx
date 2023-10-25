@@ -12,6 +12,7 @@ import PlaylistBar from '@/components/PlaylistBar';
 import XIcon from '@/assets/icons/x-solid.svg';
 import SampleThumb from '@/assets/images/sample-thumbnail.png';
 import NextIcon from '@/assets/icons/next.svg';
+import PlayIcon from '@/assets/icons/play.svg';
 import PauseIcon from '@/assets/icons/pause.svg';
 import { playerSocket } from '@/libs/sockets';
 import { IGlobalState } from '@/interfaces/globalState';
@@ -110,6 +111,7 @@ const Player: NextPageWithLayout = () => {
     const progressValueRef = useRef<number>(0);
     const toSeekProgressValue = useRef<number | undefined>();
     const resetProgressRef = useRef<true | undefined>();
+    const setOriginalPausedRef = useRef<true | undefined>();
 
     const maxProgressValue = useRef<number>(1);
 
@@ -143,14 +145,21 @@ const Player: NextPageWithLayout = () => {
 
     const dispatchProgressResetter = (resetTo: number) => {
         resetProgressRef.current = true;
+
         setTimeout(() => {
             if (!resetProgressRef.current) return;
+
             setProgressValue(resetTo);
+            resetProgressRef.current = undefined;
         }, 5000);
     };
 
     const handleSeek = () => {
-        if (toSeekProgressValue.current == undefined) return;
+        if (
+            toSeekProgressValue.current === undefined ||
+            resetProgressRef.current
+        )
+            return;
 
         emitSeek(progressValueRef.current);
 
@@ -232,7 +241,7 @@ const Player: NextPageWithLayout = () => {
         setPlaying(e.d);
         maxProgressValue.current = e.d?.duration ?? FALLBACK_MAX_PROGRESS_VALUE;
         setProgressValue(0);
-        setPaused(false);
+        setPaused(isMaxProgressValueEmpty());
     };
 
     const handleProgressEvent: IPlayerEventHandlers[ESocketEventType.PROGRESS] =
@@ -255,7 +264,7 @@ const Player: NextPageWithLayout = () => {
                 }, ts);
             }
 
-            resetProgressRef.current = undefined;
+            if (resetProgressRef.current) resetProgressRef.current = undefined;
         };
 
     const handlePauseEvent: IPlayerEventHandlers[ESocketEventType.PAUSE] = (
@@ -263,6 +272,9 @@ const Player: NextPageWithLayout = () => {
     ) => {
         console.log({ handlePauseEvent: e });
         setPaused(!!e.d);
+
+        if (setOriginalPausedRef.current)
+            setOriginalPausedRef.current = undefined;
     };
 
     const handleErrorEvent: IPlayerEventHandlers[ESocketEventType.ERROR] = (
@@ -359,6 +371,23 @@ const Player: NextPageWithLayout = () => {
                 maxProgressValue.current,
             ),
         );
+    };
+
+    const togglePlayPause = () => {
+        if (setOriginalPausedRef.current) return;
+        setOriginalPausedRef.current = true;
+
+        const originalPaused = paused;
+
+        const newPaused = !paused;
+        setPaused(newPaused);
+
+        setTimeout(() => {
+            if (!setOriginalPausedRef.current) return;
+
+            setPaused(originalPaused);
+            setOriginalPausedRef.current = undefined;
+        }, 5000);
     };
 
     return (
@@ -467,8 +496,17 @@ const Player: NextPageWithLayout = () => {
                                 </Button>
                             </div>
                             <div className="btn-toggle-container">
-                                <Button className="btn-toggle">
-                                    <PauseIcon />
+                                <Button
+                                    className="btn-toggle"
+                                    onClick={togglePlayPause}
+                                >
+                                    {paused ? (
+                                        <div className="btn-play">
+                                            <PlayIcon />
+                                        </div>
+                                    ) : (
+                                        <PauseIcon />
+                                    )}
                                 </Button>
                             </div>
                             <div className="btn-toggle-container">

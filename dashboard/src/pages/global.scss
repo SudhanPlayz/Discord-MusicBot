@@ -63,6 +63,19 @@ body {
                 background-color: rgba(255, 255, 255, 0.4);
                 box-shadow: 0 0 10px 4px rgba(255, 255, 255, 0.5);
             }
+
+            .btn-play {
+                min-width: 32px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                svg {
+                    path {
+                        fill: white;
+                    }
+                }
+            }
         }
 
         &.btn-navbar-toggle-container {

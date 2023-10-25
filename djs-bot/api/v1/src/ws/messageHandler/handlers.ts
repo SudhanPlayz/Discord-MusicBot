@@ -8,44 +8,67 @@ import {
 import { getBot } from '../..';
 import { wsSendJson } from '../../utils/ws';
 import { createErrPayload } from '../../utils/wsShared';
+import { MusicClient } from '../../../../../lib/clients/MusicClient';
 
-// !TODOS
-export async function handleSeekEvent(
-  ws: WebSocket<IPlayerSocket>,
-  ev: ISocketEvent<ESocketEventType.SEEK>,
+function getTypeOfValidator<T extends ESocketEventType>(
+  type: string,
+  err: string,
 ) {
+  return (e: ISocketEvent<T>) => (typeof e.d !== type ? err : undefined);
+}
+
+function wsUseGuildPlayerRoutine<T extends ESocketEventType>(
+  ws: WebSocket<IPlayerSocket>,
+  ev: ISocketEvent<T>,
+  isArgumentValid: (ev: ISocketEvent<T>) => string | undefined,
+): ReturnType<MusicClient['players']['get']> {
   const bot = getBot(true);
 
   if (!bot) {
-    return wsSendJson(
+    wsSendJson(
       ws,
       createErrPayload(ESocketErrorCode.INTERNAL_SERVER_ERROR, 'Bot offline'),
     );
+    return;
   }
 
-  const to = ev.d;
-
-  if (typeof to !== 'number') {
-    return wsSendJson(
-      ws,
-      createErrPayload(ESocketErrorCode.BAD_REQUEST, 'Invalid argument'),
-    );
+  const err = isArgumentValid(ev);
+  if (err?.length) {
+    wsSendJson(ws, createErrPayload(ESocketErrorCode.BAD_REQUEST, err));
+    return;
   }
 
   const wsData = ws.getUserData();
   const player = bot.manager?.Engine.players.get(wsData.serverId);
 
   if (!player) {
-    return wsSendJson(
+    wsSendJson(
       ws,
       createErrPayload(
         ESocketErrorCode.BAD_REQUEST,
         'No active player in this guild',
       ),
     );
+    return;
   }
 
-  player.seek(to);
+  return player;
+}
+
+// !TODOS
+export async function handleSeekEvent(
+  ws: WebSocket<IPlayerSocket>,
+  ev: ISocketEvent<ESocketEventType.SEEK>,
+) {
+  const player = wsUseGuildPlayerRoutine(
+    ws,
+    ev,
+    getTypeOfValidator('number', 'Invalid argument'),
+  );
+
+  if (!player || ev.d === null) return;
+
+  player.seek(ev.d);
 }
 
 export async function handleGetQueueEvent(
@@ -71,4 +94,14 @@ export async function handlePlayEvent(
 export async function handlePauseEvent(
   ws: WebSocket<IPlayerSocket>,
   ev: ISocketEvent<ESocketEventType.PAUSE>,
-) {}
+) {
+  const player = wsUseGuildPlayerRoutine(
+    ws,
+    ev,
+    getTypeOfValidator('boolean', 'Invalid argument'),
+  );
+
+  if (!player || ev.d === null) return;
+
+  player.pause(ev.d);
+}

@@ -37,6 +37,8 @@ export default function handleMessage(
     return ws.send('0');
   }
 
+  console.log(message);
+
   try {
     const data = JSON.parse(message);
 
