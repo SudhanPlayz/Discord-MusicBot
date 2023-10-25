@@ -194,6 +194,12 @@ const Player: NextPageWithLayout = () => {
     };
 
     const seekerMouseDownHandler = (e: MouseEvent) => {
+        if (
+            toSeekProgressValue.current !== undefined ||
+            resetProgressRef.current
+        )
+            return;
+
         const el = getDocumentDragHandler();
         const seekerEl = document.getElementById('seeker');
         if (!el || !seekerEl) return;
@@ -339,10 +345,18 @@ const Player: NextPageWithLayout = () => {
     ) => {
         e.preventDefault();
 
-        if (isMaxProgressValueEmpty()) return;
+        if (
+            isMaxProgressValueEmpty() ||
+            toSeekProgressValue.current !== undefined ||
+            resetProgressRef.current
+        )
+            return;
 
         const seekTo =
-            (e.clientX / document.body.clientWidth) * maxProgressValue.current;
+            e.clientX && maxProgressValue.current
+                ? (e.clientX / document.body.clientWidth) *
+                  maxProgressValue.current
+                : 0;
 
         emitSeek(seekTo);
 
