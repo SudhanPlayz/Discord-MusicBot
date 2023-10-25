@@ -40,15 +40,18 @@ export function wsPublish<K extends ESocketEventType>(
   bot.wsServer?.publish(topic, JSON.stringify(e));
 }
 
-export function processTrackThumbnail(track: CosmiTrack | Track) {
-  return track.thumbnail?.replace('default.', 'maxresdefault.');
+export function processTrackThumbnail(track: CosmiTrack | Track, hq?: boolean) {
+  return track.thumbnail?.replace(
+    'default.',
+    hq ? 'hqdefault.' : 'maxresdefault.',
+  );
 }
 
-export function getPlayerQueue(player?: CosmiPlayer) {
+export function getPlayerQueue(player?: CosmiPlayer, hqThumbnail?: boolean) {
   if (!player) return [];
 
   return player.queue.map((t) => ({
     ...t,
-    thumbnail: processTrackThumbnail(t),
+    thumbnail: processTrackThumbnail(t, hqThumbnail),
   }));
 }

@@ -15,7 +15,7 @@ export default function handleQueueUpdate({
   const to = 'player/' + guildId;
   const d = createEventPayload(
     ESocketEventType.GET_QUEUE,
-    getPlayerQueue(player),
+    getPlayerQueue(player, true),
   );
 
   // !TODO: debug log, remove when done

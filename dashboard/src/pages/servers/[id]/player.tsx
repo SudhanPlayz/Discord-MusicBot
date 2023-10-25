@@ -32,6 +32,7 @@ import {
     emitSeek,
 } from '@/libs/sockets/player/emit';
 import Image from 'next/image';
+import { getImageOnErrorHandler } from '@/utils/image';
 
 const FALLBACK_MAX_PROGRESS_VALUE = 1;
 
@@ -102,6 +103,7 @@ const Player: NextPageWithLayout = () => {
     const [playlistShow, setPlaylistShow] = useState(false);
     const [playing, setPlaying] = useState<ITrack | null>(null);
     const [paused, setPaused] = useState<boolean>(true);
+    const [mainImgFallback, setMainImgFallback] = useState<boolean>(true);
     const [queue, setQueue] = useState<ITrack[] | { dummy?: boolean }[]>(
         dummyQueue,
     );
@@ -419,6 +421,10 @@ const Player: NextPageWithLayout = () => {
         emitNext();
     };
 
+    const mainImg = !playing?.thumbnail?.length
+        ? SampleThumb.src
+        : playing.thumbnail;
+
     return (
         <div className="player-page-container">
             <div
@@ -465,17 +471,25 @@ const Player: NextPageWithLayout = () => {
                 <div className="top-container">
                     <div className="thumbnail-container">
                         <Image
-                            src={
-                                !playing?.thumbnail?.length
-                                    ? SampleThumb.src
-                                    : playing.thumbnail
-                            }
+                            src={mainImg}
                             alt="Thumbnail"
-                            width={1200}
-                            height={900}
+                            width={mainImgFallback ? 480 : 1200}
+                            height={mainImgFallback ? 360 : 900}
                             style={{
                                 objectFit: 'contain',
                             }}
+                            onError={getImageOnErrorHandler({
+                                img: mainImg,
+                                setImgFallback: setMainImgFallback,
+                                setNewImg: (newImg: string) => {
+                                    setPlaying((v) => {
+                                        if (v?.thumbnail?.length)
+                                            v.thumbnail = newImg;
+
+                                        return v;
+                                    });
+                                },
+                            })}
                         />
                     </div>
                     <div className="track-info-container">
