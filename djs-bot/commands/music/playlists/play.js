@@ -1,4 +1,4 @@
-const { joinStageChannelRoutine } = require("../../../util/player");
+const { joinStageChannelRoutine, addTrack } = require("../../../util/player");
 const { capitalize } = require("../../../util/string");
 const { redEmbed } = require("../../../util/embeds");
 
@@ -112,7 +112,7 @@ async function runPlay(client, interaction, options) {
 
     for (const song of songs) {
         const songSearch = await player.search(song.link, interaction.user.id);
-        player.queue.add(songSearch.tracks[0]);
+        addTrack(songSearch.tracks[0]);
     }
 
     if (channel.type == "GUILD_STAGE_VOICE") {
