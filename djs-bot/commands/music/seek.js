@@ -46,7 +46,7 @@ const command = new SlashCommand()
 		const rawArgs = interaction.options.getString("time");
 		const args = rawArgs.split(' ');
 		var rawTime = [];
-		for (i = 0; i < args.length; i++){
+		for (let i = 0; i < args.length; i++){
 			rawTime.push(ms(args[i]));
 		}
 		const time = rawTime.reduce((a,b) => a + b, 0);

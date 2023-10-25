@@ -50,13 +50,16 @@ export const enum ESocketEventType {
 export const enum ESocketErrorCode {
     NOTHING,
     INVALID_EVENT,
+    // these should probably in new field called 'status'?
+    INTERNAL_SERVER_ERROR,
+    BAD_REQUEST,
 }
 
 export interface ISocketData {
     [ESocketEventType.ERROR]: { code: ESocketErrorCode; message?: string };
     [ESocketEventType.SEEK]: {
         // !TODO: lavalink seeking with string or number?
-        t: string;
+        t: number;
     };
     [ESocketEventType.GET_QUEUE]: ITrack[];
     [ESocketEventType.SEARCH]: {

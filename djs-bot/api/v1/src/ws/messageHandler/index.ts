@@ -1,43 +1,16 @@
 import { WebSocket } from 'uWebSockets.js';
 import { playerLog } from '../../utils/log';
 import { IPlayerSocket } from '../../interfaces/ws';
-import {
-  ESocketErrorCode,
-  ESocketEventType,
-  ISocketEvent,
-} from '../../interfaces/wsShared';
+import { ESocketErrorCode, ESocketEventType } from '../../interfaces/wsShared';
 import { createErrPayload, wsSendJson } from '../../utils/ws';
-
-// !TODOS
-async function handleSeekEvent(
-  ws: WebSocket<IPlayerSocket>,
-  ev: ISocketEvent<ESocketEventType.SEEK>,
-) {}
-
-async function handleGetQueueEvent(
-  ws: WebSocket<IPlayerSocket>,
-  ev: ISocketEvent<ESocketEventType.GET_QUEUE>,
-) {}
-
-async function handleSearchEvent(
-  ws: WebSocket<IPlayerSocket>,
-  ev: ISocketEvent<ESocketEventType.SEARCH>,
-) {}
-
-async function handleAddTrackEvent(
-  ws: WebSocket<IPlayerSocket>,
-  ev: ISocketEvent<ESocketEventType.ADD_TRACK>,
-) {}
-
-async function handlePlayEvent(
-  ws: WebSocket<IPlayerSocket>,
-  ev: ISocketEvent<ESocketEventType.PLAY>,
-) {}
-
-async function handlePauseEvent(
-  ws: WebSocket<IPlayerSocket>,
-  ev: ISocketEvent<ESocketEventType.PAUSE>,
-) {}
+import {
+  handleSeekEvent,
+  handleGetQueueEvent,
+  handleSearchEvent,
+  handleAddTrackEvent,
+  handlePlayEvent,
+  handlePauseEvent,
+} from './handlers';
 
 const handlers = {
   // whether these should been fastify endpoints are up for debate
