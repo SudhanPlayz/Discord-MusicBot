@@ -103,7 +103,7 @@ const Player: NextPageWithLayout = () => {
     const [playlistShow, setPlaylistShow] = useState(false);
     const [playing, setPlaying] = useState<ITrack | null>(null);
     const [paused, setPaused] = useState<boolean>(true);
-    const [mainImgFallback, setMainImgFallback] = useState<boolean>(true);
+    const [mainImgFallback, setMainImgFallback] = useState<boolean>(false);
     const [queue, setQueue] = useState<ITrack[] | { dummy?: boolean }[]>(
         dummyQueue,
     );
