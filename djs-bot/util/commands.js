@@ -12,6 +12,6 @@ const reply = async (interaction, desc) =>
 		ephemeral: true,
 	});
 
-module.export = {
+module.exports = {
 	reply,
 };
