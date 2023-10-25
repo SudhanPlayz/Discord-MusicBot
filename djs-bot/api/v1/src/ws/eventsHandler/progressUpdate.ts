@@ -1,5 +1,6 @@
 import { ESocketEventType } from '../../interfaces/wsShared';
-import { createEventPayload, wsPublish } from '../../utils/ws';
+import { wsPublish } from '../../utils/ws';
+import { createEventPayload } from '../../utils/wsShared';
 
 export default function handleProgressUpdate({
   guildId,

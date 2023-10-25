@@ -1,8 +1,9 @@
 import { ESocketEventType } from '../../interfaces/wsShared';
-import { createEventPayload, getPlayerQueue, wsPublish } from '../../utils/ws';
+import { getPlayerQueue, wsPublish } from '../../utils/ws';
 
 // this is hilarious
 import { IHandleQueueUpdateParams } from '../../../../../lib/MusicEvents.d';
+import { createEventPayload } from '../../utils/wsShared';
 
 export default function handleQueueUpdate({
   guildId,
