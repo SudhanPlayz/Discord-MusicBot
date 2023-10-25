@@ -48,7 +48,7 @@
     "rlyrics": "^2.0.1",
     "shoukaku": "^3.4.0",
     "songcard": "^1.0.7",
-    "uWebSockets.js": "github:uNetworking/uWebSockets.js#v20.32.0",
+    "uWebSockets.js": "github:uNetworking/uWebSockets.js#v20.33.0",
     "winston": "^3.10.0",
     "youtube-sr": "^4.3.4"
   },
