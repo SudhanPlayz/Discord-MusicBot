@@ -477,6 +477,8 @@ const Player: NextPageWithLayout = () => {
                             height={mainImgFallback ? 360 : 900}
                             style={{
                                 objectFit: 'contain',
+                                width: '100%',
+                                height: '100%',
                             }}
                             onError={getImageOnErrorHandler({
                                 img: mainImg,
