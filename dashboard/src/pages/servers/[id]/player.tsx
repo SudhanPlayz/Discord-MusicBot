@@ -31,6 +31,7 @@ import {
     emitPrevious,
     emitSeek,
 } from '@/libs/sockets/player/emit';
+import Image from 'next/image';
 
 const FALLBACK_MAX_PROGRESS_VALUE = 1;
 
@@ -463,13 +464,18 @@ const Player: NextPageWithLayout = () => {
             <div className="main-player-content-container">
                 <div className="top-container">
                     <div className="thumbnail-container">
-                        <img
+                        <Image
                             src={
                                 !playing?.thumbnail?.length
                                     ? SampleThumb.src
                                     : playing.thumbnail
                             }
                             alt="Thumbnail"
+                            width={1200}
+                            height={900}
+                            style={{
+                                objectFit: 'contain',
+                            }}
                         />
                     </div>
                     <div className="track-info-container">

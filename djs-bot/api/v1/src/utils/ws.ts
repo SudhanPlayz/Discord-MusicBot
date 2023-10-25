@@ -3,7 +3,8 @@ import { WS_ROUTES_PREFIX } from '../lib/constants';
 import { IPlayerSocket } from '../interfaces/ws';
 import { ESocketEventType, ISocketEvent } from '../interfaces/wsShared';
 import { getBot } from '..';
-import { CosmiPlayer } from 'cosmicord.js';
+import { CosmiPlayer, CosmiTrack } from 'cosmicord.js';
+import { Track } from 'erela.js';
 
 export function createWsRoute(route: string) {
   return WS_ROUTES_PREFIX + route;
@@ -39,10 +40,15 @@ export function wsPublish<K extends ESocketEventType>(
   bot.wsServer?.publish(topic, JSON.stringify(e));
 }
 
+export function processTrackThumbnail(track: CosmiTrack | Track) {
+  return track.thumbnail?.replace('default.', 'maxresdefault.');
+}
+
 export function getPlayerQueue(player?: CosmiPlayer) {
   if (!player) return [];
 
   return player.queue.map((t) => ({
     ...t,
+    thumbnail: processTrackThumbnail(t),
   }));
 }

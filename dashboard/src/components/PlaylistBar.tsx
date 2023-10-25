@@ -46,8 +46,8 @@ function Track({ idx, onDragStart, dragIdx, dragRef, track }: ITrackProps) {
             <div className={classNames('thumb', isDragging ? 'hidden' : '')}>
                 <Image
                     src={thumbnail as string}
-                    width={120}
-                    height={90}
+                    width={1200}
+                    height={900}
                     alt="Thumb"
                     style={{
                         objectFit: 'cover',
