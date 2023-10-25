@@ -75,6 +75,7 @@ function handleTrackStart({ player, track }) {
 	updateControlMessage(player.guild, track);
 
 	socket.handleTrackStart({ player, track });
+	socket.handlePause({ guildId: player.guild, state: player.paused });
 	handleQueueUpdate({ guildId: player.guild, player });
 
 	updateProgress({ player, track });

@@ -9,7 +9,7 @@ import {
 	CosmiPlayer,
 } from "cosmicord.js";
 
-interface CosmicordPlayerExtended extends CosmiPlayer {
+export interface CosmicordPlayerExtended extends CosmiPlayer {
 	search(query: CosmiSearchQuery, requesterId?: string): Promise<CosmiLoadedTracks>;
 	setResumeMessage(client: Bot, message: Message): Message<boolean>;
 	setPausedMessage(client: Bot, message: Message): Message<boolean>;

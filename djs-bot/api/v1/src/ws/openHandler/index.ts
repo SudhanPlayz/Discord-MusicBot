@@ -43,8 +43,11 @@ export default function handleOpen(ws: WebSocket<IPlayerSocket>) {
     const d = createEventPayload(ESocketEventType.PLAYING, { ...playing });
     // progress payload
     const d2 = createEventPayload(ESocketEventType.PROGRESS, player.position);
+    // paused state
+    const dp = createEventPayload(ESocketEventType.PAUSE, player.paused);
 
     wsSendJson(ws, d);
     wsSendJson(ws, d2);
+    wsSendJson(ws, dp);
   } else sendDEmpty();
 }

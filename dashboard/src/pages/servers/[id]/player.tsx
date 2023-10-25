@@ -25,7 +25,7 @@ import {
 import { IPlayerEventHandlers } from '@/interfaces/ws';
 import { ITrack, ESocketEventType } from '@/interfaces/wsShared';
 import { formatDuration } from '@/utils/formatting';
-import { emitSeek } from '@/libs/sockets/player/emit';
+import { emitPause, emitSeek } from '@/libs/sockets/player/emit';
 
 const FALLBACK_MAX_PROGRESS_VALUE = 1;
 
@@ -241,7 +241,6 @@ const Player: NextPageWithLayout = () => {
         setPlaying(e.d);
         maxProgressValue.current = e.d?.duration ?? FALLBACK_MAX_PROGRESS_VALUE;
         setProgressValue(0);
-        setPaused(isMaxProgressValueEmpty());
     };
 
     const handleProgressEvent: IPlayerEventHandlers[ESocketEventType.PROGRESS] =
@@ -380,6 +379,8 @@ const Player: NextPageWithLayout = () => {
         const originalPaused = paused;
 
         const newPaused = !paused;
+
+        emitPause(newPaused);
         setPaused(newPaused);
 
         setTimeout(() => {

@@ -8,7 +8,13 @@ import {
 import { getBot } from '../..';
 import { wsSendJson } from '../../utils/ws';
 import { createErrPayload } from '../../utils/wsShared';
-import { MusicClient } from '../../../../../lib/clients/MusicClient';
+import { handlePause } from '../eventsHandler';
+
+// very funny
+import {
+  CosmicordPlayerExtended,
+  MusicClient,
+} from '../../../../../lib/clients/MusicClient';
 
 function getTypeOfValidator<T extends ESocketEventType>(
   type: string,
@@ -104,4 +110,9 @@ export async function handlePauseEvent(
   if (!player || ev.d === null) return;
 
   player.pause(ev.d);
+
+  handlePause({
+    guildId: (player as CosmicordPlayerExtended).guild,
+    state: player.paused,
+  });
 }
