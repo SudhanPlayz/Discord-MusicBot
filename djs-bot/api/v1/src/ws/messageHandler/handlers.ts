@@ -6,7 +6,8 @@ import {
   ISocketEvent,
 } from '../../interfaces/wsShared';
 import { getBot } from '../..';
-import { createErrPayload, wsSendJson } from '../../utils/ws';
+import { wsSendJson } from '../../utils/ws';
+import { createErrPayload } from '../../utils/wsShared';
 
 // !TODOS
 export async function handleSeekEvent(

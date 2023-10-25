@@ -2,7 +2,7 @@ import { WebSocket } from 'uWebSockets.js';
 import { playerLog } from '../../utils/log';
 import { IPlayerSocket } from '../../interfaces/ws';
 import { ESocketErrorCode, ESocketEventType } from '../../interfaces/wsShared';
-import { createErrPayload, wsSendJson } from '../../utils/ws';
+import { wsSendJson } from '../../utils/ws';
 import {
   handleSeekEvent,
   handleGetQueueEvent,
@@ -11,6 +11,7 @@ import {
   handlePlayEvent,
   handlePauseEvent,
 } from './handlers';
+import { createErrPayload } from '../../utils/wsShared';
 
 const handlers = {
   // whether these should been fastify endpoints are up for debate

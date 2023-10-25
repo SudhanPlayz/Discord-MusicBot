@@ -1,12 +1,7 @@
 import { HttpResponse, WebSocket } from 'uWebSockets.js';
 import { WS_ROUTES_PREFIX } from '../lib/constants';
 import { IPlayerSocket } from '../interfaces/ws';
-import {
-  ESocketErrorCode,
-  ESocketEventType,
-  ISocketData,
-  ISocketEvent,
-} from '../interfaces/wsShared';
+import { ESocketEventType, ISocketEvent } from '../interfaces/wsShared';
 import { getBot } from '..';
 import { CosmiPlayer } from 'cosmicord.js';
 
@@ -24,26 +19,6 @@ export function resEndJson(res: HttpResponse, json: object) {
 
 export function wsSendJson<T = {}>(ws: WebSocket<T>, json: object) {
   ws.send(JSON.stringify(json));
-}
-
-export function createErrPayload<K extends ESocketErrorCode>(
-  code: K,
-  message?: string,
-): ISocketEvent<ESocketEventType.ERROR> {
-  return {
-    e: ESocketEventType.ERROR,
-    d: { code, message },
-  };
-}
-
-export function createEventPayload<K extends ESocketEventType>(
-  e: K,
-  d: ISocketData[K] | null = null,
-) {
-  return {
-    e,
-    d,
-  };
 }
 
 export function wsPlayerSubscribe(ws: WebSocket<IPlayerSocket>) {

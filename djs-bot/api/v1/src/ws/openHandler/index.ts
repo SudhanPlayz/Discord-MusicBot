@@ -1,14 +1,9 @@
 import { WebSocket } from 'uWebSockets.js';
 import { ESocketErrorCode, ESocketEventType } from '../../interfaces/wsShared';
 import { getBot } from '../..';
-import {
-  createErrPayload,
-  createEventPayload,
-  getPlayerQueue,
-  wsPlayerSubscribe,
-  wsSendJson,
-} from '../../utils/ws';
+import { getPlayerQueue, wsPlayerSubscribe, wsSendJson } from '../../utils/ws';
 import { IPlayerSocket } from '../../interfaces/ws';
+import { createErrPayload, createEventPayload } from '../../utils/wsShared';
 
 export default function handleOpen(ws: WebSocket<IPlayerSocket>) {
   const bot = getBot();

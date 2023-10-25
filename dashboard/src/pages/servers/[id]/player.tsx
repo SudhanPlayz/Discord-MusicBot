@@ -24,6 +24,7 @@ import {
 import { IPlayerEventHandlers } from '@/interfaces/ws';
 import { ITrack, ESocketEventType } from '@/interfaces/wsShared';
 import { formatDuration } from '@/utils/formatting';
+import { emitSeek } from '@/libs/sockets/player/emit';
 
 function randomEntry(arr: any[]) {
     return arr[Math.floor(Math.random() * arr.length)];
@@ -127,7 +128,7 @@ const Player: NextPageWithLayout = () => {
     const handleSeek = () => {
         if (toSeekProgressValue.current == undefined) return;
 
-        // !TODO: send seek event to socket
+        emitSeek(progressValueRef.current);
 
         setProgressValue(toSeekProgressValue.current);
         toSeekProgressValue.current = undefined;
