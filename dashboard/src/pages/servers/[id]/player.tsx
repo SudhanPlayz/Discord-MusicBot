@@ -488,8 +488,8 @@ const Player: NextPageWithLayout = () => {
                         <Image
                             src={mainImg}
                             alt="Thumbnail"
-                            width={mainImgFallback ? 480 : 1200}
-                            height={mainImgFallback ? 360 : 900}
+                            width={mainImgFallback ? 640 : 1280}
+                            height={mainImgFallback ? 480 : 720}
                             style={{
                                 objectFit: 'contain',
                             }}
