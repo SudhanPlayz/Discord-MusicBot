@@ -2,7 +2,7 @@ import { NextPageWithLayout } from '@/interfaces/layouts';
 import DashboardLayout from '@/layouts/DashboardLayout';
 import { Button, Tooltip } from '@nextui-org/react';
 import { useRouter } from 'next/router';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import NavbarIcon from '@/assets/icons/navbar-icon.svg';
 import classNames from 'classnames';
 import useSharedStateGetter from '@/hooks/useSharedStateGetter';
@@ -425,6 +425,21 @@ const Player: NextPageWithLayout = () => {
         ? SampleThumb.src
         : playing.thumbnail;
 
+    const handleImageError = useCallback(
+        getImageOnErrorHandler({
+            img: mainImg,
+            setImgFallback: (fb: boolean) => setMainImgFallback(fb),
+            setNewImg: (newImg: string) => {
+                setPlaying((v) => {
+                    if (v?.thumbnail?.length) v.thumbnail = newImg;
+
+                    return v;
+                });
+            },
+        }),
+        [mainImg],
+    );
+
     return (
         <div className="player-page-container">
             <div
@@ -477,21 +492,8 @@ const Player: NextPageWithLayout = () => {
                             height={mainImgFallback ? 360 : 900}
                             style={{
                                 objectFit: 'contain',
-                                width: '100%',
-                                height: '100%',
                             }}
-                            onError={getImageOnErrorHandler({
-                                img: mainImg,
-                                setImgFallback: setMainImgFallback,
-                                setNewImg: (newImg: string) => {
-                                    setPlaying((v) => {
-                                        if (v?.thumbnail?.length)
-                                            v.thumbnail = newImg;
-
-                                        return v;
-                                    });
-                                },
-                            })}
+                            onError={handleImageError}
                         />
                     </div>
                     <div className="track-info-container">

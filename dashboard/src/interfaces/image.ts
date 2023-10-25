@@ -1,7 +1,5 @@
-import { Dispatch, SetStateAction } from 'react';
-
 export interface IGetImageOnErrorHandlerOptions {
     img: string;
-    setImgFallback: Dispatch<SetStateAction<boolean>>;
+    setImgFallback: (fb: boolean) => void;
     setNewImg: (newImg: string) => void;
 }
