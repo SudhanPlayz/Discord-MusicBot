@@ -13,6 +13,7 @@ const Home: NextPageWithLayout = () => {
 
     return (
         <Container
+            fluid
             css={{
                 overflow: 'auto',
             }}
