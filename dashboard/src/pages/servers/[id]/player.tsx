@@ -1,6 +1,6 @@
 import { NextPageWithLayout } from '@/interfaces/layouts';
 import DashboardLayout from '@/layouts/DashboardLayout';
-import { Button } from '@nextui-org/react';
+import { Button, Tooltip } from '@nextui-org/react';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 import NavbarIcon from '@/assets/icons/navbar-icon.svg';
@@ -27,6 +27,10 @@ import { formatDuration } from '@/utils/formatting';
 import { emitSeek } from '@/libs/sockets/player/emit';
 
 const FALLBACK_MAX_PROGRESS_VALUE = 1;
+
+const formatTrackDuration = (value: number, max: number) => {
+    return `${formatDuration(value ?? 0)} / ${formatDuration(max ?? 0)}`;
+};
 
 function randomEntry(arr: any[]) {
     return arr[Math.floor(Math.random() * arr.length)];
@@ -93,6 +97,9 @@ const Player: NextPageWithLayout = () => {
     const [queue, setQueue] = useState<ITrack[] | { dummy?: boolean }[]>(
         dummyQueue,
     );
+    const [progressTooltip, setProgressTooltip] = useState<
+        string | undefined
+    >();
 
     const sharedState = useSharedStateGetter(globalState);
 
@@ -101,8 +108,13 @@ const Player: NextPageWithLayout = () => {
     const progressbarRef = useRef<HTMLDivElement>(null);
     const progressValueRef = useRef<number>(0);
     const toSeekProgressValue = useRef<number | undefined>();
+    const resetProgressRef = useRef<true | undefined>();
 
     const maxProgressValue = useRef<number>(1);
+
+    const isMaxProgressValueEmpty = () =>
+        !maxProgressValue.current ||
+        maxProgressValue.current === FALLBACK_MAX_PROGRESS_VALUE;
 
     const setProgressValue = (progressValue: number) => {
         if (progressbarRef.current) {
@@ -114,9 +126,10 @@ const Player: NextPageWithLayout = () => {
         }
 
         if (durationDisplayRef.current) {
-            durationDisplayRef.current.textContent = `${formatDuration(
-                progressValue ?? 0,
-            )} / ${formatDuration(maxProgressValue.current ?? 0)}`;
+            durationDisplayRef.current.textContent = formatTrackDuration(
+                progressValue,
+                maxProgressValue.current,
+            );
         }
 
         progressValueRef.current = progressValue;
@@ -127,12 +140,21 @@ const Player: NextPageWithLayout = () => {
         [maxProgressValue],
     );
 
+    const dispatchProgressResetter = (resetTo: number) => {
+        resetProgressRef.current = true;
+        setTimeout(() => {
+            if (!resetProgressRef.current) return;
+            setProgressValue(resetTo);
+        }, 5000);
+    };
+
     const handleSeek = () => {
         if (toSeekProgressValue.current == undefined) return;
 
         emitSeek(progressValueRef.current);
 
-        setProgressValue(toSeekProgressValue.current);
+        dispatchProgressResetter(toSeekProgressValue.current);
+
         toSeekProgressValue.current = undefined;
     };
 
@@ -226,9 +248,12 @@ const Player: NextPageWithLayout = () => {
             for (let i = 1; i < smoothLevel; i++) {
                 const ts = i * (1000 / smoothLevel);
                 setTimeout(() => {
+                    if (resetProgressRef.current) return;
                     setProgressValue((e.d && e.d + ts) ?? 0);
                 }, ts);
             }
+
+            resetProgressRef.current = undefined;
         };
 
     const handleErrorEvent: IPlayerEventHandlers[ESocketEventType.ERROR] = (
@@ -293,14 +318,36 @@ const Player: NextPageWithLayout = () => {
     ) => {
         e.preventDefault();
 
-        if (
-            !maxProgressValue.current ||
-            maxProgressValue.current === FALLBACK_MAX_PROGRESS_VALUE
-        )
-            return;
+        if (isMaxProgressValueEmpty()) return;
 
-        emitSeek(
-            (e.clientX / document.body.clientWidth) * maxProgressValue.current,
+        const seekTo =
+            (e.clientX / document.body.clientWidth) * maxProgressValue.current;
+
+        emitSeek(seekTo);
+
+        dispatchProgressResetter(progressValueRef.current);
+        setProgressValue(seekTo);
+    };
+
+    const handleProgressMouseMove: React.MouseEventHandler<HTMLDivElement> = (
+        e,
+    ) => {
+        if (isMaxProgressValueEmpty()) return;
+
+        e.preventDefault();
+
+        const ptEl = document.getElementById('progress-tooltip');
+
+        if (ptEl) {
+            ptEl.style.width = `${String(e.clientX * 2)}px`;
+        }
+
+        setProgressTooltip(
+            formatTrackDuration(
+                (e.clientX / document.body.clientWidth) *
+                    maxProgressValue.current,
+                maxProgressValue.current,
+            ),
         );
     };
 
@@ -373,13 +420,27 @@ const Player: NextPageWithLayout = () => {
                 </div>
 
                 <div className="player-control-container">
-                    <div id="player-progress-bar" onClick={handleProgressClick}>
-                        <div ref={progressbarRef} className="progress-value">
-                            <div id="seeker"></div>
-                        </div>
+                    <Tooltip
+                        content={progressTooltip}
+                        color="secondary"
+                        placement="top"
+                        id="progress-tooltip"
+                    >
+                        <div
+                            id="player-progress-bar"
+                            onClick={handleProgressClick}
+                            onMouseMove={handleProgressMouseMove}
+                        >
+                            <div
+                                ref={progressbarRef}
+                                className="progress-value"
+                            >
+                                <div id="seeker"></div>
+                            </div>
 
-                        <div className="remaining-progress"></div>
-                    </div>
+                            <div className="remaining-progress"></div>
+                        </div>
+                    </Tooltip>
                     <div
                         // aria-busy={socketLoading}
                         aria-describedby="player-progress-bar"
