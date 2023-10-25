@@ -25,7 +25,12 @@ import {
 import { IPlayerEventHandlers } from '@/interfaces/ws';
 import { ITrack, ESocketEventType } from '@/interfaces/wsShared';
 import { formatDuration } from '@/utils/formatting';
-import { emitPause, emitSeek } from '@/libs/sockets/player/emit';
+import {
+    emitNext,
+    emitPause,
+    emitPrevious,
+    emitSeek,
+} from '@/libs/sockets/player/emit';
 
 const FALLBACK_MAX_PROGRESS_VALUE = 1;
 
@@ -405,6 +410,14 @@ const Player: NextPageWithLayout = () => {
         }, 5000);
     };
 
+    const handlePrevious = () => {
+        emitPrevious();
+    };
+
+    const handleNext = () => {
+        emitNext();
+    };
+
     return (
         <div className="player-page-container">
             <div
@@ -502,7 +515,10 @@ const Player: NextPageWithLayout = () => {
                     >
                         <div className="control-container">
                             <div className="btn-toggle-container">
-                                <Button className="btn-toggle">
+                                <Button
+                                    className="btn-toggle"
+                                    onClick={handlePrevious}
+                                >
                                     <NextIcon
                                         style={{
                                             transform: 'rotate(180deg)',
@@ -525,7 +541,10 @@ const Player: NextPageWithLayout = () => {
                                 </Button>
                             </div>
                             <div className="btn-toggle-container">
-                                <Button className="btn-toggle">
+                                <Button
+                                    className="btn-toggle"
+                                    onClick={handleNext}
+                                >
                                     <NextIcon />
                                 </Button>
                             </div>

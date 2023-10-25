@@ -8,7 +8,8 @@ import {
 import { getBot } from '../..';
 import { wsSendJson } from '../../utils/ws';
 import { createErrPayload } from '../../utils/wsShared';
-import { handlePause } from '../eventsHandler';
+import { handlePause, handleStop } from '../eventsHandler';
+import * as playerUtil from '../../utils/player';
 
 // very funny
 import {
@@ -26,7 +27,7 @@ function getTypeOfValidator<T extends ESocketEventType>(
 function wsUseGuildPlayerRoutine<T extends ESocketEventType>(
   ws: WebSocket<IPlayerSocket>,
   ev: ISocketEvent<T>,
-  isArgumentValid: (ev: ISocketEvent<T>) => string | undefined,
+  isArgumentValid?: (ev: ISocketEvent<T>) => string | undefined,
 ): ReturnType<MusicClient['players']['get']> {
   const bot = getBot(true);
 
@@ -38,10 +39,12 @@ function wsUseGuildPlayerRoutine<T extends ESocketEventType>(
     return;
   }
 
-  const err = isArgumentValid(ev);
-  if (err?.length) {
-    wsSendJson(ws, createErrPayload(ESocketErrorCode.BAD_REQUEST, err));
-    return;
+  if (isArgumentValid) {
+    const err = isArgumentValid(ev);
+    if (err?.length) {
+      wsSendJson(ws, createErrPayload(ESocketErrorCode.BAD_REQUEST, err));
+      return;
+    }
   }
 
   const wsData = ws.getUserData();
@@ -115,4 +118,26 @@ export async function handlePauseEvent(
     guildId: (player as CosmicordPlayerExtended).guild,
     state: player.paused,
   });
+}
+
+export async function handlePreviousEvent(
+  ws: WebSocket<IPlayerSocket>,
+  ev: ISocketEvent<ESocketEventType.PREVIOUS>,
+) {
+  const player = wsUseGuildPlayerRoutine(ws, ev);
+
+  if (!player) return;
+
+  await playerUtil.playPrevious(player as CosmicordPlayerExtended);
+}
+
+export async function handleNextEvent(
+  ws: WebSocket<IPlayerSocket>,
+  ev: ISocketEvent<ESocketEventType.PREVIOUS>,
+) {
+  const player = wsUseGuildPlayerRoutine(ws, ev);
+
+  if (!player) return;
+
+  playerUtil.skip(player as CosmicordPlayerExtended);
 }
