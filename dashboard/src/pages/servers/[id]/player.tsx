@@ -26,6 +26,8 @@ import { ITrack, ESocketEventType } from '@/interfaces/wsShared';
 import { formatDuration } from '@/utils/formatting';
 import { emitSeek } from '@/libs/sockets/player/emit';
 
+const FALLBACK_MAX_PROGRESS_VALUE = 1;
+
 function randomEntry(arr: any[]) {
     return arr[Math.floor(Math.random() * arr.length)];
 }
@@ -205,7 +207,7 @@ const Player: NextPageWithLayout = () => {
     ) => {
         console.log({ handlePlayingEvent: e });
         setPlaying(e.d);
-        maxProgressValue.current = e.d?.duration ?? 1;
+        maxProgressValue.current = e.d?.duration ?? FALLBACK_MAX_PROGRESS_VALUE;
         setProgressValue(0);
     };
 
@@ -291,7 +293,15 @@ const Player: NextPageWithLayout = () => {
     ) => {
         e.preventDefault();
 
-        // !TODO: sendSeek((e.clientX / document.body.clientWidth) * maxProgressValue);
+        if (
+            !maxProgressValue.current ||
+            maxProgressValue.current === FALLBACK_MAX_PROGRESS_VALUE
+        )
+            return;
+
+        emitSeek(
+            (e.clientX / document.body.clientWidth) * maxProgressValue.current,
+        );
     };
 
     return (
