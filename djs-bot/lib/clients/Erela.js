@@ -12,6 +12,7 @@ const spotify = require("better-erela.js-spotify").default; // <---
 const { default: AppleMusic } = require("better-erela.js-apple"); // <---
 const { updateControlMessage } = require("../../util/controlChannel");
 const { handleTrackStart } = require("../MusicEvents");
+const { pause } = require("../../util/player");
 
 Structure.extend(
 	"Player",
@@ -251,7 +252,7 @@ module.exports = (client) => {
 				return player.destroy();
 			} else {
 				player.voiceChannel = newChannel;
-				setTimeout(() => player.pause(false), 1000);
+				setTimeout(() => pause(player,false), 1000);
 				return undefined;
 			}
 		})

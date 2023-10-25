@@ -23,7 +23,7 @@ export async function handleSeekEvent(
     );
   }
 
-  const to = ev.d?.t;
+  const to = ev.d;
 
   if (typeof to !== 'number') {
     return wsSendJson(

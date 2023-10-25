@@ -94,6 +94,7 @@ const Player: NextPageWithLayout = () => {
 
     const [playlistShow, setPlaylistShow] = useState(false);
     const [playing, setPlaying] = useState<ITrack | null>(null);
+    const [paused, setPaused] = useState<boolean>(true);
     const [queue, setQueue] = useState<ITrack[] | { dummy?: boolean }[]>(
         dummyQueue,
     );
@@ -231,6 +232,7 @@ const Player: NextPageWithLayout = () => {
         setPlaying(e.d);
         maxProgressValue.current = e.d?.duration ?? FALLBACK_MAX_PROGRESS_VALUE;
         setProgressValue(0);
+        setPaused(false);
     };
 
     const handleProgressEvent: IPlayerEventHandlers[ESocketEventType.PROGRESS] =
@@ -256,6 +258,13 @@ const Player: NextPageWithLayout = () => {
             resetProgressRef.current = undefined;
         };
 
+    const handlePauseEvent: IPlayerEventHandlers[ESocketEventType.PAUSE] = (
+        e,
+    ) => {
+        console.log({ handlePauseEvent: e });
+        setPaused(!!e.d);
+    };
+
     const handleErrorEvent: IPlayerEventHandlers[ESocketEventType.ERROR] = (
         e,
     ) => {
@@ -267,6 +276,7 @@ const Player: NextPageWithLayout = () => {
         [ESocketEventType.ERROR]: handleErrorEvent,
         [ESocketEventType.PLAYING]: handlePlayingEvent,
         [ESocketEventType.PROGRESS]: handleProgressEvent,
+        [ESocketEventType.PAUSE]: handlePauseEvent,
     };
 
     const handleSocketClose = (e: CloseEvent) => {

@@ -57,10 +57,7 @@ export const enum ESocketErrorCode {
 
 export interface ISocketData {
   [ESocketEventType.ERROR]: { code: ESocketErrorCode; message?: string };
-  [ESocketEventType.SEEK]: {
-    // !TODO: lavalink seeking with string or number?
-    t: number;
-  };
+  [ESocketEventType.SEEK]: number;
   [ESocketEventType.GET_QUEUE]: ITrack[];
   [ESocketEventType.SEARCH]: {
     // query
@@ -71,7 +68,7 @@ export interface ISocketData {
   };
   [ESocketEventType.PLAYING]: ITrack;
   [ESocketEventType.PLAY]: null;
-  [ESocketEventType.PAUSE]: null;
+  [ESocketEventType.PAUSE]: boolean;
   [ESocketEventType.PROGRESS]: number;
   // !TODO: other events
 }

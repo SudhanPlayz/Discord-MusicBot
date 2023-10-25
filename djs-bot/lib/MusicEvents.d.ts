@@ -19,6 +19,11 @@ export interface IHandleQueueUpdateParams {
 	player: IUsingPlayer;
 }
 
+export interface IHandlePauseParams {
+	player: IUsingPlayer;
+	state: boolean;
+}
+
 export function handleStop(params: IHandleStopParams): void;
 
 export function handleTrackStart(params: IHandleTrackStartParams): void;
@@ -30,3 +35,5 @@ export function updateProgress(params: IHandleTrackStartParams): void;
 export function stopProgressUpdater(guildId: string): void;
 
 export function handleVoiceStateUpdate(oldState: VoiceState, newState: VoiceState): void;
+
+export function handlePause(params: IHandlePauseParams): void;

@@ -84,6 +84,10 @@ function handleTrackStart({ player, track }) {
 	);
 }
 
+function handlePause({ player, state }) {
+	socket.handlePause({ guildId: player.guild, state });
+}
+
 module.exports = {
 	handleTrackStart,
 	handleQueueUpdate,
@@ -91,4 +95,5 @@ module.exports = {
 	updateProgress,
 	stopProgressUpdater,
 	handleVoiceStateUpdate,
+	handlePause,
 };

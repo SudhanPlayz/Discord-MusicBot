@@ -7,6 +7,7 @@ const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('
 const { Cosmicord, CosmiPlayer, CosmiNode } = require("cosmicord.js");
 const { updateControlMessage } = require("../../util/controlChannel");
 const { handleTrackStart } = require("../MusicEvents");
+const { pause } = require("../../util/player");
 
 class CosmicordPlayerExtended extends CosmiPlayer {
 	/**
@@ -213,7 +214,7 @@ module.exports = (client) => {
 				return player.destroy();
 			} else {
 				player.voiceChannel = newChannel;
-				setTimeout(() => player.pause(false), 1000);
+				setTimeout(() => pause(player,false), 1000);
 				return undefined;
 			}
 		})
