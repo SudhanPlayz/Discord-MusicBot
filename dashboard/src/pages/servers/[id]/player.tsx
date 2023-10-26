@@ -33,8 +33,10 @@ import {
 } from '@/libs/sockets/player/emit';
 import Image from 'next/image';
 import { getImageOnErrorHandler } from '@/utils/image';
+import useAbortDelay from '@/hooks/useAbortDelay';
 
 const FALLBACK_MAX_PROGRESS_VALUE = 1;
+const SOCKET_WAIT_RES_TIMEOUT = 3000;
 
 const formatTrackDuration = (value: number, max: number) => {
     return `${formatDuration(value ?? 0)} / ${formatDuration(max ?? 0)}`;
@@ -118,8 +120,18 @@ const Player: NextPageWithLayout = () => {
     const progressbarRef = useRef<HTMLDivElement>(null);
     const progressValueRef = useRef<number>(0);
     const toSeekProgressValue = useRef<number | undefined>();
-    const resetProgressRef = useRef<true | undefined>();
-    const setOriginalPausedRef = useRef<true | undefined>();
+
+    const {
+        reset: resetResetProgress,
+        ref: resetProgressRef,
+        run: runResetProgress,
+    } = useAbortDelay();
+
+    const {
+        reset: resetOriginalPaused,
+        ref: originalPausedRef,
+        run: runOriginalPaused,
+    } = useAbortDelay();
 
     const maxProgressValue = useRef<number>(1);
 
@@ -152,14 +164,9 @@ const Player: NextPageWithLayout = () => {
     );
 
     const dispatchProgressResetter = (resetTo: number) => {
-        resetProgressRef.current = true;
-
-        setTimeout(() => {
-            if (!resetProgressRef.current) return;
-
+        runResetProgress(() => {
             setProgressValue(resetTo);
-            resetProgressRef.current = undefined;
-        }, 5000);
+        }, SOCKET_WAIT_RES_TIMEOUT);
     };
 
     const handleSeek = () => {
@@ -244,23 +251,21 @@ const Player: NextPageWithLayout = () => {
 
     const handleQueueUpdateEvent: IPlayerEventHandlers[ESocketEventType.GET_QUEUE] =
         (e) => {
-            console.log({ handleQueueUpdateEvent: e });
             setQueue(e.d || []);
         };
 
     const handlePlayingEvent: IPlayerEventHandlers[ESocketEventType.PLAYING] = (
         e,
     ) => {
-        console.log({ handlePlayingEvent: e });
         setPlaying(e.d);
         maxProgressValue.current = e.d?.duration ?? FALLBACK_MAX_PROGRESS_VALUE;
         setProgressValue(0);
+
+        // if (!e.d) setPaused(true);
     };
 
     const handleProgressEvent: IPlayerEventHandlers[ESocketEventType.PROGRESS] =
         (e) => {
-            console.log({ handleProgressEvent: e });
-
             if (toSeekProgressValue.current !== undefined) return;
 
             setProgressValue(e.d ?? 0);
@@ -273,27 +278,26 @@ const Player: NextPageWithLayout = () => {
                 const ts = i * (1000 / smoothLevel);
                 setTimeout(() => {
                     if (resetProgressRef.current) return;
+
                     setProgressValue((e.d && e.d + ts) ?? 0);
                 }, ts);
             }
 
-            if (resetProgressRef.current) resetProgressRef.current = undefined;
+            resetResetProgress();
         };
 
     const handlePauseEvent: IPlayerEventHandlers[ESocketEventType.PAUSE] = (
         e,
     ) => {
-        console.log({ handlePauseEvent: e });
         setPaused(!!e.d);
 
-        if (setOriginalPausedRef.current)
-            setOriginalPausedRef.current = undefined;
+        resetOriginalPaused();
     };
 
     const handleErrorEvent: IPlayerEventHandlers[ESocketEventType.ERROR] = (
         e,
     ) => {
-        console.error({ handleErrorEvent: e });
+        console.error(e);
     };
 
     const socketEventHandlers: IPlayerEventHandlers = {
@@ -395,22 +399,19 @@ const Player: NextPageWithLayout = () => {
     };
 
     const togglePlayPause = () => {
-        if (setOriginalPausedRef.current) return;
-        setOriginalPausedRef.current = true;
+        if (originalPausedRef.current) return;
 
         const originalPaused = paused;
 
         const newPaused = !paused;
 
         emitPause(newPaused);
-        setPaused(newPaused);
 
-        setTimeout(() => {
-            if (!setOriginalPausedRef.current) return;
-
+        runOriginalPaused(() => {
             setPaused(originalPaused);
-            setOriginalPausedRef.current = undefined;
-        }, 5000);
+        }, SOCKET_WAIT_RES_TIMEOUT);
+
+        setPaused(newPaused);
     };
 
     const handlePrevious = () => {
