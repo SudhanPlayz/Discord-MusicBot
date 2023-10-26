@@ -196,6 +196,7 @@ const Player: NextPageWithLayout = () => {
     const seekerMouseMoveHandler = (e: MouseEvent) => {
         e.preventDefault();
 
+        console.log({ mousemove: e });
         setProgressValue(
             (e.clientX / document.body.clientWidth) * maxProgressValue.current,
         );
@@ -208,6 +209,7 @@ const Player: NextPageWithLayout = () => {
 
         e.preventDefault();
 
+        console.log({ mouseup: e });
         el.removeEventListener('mousemove', seekerMouseMoveHandler);
         el.removeEventListener('mouseup', seekerMouseUpHandler);
 
@@ -232,6 +234,8 @@ const Player: NextPageWithLayout = () => {
         e.preventDefault();
 
         toSeekProgressValue.current = progressValueRef.current;
+
+        console.log({ mousedown: e });
 
         el.addEventListener('mousemove', seekerMouseMoveHandler);
         el.addEventListener('mouseup', seekerMouseUpHandler);
