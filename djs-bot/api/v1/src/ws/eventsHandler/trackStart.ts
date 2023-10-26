@@ -1,8 +1,8 @@
-import { ESocketEventType } from '../../interfaces/wsShared';
-import { createEventPayload, wsPublish } from '../../utils/ws';
-
 // this is hilarious
 import { IHandleTrackStartParams } from '../../../../../lib/MusicEvents.d';
+import { ESocketEventType } from '../../interfaces/wsShared';
+import { wsPublish } from '../../utils/ws';
+import { constructITrack, createEventPayload } from '../../utils/wsShared';
 
 export default function handleTrackStart({
   player,
@@ -11,10 +11,13 @@ export default function handleTrackStart({
   if (!player?.guild?.length) throw new TypeError('Missing guildId');
 
   const to = 'player/' + player.guild;
-  const d = createEventPayload(ESocketEventType.PLAYING, { ...track });
+  const d = createEventPayload(
+    ESocketEventType.PLAYING,
+    constructITrack({ track: track as any, id: -1 }),
+  );
 
   // !TODO: debug log, remove when done
-  console.log({ publish: to, d });
+  // console.log({ publish: to, d });
 
   wsPublish(to, d);
 }

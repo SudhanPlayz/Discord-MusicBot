@@ -1,5 +1,6 @@
 const SlashCommand = require("../../lib/SlashCommand");
 const { EmbedBuilder } = require("discord.js");
+const { pause } = require("../../util/player");
 
 const command = new SlashCommand()
 	.setName("pause")
@@ -45,7 +46,8 @@ const command = new SlashCommand()
 			});
 		}
 		
-		player.pause(true);
+		pause(player, true);
+
 		return interaction.reply({
 			embeds: [
 				new EmbedBuilder()

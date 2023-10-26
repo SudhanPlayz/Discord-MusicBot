@@ -5,6 +5,7 @@
 
 // these 2 interface are just dumb
 export interface ICosmiTrack {
+  id: number;
   duration?: number;
   requesterId?: string | undefined;
   encoded?: string | undefined;
@@ -21,6 +22,7 @@ export interface ICosmiTrack {
 
 // !TODO: Need to unify these, or maybe just use the common prop between both
 export interface IErelaTrack {
+  id: number;
   track?: string;
   title?: string;
   identifier?: string;
@@ -45,19 +47,23 @@ export const enum ESocketEventType {
   PLAY,
   PAUSE,
   PROGRESS,
+  PREVIOUS,
+  NEXT,
+  UPDATE_QUEUE,
+  REMOVE_TRACK,
 }
 
 export const enum ESocketErrorCode {
   NOTHING,
   INVALID_EVENT,
+  // these should probably in new field called 'status'?
+  INTERNAL_SERVER_ERROR,
+  BAD_REQUEST,
 }
 
 export interface ISocketData {
   [ESocketEventType.ERROR]: { code: ESocketErrorCode; message?: string };
-  [ESocketEventType.SEEK]: {
-    // !TODO: lavalink seeking with string or number?
-    t: string;
-  };
+  [ESocketEventType.SEEK]: number;
   [ESocketEventType.GET_QUEUE]: ITrack[];
   [ESocketEventType.SEARCH]: {
     // query
@@ -68,14 +74,24 @@ export interface ISocketData {
   };
   [ESocketEventType.PLAYING]: ITrack;
   [ESocketEventType.PLAY]: null;
-  [ESocketEventType.PAUSE]: null;
+  [ESocketEventType.PAUSE]: boolean;
   [ESocketEventType.PROGRESS]: number;
+  [ESocketEventType.PREVIOUS]: null;
+  [ESocketEventType.NEXT]: null;
+  [ESocketEventType.UPDATE_QUEUE]: number[];
+  [ESocketEventType.REMOVE_TRACK]: number;
   // !TODO: other events
 }
 
 export interface ISocketEvent<K extends ESocketEventType> {
   e: K;
   d: ISocketData[K] | null;
+}
+
+export interface IConstructITrackOptions {
+  track: ITrack;
+  id: number;
+  hqThumbnail?: boolean;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////

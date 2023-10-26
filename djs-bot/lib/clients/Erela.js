@@ -12,6 +12,7 @@ const spotify = require("better-erela.js-spotify").default; // <---
 const { default: AppleMusic } = require("better-erela.js-apple"); // <---
 const { updateControlMessage } = require("../../util/controlChannel");
 const { handleTrackStart } = require("../MusicEvents");
+const { pause } = require("../../util/player");
 
 Structure.extend(
 	"Player",
@@ -211,14 +212,8 @@ module.exports = (client) => {
 				.send({ embeds: [errorEmbed] });
 		})
 		.on("trackError", (player, err) => {
-			client.error(`Track has an error: ${err.error}`);
-			errorEmbed
-				.setTitle("Playback error!")
-				.setDescription(`\`\`\`${err.error}\`\`\``)
-
-			client.channels.cache
-				.get(player.textChannel)
-				.send({ embeds: [errorEmbed] });
+			client.error(`Track has an error:`);
+			client.error(err);
 		})
 		.on("trackStuck", (player) => {
 			client.warn(`Track has an error: ${err.error}`);
@@ -251,7 +246,7 @@ module.exports = (client) => {
 				return player.destroy();
 			} else {
 				player.voiceChannel = newChannel;
-				setTimeout(() => player.pause(false), 1000);
+				setTimeout(() => pause(player,false), 1000);
 				return undefined;
 			}
 		})

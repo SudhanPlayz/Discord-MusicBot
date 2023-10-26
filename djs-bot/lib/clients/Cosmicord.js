@@ -7,6 +7,7 @@ const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('
 const { Cosmicord, CosmiPlayer, CosmiNode } = require("cosmicord.js");
 const { updateControlMessage } = require("../../util/controlChannel");
 const { handleTrackStart } = require("../MusicEvents");
+const { pause } = require("../../util/player");
 
 class CosmicordPlayerExtended extends CosmiPlayer {
 	/**
@@ -160,9 +161,6 @@ class CosmicordExtended extends Cosmicord {
  * @returns {CosmicordExtended}
 */
 module.exports = (client) => {
-	let errorEmbed = new EmbedBuilder()
-		.setColor("Red")
-
 	return new CosmicordExtended(client, {
 		nodes: client.config.nodes,
 		clientName: client.denom,
@@ -183,14 +181,8 @@ module.exports = (client) => {
 			client.error(`Node: ${node.identifier} | Lavalink node had an error: ${err}`);
 		})
 		.on("trackError", (player, err) => {
-			client.error(`Track has an error: ${err}`);
-			errorEmbed
-				.setTitle("Playback error!")
-				.setDescription(`\`\`\`${err}\`\`\``)
-
-			client.channels.cache
-				.get(player.textChannel)
-				.send({ embeds: [errorEmbed] });
+			client.error(`Track has an error:`);
+			client.error(err);
 		})
 		.on("playerMoved", async (node, player, oldChannel, newChannel) => {
 			const guild = client.guilds.cache.get(player.guildId);
@@ -213,7 +205,7 @@ module.exports = (client) => {
 				return player.destroy();
 			} else {
 				player.voiceChannel = newChannel;
-				setTimeout(() => player.pause(false), 1000);
+				setTimeout(() => pause(player,false), 1000);
 				return undefined;
 			}
 		})

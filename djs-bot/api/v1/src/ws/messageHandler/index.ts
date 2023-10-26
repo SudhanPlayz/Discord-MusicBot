@@ -1,43 +1,21 @@
 import { WebSocket } from 'uWebSockets.js';
 import { playerLog } from '../../utils/log';
 import { IPlayerSocket } from '../../interfaces/ws';
+import { ESocketErrorCode, ESocketEventType } from '../../interfaces/wsShared';
+import { wsSendJson } from '../../utils/ws';
 import {
-  ESocketErrorCode,
-  ESocketEventType,
-  ISocketEvent,
-} from '../../interfaces/wsShared';
-import { createErrPayload, wsSendJson } from '../../utils/ws';
-
-// !TODOS
-async function handleSeekEvent(
-  ws: WebSocket<IPlayerSocket>,
-  ev: ISocketEvent<ESocketEventType.SEEK>,
-) {}
-
-async function handleGetQueueEvent(
-  ws: WebSocket<IPlayerSocket>,
-  ev: ISocketEvent<ESocketEventType.GET_QUEUE>,
-) {}
-
-async function handleSearchEvent(
-  ws: WebSocket<IPlayerSocket>,
-  ev: ISocketEvent<ESocketEventType.SEARCH>,
-) {}
-
-async function handleAddTrackEvent(
-  ws: WebSocket<IPlayerSocket>,
-  ev: ISocketEvent<ESocketEventType.ADD_TRACK>,
-) {}
-
-async function handlePlayEvent(
-  ws: WebSocket<IPlayerSocket>,
-  ev: ISocketEvent<ESocketEventType.PLAY>,
-) {}
-
-async function handlePauseEvent(
-  ws: WebSocket<IPlayerSocket>,
-  ev: ISocketEvent<ESocketEventType.PAUSE>,
-) {}
+  handleSeekEvent,
+  handleGetQueueEvent,
+  handleSearchEvent,
+  handleAddTrackEvent,
+  handlePlayEvent,
+  handlePauseEvent,
+  handlePreviousEvent,
+  handleNextEvent,
+  handleUpdateQueueEvent,
+  handleRemoveTrackEvent,
+} from './handlers';
+import { createErrPayload } from '../../utils/wsShared';
 
 const handlers = {
   // whether these should been fastify endpoints are up for debate
@@ -47,6 +25,10 @@ const handlers = {
   [ESocketEventType.ADD_TRACK]: handleAddTrackEvent,
   [ESocketEventType.PLAY]: handlePlayEvent,
   [ESocketEventType.PAUSE]: handlePauseEvent,
+  [ESocketEventType.PREVIOUS]: handlePreviousEvent,
+  [ESocketEventType.NEXT]: handleNextEvent,
+  [ESocketEventType.UPDATE_QUEUE]: handleUpdateQueueEvent,
+  [ESocketEventType.REMOVE_TRACK]: handleRemoveTrackEvent,
 
   // only here to silence typescript error
   [ESocketEventType.PLAYING]: undefined,
@@ -62,6 +44,8 @@ export default function handleMessage(
   if (message === '1') {
     return ws.send('0');
   }
+
+  console.log(message);
 
   try {
     const data = JSON.parse(message);

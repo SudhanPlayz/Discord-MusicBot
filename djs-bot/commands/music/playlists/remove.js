@@ -1,4 +1,5 @@
 const { capitalize } = require("../../../util/string");
+const { reply } = require("../../../util/commands");
 
 /**
  * @param {import("../../../lib/SlashCommand")} baseCommand

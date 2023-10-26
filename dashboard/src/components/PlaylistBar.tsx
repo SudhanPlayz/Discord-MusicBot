@@ -2,7 +2,8 @@ import { IPlaylistBarProps } from '@/interfaces/components/PlaylistBar';
 import { Container } from '@nextui-org/react';
 import classNames from 'classnames';
 import DragHandleIcon from '@/assets/icons/drag-handle.svg';
-import { ClassAttributes, DragEvent, useRef, useState } from 'react';
+import TrashIcon from '@/assets/icons/trash.svg';
+import { ClassAttributes, DragEvent, useEffect, useRef, useState } from 'react';
 import {
     getDocumentDragHandler,
     setElementActive,
@@ -11,6 +12,8 @@ import {
 import { ITrack } from '@/interfaces/wsShared';
 import Image from 'next/image';
 import { formatDuration, isNumber } from '@/utils/formatting';
+import { emitQueueUpdate, emitTrackRemove } from '@/libs/sockets/player/emit';
+import useAbortDelay from '@/hooks/useAbortDelay';
 // import { useRouter } from 'next/router';
 
 type DragHandler = (event: DragEvent<HTMLDivElement>, idx: number) => void;
@@ -27,7 +30,7 @@ interface ITrackProps {
 function Track({ idx, onDragStart, dragIdx, dragRef, track }: ITrackProps) {
     const isDragging = dragIdx === idx;
 
-    const { title, thumbnail, author, duration } = track;
+    const { title, thumbnail, author, duration, id } = track;
 
     return (
         <div
@@ -42,12 +45,29 @@ function Track({ idx, onDragStart, dragIdx, dragRef, track }: ITrackProps) {
                     'drag-overlay',
                     isDragging ? 'active' : '',
                 )}
-            ></div>
+            >
+                <div
+                    className={classNames(
+                        'drag-container',
+                        isDragging ? 'hidden' : '',
+                    )}
+                >
+                    <div
+                        className="btn-trash"
+                        onClick={() => emitTrackRemove(id)}
+                    >
+                        <TrashIcon />
+                    </div>
+                    <div className="btn-drag">
+                        <DragHandleIcon />
+                    </div>
+                </div>
+            </div>
             <div className={classNames('thumb', isDragging ? 'hidden' : '')}>
                 <Image
                     src={thumbnail as string}
-                    width={120}
-                    height={90}
+                    width={1280}
+                    height={720}
                     alt="Thumb"
                     style={{
                         objectFit: 'cover',
@@ -62,14 +82,6 @@ function Track({ idx, onDragStart, dragIdx, dragRef, track }: ITrackProps) {
                     {author} •{' '}
                     {duration ? formatDuration(duration) : 'Unknown Duration'}
                 </div>
-            </div>
-            <div
-                className={classNames(
-                    'drag-container',
-                    isDragging ? 'hidden' : '',
-                )}
-            >
-                <DragHandleIcon />
             </div>
         </div>
     );
@@ -100,6 +112,12 @@ export default function PlaylistBar({
         clientY.current = -1;
     };
 
+    const { ref: queRef, reset: resetQue, run: runQue } = useAbortDelay();
+
+    useEffect(() => {
+        resetQue();
+    }, [queue]);
+
     /**
      * Get playlistBarQueueScroll rects
      */
@@ -111,6 +129,65 @@ export default function PlaylistBar({
      */
     const getRcRects = () =>
         playlistBarQueueContainer.current?.getClientRects()[0];
+
+    const handleTrackQueueMove = (decide: 0 | 1 | 2) => {
+        if (!decide || !isNumber(dragIdx.current)) return;
+
+        const newQueue = currentQueue.current.slice();
+        const move = newQueue.splice(dragIdx.current, 1)[0];
+
+        if (!move) return;
+
+        switch (decide) {
+            case 1:
+                newQueue.splice(--dragIdx.current, 0, move);
+                break;
+            case 2:
+                newQueue.splice(++dragIdx.current, 0, move);
+                break;
+        }
+
+        currentQueue.current = newQueue;
+        setQueue(newQueue);
+        setStateDragIdx(dragIdx.current);
+    };
+
+    const handleTrackDragging = () => {
+        if (!isNumber(dragIdx.current)) return;
+
+        const dragRects = dragRef.current?.getClientRects()[0];
+        if (!dragRects) return;
+
+        const rs = getRsRects();
+        if (!rs) return;
+
+        const hThres = dragRects.height / 4;
+        const absY = dragRects.top;
+
+        /**
+         * 0: do nothing
+         * 1: go to prev
+         * 2: go next
+         */
+        let decide: 0 | 1 | 2 = 0;
+
+        if (
+            dragIdx.current > 0 && // can go to previous
+            absY - hThres > clientY.current // should go to previous
+        ) {
+            decide = 1;
+        }
+
+        // move track to next position
+        else if (
+            dragIdx.current < currentQueue.current.length - 1 && // can go to next
+            absY + dragRects.height + hThres < clientY.current // should go to next
+        ) {
+            decide = 2;
+        }
+
+        handleTrackQueueMove(decide);
+    };
 
     const handleDragThreshold = async () => {
         if (dragHandlerEnabled.current) return;
@@ -165,65 +242,19 @@ export default function PlaylistBar({
     };
 
     const handleDragOver = (e: MouseEvent) => {
+        if (queRef.current) return;
+
         e.preventDefault();
 
         clientY.current = e.clientY;
 
-        const dragRects = dragRef.current?.getClientRects()[0];
-
-        const rs = getRsRects();
-
-        if (isNumber(dragIdx.current) && dragRects && rs) {
-            const hThres = dragRects.height / 4;
-            const absY = dragRects.top;
-
-            /**
-             * 0: do nothing
-             * 1: go to prev
-             * 2: go next
-             */
-            let decide: 0 | 1 | 2 = 0;
-
-            if (
-                dragIdx.current > 0 && // can go to previous
-                absY - hThres > clientY.current // should go to previous
-            ) {
-                decide = 1;
-            }
-
-            // move track to next position
-            else if (
-                dragIdx.current < currentQueue.current.length - 1 && // can go to next
-                absY + dragRects.height + hThres < clientY.current // should go to next
-            ) {
-                decide = 2;
-            }
-
-            if (decide !== 0) {
-                const newQueue = currentQueue.current.slice();
-                const move = newQueue.splice(dragIdx.current, 1)[0];
-
-                if (move) {
-                    switch (decide) {
-                        case 1:
-                            newQueue.splice(--dragIdx.current, 0, move);
-                            break;
-                        case 2:
-                            newQueue.splice(++dragIdx.current, 0, move);
-                            break;
-                    }
-
-                    currentQueue.current = newQueue;
-                    setQueue(newQueue);
-                    setStateDragIdx(dragIdx.current);
-                }
-            }
-        }
-
+        handleTrackDragging();
         handleDragThreshold();
     };
 
     const handleDragDrop = (e: MouseEvent) => {
+        if (queRef.current) return;
+
         const el = getDocumentDragHandler();
 
         if (!el) return;
@@ -241,15 +272,19 @@ export default function PlaylistBar({
         dragIdx.current = undefined;
         setStateDragIdx(undefined);
 
-        // !TODO: send queue update event
-        // sendQueueUpdate(queue);
+        emitQueueUpdate(currentQueue.current.map((v) => v.id));
 
-        setQueue(originalQueue.current);
-        originalQueue.current = [];
+        runQue(() => {
+            setQueue(originalQueue.current);
+            originalQueue.current = [];
+        }, 3000);
+
         currentQueue.current = [];
     };
 
     const handleDragStart: DragHandler = (e, idx) => {
+        if (queRef.current) return;
+
         const el = getDocumentDragHandler();
 
         if (!el) return;

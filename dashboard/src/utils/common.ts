@@ -10,7 +10,7 @@ export const logout = () => {
  * Should be called client side
  */
 export const getDocumentDragHandler = () => {
-    return document.getElementById('drag-handler');
+    return document.body;
 };
 
 export const setElementActive = (el: Element) => {

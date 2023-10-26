@@ -30,3 +30,7 @@ export function addTrack(
 	player: IUsingPlayer,
 	tracks: Parameters<IUsingPlayer["queue"]["add"]>[0]
 ): ReturnType<IUsingPlayer["queue"]["add"]>;
+
+export function triggerSocketPause(player: IUsingPlayer, state: boolean): void;
+
+export function pause(player: IUsingPlayer, state: boolean): ReturnType<IUsingPlayer["pause"]>;

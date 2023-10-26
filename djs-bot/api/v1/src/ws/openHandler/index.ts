@@ -1,14 +1,13 @@
 import { WebSocket } from 'uWebSockets.js';
 import { ESocketErrorCode, ESocketEventType } from '../../interfaces/wsShared';
 import { getBot } from '../..';
+import { getPlayerQueue, wsPlayerSubscribe, wsSendJson } from '../../utils/ws';
+import { IPlayerSocket } from '../../interfaces/ws';
 import {
+  constructITrack,
   createErrPayload,
   createEventPayload,
-  getPlayerQueue,
-  wsPlayerSubscribe,
-  wsSendJson,
-} from '../../utils/ws';
-import { IPlayerSocket } from '../../interfaces/ws';
+} from '../../utils/wsShared';
 
 export default function handleOpen(ws: WebSocket<IPlayerSocket>) {
   const bot = getBot();
@@ -28,7 +27,7 @@ export default function handleOpen(ws: WebSocket<IPlayerSocket>) {
 
   const d = createEventPayload(
     ESocketEventType.GET_QUEUE,
-    getPlayerQueue(player),
+    getPlayerQueue(player, true),
   );
   wsSendJson(ws, d);
 
@@ -45,11 +44,17 @@ export default function handleOpen(ws: WebSocket<IPlayerSocket>) {
 
   if (playing) {
     // track payload
-    const d = createEventPayload(ESocketEventType.PLAYING, { ...playing });
+    const d = createEventPayload(
+      ESocketEventType.PLAYING,
+      constructITrack({ track: playing as any, id: -1 }),
+    );
     // progress payload
     const d2 = createEventPayload(ESocketEventType.PROGRESS, player.position);
+    // paused state
+    const dp = createEventPayload(ESocketEventType.PAUSE, player.paused);
 
     wsSendJson(ws, d);
     wsSendJson(ws, d2);
+    wsSendJson(ws, dp);
   } else sendDEmpty();
 }

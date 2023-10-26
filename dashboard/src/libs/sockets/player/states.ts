@@ -72,3 +72,8 @@ export function statesUnmount() {
     eventHandlersUnmount();
     optionsUnmount();
 }
+
+export function sendJson(json: object) {
+    // silently fail if socket unitialized
+    socket?.send(JSON.stringify(json));
+}

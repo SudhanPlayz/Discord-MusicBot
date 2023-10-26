@@ -131,7 +131,7 @@ const command = new SlashCommand()
 						(song, index) =>
 							`**${currentPage * 10 + index + 1}**. [${escapeMarkdown(
 								song.title
-							)}](${song.uri}) \`[${pms(song.duration)}]\` | <@${song.requester}>`
+							)}](${song.uri}) \`[${pms(song.duration)}]\` | ${song.requester}`
 					)
 					.join("\n")
 			)
@@ -171,7 +171,7 @@ const command = new SlashCommand()
 							(song, index) =>
 								`**${currentPage * 10 + index + 1}**. [${escapeMarkdown(
 									song.title
-								)}](${song.uri}) \`[${pms(song.duration)}]\` | <@${song.requester}>`
+								)}](${song.uri}) \`[${pms(song.duration)}]\` | ${song.requester}`
 						)
 						.join("\n")
 				)

@@ -9,19 +9,6 @@ body {
         opacity: 0;
     }
 
-    #drag-handler {
-        position: fixed;
-        cursor: pointer;
-        width: 100%;
-        height: 100%;
-        top: 0px;
-        left: 0px;
-
-        &.active {
-            z-index: 10000;
-        }
-    }
-
     .btn-toggle-container {
         transition-duration: 0.5s;
         animation: in-opacity 2s;
@@ -46,6 +33,7 @@ body {
             cursor: pointer;
             max-width: 60px;
             max-height: 60px;
+            z-index: 1;
 
             svg.x-icon {
                 fill: white;
@@ -62,6 +50,19 @@ body {
             &:hover {
                 background-color: rgba(255, 255, 255, 0.4);
                 box-shadow: 0 0 10px 4px rgba(255, 255, 255, 0.5);
+            }
+
+            .btn-play {
+                min-width: 32px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                svg {
+                    path {
+                        fill: white;
+                    }
+                }
             }
         }
 
@@ -175,14 +176,9 @@ body {
                             }
                         }
 
-                        .drag-container {
-                            display: flex;
-                            justify-content: center;
-                            align-items: center;
-                        }
-
                         .drag-overlay {
                             display: flex;
+                            justify-content: flex-end;
                             position: absolute;
                             width: 100%;
                             height: 100%;
@@ -191,6 +187,33 @@ body {
 
                             &.active {
                                 background-color: rgba(255, 255, 255, 0.1);
+                            }
+
+                            .drag-container {
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                                padding: 0px 16px;
+                                gap: 16px;
+
+                                .btn-trash {
+                                    display: none;
+                                }
+                            }
+
+                            &:hover {
+                                .drag-container {
+                                    .btn-trash {
+                                        display: block;
+                                        width: 22px;
+
+                                        svg {
+                                            path {
+                                                fill: red;
+                                            }
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
@@ -290,6 +313,7 @@ body {
                 position: relative;
                 flex-direction: column;
                 height: 15%;
+                max-width: 100vw;
 
                 #player-progress-bar {
                     width: 100%;

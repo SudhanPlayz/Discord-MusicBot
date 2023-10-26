@@ -1,6 +1,7 @@
 const { joinStageChannelRoutine, addTrack } = require("../../../util/player");
 const { capitalize } = require("../../../util/string");
 const { redEmbed } = require("../../../util/embeds");
+const { reply } = require("../../../util/commands");
 
 /**
  * @param {import("../../../lib/SlashCommand")} baseCommand

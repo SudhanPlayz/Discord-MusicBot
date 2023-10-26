@@ -1,10 +1,17 @@
 const { GuildMember } = require("discord.js");
-const { handleQueueUpdate, handleStop } = require("../lib/MusicEvents");
+const { handleQueueUpdate, handleStop, handlePause } = require("../lib/MusicEvents");
 
 const triggerSocketQueueUpdate = (player) => {
 	handleQueueUpdate({
 		guildId: player.guild,
 		player,
+	});
+};
+
+const triggerSocketPause = (player, state) => {
+	handlePause({
+		player,
+		state,
 	});
 };
 
@@ -123,6 +130,14 @@ const addTrack = (player, tracks) => {
 	return ret;
 };
 
+const pause = (player, state) => {
+	const ret = player.pause(state);
+
+	triggerSocketPause(player, state);
+
+	return ret;
+};
+
 module.exports = {
 	playPrevious,
 	stop,
@@ -134,4 +149,6 @@ module.exports = {
 	clearQueue,
 	removeTrack,
 	shuffleQueue,
+	triggerSocketPause,
+	pause,
 };
