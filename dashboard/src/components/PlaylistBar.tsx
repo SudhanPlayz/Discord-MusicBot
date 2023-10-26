@@ -2,7 +2,7 @@ import { IPlaylistBarProps } from '@/interfaces/components/PlaylistBar';
 import { Container } from '@nextui-org/react';
 import classNames from 'classnames';
 import DragHandleIcon from '@/assets/icons/drag-handle.svg';
-import { ClassAttributes, DragEvent, useRef, useState } from 'react';
+import { ClassAttributes, DragEvent, useEffect, useRef, useState } from 'react';
 import {
     getDocumentDragHandler,
     setElementActive,
@@ -12,6 +12,7 @@ import { ITrack } from '@/interfaces/wsShared';
 import Image from 'next/image';
 import { formatDuration, isNumber } from '@/utils/formatting';
 import { emitQueueUpdate } from '@/libs/sockets/player/emit';
+import useAbortDelay from '@/hooks/useAbortDelay';
 // import { useRouter } from 'next/router';
 
 type DragHandler = (event: DragEvent<HTMLDivElement>, idx: number) => void;
@@ -100,6 +101,12 @@ export default function PlaylistBar({
         dragHandlerEnabled.current = false;
         clientY.current = -1;
     };
+
+    const { ref: queRef, reset: resetQue, run: runQue } = useAbortDelay();
+
+    useEffect(() => {
+        resetQue();
+    }, [queue]);
 
     /**
      * Get playlistBarQueueScroll rects
@@ -225,6 +232,8 @@ export default function PlaylistBar({
     };
 
     const handleDragOver = (e: MouseEvent) => {
+        if (queRef.current) return;
+
         e.preventDefault();
 
         clientY.current = e.clientY;
@@ -234,6 +243,8 @@ export default function PlaylistBar({
     };
 
     const handleDragDrop = (e: MouseEvent) => {
+        if (queRef.current) return;
+
         const el = getDocumentDragHandler();
 
         if (!el) return;
@@ -253,12 +264,17 @@ export default function PlaylistBar({
 
         emitQueueUpdate(currentQueue.current.map((v) => v.id));
 
-        setQueue(originalQueue.current);
-        originalQueue.current = [];
+        runQue(() => {
+            setQueue(originalQueue.current);
+            originalQueue.current = [];
+        }, 3000);
+
         currentQueue.current = [];
     };
 
     const handleDragStart: DragHandler = (e, idx) => {
+        if (queRef.current) return;
+
         const el = getDocumentDragHandler();
 
         if (!el) return;
