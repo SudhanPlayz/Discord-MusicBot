@@ -52,14 +52,14 @@ function Track({ idx, onDragStart, dragIdx, dragRef, track }: ITrackProps) {
                         isDragging ? 'hidden' : '',
                     )}
                 >
-                    <div className="btn-drag">
-                        <DragHandleIcon />
-                    </div>
                     <div
                         className="btn-trash"
                         onClick={() => emitTrackRemove(id)}
                     >
                         <TrashIcon />
+                    </div>
+                    <div className="btn-drag">
+                        <DragHandleIcon />
                     </div>
                 </div>
             </div>

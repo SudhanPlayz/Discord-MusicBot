@@ -194,16 +194,15 @@ body {
                                 justify-content: center;
                                 align-items: center;
                                 padding: 0px 16px;
+                                gap: 16px;
 
                                 .btn-trash {
                                     display: none;
                                 }
+                            }
 
-                                &:hover {
-                                    .btn-drag {
-                                        display: none;
-                                    }
-
+                            &:hover {
+                                .drag-container {
                                     .btn-trash {
                                         display: block;
                                         width: 22px;
