@@ -17,3 +17,7 @@ export function emitPrevious() {
 export function emitNext() {
     sendJson(createEventPayload(ESocketEventType.NEXT));
 }
+
+export function emitQueueUpdate(queue: number[]) {
+    sendJson(createEventPayload(ESocketEventType.UPDATE_QUEUE, queue));
+}

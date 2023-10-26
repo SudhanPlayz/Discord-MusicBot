@@ -8,7 +8,7 @@ import {
 import { getBot } from '../..';
 import { wsSendJson } from '../../utils/ws';
 import { createErrPayload } from '../../utils/wsShared';
-import { handlePause, handleStop } from '../eventsHandler';
+import { handlePause } from '../eventsHandler';
 import * as playerUtil from '../../utils/player';
 
 // very funny
@@ -141,3 +141,8 @@ export async function handleNextEvent(
 
   playerUtil.skip(player as CosmicordPlayerExtended);
 }
+
+export async function handleUpdateQueueEvent(
+  ws: WebSocket<IPlayerSocket>,
+  ev: ISocketEvent<ESocketEventType.UPDATE_QUEUE>,
+) {}

@@ -12,6 +12,7 @@ import {
   handlePauseEvent,
   handlePreviousEvent,
   handleNextEvent,
+  handleUpdateQueueEvent,
 } from './handlers';
 import { createErrPayload } from '../../utils/wsShared';
 
@@ -25,6 +26,7 @@ const handlers = {
   [ESocketEventType.PAUSE]: handlePauseEvent,
   [ESocketEventType.PREVIOUS]: handlePreviousEvent,
   [ESocketEventType.NEXT]: handleNextEvent,
+  [ESocketEventType.UPDATE_QUEUE]: handleUpdateQueueEvent,
 
   // only here to silence typescript error
   [ESocketEventType.PLAYING]: undefined,

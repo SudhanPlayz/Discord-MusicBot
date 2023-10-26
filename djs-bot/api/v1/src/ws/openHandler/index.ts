@@ -1,14 +1,13 @@
 import { WebSocket } from 'uWebSockets.js';
 import { ESocketErrorCode, ESocketEventType } from '../../interfaces/wsShared';
 import { getBot } from '../..';
-import {
-  getPlayerQueue,
-  processTrackThumbnail,
-  wsPlayerSubscribe,
-  wsSendJson,
-} from '../../utils/ws';
+import { getPlayerQueue, wsPlayerSubscribe, wsSendJson } from '../../utils/ws';
 import { IPlayerSocket } from '../../interfaces/ws';
-import { createErrPayload, createEventPayload } from '../../utils/wsShared';
+import {
+  constructITrack,
+  createErrPayload,
+  createEventPayload,
+} from '../../utils/wsShared';
 
 export default function handleOpen(ws: WebSocket<IPlayerSocket>) {
   const bot = getBot();
@@ -45,11 +44,10 @@ export default function handleOpen(ws: WebSocket<IPlayerSocket>) {
 
   if (playing) {
     // track payload
-    const d = createEventPayload(ESocketEventType.PLAYING, {
-      ...playing,
-
-      thumbnail: processTrackThumbnail(playing),
-    });
+    const d = createEventPayload(
+      ESocketEventType.PLAYING,
+      constructITrack({ track: playing as any, id: -1 }),
+    );
     // progress payload
     const d2 = createEventPayload(ESocketEventType.PROGRESS, player.position);
     // paused state

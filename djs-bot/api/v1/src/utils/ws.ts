@@ -1,10 +1,10 @@
 import { HttpResponse, WebSocket } from 'uWebSockets.js';
 import { WS_ROUTES_PREFIX } from '../lib/constants';
 import { IPlayerSocket } from '../interfaces/ws';
-import { ESocketEventType, ISocketEvent } from '../interfaces/wsShared';
+import { ESocketEventType, ISocketEvent, ITrack } from '../interfaces/wsShared';
 import { getBot } from '..';
-import { CosmiPlayer, CosmiTrack } from 'cosmicord.js';
-import { Track } from 'erela.js';
+import { CosmiPlayer } from 'cosmicord.js';
+import { constructITrack } from './wsShared';
 
 export function createWsRoute(route: string) {
   return WS_ROUTES_PREFIX + route;
@@ -40,18 +40,10 @@ export function wsPublish<K extends ESocketEventType>(
   bot.wsServer?.publish(topic, JSON.stringify(e));
 }
 
-export function processTrackThumbnail(track: CosmiTrack | Track, hq?: boolean) {
-  return track.thumbnail?.replace(
-    'default.',
-    hq ? 'hqdefault.' : 'maxresdefault.',
-  );
-}
-
 export function getPlayerQueue(player?: CosmiPlayer, hqThumbnail?: boolean) {
   if (!player) return [];
 
-  return player.queue.map((t) => ({
-    ...t,
-    thumbnail: processTrackThumbnail(t, hqThumbnail),
-  }));
+  return player.queue.map((t, idx) =>
+    constructITrack({ track: t as any, id: idx, hqThumbnail }),
+  );
 }

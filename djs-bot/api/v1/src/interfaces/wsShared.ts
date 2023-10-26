@@ -5,6 +5,7 @@
 
 // these 2 interface are just dumb
 export interface ICosmiTrack {
+  id: number;
   duration?: number;
   requesterId?: string | undefined;
   encoded?: string | undefined;
@@ -21,6 +22,7 @@ export interface ICosmiTrack {
 
 // !TODO: Need to unify these, or maybe just use the common prop between both
 export interface IErelaTrack {
+  id: number;
   track?: string;
   title?: string;
   identifier?: string;
@@ -47,6 +49,7 @@ export const enum ESocketEventType {
   PROGRESS,
   PREVIOUS,
   NEXT,
+  UPDATE_QUEUE,
 }
 
 export const enum ESocketErrorCode {
@@ -74,12 +77,19 @@ export interface ISocketData {
   [ESocketEventType.PROGRESS]: number;
   [ESocketEventType.PREVIOUS]: null;
   [ESocketEventType.NEXT]: null;
+  [ESocketEventType.UPDATE_QUEUE]: number[];
   // !TODO: other events
 }
 
 export interface ISocketEvent<K extends ESocketEventType> {
   e: K;
   d: ISocketData[K] | null;
+}
+
+export interface IConstructITrackOptions {
+  track: ITrack;
+  id: number;
+  hqThumbnail?: boolean;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////

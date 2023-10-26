@@ -6,8 +6,10 @@
 import {
     ESocketErrorCode,
     ESocketEventType,
+    IConstructITrackOptions,
     ISocketData,
     ISocketEvent,
+    ITrack,
 } from '../interfaces/wsShared';
 
 export function createErrPayload<K extends ESocketErrorCode>(
@@ -27,6 +29,25 @@ export function createEventPayload<K extends ESocketEventType>(
     return {
         e,
         d,
+    };
+}
+
+export function processTrackThumbnail(track: ITrack, hq?: boolean) {
+    return track.thumbnail?.replace(
+        'default.',
+        hq ? 'hqdefault.' : 'maxresdefault.',
+    );
+}
+
+export function constructITrack({
+    track,
+    id,
+    hqThumbnail,
+}: IConstructITrackOptions) {
+    return {
+        ...track,
+        thumbnail: processTrackThumbnail(track, hqThumbnail),
+        id,
     };
 }
 
