@@ -28,7 +28,7 @@
     "@svgr/webpack": "^8.1.0",
     "eslint": "8.52.0",
     "typescript": "5.2.2",
-    "@types/node": "20.8.8",
+    "@types/node": "20.8.9",
     "@types/react": "18.2.32",
     "eslint-config-next": "13.5.6"
   }
