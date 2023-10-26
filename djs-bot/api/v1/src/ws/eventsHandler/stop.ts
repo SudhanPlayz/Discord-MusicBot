@@ -9,7 +9,7 @@ export default function handleStop({ guildId }: { guildId: string }) {
   const d = createEventPayload(ESocketEventType.PLAYING, null);
 
   // !TODO: debug log, remove when done
-  console.log({ publish: to, d });
+  // console.log({ publish: to, d });
 
   wsPublish(to, d);
 }

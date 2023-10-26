@@ -15,7 +15,7 @@ export default function handlePause({
   const d = createEventPayload(ESocketEventType.PAUSE, state);
 
   // !TODO: debug log, remove when done
-  console.log({ publish: to, d });
+  // console.log({ publish: to, d });
 
   wsPublish(to, d);
 }

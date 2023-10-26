@@ -42,8 +42,10 @@ function openHandler(e: Event) {
 function messageHandler(e: MessageEvent<string>) {
     const handlers = getHandlers();
 
-    console.log('MESSAGE');
-    console.log({ event: e, data: e.data });
+    if ((window as any).dmbDebug) {
+        console.log('MESSAGE');
+        console.log({ event: e, data: e.data });
+    }
 
     if (handlers.message) handlers.message(e);
 

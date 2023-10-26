@@ -17,7 +17,7 @@ export default function handleTrackStart({
   );
 
   // !TODO: debug log, remove when done
-  console.log({ publish: to, d });
+  // console.log({ publish: to, d });
 
   wsPublish(to, d);
 }
