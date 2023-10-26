@@ -269,7 +269,7 @@ const Player: NextPageWithLayout = () => {
 
         // if (!e.d) setPaused(true);
 
-        resetNextBack();
+        if (e.d) resetNextBack();
     };
 
     const handleProgressEvent: IPlayerEventHandlers[ESocketEventType.PROGRESS] =
