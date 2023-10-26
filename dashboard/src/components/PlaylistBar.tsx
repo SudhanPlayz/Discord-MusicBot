@@ -251,7 +251,7 @@ export default function PlaylistBar({
         dragIdx.current = undefined;
         setStateDragIdx(undefined);
 
-        emitQueueUpdate(queue.map((v) => v.id));
+        emitQueueUpdate(currentQueue.current.map((v) => v.id));
 
         setQueue(originalQueue.current);
         originalQueue.current = [];
