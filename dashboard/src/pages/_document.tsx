@@ -29,7 +29,6 @@ class MyDocument extends Document {
                     />
                 </Head>
                 <body>
-                    <div id="drag-handler" />
                     <Main />
                     <NextScript />
                 </body>
