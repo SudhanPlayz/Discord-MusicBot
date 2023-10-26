@@ -195,16 +195,16 @@ body {
                             justify-content: center;
                             align-items: center;
 
-                            .drag-remove {
+                            .btn-thrash {
                                 display: none;
                             }
 
                             &:hover {
-                                .drag-handle {
+                                .btn-drag {
                                     display: none;
                                 }
 
-                                .drag-remove {
+                                .btn-thrash {
                                     display: block;
                                 }
                             }
