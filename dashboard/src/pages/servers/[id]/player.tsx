@@ -203,7 +203,7 @@ const Player: NextPageWithLayout = () => {
     };
 
     const seekerMouseUpHandler = (e: MouseEvent) => {
-        const el = e.target as HTMLDivElement | null;
+        const el = getDocumentDragHandler();
         const seekerEl = document.getElementById('seeker');
         if (!el || !seekerEl) return;
 
