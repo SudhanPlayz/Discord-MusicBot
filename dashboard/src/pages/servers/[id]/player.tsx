@@ -42,10 +42,13 @@ const formatTrackDuration = (value: number, max: number) => {
     return `${formatDuration(value ?? 0)} / ${formatDuration(max ?? 0)}`;
 };
 
+/**
 function randomEntry(arr: any[]) {
     return arr[Math.floor(Math.random() * arr.length)];
 }
 
+ * For testing purpose
+ *
 function randomTrack() {
     const titles = [
         'Quacking Duck',
@@ -70,11 +73,12 @@ function randomTrack() {
         duration: randomEntry(durations),
     };
 }
-
+*
 const dummyQueue: ITrack[] = [];
 for (let i = 0; i < 25; i++) {
     dummyQueue.push(randomTrack());
 }
+*/
 
 const sharedStateMount = (sharedState: IGlobalState) => {
     if (sharedState.navbarShow && sharedState.setNavbarShow) {
@@ -107,7 +111,7 @@ const Player: NextPageWithLayout = () => {
     const [paused, setPaused] = useState<boolean>(true);
     const [mainImgFallback, setMainImgFallback] = useState<boolean>(false);
     const [queue, setQueue] = useState<ITrack[] | { dummy?: boolean }[]>(
-        dummyQueue,
+        [], // dummyQueue,
     );
     const [progressTooltip, setProgressTooltip] = useState<
         string | undefined
