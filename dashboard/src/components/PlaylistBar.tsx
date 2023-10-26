@@ -45,7 +45,24 @@ function Track({ idx, onDragStart, dragIdx, dragRef, track }: ITrackProps) {
                     'drag-overlay',
                     isDragging ? 'active' : '',
                 )}
-            ></div>
+            >
+                <div
+                    className={classNames(
+                        'drag-container',
+                        isDragging ? 'hidden' : '',
+                    )}
+                >
+                    <div className="btn-drag">
+                        <DragHandleIcon />
+                    </div>
+                    <div
+                        className="btn-trash"
+                        onClick={() => emitTrackRemove(id)}
+                    >
+                        <TrashIcon />
+                    </div>
+                </div>
+            </div>
             <div className={classNames('thumb', isDragging ? 'hidden' : '')}>
                 <Image
                     src={thumbnail as string}
@@ -64,19 +81,6 @@ function Track({ idx, onDragStart, dragIdx, dragRef, track }: ITrackProps) {
                 <div className="info">
                     {author} •{' '}
                     {duration ? formatDuration(duration) : 'Unknown Duration'}
-                </div>
-            </div>
-            <div
-                className={classNames(
-                    'drag-container',
-                    isDragging ? 'hidden' : '',
-                )}
-            >
-                <div className="btn-drag">
-                    <DragHandleIcon />
-                </div>
-                <div className="btn-trash" onClick={() => emitTrackRemove(id)}>
-                    <TrashIcon />
                 </div>
             </div>
         </div>
