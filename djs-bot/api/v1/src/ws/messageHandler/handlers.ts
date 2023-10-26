@@ -8,7 +8,7 @@ import {
 import { getBot } from '../..';
 import { wsSendJson } from '../../utils/ws';
 import { createErrPayload } from '../../utils/wsShared';
-import { handlePause } from '../eventsHandler';
+import { handlePause, handleQueueUpdate } from '../eventsHandler';
 import * as playerUtil from '../../utils/player';
 
 // very funny
@@ -145,4 +145,46 @@ export async function handleNextEvent(
 export async function handleUpdateQueueEvent(
   ws: WebSocket<IPlayerSocket>,
   ev: ISocketEvent<ESocketEventType.UPDATE_QUEUE>,
-) {}
+) {
+  const player = wsUseGuildPlayerRoutine(ws, ev, (e) =>
+    !e.d?.length ? 'Invalid argument' : undefined,
+  );
+
+  if (!player) return;
+
+  const pq = player.queue;
+  const qLen = pq.length;
+
+  if (!qLen) {
+    wsSendJson(ws, createErrPayload(ESocketErrorCode.BAD_REQUEST, 'No track'));
+    return;
+  }
+
+  const idxs = ev.d as number[];
+  const idLen = idxs.length;
+
+  if (qLen !== idLen || idxs.some((n) => n < 0 || n > qLen - 1)) {
+    wsSendJson(
+      ws,
+      createErrPayload(ESocketErrorCode.BAD_REQUEST, 'Invalid argument'),
+    );
+    return;
+  }
+
+  const newQueue = [];
+
+  for (let i = 0; i < idLen; i++) {
+    newQueue.push(pq[idxs[i]]);
+  }
+
+  player.queue.clear();
+
+  for (const t of newQueue) {
+    player.queue.add(t);
+  }
+
+  handleQueueUpdate({
+    guildId: (player as CosmicordPlayerExtended).guild,
+    player: player as CosmicordPlayerExtended,
+  });
+}
