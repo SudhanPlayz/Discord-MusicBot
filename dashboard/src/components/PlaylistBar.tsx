@@ -2,6 +2,7 @@ import { IPlaylistBarProps } from '@/interfaces/components/PlaylistBar';
 import { Container } from '@nextui-org/react';
 import classNames from 'classnames';
 import DragHandleIcon from '@/assets/icons/drag-handle.svg';
+import TrashIcon from '@/assets/icons/trash.svg';
 import { ClassAttributes, DragEvent, useEffect, useRef, useState } from 'react';
 import {
     getDocumentDragHandler,
@@ -11,7 +12,7 @@ import {
 import { ITrack } from '@/interfaces/wsShared';
 import Image from 'next/image';
 import { formatDuration, isNumber } from '@/utils/formatting';
-import { emitQueueUpdate } from '@/libs/sockets/player/emit';
+import { emitQueueUpdate, emitTrackRemove } from '@/libs/sockets/player/emit';
 import useAbortDelay from '@/hooks/useAbortDelay';
 // import { useRouter } from 'next/router';
 
@@ -29,7 +30,7 @@ interface ITrackProps {
 function Track({ idx, onDragStart, dragIdx, dragRef, track }: ITrackProps) {
     const isDragging = dragIdx === idx;
 
-    const { title, thumbnail, author, duration } = track;
+    const { title, thumbnail, author, duration, id } = track;
 
     return (
         <div
@@ -71,7 +72,12 @@ function Track({ idx, onDragStart, dragIdx, dragRef, track }: ITrackProps) {
                     isDragging ? 'hidden' : '',
                 )}
             >
-                <DragHandleIcon />
+                <div className="btn-drag">
+                    <DragHandleIcon />
+                </div>
+                <div className="btn-trash" onClick={() => emitTrackRemove(id)}>
+                    <TrashIcon />
+                </div>
             </div>
         </div>
     );

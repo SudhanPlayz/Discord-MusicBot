@@ -161,9 +161,6 @@ class CosmicordExtended extends Cosmicord {
  * @returns {CosmicordExtended}
 */
 module.exports = (client) => {
-	let errorEmbed = new EmbedBuilder()
-		.setColor("Red")
-
 	return new CosmicordExtended(client, {
 		nodes: client.config.nodes,
 		clientName: client.denom,
@@ -184,14 +181,8 @@ module.exports = (client) => {
 			client.error(`Node: ${node.identifier} | Lavalink node had an error: ${err}`);
 		})
 		.on("trackError", (player, err) => {
-			client.error(`Track has an error: ${err}`);
-			errorEmbed
-				.setTitle("Playback error!")
-				.setDescription(`\`\`\`${err}\`\`\``)
-
-			client.channels.cache
-				.get(player.textChannel)
-				.send({ embeds: [errorEmbed] });
+			client.error(`Track has an error:`);
+			client.error(err);
 		})
 		.on("playerMoved", async (node, player, oldChannel, newChannel) => {
 			const guild = client.guilds.cache.get(player.guildId);

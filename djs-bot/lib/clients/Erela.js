@@ -212,14 +212,8 @@ module.exports = (client) => {
 				.send({ embeds: [errorEmbed] });
 		})
 		.on("trackError", (player, err) => {
-			client.error(`Track has an error: ${err.error}`);
-			errorEmbed
-				.setTitle("Playback error!")
-				.setDescription(`\`\`\`${err.error}\`\`\``)
-
-			client.channels.cache
-				.get(player.textChannel)
-				.send({ embeds: [errorEmbed] });
+			client.error(`Track has an error:`);
+			client.error(err);
 		})
 		.on("trackStuck", (player) => {
 			client.warn(`Track has an error: ${err.error}`);

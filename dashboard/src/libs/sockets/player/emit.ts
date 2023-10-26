@@ -21,3 +21,7 @@ export function emitNext() {
 export function emitQueueUpdate(queue: number[]) {
     sendJson(createEventPayload(ESocketEventType.UPDATE_QUEUE, queue));
 }
+
+export function emitTrackRemove(id: number) {
+    sendJson(createEventPayload(ESocketEventType.REMOVE_TRACK, id));
+}

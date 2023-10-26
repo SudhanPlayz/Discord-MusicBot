@@ -50,6 +50,7 @@ export const enum ESocketEventType {
     PREVIOUS,
     NEXT,
     UPDATE_QUEUE,
+    REMOVE_TRACK,
 }
 
 export const enum ESocketErrorCode {
@@ -78,6 +79,7 @@ export interface ISocketData {
     [ESocketEventType.PREVIOUS]: null;
     [ESocketEventType.NEXT]: null;
     [ESocketEventType.UPDATE_QUEUE]: number[];
+    [ESocketEventType.REMOVE_TRACK]: number;
     // !TODO: other events
 }
 

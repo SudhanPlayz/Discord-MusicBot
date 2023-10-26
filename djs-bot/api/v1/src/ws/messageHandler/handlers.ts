@@ -188,3 +188,39 @@ export async function handleUpdateQueueEvent(
     player: player as CosmicordPlayerExtended,
   });
 }
+
+export async function handleRemoveTrackEvent(
+  ws: WebSocket<IPlayerSocket>,
+  ev: ISocketEvent<ESocketEventType.REMOVE_TRACK>,
+) {
+  const player = wsUseGuildPlayerRoutine(ws, ev, (e) =>
+    typeof e.d !== 'number' ? 'Invalid argument' : undefined,
+  );
+
+  if (!player) return;
+
+  const pq = player.queue;
+  const qLen = pq.length;
+
+  if (!qLen) {
+    wsSendJson(ws, createErrPayload(ESocketErrorCode.BAD_REQUEST, 'No track'));
+    return;
+  }
+
+  const idx = ev.d as number;
+
+  if (idx < 0 || idx > qLen - 1) {
+    wsSendJson(
+      ws,
+      createErrPayload(ESocketErrorCode.BAD_REQUEST, 'Invalid argument'),
+    );
+    return;
+  }
+
+  player.queue.remove(idx);
+
+  handleQueueUpdate({
+    guildId: (player as CosmicordPlayerExtended).guild,
+    player: player as CosmicordPlayerExtended,
+  });
+}

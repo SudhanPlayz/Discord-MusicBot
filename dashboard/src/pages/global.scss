@@ -194,6 +194,20 @@ body {
                             display: flex;
                             justify-content: center;
                             align-items: center;
+
+                            .drag-remove {
+                                display: none;
+                            }
+
+                            &:hover {
+                                .drag-handle {
+                                    display: none;
+                                }
+
+                                .drag-remove {
+                                    display: block;
+                                }
+                            }
                         }
 
                         .drag-overlay {
