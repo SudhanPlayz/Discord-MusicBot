@@ -206,6 +206,13 @@ body {
 
                                 .btn-thrash {
                                     display: block;
+                                    width: 22px;
+
+                                    svg {
+                                        path {
+                                            fill: red;
+                                        }
+                                    }
                                 }
                             }
                         }
