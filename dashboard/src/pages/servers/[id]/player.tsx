@@ -133,6 +133,12 @@ const Player: NextPageWithLayout = () => {
         run: runOriginalPaused,
     } = useAbortDelay();
 
+    const {
+        reset: resetNextBack,
+        ref: nextBackRef,
+        run: runNextBack,
+    } = useAbortDelay();
+
     const maxProgressValue = useRef<number>(1);
 
     const isMaxProgressValueEmpty = () =>
@@ -262,6 +268,8 @@ const Player: NextPageWithLayout = () => {
         setProgressValue(0);
 
         // if (!e.d) setPaused(true);
+
+        resetNextBack();
     };
 
     const handleProgressEvent: IPlayerEventHandlers[ESocketEventType.PROGRESS] =
@@ -415,11 +423,17 @@ const Player: NextPageWithLayout = () => {
     };
 
     const handlePrevious = () => {
+        if (nextBackRef.current) return;
+
         emitPrevious();
+        runNextBack(() => {}, SOCKET_WAIT_RES_TIMEOUT);
     };
 
     const handleNext = () => {
+        if (nextBackRef.current) return;
+
         emitNext();
+        runNextBack(() => {}, SOCKET_WAIT_RES_TIMEOUT);
     };
 
     const mainImg = !playing?.thumbnail?.length
