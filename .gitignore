@@ -123,3 +123,7 @@ yarn.lock
 .idea/
 .vscode/
 .history/
+
+
+#ignore update config file
+config.js
