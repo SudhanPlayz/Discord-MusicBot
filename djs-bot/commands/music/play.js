@@ -1,7 +1,7 @@
 const SlashCommand = require("../../lib/SlashCommand");
 const { EmbedBuilder } = require("discord.js");
 const { joinStageChannelRoutine, addTrack } = require("../../util/player");
-const { addQueueEmbed, loadedPlaylistEmbed } = require("../../util/embeds");
+const { addQueueEmbed, loadedPlaylistEmbed, redEmbed } = require("../../util/embeds");
 const yt = require("youtube-sr").default;
 
 async function testUrlRegex(string) {
@@ -89,43 +89,39 @@ const command = new SlashCommand()
 		});
 
 		let query = options.getString("query", true);
-		let res = await player.search(query, interaction.user).catch((err) => {
+		const res = await player.search(query, interaction.user).catch((err) => {
 			client.error(err);
 			return {
 				loadType: "LOAD_FAILED",
 			};
 		});
 
+		const editReplyEmbed = async (embed) => {
+			return interaction
+				.editReply({
+					embeds: [embed],
+				})
+				.catch(client.warn);
+		};
+
 		if (res.loadType === "LOAD_FAILED") {
 			if (!player.queue.current) {
 				player.destroy();
 			}
-			await interaction
-				.editReply({
-					embeds: [
-						new EmbedBuilder()
-							.setColor("Red")
-							.setDescription(
-								"There was an error while searching"
-							),
-					],
+
+			await editReplyEmbed(
+				redEmbed({
+					desc: "There was an error while searching",
 				})
-				.catch(client.warn);
+			);
 		}
 
 		if (res.loadType === "NO_MATCHES") {
 			if (!player.queue.current) {
 				player.destroy();
 			}
-			await interaction
-				.editReply({
-					embeds: [
-						new EmbedBuilder()
-							.setColor("Red")
-							.setDescription("No results were found"),
-					],
-				})
-				.catch(client.warn);
+
+			await editReplyEmbed(redEmbed({ desc: "No results were found" }));
 		}
 
 		if (res.loadType === "TRACK_LOADED" || res.loadType === "SEARCH_RESULT") {
@@ -138,17 +134,13 @@ const command = new SlashCommand()
 			if (player.queue.totalSize <= 1)
 				player.queue.previous = player.queue.current;
 
-			await interaction
-				.editReply({
-					embeds: [
-						addQueueEmbed({
-							track: res.tracks[0],
-							player,
-							requesterId: interaction.user.id,
-						}),
-					],
+			await editReplyEmbed(
+				addQueueEmbed({
+					track: res.tracks[0],
+					player,
+					requesterId: interaction.user.id,
 				})
-				.catch(client.warn);
+			);
 		}
 
 		if (res.loadType === "PLAYLIST_LOADED") {
@@ -162,11 +154,7 @@ const command = new SlashCommand()
 				player.play();
 			}
 
-			await interaction
-				.editReply({
-					embeds: [loadedPlaylistEmbed({ searchResult: res, query })],
-				})
-				.catch(client.warn);
+			await editReplyEmbed(loadedPlaylistEmbed({ searchResult: res, query }));
 		}
 
 		if (ret) setTimeout(() => ret.delete().catch(client.warn), 20000);

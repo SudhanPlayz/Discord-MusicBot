@@ -1,6 +1,7 @@
 const { capitalize } = require("../../../util/string");
 const yt = require("youtube-sr").default;
 const { reply } = require("../../../util/commands");
+const { Playlist, Video } = require("youtube-sr");
 
 async function testUrlRegex(string) {
 	return [
@@ -12,6 +13,51 @@ async function testUrlRegex(string) {
 	].some((regex) => {
 		return regex.test(string);
 	});
+}
+
+async function addToDb({ songData, client, playlist }) {
+	const songExists = await client.db.song.findFirst({
+		where: {
+			name: songData.title,
+			link: songData.url,
+		},
+	});
+
+	if (!songExists) {
+		const newSong = await client.db.song.create({
+			data: {
+				name: songData.title,
+				link: songData.url,
+				artist: songData.channel.name,
+			},
+		});
+
+		await client.db.playlist.update({
+			where: {
+				id: playlist.id,
+			},
+			data: {
+				songs: {
+					connect: {
+						id: newSong.id,
+					},
+				},
+			},
+		});
+	} else {
+		await client.db.playlist.update({
+			where: {
+				id: playlist.id,
+			},
+			data: {
+				songs: {
+					connect: {
+						id: songExists.id,
+					},
+				},
+			},
+		});
+	}
 }
 
 async function handleAddAutocomplete({ focused, input, interaction, client }) {
@@ -103,6 +149,9 @@ module.exports = function add(baseCommand) {
 	);
 };
 
+/**
+ * @param {import("discord.js").Interaction} interaction
+ */
 async function runAdd(client, interaction, options) {
 	const playlistName = options.getString("playlist_name");
 	if (!playlistName) return reply(interaction, "You need to provide a name for the playlist");
@@ -122,6 +171,7 @@ async function runAdd(client, interaction, options) {
 	if (playlist.userId !== interaction.user.id)
 		return reply(interaction, "You can't add songs to a playlist that isn't yours");
 
+	let isPLaylist = false;
 	let songData;
 	try {
 		songData = await yt.getVideo(song);
@@ -129,54 +179,52 @@ async function runAdd(client, interaction, options) {
 		console.error("yt.getVideo(song)");
 		console.error(e);
 
-		if (e?.message?.length) reply(interaction, e.message);
-		return;
+		const replyErr = () => {
+			if (e?.message?.length) return reply(interaction, e.message);
+		};
+
+		const res = await yt.search(song, { safeSearch: false, limit: 25 });
+
+		let t = res[0];
+
+		if (!t) {
+			t = await yt.getPlaylist(song, { fetchAll: true });
+
+			if (!t) {
+				replyErr();
+				return;
+			}
+		}
+
+		if (t instanceof Playlist) {
+			isPLaylist = true;
+		} else if (!(t instanceof Video)) {
+			replyErr();
+			return;
+		}
+
+		songData = t;
 	}
 
-	if (!songData) return reply(interaction, "I couldn't find a song with that name");
+	if (!songData || (isPLaylist && !songData.videos?.length))
+		return reply(interaction, "I couldn't find a song with that name");
 
-	const songExists = await client.db.song.findFirst({
-		where: {
-			name: songData.title,
-			link: songData.url,
-		},
-	});
-
-	if (!songExists) {
-		const newSong = await client.db.song.create({
-			data: {
-				name: songData.title,
-				link: songData.url,
-				artist: songData.channel.name,
-			},
+	if (isPLaylist) {
+		await interaction.deferReply({
+			ephemeral: true,
 		});
 
-		await client.db.playlist.update({
-			where: {
-				id: playlist.id,
-			},
-			data: {
-				songs: {
-					connect: {
-						id: newSong.id,
-					},
-				},
-			},
-		});
-	} else {
-		await client.db.playlist.update({
-			where: {
-				id: playlist.id,
-			},
-			data: {
-				songs: {
-					connect: {
-						id: songExists.id,
-					},
-				},
-			},
-		});
+		let i = 0;
+
+		for (const t of songData.videos || []) {
+			await addToDb({ songData: t, client, playlist });
+			i++;
+		}
+
+		return reply(interaction, `Added **${i} tracks** to playlist **${playlist.name}**`);
 	}
+
+	await addToDb({ songData, client, playlist });
 
 	return reply(
 		interaction,
