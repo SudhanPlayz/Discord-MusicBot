@@ -152,7 +152,7 @@ const command = new SlashCommand()
 		}
 
 		if (res.loadType === "PLAYLIST_LOADED") {
-			addTrack(res.tracks);
+			addTrack(player, res.tracks);
 
 			if (
 				!player.playing &&
