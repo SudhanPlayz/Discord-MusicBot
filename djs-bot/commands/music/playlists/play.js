@@ -113,7 +113,7 @@ async function runPlay(client, interaction, options) {
 
     for (const song of songs) {
         const songSearch = await player.search(song.link, interaction.user.id);
-        addTrack(songSearch.tracks[0]);
+        addTrack(player, songSearch.tracks[0]);
     }
 
     if (channel.type == "GUILD_STAGE_VOICE") {
