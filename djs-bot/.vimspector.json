@@ -1,0 +1,24 @@
+{
+  "configurations": {
+    "Launch": {
+      "adapter": "js-debug",
+      "configuration": {
+        "request": "launch",
+        "program": "${workspaceRoot}/index.js",
+        "cwd": "${workspaceRoot}",
+        "externalConsole": true,
+        "type": "pwa-node"
+      }
+    },
+    "Attach": {
+      "adapter": "js-debug",
+      "configuration": {
+        "request": "attach",
+        "program": "${workspaceRoot}/index.js",
+        "cwd": "${workspaceRoot}",
+        "externalConsole": true,
+        "type": "pwa-node"
+      }
+    }
+  }
+}

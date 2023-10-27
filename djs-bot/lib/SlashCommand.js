@@ -37,12 +37,16 @@ class SlashCommand extends SlashCommandBuilder {
 	}
 
 	/**
-	 * Overrides the Builder class' addSubcommand method to return a SubSlashCommand 
+	 * Overrides the Builder class' addSubcommand method to return a SubSlashCommand
 	 * @override
 	 * @param {SubSlashCommand | ((SubSlashCommand) => SubSlashCommand)} subcommand
 	 */
 	addSubSlashCommand(subcommand) {
-		const sub = typeof subcommand === "function" ? subcommand(new SubSlashCommand()) : subcommand;
+		const sub =
+			typeof subcommand === "function"
+				? subcommand(new SubSlashCommand())
+				: subcommand;
+
 		this.addSubcommand(sub);
 		return sub;
 	}
@@ -210,8 +214,8 @@ class SlashCommand extends SlashCommandBuilder {
 	 * Autocomplete handler, takes autocomplete options specified in the command properties
 	 * and shows them to the user
 	 * node_modules\discord.js\src\structures\AutocompleteInteraction.js
-	 * @param {import("discord.js").Interaction} interaction 
-	 * @returns 
+	 * @param {import("discord.js").Interaction} interaction
+	 * @returns
 	 */
 	static async checkAutocomplete(interaction) {
 		if (!interaction.isAutocomplete()) return;
@@ -221,22 +225,31 @@ class SlashCommand extends SlashCommandBuilder {
 		// Getting input from user
 		/** @type {string} */
 		let input = interaction.options.getFocused() || " ";
+
 		// Gets the index of the option in which the user is currently typing
 		/** @type {number} */
 		const index = interaction.options._hoistedOptions
 			.map((option) => option.focused)
 			.indexOf(true);
+
+		const slashCommand = client.slash.get(interaction.commandName);
+
 		// Gets the autocomplete options provided by the command
 		/** @type {{name:string, value:string}[]} */
-		let targets = interaction.options._subcommand ?
-			await client.slash
-				.get(interaction.commandName)
-				?.options.find(
-					(option) => option.name === interaction.options._subcommand)
-				.autocompleteOptions(input, index, interaction, client) :
-			await client.slash
-				.get(interaction.commandName)
-				?.autocompleteOptions?.(input, index, interaction, client);
+		let targets = interaction.options._subcommand
+			? await slashCommand?.options
+					.find(
+						(option) =>
+							option.name ===
+							interaction.options._subcommand
+					)
+					.autocompleteOptions(input, index, interaction, client)
+			: await slashCommand?.autocompleteOptions?.(
+					input,
+					index,
+					interaction,
+					client
+			  );
 
 		// guards for outdated/ex other bot command,
 		// simply don't respond to render error loading message in the discord client
@@ -254,6 +267,7 @@ class SlashCommand extends SlashCommandBuilder {
 			key: "name", // For when targets are objects
 		});
 
+		/*
 		// Avoiding calculating levenshteing distances if it's not needed
 		if (targets.length > 1) {
 			// Assigns Levenshtein distances for each option based on what the user is currently typing
@@ -263,6 +277,7 @@ class SlashCommand extends SlashCommandBuilder {
 			// Sorts the array of targets and displays it according to the Levenshtein distance from the typed value
 			targets.sort((a, b) => a.levenshteinDistance - b.levenshteinDistance);
 		}
+                */
 		return interaction.respond(targets.slice(0, 24));
 	}
 

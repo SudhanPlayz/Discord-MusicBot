@@ -3,7 +3,7 @@
 const { colorEmbed } = require("./embeds");
 
 const reply = async (interaction, desc) =>
-	interaction.reply({
+	interaction[interaction.deferred || interaction.replied ? "editReply" : "reply"]({
 		embeds: [
 			colorEmbed({
 				desc,
