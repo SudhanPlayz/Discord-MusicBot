@@ -122,7 +122,17 @@ async function runAdd(client, interaction, options) {
 	if (playlist.userId !== interaction.user.id)
 		return reply(interaction, "You can't add songs to a playlist that isn't yours");
 
-	const songData = await yt.getVideo(song);
+	let songData;
+	try {
+		songData = await yt.getVideo(song);
+	} catch (e) {
+		console.error("yt.getVideo(song)");
+		console.error(e);
+
+		if (e?.message?.length) reply(interaction, e.message);
+		return;
+	}
+
 	if (!songData) return reply(interaction, "I couldn't find a song with that name");
 
 	const songExists = await client.db.song.findFirst({
