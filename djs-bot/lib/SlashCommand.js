@@ -267,6 +267,7 @@ class SlashCommand extends SlashCommandBuilder {
 			key: "name", // For when targets are objects
 		});
 
+		/*
 		// Avoiding calculating levenshteing distances if it's not needed
 		if (targets.length > 1) {
 			// Assigns Levenshtein distances for each option based on what the user is currently typing
@@ -276,6 +277,7 @@ class SlashCommand extends SlashCommandBuilder {
 			// Sorts the array of targets and displays it according to the Levenshtein distance from the typed value
 			targets.sort((a, b) => a.levenshteinDistance - b.levenshteinDistance);
 		}
+                */
 		return interaction.respond(targets.slice(0, 24));
 	}
 
