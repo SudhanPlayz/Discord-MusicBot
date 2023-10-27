@@ -7,6 +7,7 @@ services:
       context: ..
       dockerfile: ./docker/djs-bot/Dockerfile
     restart: "unless-stopped"
+    init: true
     environment:
       - TOKEN=${TOKEN}
       - CLIENTID=${CLIENTID}
@@ -25,8 +26,9 @@ services:
 
   dashboard:
     container_name: dashboard
-    image: node:20
+    image: node:latest
     restart: "unless-stopped"
+    init: true
     stdin_open: true
     tty: true
     volumes:
