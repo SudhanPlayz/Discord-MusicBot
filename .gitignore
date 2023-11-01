@@ -4,6 +4,12 @@ dbList.json
 .guild_dbs/
 dev-config.js
 
+
+#ignore update config file
+lavalink/
+config.js
+
+
 # Logs
 logs
 *.log
@@ -123,7 +129,6 @@ yarn.lock
 .idea/
 .vscode/
 .history/
-
-
-#ignore update config file
+.gitignore
 config.js
+lavalink/application.yml
