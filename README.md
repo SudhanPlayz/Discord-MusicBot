@@ -16,7 +16,7 @@ What do you gain from it? Let us explain:
 ## 🚧 | Prerequisites
 
 - [Node.js 16+](https://nodejs.org/en/download/)
-- [Lavalink Server](https://code.darrennathanael.com/how-to-lavalink)
+- [Lavalink Server](https://blog.darrennathanael.com/post/how-to-lavalink/)
 - You'll need to run `npm run deploy` or `yarn deploy`. to initialized the slash commands. _You can do this on your pc
   locally_
 
