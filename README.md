@@ -33,7 +33,7 @@ What do you gain from it? Let us explain:
 ## 📝 | Tutorial
 
 ### 🐳 Docker
-> The `config.js` file should be configured with the host `"lavalink"`, and you should use the same `password` as in `docker/application.yml`.
+You should configure the `config.js` file with the host `"lavalink"`, using the same `password` and `port` as specified in `docker/application.yml`.
 
 Build and start bot and lavalink
 ```sh
