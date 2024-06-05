@@ -1,4 +1,4 @@
-FROM node:17.9.1-alpine
+FROM node:20.14.0-alpine
 WORKDIR /usr/src/app
 COPY . .
 RUN npm install

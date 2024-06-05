@@ -20,7 +20,7 @@
     "url": "git+https://github.com/SudhanPlayz/Discord-MusicBot.git"
   },
   "engines": {
-    "node": ">=16.x <=16.16"
+    "node": ">=16.x <=20.14"
   },
   "keywords": [
     "discord",
@@ -77,7 +77,7 @@
     "prettier": "2.6.2"
   },
   "volta": {
-    "node": "16.15.1",
+    "node": "20.14.0",
     "yarn": "3.3.0"
   }
 }
