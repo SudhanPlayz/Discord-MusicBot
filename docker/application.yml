@@ -1,20 +1,48 @@
 server: # REST and WS server
   port: 2333
   address: 0.0.0.0
+plugins:
+  youtube:
+    enabled: true
+    allowSearch: true
+    allowDirectVideoIds: true
+    allowDirectPlaylistIds: true
+    clients: ["MUSIC", "ANDROID", "WEB"]
+#  name: # Name of the plugin
+#    some_key: some_value # Some key-value pair for the plugin
+#    another_key: another_value
 lavalink:
+  plugins:
+    - dependency: "dev.lavalink.youtube:youtube-plugin:1.3.0"
+      repository: "https://maven.lavalink.dev/releases"
+  pluginsDir: "./plugins"
   server:
-    password: "bonsoirDocker"
+    password: "youshallnotpass"
     sources:
-      youtube: true
+      youtube: false
       bandcamp: true
       soundcloud: true
       twitch: true
       vimeo: true
       http: true
       local: false
-    bufferDurationMs: 400 # The duration of the NAS buffer. Higher values fare better against longer GC pauses. Minimum of 40ms, lower values may introduce pauses.
+    filters: # All filters are enabled by default
+      volume: true
+      equalizer: true
+      karaoke: true
+      timescale: true
+      tremolo: true
+      vibrato: true
+      distortion: true
+      rotation: true
+      channelMix: true
+      lowPass: true
+    bufferDurationMs: 400 # The duration of the NAS buffer. Higher values fare better against longer GC pauses. Duration <= 0 to disable JDA-NAS. Minimum of 40ms, lower values may introduce pauses.
     frameBufferDurationMs: 5000 # How many milliseconds of audio to keep buffered
-    trackStuckThresholdMs: 10000  # The threshold for how long a track can be stuck. A track is stuck if does not return any audio data.
+    opusEncodingQuality: 10 # Opus encoder quality. Valid values range from 0 to 10, where 10 is best quality but is the most expensive on the CPU.
+    resamplingQuality: LOW # Quality of resampling operations. Valid values are LOW, MEDIUM and HIGH, where HIGH uses the most CPU.
+    trackStuckThresholdMs: 10000 # The threshold for how long a track can be stuck. A track is stuck if does not return any audio data.
+    useSeekGhosting: true # Seek ghosting is the effect where whilst a seek is in progress, the audio buffer is read from until empty, or until seek is ready.
     youtubePlaylistLoadLimit: 6 # Number of pages at 100 each
     playerUpdateInterval: 5 # How frequently to send player updates to clients, in seconds
     youtubeSearchEnabled: true
@@ -49,10 +77,22 @@ sentry:
 
 logging:
   file:
-    max-history: 30
-    max-size: 1GB
-  path: ./logs/
+    path: ./logs/
 
   level:
     root: INFO
     lavalink: INFO
+
+  request:
+    enabled: true
+    includeClientInfo: true
+    includeHeaders: false
+    includeQueryString: true
+    includePayload: true
+    maxPayloadLength: 10000
+
+
+  logback:
+    rollingpolicy:
+      max-file-size: 1GB
+      max-history: 30
