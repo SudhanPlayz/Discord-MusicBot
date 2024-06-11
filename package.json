@@ -59,7 +59,7 @@
     "express-session": "^1.17.3",
     "express-ws": "^5.0.2",
     "js-yaml": "^4.1.0",
-    "jsoning": "^0.13.0",
+    "jsoning": "^1.0.0",
     "lodash": "^4.17.21",
     "moment": "^2.29.1",
     "moment-duration-format": "^2.3.2",
