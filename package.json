@@ -67,7 +67,7 @@
     "os": "^0.1.2",
     "passport": "^0.6.0",
     "passport-discord": "^0.1.4",
-    "pretty-ms": "^7.0.1",
+    "pretty-ms": "^9.0.0",
     "rlyrics": "^2.0.1",
     "systeminformation": "^5.9.12",
     "winston": "^3.3.3",
