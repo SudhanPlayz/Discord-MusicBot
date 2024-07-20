@@ -1,0 +1,20 @@
+name: Deploy Application
+on:
+  push:
+    branches: [v5] # change to your default branch name
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install Rust toolchain
+      uses: actions-rs/toolchain@v1
+      with:
+          toolchain: 1.49.0 # current Rust toolchain for Compute@Edge
+          target: wasm32-wasi # WebAssembly target
+
+    - name: Deploy to Compute@Edge
+      uses: fastly/compute-actions@beta
+      env:
+        FASTLY_API_TOKEN: ${{ secrets.FASTLY_API_TOKEN }}
