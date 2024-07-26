@@ -17,6 +17,7 @@ What do you gain from it? Let us explain:
 
 - [Node.js 16+](https://nodejs.org/en/download/)
 - [Lavalink Server](https://code.darrennathanael.com/how-to-lavalink)
+  - v5 is currently compatible with Lavalink v3. 
 - You'll need to run `npm run deploy` or `yarn deploy`. to initialized the slash commands. _You can do this on your pc
   locally_
 
@@ -33,24 +34,44 @@ What do you gain from it? Let us explain:
 ## 📝 | Tutorial
 
 ### 🐳 Docker
+Update the `docker/application.yml` file with your desired password and port. Change config.js to match your configuration.
+
+Docker is currently using lavalink v3.7.12 as you can see in the `Dockerfile`. If you want to use a different version, you can change the `LAVA_LINK_VERSION` environment variable in the `docker-compose.yml` file.
+
+
+
 You should configure the `config.js` file with the host `"lavalink"`, using the same `password` and `port` as specified in `docker/application.yml`.
 
 Build and start bot and lavalink
 ```sh
 docker-compose up -d --build
 ```
+
+If you want to view logs for both applications in your console upon running the command, you can remove the `-d` flag.
+
 ### 💪🏻 Non-Docker
 > The `config.js` file should be configured first. Don't forget to add a lavalink host
+
+Create a folder named lavalink and place the lavalink.jar file in it, alongside the application.yml file. Follow [this guide](https://code.darrennathanael.com/how-to-lavalink) to setup Lavalink. Make sure to use configs for v3 (and to inspect the `docker/application.yml` file to see how the youtube plugin is currently being set.)
 
 Install all dependencies and deploy Slash Commands
 ```sh
 npm install
 npm run deploy
 ```
-Start the bot
+
+If you're setting up your own lavalink, initiate it:
+```sh
+cd lavalink/
+java -Xmx2G -jar Lavalink.jar
+```
+
+And finally start the bot
 ```sh
 node index.js
 ```
+
+In order to run the commands on your server, if everything was done right, upon pressing `/` you should see your bot options. Typing /play <some music> should work. In case you setup your own lavalink/is running docker without the --d flag, you can view your lavalink connections/attempts in the console, aswell as the bot logs.
 
 ## 📝 | [Support Server](https://discord.gg/sbySMS7m3v)
 

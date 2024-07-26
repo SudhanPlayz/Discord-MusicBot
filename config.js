@@ -1,7 +1,7 @@
 module.exports = {
 	helpCmdPerPage: 10, //- Number of commands per page of help command
 	lyricsMaxResults: 5, //- Number of results for lyrics command (Do not touch this value if you don't know what you are doing)
-	adminId: "UserId", //- Replace UserId with the Discord ID of the admin of the bot
+	adminId: "", //- Replace UserId with the Discord ID of the admin of the bot
 	token: process.env.token || "", //- Bot's Token
 	clientId: process.env.clientId || "", //- ID of the bot
 	clientSecret: process.env.clientSecret || "", //- Client Secret of the bot
@@ -26,9 +26,9 @@ module.exports = {
 	nodes: [
 		{
 			identifier: "Main Node", //- Used for indentifier in stats commands.
-			host: "", //- The host name or IP of the lavalink server.
-			port: 80, // The port that lavalink is listening to. This must be a number!
-			password: "", //- The password of the lavalink server.
+			host: "lavalink", //- The host name or IP of the lavalink server. If you're using docker, change this to 'lavalink' - the same as in #app/docker/application.yml > server > address (line 3).
+			port: 2333, // The port that lavalink is listening to. This must be a number! If you're using docker, same as above.
+			password: "youshallnotpass", //- The password of the lavalink server. IF you're using docker, same as above.
 			retryAmount: 200, //- The amount of times to retry connecting to the node if connection got dropped.
 			retryDelay: 40, //- Delay between reconnect attempts if connection is lost.
 			secure: false, //- Can be either true or false. Only use true if ssl is enabled!
