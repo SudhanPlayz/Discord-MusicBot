@@ -71,7 +71,7 @@ And finally start the bot
 node index.js
 ```
 
-In order to run the commands on your server, if everything was done right, upon pressing `/` you should see your bot options. Typing /play <some music> should work. In case you setup your own lavalink/is running docker without the --d flag, you can view your lavalink connections/attempts in the console, aswell as the bot logs.
+In order to run the commands on your server, if everything was done right, upon pressing `/` you should see your bot options. Typing /play <some music> should work. In case you set up your own lavalink/is running docker without the --d flag, you can view your lavalink connections/attempts in the console, aswell as the bot logs.
 
 ## 📝 | [Support Server](https://discord.gg/sbySMS7m3v)
 
