@@ -16,7 +16,7 @@ What do you gain from it? Let us explain:
 ## 🚧 | Prerequisites
 
 - [Node.js 16+](https://nodejs.org/en/download/)
-- [Lavalink Server](https://code.darrennathanael.com/how-to-lavalink)
+- [Lavalink Server](https://blog.darrennathanael.com/post/how-to-lavalink/)
   - v5 is currently compatible with Lavalink v3. 
 - You'll need to run `npm run deploy` or `yarn deploy`. to initialized the slash commands. _You can do this on your pc
   locally_
@@ -52,7 +52,7 @@ If you want to view logs for both applications in your console upon running the 
 ### 💪🏻 Non-Docker
 > The `config.js` file should be configured first. Don't forget to add a lavalink host
 
-Create a folder named lavalink and place the lavalink.jar file in it, alongside the application.yml file. Follow [this guide](https://code.darrennathanael.com/how-to-lavalink) to setup Lavalink. Make sure to use configs for v3 (and to inspect the `docker/application.yml` file to see how the youtube plugin is currently being set.)
+Create a folder named lavalink and place the lavalink.jar file in it, alongside the application.yml file. Follow [this guide](https://blog.darrennathanael.com/post/how-to-lavalink/) to setup Lavalink. Make sure to use configs for v3 (and to inspect the `docker/application.yml` file to see how the youtube plugin is currently being set.)
 
 Install all dependencies and deploy Slash Commands
 ```sh
