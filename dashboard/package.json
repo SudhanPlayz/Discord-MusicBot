@@ -14,7 +14,7 @@
     "@emotion/styled": "^11.9.3",
     "@mui/icons-material": "^5.8.4",
     "@mui/material": "^5.8.4",
-    "@nextui-org/react": "1.0.0-beta.9",
+    "@nextui-org/react": "2.4.8",
     "next": "12.2.4",
     "react": "18.2.0",
     "react-dom": "18.2.0"
