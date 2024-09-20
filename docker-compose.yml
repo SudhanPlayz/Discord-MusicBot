@@ -14,7 +14,7 @@ services:
       - ./config.js:/usr/src/app/config.js:ro
 
   lavalink:
-    image: fredboat/lavalink:3.7.12
+    image: fredboat/lavalink:3.7.13
     container_name: music-lavalink
     hostname: lavalink
     restart: unless-stopped
