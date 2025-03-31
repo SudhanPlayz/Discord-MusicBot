@@ -54,7 +54,7 @@
     "erela.js-deezer": "^1.0.7",
     "erela.js-facebook": "^1.0.4",
     "erela.js-filters": "^1.2.6",
-    "express": "^4.17.1",
+    "express": "^5.0.0",
     "express-rate-limit": "^6.2.0",
     "express-session": "^1.17.3",
     "express-ws": "^5.0.2",
