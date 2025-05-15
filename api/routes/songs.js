@@ -1,5 +1,5 @@
 const express = require('express');
-const Song = require('../models/Song');
+const Song = require('../models/Song.js');
 
 const router = express.Router();
 
@@ -13,7 +13,7 @@ router.post('/add', async (req, res) => {
     res.status(500).json({ success: false, error: err.message });
   }
 });
-
+//post delete a song
 router.post('/delete', async (req, res) => {
   try {
     const { id } = req.body;
