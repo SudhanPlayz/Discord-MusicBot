@@ -1,30 +1,221 @@
-server: # REST and WS server
+server:
   port: 2333
   address: 0.0.0.0
+  http2:
+    enabled: false # Whether to enable HTTP/2 support
 plugins:
   youtube:
     enabled: true
+    oauth:
+      # setting "enabled: true" is the bare minimum to get OAuth working.
+      enabled: false # IF YOU RUN YOUR LAVALINK CHECK YOUR CONSOLE AND CLICK THE GOOGLE.COM/DEVICES LINK AND THERE IS A CODE THAT YOU NEED TO PUT IN TO THE GOOGLE AND USE A BURNER ACCOUNT OR ALT ACCOUNT THERE IS A POSSIBLE CHANGE YOU CAN GET BANNED FROM GOOGLE OR YOUTUBE SO JUST USE A BURNER ACCOUNT IN CASE.
+
+      # if you have a refresh token, you may set it below (make sure to uncomment the line to apply it).
+      # setting a valid refresh token will skip the OAuth flow entirely. See above note on how to retrieve
+      # your refreshToken.
+      # refreshToken: "paste your refresh token here if applicable"
+
+      # Set this if you don't want the OAuth flow to be triggered, if you intend to supply a refresh token later.
+      # Initialization is skipped automatically if a valid refresh token is supplied. Leave this commented if you're
+      # completing the OAuth flow for the first time/do not have a refresh token.
+      # skipInitialization: true
+    #pot:
+    #  token: "" # THIS REQUIRE INSTALLING https://github.com/iv-org/youtube-trusted-session-generator THIS IS A PYTHON FILE INSTALL THE REQUIREMENTS AND RUN PYTON INDEX FILE AND AFTER RUNNING YOU WILL RECIVE AND TOKEN AND VISTOR DATA AND PASTE IT BELOW.
+    #  visitorData: ""
     allowSearch: true
     allowDirectVideoIds: true
     allowDirectPlaylistIds: true
-    clients: ["MUSIC", "ANDROID", "WEB"]
-#  name: # Name of the plugin
-#    some_key: some_value # Some key-value pair for the plugin
-#    another_key: another_value
+    clients:
+      - "TV"
+      - "TVHTML5EMBEDDED"
+      - "WEB"
+      - "MWEB"
+      - "WEBEMBEDDED"
+      - "MUSIC"
+      - "ANDROID_VR"
+      - "ANDROID_MUSIC"
+      - "IOS"
+    clientOptions:
+      TV: #OAuth2 Client
+        playback: true #Requires sign-in (OAuth2)
+        playlistLoading: false
+        searching: false
+        videoLoading: false
+      TVHTML5EMBEDDED: #OAuth2 Client
+        playback: true #Requires sign-in (OAuth2)
+        playlistLoading: false
+        searching: true
+        videoLoading: true
+      WEB:
+        playback: false
+        playlistLoading: true
+        searching: true
+        videoLoading: true
+      MWEB:
+        playback: false
+        playlistLoading: true
+        searching: true
+        videoLoading: true
+      WEBEMBEDDED:
+        playback: true
+        playlistLoading: false
+        searching: false
+        videoLoading: true
+      MUSIC:
+        playback: false
+        playlistLoading: false
+        searching: true
+        videoLoading: false
+      ANDROID_VR:
+        playback: true
+        playlistLoading: true
+        searching: true
+        videoLoading: true
+      ANDROID_MUSIC:
+        playback: true
+        playlistLoading: false
+        searching: true
+        videoLoading: true
+      IOS:
+        playback: true
+        playlistLoading: true
+        searching: true
+        videoLoading: true
+  jiosaavn:
+    apiURL: "https://jiosaavn-plugin-api.vercel.app/api" # JioSaavn API URL (The default link may not work or may be out of date. Deploy your own API on Vercel: https://vercel.com/new/clone?repository-url=https://github.com/appujet/jiosaavn-plugin-api)
+    playlistTrackLimit: 50 # The maximum number of tracks to return from given playlist (default 50 tracks)
+    recommendationsTrackLimit: 10 # The maximum number of track to return from recommendations (default 10 tracks)
+  lavalyrics:
+    # sources is used to sort the different lyrics sources by priority (from highest to lowest)
+    sources:
+      - spotify
+      - youtube
+      - deezer
+      - yandexMusic
+  lavasrc:
+    providers:
+      - "scsearch:%QUERY%"
+      #- "dzisrc:%ISRC%"
+      #- "dzsearch:%QUERY%"
+      - "ytsearch:\"%ISRC%\""
+      - "ytsearch:%QUERY%"
+    sources:
+      spotify: false # Enable Spotify source
+      applemusic: false # Enable Apple Music source
+      deezer: false # Enable Deezer source
+      yandexmusic: false # Enable Yandex Music source
+      flowerytts: false # Enable Flowery TTS source
+      youtube: true # Enable YouTube search source (https://github.com/topi314/LavaSearch)
+      vkmusic: false # Enable Vk Music source
+      tidal: false # Enable Tidal source
+      qobuz: false # Enabled qobuz source
+      ytdlp: false # Enable yt-dlp source
+    lyrics-sources:
+      spotify: false # Enable Spotify lyrics source
+      deezer: false # Enable Deezer lyrics source
+      youtube: false # Enable YouTube lyrics source
+      yandexmusic: false # Enable Yandex Music lyrics source
+      vkmusic: false # Enable Vk Music lyrics source
+    spotify:
+      # clientId & clientSecret are required for using spsearch
+#      clientId: "your client id"
+#      clientSecret: "your client secret"
+      # spDc: "your sp dc cookie" # the sp dc cookie used for accessing the spotify lyrics api
+      countryCode: "US" # the country code you want to use for filtering the artists top tracks. See https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
+      playlistLoadLimit: 6 # The number of pages at 100 tracks each
+      albumLoadLimit: 6 # The number of pages at 50 tracks each
+      resolveArtistsInSearch: true # Whether to resolve artists in track search results (can be slow)
+      localFiles: false # Enable local files support with Spotify playlists. Please note `uri` & `isrc` will be `null` & `identifier` will be `"local"`
+      preferAnonymousToken: false # Whether to use the anonymous token for resolving tracks, artists and albums. Spotify generated playlists are always resolved with the anonymous tokens since they do not work otherwise. This requires the customTokenEndpoint to be set.
+      customTokenEndpoint: "http://localhost:8080/api/token" # Optional custom endpoint for getting the anonymous token. If not set, spotify's default endpoint will be used which might not work. The response must match spotify's anonymous token response format.
+    applemusic:
+      countryCode: "US" # the country code you want to use for filtering the artists top tracks and language. See https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
+      mediaAPIToken: "your apple music api token" # apple music api token
+      # or specify an apple music key
+      keyID: "your key id"
+      teamID: "your team id"
+      musicKitKey: |
+        -----BEGIN PRIVATE KEY-----
+        your key
+        -----END PRIVATE KEY-----
+      playlistLoadLimit: 6 # The number of pages at 300 tracks each
+      albumLoadLimit: 6 # The number of pages at 300 tracks each
+    deezer:
+      masterDecryptionKey: "your master decryption key" # the master key used for decrypting the deezer tracks. (yes this is not here you need to get it from somewhere else)
+      arl: "your deezer arl" # the arl cookie used for accessing the deezer api this is not optional anymore
+      formats: [ "FLAC", "MP3_320", "MP3_256", "MP3_128", "MP3_64", "AAC_64" ] # the formats you want to use for the deezer tracks. "FLAC", "MP3_320", "MP3_256" & "AAC_64" are only available for premium users and require a valid arl
+    yandexmusic:
+      accessToken: "your access token" # the token used for accessing the yandex music api. See https://github.com/topi314/LavaSrc#yandex-music
+      playlistLoadLimit: 1 # The number of pages at 100 tracks each
+      albumLoadLimit: 1 # The number of pages at 50 tracks each
+      artistLoadLimit: 1 # The number of pages at 10 tracks each
+    flowerytts:
+      voice: "default voice" # (case-sensitive) get default voice here https://api.flowery.pw/v1/tts/voices
+      translate: false # whether to translate the text to the native language of voice
+      silence: 0 # the silence parameter is in milliseconds. Range is 0 to 10000. The default is 0.
+      speed: 1.0 # the speed parameter is a float between 0.5 and 10. The default is 1.0. (0.5 is half speed, 2.0 is double speed, etc.)
+      audioFormat: "mp3" # supported formats are: mp3, ogg_opus, ogg_vorbis, aac, wav, and flac. Default format is mp3
+    youtube:
+      countryCode: "US" # the country code you want to use for searching lyrics via ISRC. See https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
+      language: "en" # the language code you want to use for searching & lyrics. See https://en.wikipedia.org/wiki/List_of_ISO_639_language_codes
+    vkmusic:
+      userToken: "your user token" # This token is needed for authorization in the api. Guide: https://github.com/topi314/LavaSrc#vk-music
+      playlistLoadLimit: 1 # The number of pages at 50 tracks each
+      artistLoadLimit: 1 # The number of pages at 10 tracks each
+      recommendationsLoadLimit: 10 # Number of tracks
+    tidal:
+      countryCode: "US" # the country code for accessing region-specific content on Tidal (ISO 3166-1 alpha-2).
+      searchLimit: 6 # How many search results should be returned
+      token: "your tidal token" # the token used for accessing the tidal api. See https://github.com/topi314/LavaSrc#tidal
+    qobuz:
+      userOauthToken : "your user oauth token" # This token is needed for authorization in the api. Guide: https://github.com/topi314/LavaSrc#qobuz
+      #appId : optional (Only pass it when you are using an old userOauthToken)
+      #appSecret : optional (Only pass it when you are using an old userOauthToken)
+    ytdlp:
+      path: "yt-dlp" # the path to the yt-dlp executable.
+      searchLimit: 10 # How many search results should be returned
+#      customLoadArgs: ["-q", "--no-warnings", "--flat-playlist", "--skip-download", "-J"] # Custom arguments to pass to yt-dlp
+#      customPlaybackArgs: ["-q", "--no-warnings", "-f", "bestaudio", "-J"] # Custom arguments for yt-dlp
+  dunctebot:
+    ttsLanguage: 'en-US'
+    sources:
+      getyarn: true # www.getyarn.io
+      clypit: true # www.clyp.it
+      tts: true # speak:Words to speak
+      pornhub: true # should be self-explanatory
+      reddit: true # should be self-explanatory
+      ocremix: true # www.ocremix.org
+      tiktok: true # tiktok.com
+      mixcloud: true # mixcloud.com
+      soundgasm: true # soundgasm.net
+      pixeldrain: true # pixeldrain.com
 lavalink:
   plugins:
-    - dependency: "dev.lavalink.youtube:youtube-plugin:1.3.0"
-      repository: "https://maven.lavalink.dev/releases"
-  pluginsDir: "./plugins"
+    - dependency: "com.github.appujet:jiosaavn-plugin:1.0.6"
+      repository: "https://maven.appujet.site/releases"
+    - dependency: "com.dunctebot:skybot-lavalink-plugin:1.7.0"
+      snapshot: false
+    - dependency: "com.github.topi314.lavasearch:lavasearch-plugin:1.0.0"
+      snapshot: false
+    - dependency: "com.github.topi314.lavalyrics:lavalyrics-plugin:7d60077"
+      snapshot: true
+    - dependency: "com.github.topi314.lavasrc:lavasrc-plugin:4.7.3"
+      snapshot: false
+    - dependency: "com.github.topi314.sponsorblock:sponsorblock-plugin:3.0.1"
+      snapshot: false
+    - dependency: "dev.lavalink.youtube:youtube-plugin:1.13.3"
+      snapshot: false
+  pluginsDir: './plugins'
   server:
     password: "youshallnotpass"
     sources:
-      youtube: false
+      youtube: false # disable youtube on lavalink to use youtube-source
       bandcamp: true
       soundcloud: true
       twitch: true
       vimeo: true
-      http: true
+      nico: true
+      http: true # warning: keeping HTTP enabled without a proxy configured could expose your server's IP address.
       local: false
     filters: # All filters are enabled by default
       volume: true
@@ -37,6 +228,7 @@ lavalink:
       rotation: true
       channelMix: true
       lowPass: true
+    nonAllocatingFrameBuffer: false # Setting to true reduces the number of allocations made by each player at the expense of frame rebuilding (e.g. non-instantaneous volume changes)
     bufferDurationMs: 400 # The duration of the NAS buffer. Higher values fare better against longer GC pauses. Duration <= 0 to disable JDA-NAS. Minimum of 40ms, lower values may introduce pauses.
     frameBufferDurationMs: 5000 # How many milliseconds of audio to keep buffered
     opusEncodingQuality: 10 # Opus encoder quality. Valid values range from 0 to 10, where 10 is best quality but is the most expensive on the CPU.
@@ -49,19 +241,19 @@ lavalink:
     soundcloudSearchEnabled: true
     gc-warnings: true
     #ratelimit:
-      #ipBlocks: ["1.0.0.0/8", "..."] # list of ip blocks
-      #excludedIps: ["...", "..."] # ips which should be explicit excluded from usage by lavalink
-      #strategy: "RotateOnBan" # RotateOnBan | LoadBalance | NanoSwitch | RotatingNanoSwitch
-      #searchTriggersFail: true # Whether a search 429 should trigger marking the ip as failing
-      #retryLimit: -1 # -1 = use default lavaplayer value | 0 = infinity | >0 = retry will happen this numbers times
-    #youtubeConfig: # Required for avoiding all age restrictions by YouTube, some restricted videos still can be played without.
-      #email: "" # Email of Google account
-      #password: "" # Password of Google account
+       #ipBlocks: [ "1.0.0.0/8", "..." ] # list of ip blocks
+       #excludedIps: [ "...", "..." ] # ips which should be explicit excluded from usage by lavalink
+       #strategy: "RotateOnBan" # RotateOnBan | LoadBalance | NanoSwitch | RotatingNanoSwitch
+       #searchTriggersFail: true # Whether a search 429 should trigger marking the ip as failing
+       #retryLimit: -1 # -1 = use default lavaplayer value | 0 = infinity | >0 = retry will happen this numbers times
+    youtubeConfig: # Required for avoiding all age restrictions by YouTube, some restricted videos still can be played without.
+      email: "your account mail" # Email of Google account
+      password: "your account password" # Password of Google account
     #httpConfig: # Useful for blocking bad-actors from ip-grabbing your music node and attacking it, this way only the http proxy will be attacked
-      #proxyHost: "localhost" # Hostname of the proxy, (ip or domain)
-      #proxyPort: 3128 # Proxy port, 3128 is the default for squidProxy
-      #proxyUser: "" # Optional user for basic authentication fields, leave blank if you don't use basic auth
-      #proxyPassword: "" # Password for basic authentication
+       #proxyHost: "localhost" # Hostname of the proxy, (ip or domain)
+       #proxyPort: 3128 # Proxy port, 3128 is the default for squidProxy
+       #proxyUser: "" # Optional user for basic authentication fields, leave blank if you don't use basic auth
+       #proxyPassword: "" # Password for basic authentication
 
 metrics:
   prometheus:
@@ -77,11 +269,29 @@ sentry:
 
 logging:
   file:
+    max-history: 5
+    max-size: 10MB
     path: ./logs/
-
   level:
+    # Set this to DEBUG to enable more detailed logging. Please note that this will likely spam your console.
     root: INFO
+    # Set this to DEBUG to enable more detailed logging from Lavalink.
     lavalink: INFO
+
+    # Set this to TRACE to see all WebSocket messages.
+    lavalink.server.io.SocketContext: OFF
+    # Log all track exceptions (COMMON, SUSPICIOUS & FAULT). Set to DEBUG to enable detailed logging.
+    com.sedmelluq.discord.lavaplayer.tools.ExceptionTools: OFF
+    # Set to DEBUG to enable detailed logging of HTTP requests and responses.
+    com.sedmelluq.discord.lavaplayer.tools.io.PersistentHttpStream: OFF
+    # Set to DEBUG to enable detailed logging of YouTube HTTP requests and responses.
+    com.sedmelluq.discord.lavaplayer.source.youtube.YoutubePersistentHttpStream: OFF
+    # Set to DEBUG to enable detailed logging for the LavaSrc plugin.
+    com.github.topi314.lavasrc.LavaSrcTools: OFF
+    # Set to DEBUG to enable detailed logging for the YouTube audio source manager.
+    dev.lavalink.youtube.YoutubeAudioSourceManager: OFF
+    # Youtube Oauth2 Handle logs
+    dev.lavalink.youtube.http.YoutubeOauth2Handler: INFO
 
   request:
     enabled: true
@@ -90,7 +300,6 @@ logging:
     includeQueryString: true
     includePayload: true
     maxPayloadLength: 10000
-
 
   logback:
     rollingpolicy:
